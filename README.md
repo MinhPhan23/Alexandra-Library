@@ -4,6 +4,8 @@
 ## Vision Statement
 #### Find our [Vision Statement]()
 
+## Purpose
+An app to read books and maintain the library
 
 ## Feature 
 #### Find our [Features](https://code.cs.umanitoba.ca/comp3350-winter2024/alexandrialibrary/-/issues/?sort=created_date&state=opened&label_name%5B%5D=Feature&first_page_size=20)
