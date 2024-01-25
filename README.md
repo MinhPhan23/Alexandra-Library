@@ -26,13 +26,13 @@ The use of Alexandria Library is a major improvement over the classic physical l
 The library project will be considered successful if 60% of all users find and finish reading a book of their choice and 40% of those users spend 8 hours in Alexandria weekly. The project aims to have 100 registered users in one month after release with 70% of them creating their own book list. It is expected that 10 physical libraries will integrate our system into their online publishing and at least 60% of them prefer Alexandria to alternatives with similar functionality.
 
 
-## [Feature](https://code.cs.umanitoba.ca/comp3350-winter2024/alexandrialibrary/-/issues/?sort=created_date&state=opened&label_name%5B%5D=Feature&first_page_size=20)
+## [Features](https://code.cs.umanitoba.ca/comp3350-winter2024/alexandrialibrary/-/issues/?sort=created_date&state=opened&label_name%5B%5D=Feature&first_page_size=20)
 Find our [Features](https://code.cs.umanitoba.ca/comp3350-winter2024/alexandrialibrary/-/issues/?sort=created_date&state=opened&label_name%5B%5D=Feature&first_page_size=20)
 - [High Priority](https://code.cs.umanitoba.ca/comp3350-winter2024/alexandrialibrary/-/issues/?sort=created_date&state=opened&label_name%5B%5D=Feature&label_name%5B%5D=High%20Priority&first_page_size=20)
 - [Medium Priority](https://code.cs.umanitoba.ca/comp3350-winter2024/alexandrialibrary/-/issues/?sort=created_date&state=opened&label_name%5B%5D=Feature&label_name%5B%5D=Medium%20Priority&first_page_size=20)
 - [Low Priority](https://code.cs.umanitoba.ca/comp3350-winter2024/alexandrialibrary/-/issues/?sort=created_date&state=opened&label_name%5B%5D=Feature&label_name%5B%5D=Low%20Priority&first_page_size=20)
 
-## [User Story](https://code.cs.umanitoba.ca/comp3350-winter2024/alexandrialibrary/-/issues/?sort=created_date&state=opened&label_name%5B%5D=User%20Story&first_page_size=20)
+## [User Stories](https://code.cs.umanitoba.ca/comp3350-winter2024/alexandrialibrary/-/issues/?sort=created_date&state=opened&label_name%5B%5D=User%20Story&first_page_size=20)
 Find our [User Story](https://code.cs.umanitoba.ca/comp3350-winter2024/alexandrialibrary/-/issues/?sort=created_date&state=opened&label_name%5B%5D=User%20Story&first_page_size=20)
 - [High Priority](https://code.cs.umanitoba.ca/comp3350-winter2024/alexandrialibrary/-/issues/?sort=created_date&state=opened&label_name%5B%5D=User%20Story&label_name%5B%5D=High%20Priority&first_page_size=20)
 - [Medium Priority](https://code.cs.umanitoba.ca/comp3350-winter2024/alexandrialibrary/-/issues/?sort=created_date&state=opened&label_name%5B%5D=User%20Story&label_name%5B%5D=Medium%20Priority&first_page_size=20)
