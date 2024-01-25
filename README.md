@@ -1,8 +1,11 @@
 # Alexandria Library A02-7
 
+# Purpose
+An app to read books and maintain the library
 
 ## Vision Statement
 #### Find our [Vision Statement]()
+
 
 
 ## Feature 
