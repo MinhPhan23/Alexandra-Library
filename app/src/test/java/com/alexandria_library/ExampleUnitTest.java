@@ -1,4 +1,4 @@
-package com.alexandrialibrary_7;
+package com.alexandria_library;
 
 import org.junit.Test;
 

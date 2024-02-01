@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.alexandrialibrary_7"
+    namespace = "com.alexandria_library"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.alexandrialibrary_7"
+        applicationId = "com.alexandria_library"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
