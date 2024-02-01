@@ -1,10 +1,10 @@
-package com.alexandrialibrary_7;
+package com.alexandria_library;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import com.example.alexandrialibrary_7.R;
+import com.alexandria_library.R;
 
 public class MainActivity extends AppCompatActivity {
 

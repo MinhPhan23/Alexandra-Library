@@ -1,4 +1,4 @@
-package com.example.alexandrialibrary_7;
+package com.alexandria_library;
 
 import android.content.Context;
 
