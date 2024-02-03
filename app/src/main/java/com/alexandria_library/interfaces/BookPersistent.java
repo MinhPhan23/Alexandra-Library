@@ -1,10 +1,6 @@
 package pkg3350;
 import java.sql.PreparedStatement;
 
-/**
- *
- * @author aasho
- */
 public interface BookPersistent {
 
     int upload(Book book);
