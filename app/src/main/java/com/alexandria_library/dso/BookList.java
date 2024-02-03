@@ -1,2 +1,4 @@
-package com.alexandria_library.DSO;public class BookList {
+package com.alexandria_library.dso;
+
+public class BookList {
 }
