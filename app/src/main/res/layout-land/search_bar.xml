@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbarThumbHorizontal="@color/black"
+    android:scrollbarThumbVertical="@color/black"
+    tools:ignore="MissingDefaultResource">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/searchInput"
+        android:layout_width="466dp"
+        android:layout_height="50dp"
+        android:drawableLeft="@drawable/baseline_search_24"
+        android:drawablePadding="5dp"
+        android:hint="Search"
+        android:inputType="text"
+        android:paddingLeft="6dp"
+        android:textStyle="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.003" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="320dp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
