@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -21,41 +22,55 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements SearchBarInput.SearchBarListener {
 
     private List<Bean> data = new ArrayList<>();
+    private boolean grid = true;
+    private MyGridBookAdapter myGridBookAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        bookDisplayCategory();
+
         //Getting Search Bar input immediately
         EditText editText = findViewById(R.id.searchInput);
         SearchBarInput.setupSearchBar(editText, this);
 
-//        //Setting Horizontal List of book display
-//        getBookData(data);
-//        ListView listView = findViewById(R.id.listView);
-//        listView.setAdapter(new MyListBookAdapter(data, this));
-//
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Log.e("xiang", "onClicked: "+position);
-//            }
-//        });
-
-        //Setting Grid of book display
-        getBookData(data);
-        RecyclerView recyclerView = findViewById(R.id.gridView);
-
-//
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-//        recyclerView.setLayoutManager(linearLayoutManager);
+        //Change Book display Category button
+        Button button = findViewById(R.id.book_display_category_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                grid = !grid;
+                bookDisplayCategory();
+            }
+        });
+    }
 
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
-        recyclerView.setLayoutManager(gridLayoutManager);
+    private void bookDisplayCategory(){
+        if(grid){
+            //Setting Grid of book display
+            getBookData(data);
+            RecyclerView recyclerView = findViewById(R.id.gridView);
 
-        MyGridBookAdapter myGridBookAdapter = new MyGridBookAdapter(data, this);
-        recyclerView.setAdapter(myGridBookAdapter);
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
+            recyclerView.setLayoutManager(gridLayoutManager);
+
+            myGridBookAdapter = new MyGridBookAdapter(data, this);
+            recyclerView.setAdapter(myGridBookAdapter);
+        }
+        else{
+            //Setting list of book display
+            getBookData(data);
+            RecyclerView recyclerView = findViewById(R.id.gridView);
+
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+            recyclerView.setLayoutManager(linearLayoutManager);
+
+            myGridBookAdapter = new MyGridBookAdapter(data, this);
+            recyclerView.setAdapter(myGridBookAdapter);
+        }
 
         myGridBookAdapter.setRecyclerItemClickListener(new MyGridBookAdapter.OnRecyclerItemClickListener() {
             @Override
@@ -63,9 +78,6 @@ public class MainActivity extends AppCompatActivity implements SearchBarInput.Se
                 Log.e("xiang", "onRecyclerItemClick:" +position);
             }
         });
-
-
-
     }
 
     @Override
