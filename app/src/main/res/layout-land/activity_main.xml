@@ -13,5 +13,9 @@
         layout="@layout/list_book_display_ui"
         android:layout_height="match_parent"
         android:layout_width="match_parent"/>
+    <include
+        layout="@layout/grid_book_display_ui"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,10 +12,10 @@ import com.alexandria_library.R;
 
 import java.util.List;
 
-public class MyAdapter extends BaseAdapter {
+public class MyListBookAdapter extends BaseAdapter {
     private List<Bean> data;
     private Context context;
-    public MyAdapter(List<Bean> data, Context context) {
+    public MyListBookAdapter(List<Bean> data, Context context) {
         this.data = data;
         this.context = context;
     }
@@ -41,7 +41,7 @@ public class MyAdapter extends BaseAdapter {
         if(convertView == null){
             viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.book_list_item, parent, false);
-            viewHolder.textView = convertView.findViewById(R.id.list_book_title);
+            viewHolder.textView = convertView.findViewById(R.id.book_title);
             convertView.setTag(viewHolder);
 
         } else {
