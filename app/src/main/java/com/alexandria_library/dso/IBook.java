@@ -1,6 +1,6 @@
 package com.alexandria_library.dso;
 
-public interface BookInterface {
+public interface IBook {
 
     public void setID(int id);
 
