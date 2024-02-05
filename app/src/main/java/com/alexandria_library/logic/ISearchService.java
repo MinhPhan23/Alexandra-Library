@@ -1,6 +1,7 @@
 package com.alexandria_library.logic;
 
+import  com.alexandria_library.dso.*;
 public interface ISearchService {
-    public void searchInput(String keywords);
-    public void filterInput(String[] filters);
+    public Book[] searchInput(String keywords);
+    public Book[] filterInput(String[] filters);
 }
