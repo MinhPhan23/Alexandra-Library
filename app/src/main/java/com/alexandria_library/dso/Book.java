@@ -1,63 +1,72 @@
 package com.alexandria_library.dso;
 
-public class Book implements IBook{
-    @Override
-    public void setID(int id) {
+public class Book {
 
+    // instance variables
+    private int id;
+    private String name;
+    private String author;
+    private String date;
+    private String[] tags;
+    private String[] genres;
+
+    public Book (int bookID, String bookName, String bookAuthor, String bookDate,
+                 String[] bookTags, String[] bookGenres) {
+        id = bookID;
+        name = bookName;
+        author = bookAuthor;
+        date = bookDate;
+        tags = bookTags;
+        genres = bookGenres;
     }
 
-    @Override
     public int getID() {
-        return 0;
+        return id;
     }
 
-    @Override
-    public void setName(String name) {
-
-    }
-
-    @Override
     public String getName() {
-        return null;
+        return name;
     }
 
-    @Override
-    public void setAuthor(String author) {
-
-    }
-
-    @Override
     public String getAuthor() {
-        return null;
+        return author;
     }
 
-    @Override
-    public void setTags(String[] tags) {
-
-    }
-
-    @Override
-    public String[] getTags() {
-        return new String[0];
-    }
-
-    @Override
-    public void setGenres(String[] genres) {
-
-    }
-
-    @Override
-    public String[] getGenres() {
-        return new String[0];
-    }
-
-    @Override
-    public void setDate(String date) {
-
-    }
-
-    @Override
     public String getDate() {
-        return null;
+        return date;
     }
+
+    public String[] getTags() {
+        return tags;
+    }
+
+    public String[] getGenres() {
+        return genres;
+    }
+
+
+    public void setID(int bookID) {
+        id = bookID;
+    }
+
+    public void setName(String bookName) {
+        name = bookName;
+    }
+
+    public void setAuthor(String bookAuthor) {
+        author = bookAuthor;
+    }
+
+    public void setDate(String bookDate) {
+        date = bookDate;
+    }
+
+    public void setTags(String[] bookTags) {
+        tags = bookTags;
+    }
+
+    public void setGenres(String[] bookGenres) {
+        genres = bookGenres;
+    }
+
 }
