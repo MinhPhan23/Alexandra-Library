@@ -21,6 +21,7 @@ public interface BookPersistentIntermediate {
     ArrayList<Book> search(String[] tags);
 
     ArrayList<Book> search(String tag);
+    
     ArrayList<Book> search(ArrayList<Book> list);
 
     ArrayList<Book> search(PreparedStatement statement);
