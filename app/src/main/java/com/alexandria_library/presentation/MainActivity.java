@@ -8,22 +8,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 
 import com.alexandria_library.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements SearchBarInput.SearchBarListener {
+public class MainActivity extends AppCompatActivity implements SearchBar.SearchBarListener {
 
     private List<Bean> data = new ArrayList<>();
     private boolean grid = true;
-    private MyGridBookAdapter myGridBookAdapter;
+    private BookAdapter bookAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements SearchBarInput.Se
 
         //Getting Search Bar input immediately
         EditText editText = findViewById(R.id.searchInput);
-        SearchBarInput.setupSearchBar(editText, this);
+        SearchBar.setupSearchBar(editText, this);
 
         //Change Book display Category button
         Button button = findViewById(R.id.book_display_category_button);
@@ -57,8 +54,8 @@ public class MainActivity extends AppCompatActivity implements SearchBarInput.Se
             GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
             recyclerView.setLayoutManager(gridLayoutManager);
 
-            myGridBookAdapter = new MyGridBookAdapter(data, this);
-            recyclerView.setAdapter(myGridBookAdapter);
+            bookAdapter = new BookAdapter(data, this);
+            recyclerView.setAdapter(bookAdapter);
         }
         else{
             //Setting list of book display
@@ -68,11 +65,11 @@ public class MainActivity extends AppCompatActivity implements SearchBarInput.Se
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
             recyclerView.setLayoutManager(linearLayoutManager);
 
-            myGridBookAdapter = new MyGridBookAdapter(data, this);
-            recyclerView.setAdapter(myGridBookAdapter);
+            bookAdapter = new BookAdapter(data, this);
+            recyclerView.setAdapter(bookAdapter);
         }
 
-        myGridBookAdapter.setRecyclerItemClickListener(new MyGridBookAdapter.OnRecyclerItemClickListener() {
+        bookAdapter.setRecyclerItemClickListener(new BookAdapter.OnRecyclerItemClickListener() {
             @Override
             public void onRecyclerItemClick(int position) {
                 Log.e("xiang", "onRecyclerItemClick:" +position);

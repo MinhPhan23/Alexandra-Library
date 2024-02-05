@@ -12,11 +12,11 @@ import com.alexandria_library.R;
 
 import java.util.List;
 
-public class MyGridBookAdapter extends RecyclerView.Adapter<MyGridBookAdapter.MyViewHolder> {
+public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> {
     private List<Bean> data;
     private Context context;
 
-    public MyGridBookAdapter(List<Bean> data, Context context){
+    public BookAdapter(List<Bean> data, Context context){
         this.data = data;
         this.context = context;
     }
@@ -29,7 +29,7 @@ public class MyGridBookAdapter extends RecyclerView.Adapter<MyGridBookAdapter.My
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyGridBookAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull BookAdapter.MyViewHolder holder, int position) {
         holder.tv.setText(data.get(position).getName());
     }
 
