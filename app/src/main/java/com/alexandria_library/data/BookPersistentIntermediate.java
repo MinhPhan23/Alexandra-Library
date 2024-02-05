@@ -2,12 +2,11 @@ package com.alexandria_library.data;
 
 import com.alexandria_library.dso.*;
 import java.sql.PreparedStatement;
-
-import java.sql.PreparedStatement;
+import java.util.ArrayList;
 
 public interface BookPersistentIntermediate {
 
-    int checkList(BookList list);
+    int checkList(ArrayList<Book> list);
 
     int checkBook(Book book);
 
@@ -19,11 +18,14 @@ public interface BookPersistentIntermediate {
 
     boolean isValid(Book book);
 
-    BookList search(String[] tags);
+    ArrayList<Book> search(String[] tags);
 
-    BookList search(BookList list);
+    ArrayList<Book> search(String tag);
+    ArrayList<Book> search(ArrayList<Book> list);
 
-    BookList search(PreparedStatement statement);
+    ArrayList<Book> search(PreparedStatement statement);
 
     Book search(Book book);
+
+
 }
