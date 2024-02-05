@@ -8,8 +8,8 @@
 
     <View
         android:id="@+id/view"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="287dp"
+        android:layout_height="803dp"
         android:layout_marginEnd="960dp"
         android:background="@color/side_bar_background"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -17,17 +17,18 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.333" />
 
     <TextView
         android:id="@+id/text_Books"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:text="Books"
         android:textColor="@color/white"
-        android:textSize="40dp"
-        app:layout_constraintStart_toStartOf="@+id/guideline5"
+        android:textSize="35sp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -40,50 +41,52 @@
     <Button
         android:id="@+id/button"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="129dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="16dp"
+        android:layout_width="122dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="12dp"
         android:layout_marginTop="120dp"
         android:drawableLeft="@drawable/stack"
         android:text="All"
-        android:textSize="25sp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/text_my_list"
-        android:layout_width="187dp"
-        android:layout_height="50dp"
-        android:text="My List"
-        android:textColor="@color/white"
-        android:textSize="30dp"
-        tools:layout_editor_absoluteX="30dp"
-        tools:layout_editor_absoluteY="363dp" />
 
     <Button
         android:id="@+id/finished"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="188dp"
+        android:layout_width="161dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="180dp"
         android:drawableLeft="@drawable/check_circle"
         android:text="Finished"
-        android:textSize="25sp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/view"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/in_progress_btn"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="240dp"
-        android:layout_height="56dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="256dp"
+        android:layout_width="212dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="236dp"
         android:drawableLeft="@drawable/in_progress"
         android:text="In Progress"
-        android:textSize="25sp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/view"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/account"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="164dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="676dp"
+        android:drawableLeft="@drawable/person_circle"
+        android:text="Account"
+        android:textSize="15sp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
