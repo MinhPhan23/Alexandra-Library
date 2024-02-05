@@ -9,11 +9,11 @@ public interface BookPersistent {
 
     int upload(BookList list);
 
+    int update(Book book);
+
     void delete(Book book);
 
     void delete(BookList list);
-
-    Book update(Book book);
 
     Book getBook(Book book);
 
