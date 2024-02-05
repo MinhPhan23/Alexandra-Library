@@ -4,7 +4,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
-public class SearchBarInput {
+public class SearchBar {
     public static void setupSearchBar(EditText searchBarInput, final SearchBarListener listener){
         searchBarInput.addTextChangedListener(new TextWatcher() {
             @Override

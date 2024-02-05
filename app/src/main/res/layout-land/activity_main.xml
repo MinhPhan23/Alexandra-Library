@@ -27,7 +27,7 @@
 
     <include
         android:id="@+id/include3"
-        layout="@layout/grid_book_display_ui"
+        layout="@layout/book_display_ui"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
