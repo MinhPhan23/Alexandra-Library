@@ -26,6 +26,4 @@ public interface BookPersistentIntermediate {
     BookList search(PreparedStatement statement);
 
     Book search(Book book);
-
-
 }
