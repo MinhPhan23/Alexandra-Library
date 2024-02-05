@@ -10,7 +10,7 @@ recipeId
 
 All Interface classes shall be prefixed with 'I'.
 ```java
-iDatabase
+IDatabase
 ```
 
 ## Format
