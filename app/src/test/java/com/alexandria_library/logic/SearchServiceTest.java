@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import com.alexandria_library.logic.SearchService;
 import com.alexandria_library.dso.*;
 
+import java.util.ArrayList;
+
 public class SearchServiceTest {
     private SearchService searchService;
     @Before
@@ -19,7 +21,7 @@ public class SearchServiceTest {
         System.out.println("Testing searching for books by name");
         String keywords = "The Three Musketeers";
         String[] keyword = keywords.split(" ");
-        Book[] bookList = searchService.searchInput(keywords);
+        ArrayList<Book> bookList = searchService.searchInput(keywords);
         for (Book book : bookList) {
             String bookName = book.getName();
             boolean check = false;
