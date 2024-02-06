@@ -9,14 +9,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.alexandria_library.R;
+import com.alexandria_library.presentation.Bean.bookBean;
 
 import java.util.List;
 
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> {
-    private List<Bean> data;
+    private List<bookBean> data;
     private Context context;
 
-    public BookAdapter(List<Bean> data, Context context){
+    public BookAdapter(List<bookBean> data, Context context){
         this.data = data;
         this.context = context;
     }
@@ -24,7 +25,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = View.inflate(context, R.layout.book_list_item, null);
+        View view = View.inflate(context, R.layout.activity_book_list_item, null);
         return new MyViewHolder(view);
     }
 

@@ -1,6 +1,6 @@
-package com.alexandria_library.presentation;
+package com.alexandria_library.presentation.Bean;
 
-public class Bean {
+public class bookBean {
 
     String name;
 
