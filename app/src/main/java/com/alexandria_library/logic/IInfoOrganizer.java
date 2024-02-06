@@ -16,4 +16,6 @@ public interface IInfoOrganizer {
     public ArrayList<Book> filterByGenre(ArrayList<Book> bookList, String[] genres);
 
     public ArrayList<Book> filterByAuthor(ArrayList<Book> bookList, String[] authors);
+
+    public ArrayList<Book> rankBooks(ArrayList<Book> bookList, String[] tags);
 }
