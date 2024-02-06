@@ -3,4 +3,5 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="side_bar_background">#363635</color>
+    <color name="drak_purple">#321450</color>
 </resources>
