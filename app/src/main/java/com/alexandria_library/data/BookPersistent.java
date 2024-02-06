@@ -4,7 +4,7 @@ import com.alexandria_library.dso.*;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 
-public interface BookPersistent {
+public interface IBookPersistent {
 
     int upload(Book book);
 

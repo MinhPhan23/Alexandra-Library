@@ -4,7 +4,7 @@ import com.alexandria_library.dso.*;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 
-public interface BookPersistentIntermediate {
+public interface IBookPersistentIntermediate {
 
     int checkList(ArrayList<Book> list);
 
