@@ -6,27 +6,33 @@ import java.util.ArrayList;
 
 public interface IBookPersistentIntermediate {
 
-    int checkList(ArrayList<Book> list);
+    public int checkList(ArrayList<Book> list);
 
-    int checkBook(Book book);
+    public int checkBook(Book book);
 
-    int checkCredentials(User user);
+    public int checkCredentials(User user);
 
-    int upload(Book book);
+    public int upload(Book book, User user);
 
-    int update(Book book);
+    public int update(Book book);
 
-    boolean isValid(Book book);
+    public void delete(Book book);
 
-    ArrayList<Book> search(String[] tags);
+    public void delete(ArrayList<Book> list);
 
-    ArrayList<Book> search(String tag);
-    
-    ArrayList<Book> search(ArrayList<Book> list);
+    public ArrayList<Book> searchTag(String[] tags);
 
-    ArrayList<Book> search(PreparedStatement statement);
+    public ArrayList<Book> searchGenre(String[] genres);
 
-    Book search(Book book);
+    public ArrayList<Book> searchAuthor(String author);
+
+    public ArrayList<Book> searchName(String bookName);
+
+    public ArrayList<Book> search(ArrayList<Book> list);
+
+    public ArrayList<Book> search(PreparedStatement statement);
+
+    public Book search(Book book);
 
 
 }
