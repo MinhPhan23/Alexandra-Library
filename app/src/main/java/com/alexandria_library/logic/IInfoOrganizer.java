@@ -1,23 +1,19 @@
 package com.alexandria_library.logic;
 
-import com.alexandria_library.dso.BookList;
+import com.alexandria_library.dso.Book;
+
+import java.util.ArrayList;
 
 public interface IInfoOrganizer {
-    //sort books alphabetically
-    public BookList sortByTitle(BookList bookList);
+    public ArrayList<Book> sortByTitle(ArrayList<Book> bookList);
 
-    //sort books by date published
-    public BookList sortByDate(BookList bookList);
+    public ArrayList<Book> sortByDate(ArrayList<Book> bookList);
 
-    //sort books by author alphabetically
-    public BookList sortByAuthor(BookList bookList);
+    public ArrayList<Book> sortByAuthor(ArrayList<Book> bookList);
 
-    //filter books by tag
-    public BookList filterByTag(BookList bookList, String[] tags);
+    public ArrayList<Book> filterByTag(ArrayList<Book> bookList, String[] tags);
 
-    //filter books by genre
-    public BookList filterByGenre(BookList bookList, String[] genres);
+    public ArrayList<Book> filterByGenre(ArrayList<Book> bookList, String[] genres);
 
-    //filter books by author
-    public BookList filterByAuthor(BookList bookList, String[] authors);
+    public ArrayList<Book> filterByAuthor(ArrayList<Book> bookList, String[] authors);
 }
