@@ -1,4 +1,4 @@
-package com.alexandria_library.logic;
+package com.alexandria_library.tests.logic;
 
 import org.junit.*;
 import static org.junit.Assert.*;
