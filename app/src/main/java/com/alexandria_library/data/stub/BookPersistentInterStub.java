@@ -7,10 +7,10 @@ import com.alexandria_library.dso.User;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 
-public class BookPersistentStub implements IBookPersistentIntermediate {
+public class BookPersistentInterStub implements IBookPersistentIntermediate {
 
     ArrayList<Book> bookList = new ArrayList<Book>();
-    public BookPersistentStub(){
+    public BookPersistentInterStub(){
         String tags1[] = new String[]{"LGBT", "Adult"};
         String genres1[] = new String[]{"Romance", "Contemporary", "Historical Fiction"};
         Book b1 = new Book(1 , "The Seven Husbands of Evalyn Hugo", "Taylor Jenkins Reid", "June 13. 2017", tags1, genres1);

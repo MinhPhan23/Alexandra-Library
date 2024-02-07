@@ -7,7 +7,6 @@ import com.alexandria_library.dso.User;
 public class Authentication {
 
     private final IUser userData;
-    private User currentUser;
 
     public Authentication(){
         userData = Service.getUserPersistence();
@@ -38,16 +37,5 @@ public class Authentication {
      */
     public User findExits (String userName, String password){
         return userData.findUser(userName, password);
-    }
-
-    public void addCurrentUser(User user){
-        currentUser = user;
-    }
-
-    public void userLoggedOut(){
-        currentUser = null;
-    }
-    public boolean accountActivized(){
-        return (currentUser != null);
     }
 }
