@@ -7,10 +7,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 
 import com.alexandria_library.R;
 import com.alexandria_library.dso.Book;
@@ -36,6 +39,12 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
 
         bookDisplayCategory();
 
+        //Getting log out button
+        Button logOut = findViewById(R.id.log_out_btn);
+
+        //Getting expandable editText for log out
+        FrameLayout expandable = findViewById(R.id.frameLayout);
+
         //Getting Search Bar input immediately
         EditText editText = findViewById(R.id.searchInput);
         SearchBar.setupSearchBar(editText, this);
@@ -46,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
         find();
 
         //go to Authentication page
-        Button logOut = findViewById(R.id.account);
+        Button account = findViewById(R.id.account);
 
         /*****
          * main page change book category's button
@@ -68,6 +77,24 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
 
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        /*****
+         * toggle Button
+         */
+        account.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TransitionManager.beginDelayedTransition((ViewGroup) expandable.getParent());
+                if(expandable.getVisibility() == View.GONE){
+                    //from gone to visibility
+                    expandable.setVisibility(View.VISIBLE);
+                }
+                else{
+                    //from visibility to gone
+                    expandable.setVisibility(View.GONE);
+                }
             }
         });
 
