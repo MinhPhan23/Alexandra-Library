@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.alexandria_library.R;
+import com.alexandria_library.dso.Book;
+import com.alexandria_library.logic.SideBarService;
 import com.alexandria_library.presentation.Authentication.LoginActivity;
 import com.alexandria_library.presentation.Bean.bookBean;
 
@@ -21,9 +23,12 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements SearchBar.SearchBarListener {
 
-    private List<bookBean> data = new ArrayList<>();
+    private ArrayList<Book> allBookList;
+    private ArrayList<Book> inProgressList;
+    private ArrayList<Book> finishedList;
     private boolean grid = true;
     private BookAdapter bookAdapter;
+    private SideBarService sideBarService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
 
         //Change Book display Category button
         Button categoryBtn = findViewById(R.id.book_display_category_button);
+        sideBarService = LoginActivity.getSideBarService();
+        find();
 
         //go to Authentication page
         Button logOut = findViewById(R.id.account);
@@ -67,28 +74,33 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
 
     }
 
+    public void find(){
+        if(sideBarService != null){
+            allBookList = sideBarService.getUser().getAllBookList();
+            inProgressList = sideBarService.getUser().getInProgressList();
+            finishedList = sideBarService.getUser().getFinishedList();
+        }
+    }
 
     private void bookDisplayCategory(){
         if(grid){
             //Setting Grid of book display
-            getBookData(data);
             RecyclerView recyclerView = findViewById(R.id.gridView);
 
             GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
             recyclerView.setLayoutManager(gridLayoutManager);
 
-            bookAdapter = new BookAdapter(data, this);
+            bookAdapter = new BookAdapter(this);
             recyclerView.setAdapter(bookAdapter);
         }
         else{
             //Setting list of book display
-            getBookData(data);
             RecyclerView recyclerView = findViewById(R.id.gridView);
 
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
             recyclerView.setLayoutManager(linearLayoutManager);
 
-            bookAdapter = new BookAdapter(data, this);
+            bookAdapter = new BookAdapter(this);
             recyclerView.setAdapter(bookAdapter);
         }
 
@@ -105,11 +117,4 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
         Log.e("xiang", "New Input: "+input);
     }
 
-    public void getBookData (List<bookBean> data){
-        for(int i = 0; i<1000; i++){
-            bookBean bean = new bookBean();
-            bean.setName("Book"+i);
-            data.add(bean);
-        }
-    }
 }

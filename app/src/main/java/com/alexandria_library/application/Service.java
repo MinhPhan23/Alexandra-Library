@@ -4,6 +4,7 @@ import com.alexandria_library.data.IBookPersistentIntermediate;
 import com.alexandria_library.data.IUser;
 import com.alexandria_library.data.stub.BookPersistentInterStub;
 import com.alexandria_library.data.stub.UserPersistentStub;
+import com.alexandria_library.dso.User;
 
 public class Service {
     private static IUser userPersistence = null;
@@ -30,5 +31,6 @@ public class Service {
         }
         return bookPersistentIntermediate;
     }
+
 
 }

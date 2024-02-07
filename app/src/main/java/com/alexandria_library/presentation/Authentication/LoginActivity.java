@@ -11,12 +11,15 @@ import android.widget.EditText;
 import com.alexandria_library.R;
 import com.alexandria_library.dso.User;
 import com.alexandria_library.logic.Authentication;
+import com.alexandria_library.logic.SideBarService;
 import com.alexandria_library.presentation.MainActivity;
 
 public class LoginActivity extends AppCompatActivity {
     private Button login, register;
     private EditText userName, password;
     private Authentication authentication;
+    private static SideBarService sideBarService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
             }
             private void checkLogin(User foundUser, String userName, String pw) {
                 if(foundUser != null){
+                    sideBarService = new SideBarService(foundUser);
                     Intent i = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(i);
                 }
@@ -57,11 +61,18 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    public static SideBarService getSideBarService(){
+        return sideBarService;
+    }
+
     private void find(){
         login = findViewById(R.id.login_Create_register_btn);
         register = findViewById(R.id.register_btn);
         userName = findViewById(R.id.login_userName_input);
         password = findViewById(R.id.login_password_input);
+    }
+    public String getTest(){
+        return ":shdfsd";
     }
     private void setErrorMess(EditText layout, String message){
         layout.setError(message);
