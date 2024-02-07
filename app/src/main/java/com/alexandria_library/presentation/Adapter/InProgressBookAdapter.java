@@ -1,4 +1,4 @@
-package com.alexandria_library.presentation;
+package com.alexandria_library.presentation.Adapter;
 
 import android.content.Context;
 import android.view.View;
@@ -12,28 +12,22 @@ import com.alexandria_library.R;
 import com.alexandria_library.dso.Book;
 import com.alexandria_library.logic.SideBarService;
 import com.alexandria_library.presentation.Authentication.LoginActivity;
-import com.alexandria_library.presentation.Bean.bookBean;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> {
+public class InProgressBookAdapter extends RecyclerView.Adapter<InProgressBookAdapter.MyViewHolder> {
     private static SideBarService sideBarService;
-    private ArrayList<Book> allBookList;
     private ArrayList<Book> inProgressList;
-    private ArrayList<Book> finishedList;
     private Context context;
 
-    public BookAdapter(ArrayList<Book> list, Context context){
+    public InProgressBookAdapter(Context context){
         sideBarService = LoginActivity.getSideBarService();
         find();
         this.context = context;
     }
     public void find(){
         if(sideBarService != null){
-            allBookList = sideBarService.getUser().getAllBookList();
-            inProgressList = sideBarService.getUser().getInProgressList();
-            finishedList = sideBarService.getUser().getFinishedList();
+            inProgressList = sideBarService.getUser().getFinishedList();
         }
     }
 
@@ -45,25 +39,25 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BookAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull InProgressBookAdapter.MyViewHolder holder, int position) {
         //get book name
-        holder.title.setText(allBookList.get(position).getName());
+        holder.title.setText(inProgressList.get(position).getName());
         //get book ID
-        String parsedID = ""+allBookList.get(position).getID();
+        String parsedID = ""+inProgressList.get(position).getID();
         holder.id.setText(parsedID);
         //get book author
-        holder.author.setText(allBookList.get(position).getAuthor());
+        holder.author.setText(inProgressList.get(position).getAuthor());
         //get book data
-        holder.date.setText(allBookList.get(position).getDate());
+        holder.date.setText(inProgressList.get(position).getDate());
     }
 
     @Override
     public int getItemCount() {
-        if(allBookList == null){
+        if(inProgressList == null){
             return 0;
         }
         else {
-            return allBookList.size();
+            return inProgressList.size();
         }
     }
 
