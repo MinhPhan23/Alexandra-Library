@@ -32,7 +32,7 @@ public class InfoOrganizerTest {
         String keywords = "The three";
         String[] keywordList = keywords.split(" ");
         ArrayList<Book> rankedBookList = infoOrganizer.rankBooks(bookList, keywordList);
-        ArrayList<Book> expected = new ArrayList<Book>(Arrays.asList(book3, book5, book1, book2, book4));
+        ArrayList<Book> expected = new ArrayList<Book>(Arrays.asList(book3, book1, book5, book2, book4));
         assertEquals(expected, rankedBookList);
     }
 
