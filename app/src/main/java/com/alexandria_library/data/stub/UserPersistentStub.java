@@ -5,10 +5,10 @@ import com.alexandria_library.dso.User;
 
 import java.util.ArrayList;
 
-public class UserStub implements IUser {
+public class UserPersistentStub implements IUser {
 
     private ArrayList<User> userList;
-    public UserStub (){
+    public UserPersistentStub(){
         userList = new ArrayList<>();
 
         userList.add(new User("Xiang Shi", "123456"));
