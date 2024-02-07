@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
         Button categoryBtn = findViewById(R.id.book_display_category_button);
 
         //go to Authentication page
-        Button loginBtn = findViewById(R.id.account);
+        Button logOut = findViewById(R.id.account);
 
         /*****
          * main page change book category's button
@@ -56,9 +56,10 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
         /*****
          * main page account button
          */
-        loginBtn.setOnClickListener(new View.OnClickListener() {
+        logOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
             }

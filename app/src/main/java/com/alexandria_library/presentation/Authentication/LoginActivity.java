@@ -63,7 +63,6 @@ public class LoginActivity extends AppCompatActivity {
         userName = findViewById(R.id.login_userName_input);
         password = findViewById(R.id.login_password_input);
     }
-
     private void setErrorMess(EditText layout, String message){
         layout.setError(message);
     }

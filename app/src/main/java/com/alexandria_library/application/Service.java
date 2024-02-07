@@ -1,9 +1,8 @@
 package com.alexandria_library.application;
 
-import com.alexandria_library.data.IBookPersistent;
 import com.alexandria_library.data.IBookPersistentIntermediate;
 import com.alexandria_library.data.IUser;
-import com.alexandria_library.data.stub.BookPersistentStub;
+import com.alexandria_library.data.stub.BookPersistentInterStub;
 import com.alexandria_library.data.stub.UserPersistentStub;
 
 public class Service {
@@ -27,8 +26,9 @@ public class Service {
      */
     public static synchronized IBookPersistentIntermediate getBookPersistenceIntermediate(){
         if(bookPersistentIntermediate == null){
-            bookPersistentIntermediate = new BookPersistentStub();
+            bookPersistentIntermediate = new BookPersistentInterStub();
         }
         return bookPersistentIntermediate;
     }
+
 }

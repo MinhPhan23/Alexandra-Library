@@ -18,6 +18,10 @@ public class User{
         finishedList = new ArrayList<>();
     }
 
+    /******
+     * those are all getter functions for User.java's instance variables
+     * @return
+     */
     public ArrayList<Book> getAllBookList(){
         return allBookList;
     }
@@ -34,4 +38,31 @@ public class User{
         return password;
     }
 
+    /*****
+     * three functions are adding newbook for each of three lists
+     * @param newBook
+     * @return
+     */
+    public boolean addBookToAll(Book newBook){
+        return allBookList.add(newBook);
+    }
+    public boolean addBookToInProgress(Book newBook){
+        return inProgressList.add(newBook);
+    }
+    public boolean addBookToFinished(Book newBook){
+        return finishedList.add(newBook);
+    }
+
+    /*****
+     * three functions are deleting new book for each of three lists
+     */
+    public boolean deleteBookToAll(Book targetBook){
+        return allBookList.remove(targetBook);
+    }
+    public boolean deleteBookToInProgress(Book targetBook){
+        return inProgressList.remove(targetBook);
+    }
+    public boolean deleteBookToFinished(Book targetBook){
+        return finishedList.remove(targetBook);
+    }
 }
