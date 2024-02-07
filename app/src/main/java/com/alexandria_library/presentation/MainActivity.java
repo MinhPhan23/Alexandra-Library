@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
             GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
             recyclerView.setLayoutManager(gridLayoutManager);
 
-            bookAdapter = new BookAdapter(this);
+            bookAdapter = new BookAdapter(allBookList,this);
             recyclerView.setAdapter(bookAdapter);
         }
         else{
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
             recyclerView.setLayoutManager(linearLayoutManager);
 
-            bookAdapter = new BookAdapter(this);
+            bookAdapter = new BookAdapter(allBookList, this);
             recyclerView.setAdapter(bookAdapter);
         }
 

@@ -24,7 +24,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
     private ArrayList<Book> finishedList;
     private Context context;
 
-    public BookAdapter(Context context){
+    public BookAdapter(ArrayList<Book> list, Context context){
         sideBarService = LoginActivity.getSideBarService();
         find();
         this.context = context;
@@ -49,7 +49,8 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.MyViewHolder> 
         //get book name
         holder.title.setText(allBookList.get(position).getName());
         //get book ID
-        holder.id.setText(allBookList.get(position).getID());
+        String parsedID = ""+allBookList.get(position).getID();
+        holder.id.setText(parsedID);
         //get book author
         holder.author.setText(allBookList.get(position).getAuthor());
         //get book data
