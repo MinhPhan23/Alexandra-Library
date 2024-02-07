@@ -15,11 +15,10 @@ import android.widget.EditText;
 import com.alexandria_library.R;
 import com.alexandria_library.dso.Book;
 import com.alexandria_library.logic.SideBarService;
+import com.alexandria_library.presentation.Adapter.AllBookListAdapter;
 import com.alexandria_library.presentation.Authentication.LoginActivity;
-import com.alexandria_library.presentation.Bean.bookBean;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements SearchBar.SearchBarListener {
 
@@ -27,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
     private ArrayList<Book> inProgressList;
     private ArrayList<Book> finishedList;
     private boolean grid = true;
-    private BookAdapter bookAdapter;
+    private AllBookListAdapter bookAdapter;
     private SideBarService sideBarService;
 
     @Override
@@ -90,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
             GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
             recyclerView.setLayoutManager(gridLayoutManager);
 
-            bookAdapter = new BookAdapter(allBookList,this);
+            bookAdapter = new AllBookListAdapter(allBookList,this);
             recyclerView.setAdapter(bookAdapter);
         }
         else{
@@ -100,11 +99,11 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
             recyclerView.setLayoutManager(linearLayoutManager);
 
-            bookAdapter = new BookAdapter(allBookList, this);
+            bookAdapter = new AllBookListAdapter(allBookList, this);
             recyclerView.setAdapter(bookAdapter);
         }
 
-        bookAdapter.setRecyclerItemClickListener(new BookAdapter.OnRecyclerItemClickListener() {
+        bookAdapter.setRecyclerItemClickListener(new AllBookListAdapter.OnRecyclerItemClickListener() {
             @Override
             public void onRecyclerItemClick(int position) {
                 Log.e("xiang", "onRecyclerItemClick:" +position);
