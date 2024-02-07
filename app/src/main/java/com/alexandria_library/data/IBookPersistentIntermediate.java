@@ -14,11 +14,11 @@ public interface IBookPersistentIntermediate {
 
     public int upload(Book book, User user);
 
-    public int update(Book book);
+    public int update(Book book, User user);
 
-    public void delete(Book book);
+    public void delete(Book book, User user);
 
-    public void delete(ArrayList<Book> list);
+    public void delete(ArrayList<Book> list, User user);
 
     public ArrayList<Book> searchTag(String[] tags);
 
