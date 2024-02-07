@@ -69,6 +69,9 @@ public class UserPersistentStub implements IUser {
         user1.addBookToAll(b7);
         user1.addBookToAll(b8);
 
+        user2.addBookToAll(b1);
+        user2.addBookToAll(b2);
+
         /***
          * add users to user persistent
          */
