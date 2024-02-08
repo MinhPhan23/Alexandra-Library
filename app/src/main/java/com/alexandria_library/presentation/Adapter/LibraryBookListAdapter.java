@@ -15,19 +15,19 @@ import com.alexandria_library.presentation.Authentication.LoginActivity;
 
 import java.util.ArrayList;
 
-public class AllBookListAdapter extends RecyclerView.Adapter<AllBookListAdapter.MyViewHolder> {
+public class LibraryBookListAdapter extends RecyclerView.Adapter<LibraryBookListAdapter.MyViewHolder> {
     private static SideBarService sideBarService;
-    private ArrayList<Book> allBookList;
+    private ArrayList<Book> libraryBookList;
     private Context context;
 
-    public AllBookListAdapter(Context context){
+    public LibraryBookListAdapter(Context context){
         sideBarService = LoginActivity.getSideBarService();
         find();
         this.context = context;
     }
     public void find(){
         if(sideBarService != null){
-            allBookList = sideBarService.getUser().getAllBookList();
+            libraryBookList = sideBarService.getBookList();
         }
     }
 
@@ -39,25 +39,25 @@ public class AllBookListAdapter extends RecyclerView.Adapter<AllBookListAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AllBookListAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull LibraryBookListAdapter.MyViewHolder holder, int position) {
         //get book name
-        holder.title.setText(allBookList.get(position).getName());
+        holder.title.setText(libraryBookList.get(position).getName());
         //get book ID
-        String parsedID = ""+allBookList.get(position).getID();
+        String parsedID = ""+libraryBookList.get(position).getID();
         holder.id.setText(parsedID);
         //get book author
-        holder.author.setText(allBookList.get(position).getAuthor());
+        holder.author.setText(libraryBookList.get(position).getAuthor());
         //get book data
-        holder.date.setText(allBookList.get(position).getDate());
+        holder.date.setText(libraryBookList.get(position).getDate());
     }
 
     @Override
     public int getItemCount() {
-        if(allBookList == null){
+        if(libraryBookList == null){
             return 0;
         }
         else {
-            return allBookList.size();
+            return libraryBookList.size();
         }
     }
 
