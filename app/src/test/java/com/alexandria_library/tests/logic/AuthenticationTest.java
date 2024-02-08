@@ -24,7 +24,7 @@ public class AuthenticationTest {
     @Test
     public void testInsertNonExistNewUser() {
         System.out.println("Test insert new user");
-        assertTrue(authentication.insertNewUser("", "123"));
+        assertTrue(authentication.insertNewUser("Thor", "123"));
     }
 
     @Test
