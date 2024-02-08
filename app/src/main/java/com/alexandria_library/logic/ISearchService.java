@@ -1,6 +1,9 @@
 package com.alexandria_library.logic;
 
+import  com.alexandria_library.dso.*;
+
+import java.util.ArrayList;
+
 public interface ISearchService {
-    public void searchQuery(String keywords);
-    public void filterQuery(String[] filters);
+    ArrayList<Book> searchInput(String keywords) throws SearchServiceException;
 }
