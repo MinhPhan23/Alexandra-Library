@@ -202,8 +202,8 @@ public class BookTest {
 
 
         String original = "Book{id = 1, name = 'Twilight', author = 'Stephenie Meyer', " +
-                "date = 'October 5, 2005', tag(s) = \"Young Adult\", \"Twilight 1\", \"Vampires\", " +
-                "genre(s) = \"Urban Fantasy\", \"Paranormal\", \"Romance\"}";
+                "date = 'October 5, 2005', tag(s) = [Young Adult, Twilight 1, Vampires], " +
+                "genre(s) = [Urban Fantasy, Paranormal, Romance]}";
         String test = book.toString();
 
         assertEquals(original, test);
