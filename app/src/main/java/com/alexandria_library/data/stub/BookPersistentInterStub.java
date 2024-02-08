@@ -10,6 +10,9 @@ import java.util.ArrayList;
 public class BookPersistentInterStub implements IBookPersistentIntermediate {
 
     private final ArrayList<Book> bookList = new ArrayList<Book>();
+
+    private int index = 0;
+
     public BookPersistentInterStub(){
         String[] tags1 = new String[]{"LGBT", "Adult"};
         String[] genres1 = new String[]{"Romance", "Contemporary", "Historical Fiction"};
@@ -121,43 +124,43 @@ public class BookPersistentInterStub implements IBookPersistentIntermediate {
         Book b22 = new Book(22 , "The Girl with the Dragon Tattoo", "Stieg Larsson", "August 1, 2005", tags22, genres22);
         addBook(bookList, b22);
 
-        String tags23[] = new String[]{"LGBT", "Read For School"};
-        String genres23[] = new String[]{"Classics", "Historical Fiction", "Romance", "American"};
+        String[] tags23 = new String[]{"LGBT", "Read For School"};
+        String[] genres23 = new String[]{"Classics", "Historical Fiction", "Romance", "American"};
         Book b23 = new Book(23 , "The Great Gatsby", "F. Scott Fitzgerald", "April 10, 1925", tags23, genres23);
         addBook(bookList, b23);
 
-        String tags24[] = new String[]{"Adult", "Book Club"};
-        String genres24[] = new String[]{"Historical Fiction", "Contemporary", "Romance"};
+        String[] tags24 = new String[]{"Adult", "Book Club"};
+        String[] genres24 = new String[]{"Historical Fiction", "Contemporary", "Romance"};
         Book b24 = new Book(24 , "Water for Elephants", "Sara Gruen", "May 22, 2006", tags24, genres24);
         addBook(bookList, b24);
 
-        String tags25[] = new String[]{"Suspence", "Crime", "Adventure"};
-        String genres25[] = new String[]{"Fiction", "Mystery", "Thriller", "Historical Fiction"};
+        String[] tags25 = new String[]{"Suspence", "Crime", "Adventure"};
+        String[] genres25 = new String[]{"Fiction", "Mystery", "Thriller", "Historical Fiction"};
         Book b25 = new Book(25 , "Angels & Demons", "Dan Brown", "May 1, 2000", tags25, genres25);
         addBook(bookList, b25);
 
-        String tags26[] = new String[]{"Read For School", "Satire"};
-        String genres26[] = new String[]{"Classics", "Dystopia", "Fantasy", "Science Fiction", "Philosophy"};
+        String[] tags26 = new String[]{"Read For School", "Satire"};
+        String[] genres26 = new String[]{"Classics", "Dystopia", "Fantasy", "Science Fiction", "Philosophy"};
         Book b26 = new Book(26 , "Animal Farm", "George Orwell", "August 17, 1945", tags26, genres26);
         addBook(bookList, b26);
 
-        String tags27[] = new String[]{"Japan", "Adult"};
-        String genres27[] = new String[]{"Historical Fiction", "Romance", "Classics", "Adult Fiction"};
+        String[] tags27 = new String[]{"Japan", "Adult"};
+        String[] genres27 = new String[]{"Historical Fiction", "Romance", "Classics", "Adult Fiction"};
         Book b27 = new Book(27 , "Memoirs of a Geisha", "Arthur Golden", "January 1, 1997", tags27, genres27);
         addBook(bookList, b27);
 
-        String tags28[] = new String[]{"Feminism", "Literature", "Adult"};
-        String genres28[] = new String[]{"Science Fiction", "Fantasy", "Dystopia"};
+        String[] tags28 = new String[]{"Feminism", "Literature", "Adult"};
+        String[] genres28 = new String[]{"Science Fiction", "Fantasy", "Dystopia"};
         Book b28 = new Book(28 , "The Handmaid’s Tale", "Margaret Atwood", "January 1, 1985", tags28, genres28);
         addBook(bookList, b28);
 
-        String tags29[] = new String[]{"Adult", "Spirituality"};
-        String genres29[] = new String[]{"Fiction", "Contemporary", "Fantasy", "Classics", "Philosophy", "Adult Fiction"};
+        String[] tags29 = new String[]{"Adult", "Spirituality"};
+        String[] genres29 = new String[]{"Fiction", "Contemporary", "Fantasy", "Classics", "Philosophy", "Adult Fiction"};
         Book b29 = new Book(29 , "The Five People You Meet in Heaven", "Mitch Albom", "September 1, 2003", tags29, genres29);
         addBook(bookList, b29);
 
-        String tags30[] = new String[]{"Young Adult", "Magical Realism"};
-        String genres30[] = new String[]{"Fiction", "Classics", "Philosophy"};
+        String[] tags30 = new String[]{"Young Adult", "Magical Realism"};
+        String[] genres30 = new String[]{"Fiction", "Classics", "Philosophy"};
         Book b30 = new Book(30 , "Life of Pi", "Yann Martel", "September 11, 2001", tags30, genres30);
         addBook(bookList, b30);
     }
@@ -166,7 +169,7 @@ public class BookPersistentInterStub implements IBookPersistentIntermediate {
         int status = 0;
         if(list != null) {
             for (int i = 0; i < list.size(); i++) {
-                status = checkBook(list.get(i));
+                status += checkBook(list.get(i));
             }
         }
         else{
@@ -219,7 +222,7 @@ public class BookPersistentInterStub implements IBookPersistentIntermediate {
                     bookList.remove(i);
                     bookList.add(book);
                     status = 0;
-                    i = Integer.MAX_VALUE;
+                    break;
                 }
             }
         }
@@ -236,24 +239,25 @@ public class BookPersistentInterStub implements IBookPersistentIntermediate {
                 curr = bookList.get(i);
                 if(curr.getID() == book.getID()){
                     bookList.remove(i);
-                    i = Integer.MAX_VALUE;
+                    break;
                 }
             }
         }
     }
 
     public void delete(ArrayList<Book> list, User user){
-        Book curr = null;
+        Book curr;
         if(checkCredentials(user) == 0 && checkList(list) == 0) {
             for (int i = 0; i < list.size(); i++) {
                 for(int j = 0; j < bookList.size(); j++){
                     curr = bookList.get(j);
-                    if(curr.getID() == list.get(j).getID()){
+                    if(curr.getID() == list.get(i).getID()){
                         bookList.remove(j);
-                        j = Integer.MAX_VALUE;
+                        break;
                     }
                 }
             }
+
         }
     }
 
@@ -338,8 +342,8 @@ public class BookPersistentInterStub implements IBookPersistentIntermediate {
             for (int i = 0; i < bookList.size(); i++) {
                 curr = bookList.get(i);
                 if (curr.getID() == book.getID()) {
-                    i = Integer.MAX_VALUE;
                     found = true;
+                    break;
                 }
             }
         }
@@ -357,7 +361,7 @@ public class BookPersistentInterStub implements IBookPersistentIntermediate {
                 curr = list.get(i);
                 if (curr.getName().equals(book.getName()) && curr.getAuthor().equals(book.getAuthor())) {
                     newBook = false;
-                    i = Integer.MAX_VALUE;
+                    break;
                 }
             }
         }
@@ -373,9 +377,11 @@ public class BookPersistentInterStub implements IBookPersistentIntermediate {
                 for (int j = 0; j < array2.length; j++) {
                     if (array1[i].equals(array2[j])) {
                         similar = true;
-                        i = Integer.MAX_VALUE;
-                        j = Integer.MAX_VALUE;
+                        break;
                     }
+                }
+                if(similar){
+                    break;
                 }
             }
         }

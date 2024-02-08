@@ -87,7 +87,7 @@ public class Book {
                 Arrays.equals(this.genres, book.getGenres());
     }
 
-    @NonNull
+
     @Override
     public String toString() {
         return "Book{" +

@@ -16,7 +16,8 @@ import com.alexandria_library.tests.logic.SearchServiceTest;
 @Suite.SuiteClasses({
         SearchServiceTest.class,
         InfoOrganizerTest.class,
-        AuthenticationTest.class
+        AuthenticationTest.class,
+
 })
 
 public class AllUnitTests {
