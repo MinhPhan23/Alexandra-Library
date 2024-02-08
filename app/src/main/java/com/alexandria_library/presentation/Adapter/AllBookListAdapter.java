@@ -20,7 +20,7 @@ public class AllBookListAdapter extends RecyclerView.Adapter<AllBookListAdapter.
     private ArrayList<Book> allBookList;
     private Context context;
 
-    public AllBookListAdapter(ArrayList<Book> list, Context context){
+    public AllBookListAdapter(Context context){
         sideBarService = LoginActivity.getSideBarService();
         find();
         this.context = context;
