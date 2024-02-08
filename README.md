@@ -45,8 +45,10 @@ Find our [Dev Tasks](https://code.cs.umanitoba.ca/comp3350-winter2024/alexandria
 Find our [Architecture](docs/Architecture/Architecture.md)
 
 ## [Programming  Standards](docs/ProgrammingStandards.md)
+Find our [Programming Standards](docs/ProgrammingStandards.md)
 
 ## [Repository Standards](docs/RepoStandards.md)
+Find our [Repository Standards](docs/RepoStandards.md)
 
 ## Iteration 0
 - [Vision Statement](https://code.cs.umanitoba.ca/comp3350-winter2024/alexandrialibrary/-/blob/main/vision_statement.md?ref_type=heads)
