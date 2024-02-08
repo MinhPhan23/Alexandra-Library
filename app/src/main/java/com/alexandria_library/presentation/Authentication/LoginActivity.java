@@ -31,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String name = userName.getText().toString();
                 String pw = password.getText().toString();
-                User foundUser = authentication.findExits(name, pw);
+                User foundUser = authentication.findExist(name, pw);
                 checkLogin(foundUser, name, pw);
             }
             private void checkLogin(User foundUser, String userName, String pw) {

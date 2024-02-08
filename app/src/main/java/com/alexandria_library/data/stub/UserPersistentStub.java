@@ -98,4 +98,15 @@ public class UserPersistentStub implements IUser {
         }
         return found;
     }
+
+    public User findUser(String userName) {
+        User found = null;
+        for(int i = 0; i<userList.size() && found == null; i++){
+            User current = userList.get(i);
+            if(current.getUserName().equals(userName)){
+                found = current;
+            }
+        }
+        return found;
+    }
 }

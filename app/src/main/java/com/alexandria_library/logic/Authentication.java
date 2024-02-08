@@ -23,7 +23,7 @@ public class Authentication {
      */
     public boolean insertNewUser(String userName, String password){
         boolean success = false;
-        if(userData.findUser(userName, password) == null){
+        if(userData.findUser(userName) == null){
             success = userData.addNewUser(userName, password);
         }
         return success;
@@ -35,7 +35,7 @@ public class Authentication {
      * @param password
      * @return : specific user, or null
      */
-    public User findExits (String userName, String password){
+    public User findExist(String userName, String password){
         return userData.findUser(userName, password);
     }
 }
