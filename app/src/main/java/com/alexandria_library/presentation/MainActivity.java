@@ -5,22 +5,32 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 
 import com.alexandria_library.R;
+import com.alexandria_library.dso.Book;
+import com.alexandria_library.logic.SideBarService;
+import com.alexandria_library.presentation.Adapter.AllBookListAdapter;
+import com.alexandria_library.presentation.Authentication.LoginActivity;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements SearchBar.SearchBarListener {
 
-    private List<Bean> data = new ArrayList<>();
+    private ArrayList<Book> allBookList;
+    private ArrayList<Book> inProgressList;
+    private ArrayList<Book> finishedList;
     private boolean grid = true;
-    private BookAdapter bookAdapter;
+    private AllBookListAdapter bookAdapter;
+    private SideBarService sideBarService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,47 +39,98 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
 
         bookDisplayCategory();
 
+        //Getting log out button
+        Button logOut = findViewById(R.id.log_out_btn);
+
+        //Getting expandable editText for log out
+        FrameLayout expandable = findViewById(R.id.frameLayout);
+
         //Getting Search Bar input immediately
         EditText editText = findViewById(R.id.searchInput);
         SearchBar.setupSearchBar(editText, this);
 
         //Change Book display Category button
-        Button button = findViewById(R.id.book_display_category_button);
-        button.setOnClickListener(new View.OnClickListener() {
+        Button categoryBtn = findViewById(R.id.book_display_category_button);
+        sideBarService = LoginActivity.getSideBarService();
+        find();
+
+        //go to Authentication page
+        Button account = findViewById(R.id.account);
+
+        /*****
+         * main page change book category's button
+         */
+        categoryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 grid = !grid;
                 bookDisplayCategory();
             }
         });
+
+        /*****
+         * main page account button
+         */
+        logOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        /*****
+         * toggle Button
+         */
+        account.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TransitionManager.beginDelayedTransition((ViewGroup) expandable.getParent());
+                if(expandable.getVisibility() == View.GONE){
+                    //from gone to visibility
+                    expandable.setVisibility(View.VISIBLE);
+                }
+                else{
+                    //from visibility to gone
+                    expandable.setVisibility(View.GONE);
+                }
+            }
+        });
+
     }
 
+    public void find(){
+        if(sideBarService != null){
+            allBookList = sideBarService.getUser().getAllBookList();
+            inProgressList = sideBarService.getUser().getInProgressList();
+            finishedList = sideBarService.getUser().getFinishedList();
+        }
+    }
 
     private void bookDisplayCategory(){
         if(grid){
             //Setting Grid of book display
-            getBookData(data);
             RecyclerView recyclerView = findViewById(R.id.gridView);
 
             GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
             recyclerView.setLayoutManager(gridLayoutManager);
 
-            bookAdapter = new BookAdapter(data, this);
+            bookAdapter = new AllBookListAdapter(allBookList,this);
             recyclerView.setAdapter(bookAdapter);
         }
         else{
             //Setting list of book display
-            getBookData(data);
             RecyclerView recyclerView = findViewById(R.id.gridView);
 
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
             recyclerView.setLayoutManager(linearLayoutManager);
 
-            bookAdapter = new BookAdapter(data, this);
+            bookAdapter = new AllBookListAdapter(allBookList, this);
             recyclerView.setAdapter(bookAdapter);
         }
 
-        bookAdapter.setRecyclerItemClickListener(new BookAdapter.OnRecyclerItemClickListener() {
+        bookAdapter.setRecyclerItemClickListener(new AllBookListAdapter.OnRecyclerItemClickListener() {
             @Override
             public void onRecyclerItemClick(int position) {
                 Log.e("xiang", "onRecyclerItemClick:" +position);
@@ -82,11 +143,4 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
         Log.e("xiang", "New Input: "+input);
     }
 
-    public void getBookData (List<Bean> data){
-        for(int i = 0; i<1000; i++){
-            Bean bean = new Bean();
-            bean.setName("Book"+i);
-            data.add(bean);
-        }
-    }
 }
