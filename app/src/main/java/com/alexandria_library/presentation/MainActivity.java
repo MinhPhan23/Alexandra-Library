@@ -27,6 +27,7 @@ import com.alexandria_library.presentation.Adapter.FinishedBookAdapter;
 import com.alexandria_library.presentation.Adapter.InProgressBookAdapter;
 import com.alexandria_library.presentation.Adapter.LibraryBookListAdapter;
 import com.alexandria_library.presentation.Adapter.SearchAdapter;
+import com.alexandria_library.presentation.Adapter.SearchListAdapter;
 import com.alexandria_library.presentation.Authentication.LoginActivity;
 
 import java.util.ArrayList;
@@ -39,14 +40,15 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
     private FinishedBookAdapter finishedBookAdapter;
     private InProgressBookAdapter inProgressBookAdapter;
     private LibraryBookListAdapter libraryBookListAdapter;
+    private SearchListAdapter searchListAdapter;
     private SideBarService sideBarService;
     private SearchService searchService;
-    private ListView listView;
     private Button libraryBtn, allListBtn, finishedBtn, inProgressBtn;
     private Button logOut, categoryBtn, account;
     private FrameLayout expandable;
     private EditText editText;
     private boolean library, all, inProgress,finish;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +60,10 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
         bookDistributor();
 
         searchList = new ArrayList<>();
-        SearchBar.setupSearchBar(editText, this);
         searchService = new SearchService();
-        listView.setAdapter(new SearchAdapter(searchList, this));
 
         sideBarService = LoginActivity.getSideBarService();
+
         /*****
          * libraryBtn on click
          */
@@ -165,6 +166,8 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
         try {
             Log.e("xiang",input);
             searchList = searchService.searchInput(input);
+            SearchBar();
+
         } catch (SearchServiceException e) {
             Log.e("xiang", "error searching");
         }
@@ -214,9 +217,23 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
 
         //Getting Search Bar input immediately
         editText = findViewById(R.id.searchInput);
+    }
 
-        //Getting List view
-        listView = findViewById(R.id.search_bar_list);
+    private void SearchBar(){
+        RecyclerView recyclerView = findViewById(R.id.search_bar_list);
+
+        LinearLayoutManager linearManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearManager);
+
+        searchListAdapter = new SearchListAdapter(searchList, this);
+        recyclerView.setAdapter(searchListAdapter);
+
+        searchListAdapter.setRecyclerItemClickListener(new SearchListAdapter.OnRecyclerItemClickListener() {
+            @Override
+            public void onRecyclerItemClick(int position) {
+                Log.e("xiang", "onRecyclerItemClick:" +position);
+            }
+        });
     }
 
     private void LibraryBookCategory(){

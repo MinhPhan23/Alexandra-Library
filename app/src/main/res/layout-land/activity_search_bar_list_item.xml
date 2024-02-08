@@ -9,7 +9,7 @@
 
 
     <TextView
-        android:id="@+id/book_title"
+        android:id="@+id/search_book_title"
         android:layout_width="386dp"
         android:layout_height="41dp"
         android:textAlignment="textStart"
@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/book_id"
+        android:id="@+id/search_book_id"
         android:layout_width="36dp"
         android:layout_height="32dp"
         android:textAlignment="center"

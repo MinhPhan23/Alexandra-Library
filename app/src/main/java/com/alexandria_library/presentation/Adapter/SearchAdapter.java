@@ -53,4 +53,8 @@ public class SearchAdapter extends BaseAdapter {
 
         return convertView;
     }
+
+    public void changeList(ArrayList<Book> newList){
+        this.bookList = newList;
+    }
 }

@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     tools:ignore="MissingDefaultResource">
 
-    <ListView
+
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_bar_list"
         android:layout_width="465dp"
         android:layout_height="250dp"
@@ -15,7 +16,7 @@
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="@+id/guideline5"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.1" />
+        app:layout_constraintVertical_bias="0.1"  />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline4"
