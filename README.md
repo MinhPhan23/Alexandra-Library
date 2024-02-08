@@ -38,6 +38,15 @@ Find our [User Stories](https://code.cs.umanitoba.ca/comp3350-winter2024/alexand
 - [Medium Priority](https://code.cs.umanitoba.ca/comp3350-winter2024/alexandrialibrary/-/issues/?sort=created_date&state=opened&label_name%5B%5D=User%20Story&label_name%5B%5D=Medium%20Priority&first_page_size=20)
 - [Low Priority](https://code.cs.umanitoba.ca/comp3350-winter2024/alexandrialibrary/-/issues/?sort=created_date&state=opened&label_name%5B%5D=User%20Story&label_name%5B%5D=Low%20Priority&first_page_size=20)
 
+## [Dev Tasks](https://code.cs.umanitoba.ca/comp3350-winter2024/alexandrialibrary/-/issues/?sort=created_date&state=opened&label_name%5B%5D=dev%20task&first_page_size=20)
+Find our [Dev Tasks](https://code.cs.umanitoba.ca/comp3350-winter2024/alexandrialibrary/-/issues/?sort=created_date&state=opened&label_name%5B%5D=dev%20task&first_page_size=20)
+
+## [Architecture](docs/Architecture)
+- [Iteration 1](docs/Architecture/I1Architecture.jpg)
+
+## [Programming  Standards](docs/ProgrammingStandards.md)
+
+## [Repository Standards](docs/RepoStandards.md)
 
 ## Iteration 0
 - [Vision Statement](https://code.cs.umanitoba.ca/comp3350-winter2024/alexandrialibrary/-/blob/main/vision_statement.md?ref_type=heads)
