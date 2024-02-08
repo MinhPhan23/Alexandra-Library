@@ -3,7 +3,6 @@ package com.alexandria_library.dso;
 import android.os.Build;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -19,7 +18,6 @@ public class Book {
     private String[] tags;
     private String[] genres;
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public Book (int bookID, String bookName, String bookAuthor, String bookDate,
                  String[] bookTags, String[] bookGenres) {
         id = bookID;
@@ -67,7 +65,6 @@ public class Book {
         author = bookAuthor;
     }
 
-
     public void setDate(String bookDate) {
         date = bookDate;
     }
@@ -96,7 +93,7 @@ public class Book {
                 "id = " + id +
                 ", name = '" + name + '\'' +
                 ", author = '" + author + '\'' +
-                ", date = " + date.toString() +
+                ", date = '" + date + '\'' +
                 ", tag(s) = '" + Arrays.toString(tags) + '\'' +
                 ", genre(s) = '" + Arrays.toString(genres) + '\'' +
                 '}';
