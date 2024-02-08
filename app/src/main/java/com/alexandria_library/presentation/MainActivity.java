@@ -15,28 +15,33 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ListView;
 
 import com.alexandria_library.R;
 import com.alexandria_library.dso.Book;
+import com.alexandria_library.logic.SearchService;
+import com.alexandria_library.logic.SearchServiceException;
 import com.alexandria_library.logic.SideBarService;
 import com.alexandria_library.presentation.Adapter.AllBookListAdapter;
 import com.alexandria_library.presentation.Adapter.FinishedBookAdapter;
 import com.alexandria_library.presentation.Adapter.InProgressBookAdapter;
 import com.alexandria_library.presentation.Adapter.LibraryBookListAdapter;
+import com.alexandria_library.presentation.Adapter.SearchAdapter;
 import com.alexandria_library.presentation.Authentication.LoginActivity;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements SearchBar.SearchBarListener {
 
-    private ArrayList<Book> allBookList, inProgressList, finishedList;
+    private ArrayList<Book> searchList;
     private boolean grid = true;
     private AllBookListAdapter allBookAdapter;
     private FinishedBookAdapter finishedBookAdapter;
     private InProgressBookAdapter inProgressBookAdapter;
     private LibraryBookListAdapter libraryBookListAdapter;
     private SideBarService sideBarService;
-    
+    private SearchService searchService;
+    private ListView listView;
     private Button libraryBtn, allListBtn, finishedBtn, inProgressBtn;
     private Button logOut, categoryBtn, account;
     private FrameLayout expandable;
@@ -50,12 +55,14 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
 
         library = true; all = false; inProgress = false; finish = false;
         findByID();
-        find();
         bookDistributor();
+
+        searchList = new ArrayList<>();
         SearchBar.setupSearchBar(editText, this);
+        searchService = new SearchService();
+        listView.setAdapter(new SearchAdapter(searchList, this));
+
         sideBarService = LoginActivity.getSideBarService();
-
-
         /*****
          * libraryBtn on click
          */
@@ -153,6 +160,16 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
 
     }
 
+    @Override
+    public void onTextChanged(String input){
+        try {
+            Log.e("xiang",input);
+            searchList = searchService.searchInput(input);
+        } catch (SearchServiceException e) {
+            Log.e("xiang", "error searching");
+        }
+    }
+
     /*****
      * book distributor is work for distribute which book list showing
      */
@@ -197,14 +214,9 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
 
         //Getting Search Bar input immediately
         editText = findViewById(R.id.searchInput);
-    }
-    
-    public void find(){
-        if(sideBarService != null){
-            allBookList = sideBarService.getUser().getAllBookList();
-            inProgressList = sideBarService.getUser().getInProgressList();
-            finishedList = sideBarService.getUser().getFinishedList();
-        }
+
+        //Getting List view
+        listView = findViewById(R.id.search_bar_list);
     }
 
     private void LibraryBookCategory(){
@@ -324,10 +336,6 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
                 Log.e("xiang", "onRecyclerItemClick:" +position);
             }
         });
-    }
-    @Override
-    public void onTextChanged(String input){
-        Log.e("xiang", "New Input: "+input);
     }
 
 }
