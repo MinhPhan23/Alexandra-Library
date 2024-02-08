@@ -1,15 +1,16 @@
 package com.alexandria_library.logic;
 
 import com.alexandria_library.dso.Book;
+import com.alexandria_library.data.stub.BookPersistentInterStub;
 
 import java.util.ArrayList;
 
 public class SearchService implements ISearchService{
-    private final BookPersistentIntermediate data;
-    private final InfoOrganizer infoOrganizer;
+    private final BookPersistentInterStub data;
+    //private final InfoOrganizer infoOrganizer;
     public SearchService() {
-        data = new BookPersistentIntermediate();
-        infoOrganizer = new InfoOrganizer();
+        data = new BookPersistentInterStub();
+        //infoOrganizer = new InfoOrganizer();
     }
 
     @Override
@@ -17,18 +18,18 @@ public class SearchService implements ISearchService{
         if (keywords == null || keywords.length() == 0) {
             throw new SearchServiceException("Could not search for empty text");
         }
-        String[] keywordList = keywords.split(" ");
-        ArrayList<Book> result = queryDatabase(keywordList);
-        result = infoOrganizer.sort(result, keywordList);
+        ArrayList<Book> result = queryDatabase(keywords);
+        //result = infoOrganizer.sort(result, keywordList);
         return result;
     }
 
-    private ArrayList<Book> queryDatabase(String[] keywordList) throws SearchServiceException{
+    private ArrayList<Book> queryDatabase(String keywords) throws SearchServiceException{
+        String[] keywordList = keywords.split(" ");
         ArrayList<Book> result = new ArrayList<>();
-        ArrayList<Book> bookByName = data.searchByName(keywordList);
-        ArrayList<Book> bookByAuthor = data.searchByAuthor(keywordList);
-        ArrayList<Book> bookByGenre = data.searchByGenre(keywordList);
-        ArrayList<Book> bookByTag = data.searchByTag(keywordList);
+        ArrayList<Book> bookByName = data.searchName(keywords);
+        ArrayList<Book> bookByAuthor = data.searchAuthor(keywords);
+        ArrayList<Book> bookByGenre = data.searchGenre(keywordList);
+        ArrayList<Book> bookByTag = data.searchTag(keywordList);
         try {
             result.addAll(bookByName);
             result.addAll(bookByAuthor);
