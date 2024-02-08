@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import com.alexandria_library.data.stub.UserPersistentStub;
 import com.alexandria_library.dso.User;
 import com.alexandria_library.logic.Authentication;
 
@@ -17,6 +18,8 @@ public class AuthenticationTest {
     @Before
     public void setUp() {
         System.out.println("Starting Authentication test");
+        authentication = new Authentication(new UserPersistentStub());
+        assertNotNull(authentication);
         authentication = new Authentication();
         assertNotNull(authentication);
     }
