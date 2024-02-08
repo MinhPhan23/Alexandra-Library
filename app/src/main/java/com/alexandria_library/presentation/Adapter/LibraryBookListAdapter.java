@@ -15,19 +15,19 @@ import com.alexandria_library.presentation.Authentication.LoginActivity;
 
 import java.util.ArrayList;
 
-public class InProgressBookAdapter extends RecyclerView.Adapter<InProgressBookAdapter.MyViewHolder> {
+public class LibraryBookListAdapter extends RecyclerView.Adapter<LibraryBookListAdapter.MyViewHolder> {
     private static SideBarService sideBarService;
-    private ArrayList<Book> inProgressList;
+    private ArrayList<Book> libraryBookList;
     private Context context;
 
-    public InProgressBookAdapter(Context context){
+    public LibraryBookListAdapter(Context context){
         sideBarService = LoginActivity.getSideBarService();
         find();
         this.context = context;
     }
     public void find(){
         if(sideBarService != null){
-            inProgressList = sideBarService.getUser().getFinishedList();
+            libraryBookList = sideBarService.getBookList();
         }
     }
 
@@ -39,26 +39,26 @@ public class InProgressBookAdapter extends RecyclerView.Adapter<InProgressBookAd
     }
 
     @Override
-    public void onBindViewHolder(@NonNull InProgressBookAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull LibraryBookListAdapter.MyViewHolder holder, int position) {
         //get book name
-        holder.title.setText(inProgressList.get(position).getName());
+        holder.title.setText(libraryBookList.get(position).getName());
         //get book ID
-        String parsedID = ""+inProgressList.get(position).getID();
+        String parsedID = ""+libraryBookList.get(position).getID();
         holder.id.setText(parsedID);
         //get book author
-        holder.author.setText(inProgressList.get(position).getAuthor());
+        holder.author.setText(libraryBookList.get(position).getAuthor());
         //get book data
-        String data = inProgressList.get(position).getDate()+"";
+        String data = libraryBookList.get(position).getDate()+"";
         holder.date.setText(data);
     }
 
     @Override
     public int getItemCount() {
-        if(inProgressList == null){
+        if(libraryBookList == null){
             return 0;
         }
         else {
-            return inProgressList.size();
+            return libraryBookList.size();
         }
     }
 

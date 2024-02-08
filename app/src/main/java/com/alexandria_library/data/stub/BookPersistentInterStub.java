@@ -349,4 +349,8 @@ public class BookPersistentInterStub implements IBookPersistentIntermediate {
         }
         return similar;
     }
+
+    public ArrayList<Book> getBookList(){
+        return bookList;
+    }
 }

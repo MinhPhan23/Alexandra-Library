@@ -47,8 +47,9 @@ public class FinishedBookAdapter extends RecyclerView.Adapter<FinishedBookAdapte
         holder.id.setText(parsedID);
         //get book author
         holder.author.setText(finishedList.get(position).getAuthor());
-        //get book data
-        holder.date.setText(finishedList.get(position).getDate());
+        //get data
+        String data = finishedList.get(position).getDate()+"";
+        holder.date.setText(data);
     }
 
     @Override
