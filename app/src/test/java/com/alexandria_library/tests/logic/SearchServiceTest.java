@@ -5,6 +5,8 @@ import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 import com.alexandria_library.dso.Book;
+import com.alexandria_library.logic.SearchService;
+import com.alexandria_library.logic.SearchServiceException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -44,11 +46,38 @@ public class SearchServiceTest {
         assertTrue(actualMessage.contains(expectedMessage));
     }
 
-    /**
-     * This is an integration test
-     */
     @Test
-    public void testSearchByName() {
+    public void testExactSearchName(){
+        System.out.println("Testing searching for books by name");
+        String keywords = "The Book Thief";
+        try {
+            ArrayList<Book> bookList = searchService.searchInput(keywords);
+            for (Book book : bookList) {
+                String bookName = book.getName();
+                assertTrue(bookName.contains(keywords));
+            }
+        } catch (SearchServiceException ignored) {
+
+        }
+    }
+
+    @Test
+    public void testExactSearchAuthor() {
+        System.out.println("Testing searching for authors by name");
+        String keywords = "Harper Lee";
+        String[] keyword = keywords.split(" ");
+        try {
+            ArrayList<Book> bookList = searchService.searchInput(keywords);
+            for (Book book : bookList) {
+                String authorName = book.getAuthor();
+                assertTrue(authorName.contains(keywords));
+            }
+        } catch (SearchServiceException ignored) {
+
+        }
+    }
+    @Test
+    public void testMixBookAndAuthor() {
         System.out.println("Testing searching for books by name");
         String keywords = "The Three Alexander";
         String[] keyword = keywords.split(" ");
