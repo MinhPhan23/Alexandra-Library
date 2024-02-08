@@ -32,7 +32,7 @@ public class InfoOrganizerTest {
         String keywords = "The three";
         String[] keywordList = keywords.split(" ");
         ArrayList<Book> rankedBookList = infoOrganizer.rankBooks(bookList, keywordList);
-        ArrayList<Book> expected = new ArrayList<Book>(Arrays.asList(book3, book5, book1, book2, book4));
+        ArrayList<Book> expected = new ArrayList<Book>(Arrays.asList(book3, book1, book2, book5, book4));
         assertEquals(expected, rankedBookList);
     }
 
@@ -41,7 +41,7 @@ public class InfoOrganizerTest {
         String keywords = "The three Alexander";
         String[] keywordList = keywords.split(" ");
         ArrayList<Book> rankedBookList = infoOrganizer.rankBooks(bookList, keywordList);
-        ArrayList<Book> expected = new ArrayList<Book>(Arrays.asList(book1, book3, book5, book2, book4));
+        ArrayList<Book> expected = new ArrayList<Book>(Arrays.asList(book1, book3, book2, book5, book4));
         assertEquals(expected, rankedBookList);
     }
 
@@ -50,7 +50,7 @@ public class InfoOrganizerTest {
         String keywords = "The three science fiction novel";
         String[] keywordList = keywords.split(" ");
         ArrayList<Book> rankedBookList = infoOrganizer.rankBooks(bookList, keywordList);
-        ArrayList<Book> expected = new ArrayList<Book>(Arrays.asList(book3, book5, book2, book1, book4));
+        ArrayList<Book> expected = new ArrayList<Book>(Arrays.asList(book3, book2, book5, book1, book4));
         assertEquals(expected, rankedBookList);
     }
 }
