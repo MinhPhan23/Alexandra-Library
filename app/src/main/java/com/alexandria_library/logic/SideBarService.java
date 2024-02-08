@@ -21,6 +21,7 @@ public class SideBarService {
     public SideBarService(User user){
         libraryBookData = Service.getBookPersistenceIntermediate();
         targetUser = user;
+        //command
     }
 
     public SideBarService(User user, IBookPersistentIntermediate libraryBookData){
