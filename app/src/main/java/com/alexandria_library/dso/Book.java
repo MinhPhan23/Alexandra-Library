@@ -94,9 +94,9 @@ public class Book {
                 "id = " + id +
                 ", name = '" + name + '\'' +
                 ", author = '" + author + '\'' +
-                ", date = " + date.toString() +
-                ", tag(s) = '" + Arrays.toString(tags) + '\'' +
-                ", genre(s) = '" + Arrays.toString(genres) + '\'' +
+                ", date = '" + date + '\'' +
+                ", tag(s) = " + Arrays.toString(tags) +
+                ", genre(s) = " + Arrays.toString(genres) +
                 '}';
     }
 
