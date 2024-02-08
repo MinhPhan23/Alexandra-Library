@@ -48,7 +48,8 @@ public class InProgressBookAdapter extends RecyclerView.Adapter<InProgressBookAd
         //get book author
         holder.author.setText(inProgressList.get(position).getAuthor());
         //get book data
-        holder.date.setText(inProgressList.get(position).getDate());
+        String data = inProgressList.get(position).getDate()+"";
+        holder.date.setText(data);
     }
 
     @Override

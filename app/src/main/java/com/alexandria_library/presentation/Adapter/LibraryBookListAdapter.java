@@ -48,7 +48,8 @@ public class LibraryBookListAdapter extends RecyclerView.Adapter<LibraryBookList
         //get book author
         holder.author.setText(libraryBookList.get(position).getAuthor());
         //get book data
-        holder.date.setText(libraryBookList.get(position).getDate());
+        String data = libraryBookList.get(position).getDate()+"";
+        holder.date.setText(data);
     }
 
     @Override
