@@ -43,4 +43,5 @@ dependencies {
 
     //add RecyclerView dependency package
     implementation("androidx.recyclerview:recyclerview:1.3.2")
+    implementation("org.mockito:mockito-core:4.+")
 }
