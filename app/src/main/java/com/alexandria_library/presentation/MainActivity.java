@@ -60,9 +60,9 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
         searchList = new ArrayList<>();
         SearchBar.setupSearchBar(editText, this);
         searchService = new SearchService();
-        sideBarService = LoginActivity.getSideBarService();
         listView.setAdapter(new SearchAdapter(searchList, this));
 
+        sideBarService = LoginActivity.getSideBarService();
         /*****
          * libraryBtn on click
          */
@@ -158,6 +158,16 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
             }
         });
 
+    }
+
+    @Override
+    public void onTextChanged(String input){
+        try {
+            Log.e("xiang",input);
+            searchList = searchService.searchInput(input);
+        } catch (SearchServiceException e) {
+            Log.e("xiang", "error searching");
+        }
     }
 
     /*****
@@ -327,12 +337,5 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
             }
         });
     }
-    @Override
-    public void onTextChanged(String input){
-        try {
-            searchList = searchService.searchInput(input);
-        } catch (SearchServiceException e) {
-            throw new RuntimeException(e);
-        }
-    }
+
 }

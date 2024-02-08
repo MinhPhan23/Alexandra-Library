@@ -2,6 +2,7 @@ package com.alexandria_library.presentation;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -25,6 +26,7 @@ public class SearchBar {
 
             @Override
             public void afterTextChanged(Editable s) {
+                Log.e("xiang", s.toString());
                 listener.onTextChanged(s.toString());
             }
         });
