@@ -370,7 +370,7 @@ public class BookPersistentInterStub implements IBookPersistentIntermediate {
         boolean similar = false;
         if(array1 != null && array2 != null) {
             for (int i = 0; i < array1.length; i++) {
-                for (int j = 0; j < array2.length; i++) {
+                for (int j = 0; j < array2.length; j++) {
                     if (array1[i].equals(array2[j])) {
                         similar = true;
                         i = Integer.MAX_VALUE;
