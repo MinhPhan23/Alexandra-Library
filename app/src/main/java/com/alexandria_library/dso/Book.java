@@ -15,7 +15,7 @@ public class Book {
     private int id;
     private String name;
     private String author;
-    private LocalDate date;
+    private String date;
     private String[] tags;
     private String[] genres;
 
@@ -25,7 +25,7 @@ public class Book {
         id = bookID;
         name = bookName;
         author = bookAuthor;
-        date = LocalDate.parse(bookDate);
+        date = bookDate;
         tags = bookTags;
         genres = bookGenres;
     }
@@ -42,7 +42,7 @@ public class Book {
         return author;
     }
 
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
@@ -67,12 +67,8 @@ public class Book {
         author = bookAuthor;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public void setDate(String bookDate) {
-        date = LocalDate.parse(bookDate);
-    }
 
-    public void setDate(LocalDate bookDate) {
+    public void setDate(String bookDate) {
         date = bookDate;
     }
 
