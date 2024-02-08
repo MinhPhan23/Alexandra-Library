@@ -25,6 +25,7 @@ public class Service {
      * get book persistence intermediate's mock data ready when service is begin
      * @return
      */
+
     public static synchronized IBookPersistentIntermediate getBookPersistenceIntermediate(){
         if(bookPersistentIntermediate == null){
             bookPersistentIntermediate = new BookPersistentInterStub();
