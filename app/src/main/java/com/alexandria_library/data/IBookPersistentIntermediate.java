@@ -34,5 +34,6 @@ public interface IBookPersistentIntermediate {
 
     public Book search(Book book);
 
+    public ArrayList<Book> getBookList();
 
 }

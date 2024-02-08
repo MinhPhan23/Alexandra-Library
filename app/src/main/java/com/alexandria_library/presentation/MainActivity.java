@@ -22,6 +22,7 @@ import com.alexandria_library.logic.SideBarService;
 import com.alexandria_library.presentation.Adapter.AllBookListAdapter;
 import com.alexandria_library.presentation.Adapter.FinishedBookAdapter;
 import com.alexandria_library.presentation.Adapter.InProgressBookAdapter;
+import com.alexandria_library.presentation.Adapter.LibraryBookListAdapter;
 import com.alexandria_library.presentation.Authentication.LoginActivity;
 
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
     private AllBookListAdapter allBookAdapter;
     private FinishedBookAdapter finishedBookAdapter;
     private InProgressBookAdapter inProgressBookAdapter;
+    private LibraryBookListAdapter libraryBookListAdapter;
     private SideBarService sideBarService;
     
     private Button libraryBtn, allListBtn, finishedBtn, inProgressBtn;
@@ -52,6 +54,18 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
         bookDistributor();
         SearchBar.setupSearchBar(editText, this);
         sideBarService = LoginActivity.getSideBarService();
+
+
+        /*****
+         * libraryBtn on click
+         */
+        libraryBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                library = true; all = false; inProgress = false; finish = false;
+                bookDistributor();
+            }
+        });
 
         /*****
          * allListBtn on click
@@ -152,8 +166,8 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
         else if(finish){
             FinishedBookCategory();
         }
-        else{
-            //leave for library
+        else if(library){
+            LibraryBookCategory();
         }
     }
 
@@ -193,6 +207,35 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
         }
     }
 
+    private void LibraryBookCategory(){
+        if(grid){
+            //Setting Grid of book display
+            RecyclerView recyclerView = findViewById(R.id.gridView);
+
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
+            recyclerView.setLayoutManager(gridLayoutManager);
+
+            libraryBookListAdapter = new LibraryBookListAdapter(this);
+            recyclerView.setAdapter(libraryBookListAdapter);
+        }
+        else{
+            //Setting list of book display
+            RecyclerView recyclerView = findViewById(R.id.gridView);
+
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+            recyclerView.setLayoutManager(linearLayoutManager);
+
+            libraryBookListAdapter = new LibraryBookListAdapter(this);
+            recyclerView.setAdapter(libraryBookListAdapter);
+        }
+
+        libraryBookListAdapter.setRecyclerItemClickListener(new LibraryBookListAdapter.OnRecyclerItemClickListener() {
+            @Override
+            public void onRecyclerItemClick(int position) {
+                Log.e("xiang", "onRecyclerItemClick:" +position);
+            }
+        });
+    }
     private void AllBookCategory(){
         if(grid){
             //Setting Grid of book display
