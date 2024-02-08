@@ -2,7 +2,6 @@ package com.alexandria_library.dso;
 
 import android.os.Build;
 
-import androidx.annotation.NonNull;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -93,7 +92,7 @@ public class Book {
                 "id = " + id +
                 ", name = '" + name + '\'' +
                 ", author = '" + author + '\'' +
-                ", date = '" + date + '\'' +
+                ", date = " + date.toString() +
                 ", tag(s) = '" + Arrays.toString(tags) + '\'' +
                 ", genre(s) = '" + Arrays.toString(genres) + '\'' +
                 '}';
