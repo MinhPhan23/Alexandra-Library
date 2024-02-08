@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import com.alexandria_library.dso.Book;
 
@@ -158,5 +159,56 @@ public class BookTest {
         assertFalse(Arrays.equals(originalGenres, updatedGenres));
         assertArrayEquals(updatedGenres, book.getGenres());
     }
+
+    @Test
+    public void testBookEquals() {
+        System.out.println("\nTest comparing book");
+
+        Book book1 = new Book(1 ,
+                "Twilight",
+                "Stephenie Meyer",
+                "October 5, 2005",
+                new String[]{"Young Adult", "Twilight 1", "Vampires"},
+                new String[]{"Urban Fantasy", "Paranormal", "Romance"});
+
+        Book book2 = new Book(1 ,
+                "Twilight",
+                "Stephenie Meyer",
+                "October 5, 2005",
+                new String[]{"Young Adult", "Twilight 1", "Vampires"},
+                new String[]{"Urban Fantasy", "Paranormal", "Romance"});
+
+        Book book3 = new Book(2 ,
+                "To Kill a Mockingbird",
+                "Harper Lee",
+                "July 11, 1960",
+                new String[]{"High School", "Literature"},
+                new String[]{"Classics", "Fiction", "Historical Fiction", "Young Adult"});
+
+        assertTrue(book1.equals(book2));
+        assertFalse(book1.equals(book3));
+    }
+
+    @Test
+    public void testBookToString() {
+        System.out.println("\nTest printing book object");
+
+        Book book = new Book(1 ,
+                "Twilight",
+                "Stephenie Meyer",
+                "October 5, 2005",
+                new String[]{"Young Adult", "Twilight 1", "Vampires"},
+                new String[]{"Urban Fantasy", "Paranormal", "Romance"});
+
+
+        String original = "Book{id = 1, name = 'Twilight', author = 'Stephenie Meyer', " +
+                "date = 'October 5, 2005', tag(s) = \"Young Adult\", \"Twilight 1\", \"Vampires\", " +
+                "genre(s) = \"Urban Fantasy\", \"Paranormal\", \"Romance\"}";
+        String test = book.toString();
+
+        assertEquals(original, test);
+    }
+
+
 
 }
