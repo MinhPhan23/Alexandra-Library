@@ -42,7 +42,7 @@ Find our [User Stories](https://code.cs.umanitoba.ca/comp3350-winter2024/alexand
 Find our [Dev Tasks](https://code.cs.umanitoba.ca/comp3350-winter2024/alexandrialibrary/-/issues/?sort=created_date&state=opened&label_name%5B%5D=dev%20task&first_page_size=20)
 
 ## [Architecture](docs/Architecture/Architecture.md)
-- Find our [Architecture](docs/Architecture/Architecture.md)
+Find our [Architecture](docs/Architecture/Architecture.md)
 
 ## [Programming  Standards](docs/ProgrammingStandards.md)
 
