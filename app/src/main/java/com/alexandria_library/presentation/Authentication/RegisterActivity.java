@@ -9,7 +9,6 @@ import android.widget.EditText;
 import android.widget.Button;
 
 import com.alexandria_library.R;
-import com.alexandria_library.dso.User;
 import com.alexandria_library.logic.Authentication;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -38,7 +37,7 @@ public class RegisterActivity extends AppCompatActivity {
                 else if (!pw.equals(doublePW)){
                     return;
                 }
-                else if(authentication.findExits(name, pw) != null){
+                else if(authentication.findExist(name, pw) != null){
                     return;
                 }
                 else{

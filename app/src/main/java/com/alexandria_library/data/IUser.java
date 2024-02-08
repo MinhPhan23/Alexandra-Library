@@ -19,4 +19,6 @@ public interface IUser {
      * @return true for found, otherwise for false;
      */
     public User findUser(String userName, String password);
+
+    public User findUser(String userName);
 }
