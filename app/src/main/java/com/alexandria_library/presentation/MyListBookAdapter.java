@@ -9,13 +9,14 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.alexandria_library.R;
+import com.alexandria_library.presentation.Bean.bookBean;
 
 import java.util.List;
 
 public class MyListBookAdapter extends BaseAdapter {
-    private List<Bean> data;
+    private List<bookBean> data;
     private Context context;
-    public MyListBookAdapter(List<Bean> data, Context context) {
+    public MyListBookAdapter(List<bookBean> data, Context context) {
         this.data = data;
         this.context = context;
     }
@@ -40,7 +41,7 @@ public class MyListBookAdapter extends BaseAdapter {
         ViewHolder viewHolder;
         if(convertView == null){
             viewHolder = new ViewHolder();
-            convertView = LayoutInflater.from(context).inflate(R.layout.book_list_item, parent, false);
+            convertView = LayoutInflater.from(context).inflate(R.layout.activity_book_list_item, parent, false);
             viewHolder.textView = convertView.findViewById(R.id.book_title);
             convertView.setTag(viewHolder);
 

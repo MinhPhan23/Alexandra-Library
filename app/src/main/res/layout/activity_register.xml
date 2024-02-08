@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:ignore="MissingDefaultResource">
+    tools:context=".presentation.Authentication.RegisterActivity">
 
     <EditText
         android:id="@+id/register_password_input"
@@ -53,7 +53,7 @@
         app:layout_constraintTop_toBottomOf="@+id/register_username_title"
         app:layout_constraintVertical_bias="0.096" />
 
-    <com.google.android.material.textfield.TextInputEditText
+    <EditText
         android:id="@+id/register_username_input"
         android:layout_width="498dp"
         android:layout_height="69dp"
@@ -76,7 +76,7 @@
         app:layout_constraintVertical_bias="0.727" />
 
     <TextView
-        android:id="@+id/login_title"
+        android:id="@+id/register_title"
         android:layout_width="245dp"
         android:layout_height="88dp"
         android:layout_marginStart="16dp"
@@ -98,4 +98,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.467" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

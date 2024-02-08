@@ -4,4 +4,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="side_bar_background">#363635</color>
     <color name="drak_purple">#321450</color>
+    <color name="red">#FF0000</color>
+    <color name="pink">#DD9999</color>
+    <color name="gray">#808080</color>
 </resources>
