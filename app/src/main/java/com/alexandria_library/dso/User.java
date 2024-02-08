@@ -52,17 +52,4 @@ public class User{
     public boolean addBookToFinished(Book newBook){
         return finishedList.add(newBook);
     }
-
-    /*****
-     * three functions are deleting new book for each of three lists
-     */
-    public boolean deleteBookToAll(Book targetBook){
-        return allBookList.remove(targetBook);
-    }
-    public boolean deleteBookToInProgress(Book targetBook){
-        return inProgressList.remove(targetBook);
-    }
-    public boolean deleteBookToFinished(Book targetBook){
-        return finishedList.remove(targetBook);
-    }
 }
