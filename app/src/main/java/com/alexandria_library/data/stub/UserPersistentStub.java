@@ -68,9 +68,42 @@ public class UserPersistentStub implements IUser {
         user1.addBookToAll(b6);
         user1.addBookToAll(b7);
         user1.addBookToAll(b8);
+        user1.addBookToFinished(b1);
+        user1.addBookToFinished(b2);
+        user1.addBookToFinished(b3);
+        user1.addBookToFinished(b4);
+        user1.addBookToFinished(b5);
+        user1.addBookToFinished(b6);
+        user1.addBookToFinished(b7);
+        user1.addBookToInProgress(b8);
+        user1.addBookToInProgress(b7);
+        user1.addBookToInProgress(b6);
+        user1.addBookToInProgress(b5);
+        user1.addBookToInProgress(b4);
+        user1.addBookToInProgress(b3);
+        user1.addBookToInProgress(b2);
+
+
 
         user2.addBookToAll(b1);
         user2.addBookToAll(b2);
+        user2.addBookToAll(b3);
+        user2.addBookToAll(b4);
+        user2.addBookToAll(b5);
+        user2.addBookToAll(b6);
+        user2.addBookToAll(b7);
+        user2.addBookToAll(b8);
+        user2.addBookToFinished(b3);
+        user2.addBookToFinished(b4);
+        user2.addBookToFinished(b5);
+        user2.addBookToFinished(b6);
+        user2.addBookToFinished(b7);
+        user2.addBookToInProgress(b6);
+        user2.addBookToInProgress(b5);
+        user2.addBookToInProgress(b4);
+        user2.addBookToInProgress(b3);
+        user2.addBookToInProgress(b2);
+
 
         /***
          * add users to user persistent
