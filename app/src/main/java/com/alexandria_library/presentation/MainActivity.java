@@ -7,15 +7,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.transition.TransitionManager;
 import android.util.Log;
-import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ListView;
 
 import com.alexandria_library.R;
 import com.alexandria_library.dso.Book;
@@ -26,13 +26,12 @@ import com.alexandria_library.presentation.Adapter.AllBookListAdapter;
 import com.alexandria_library.presentation.Adapter.FinishedBookAdapter;
 import com.alexandria_library.presentation.Adapter.InProgressBookAdapter;
 import com.alexandria_library.presentation.Adapter.LibraryBookListAdapter;
-import com.alexandria_library.presentation.Adapter.SearchAdapter;
 import com.alexandria_library.presentation.Adapter.SearchListAdapter;
 import com.alexandria_library.presentation.Authentication.LoginActivity;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements SearchBar.SearchBarListener {
+public class MainActivity extends AppCompatActivity{
 
     private ArrayList<Book> searchList;
     private boolean grid = true;
@@ -64,16 +63,6 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
 
         sideBarService = LoginActivity.getSideBarService();
 
-        /*****
-         * libraryBtn on click
-         */
-        libraryBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                library = true; all = false; inProgress = false; finish = false;
-                bookDistributor();
-            }
-        });
 
         /*****
          * allListBtn on click
@@ -159,19 +148,35 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
             }
         });
 
+        /****
+         * Get search input
+         */
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //don't need to implement
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //don't need to implement
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                try{
+                    //get search bar input when search bar changed
+                    String input = s.toString();
+                    Log.e("xiang", "input String: "+ input);
+                    searchList = searchService.searchInput(input);
+                    SearchBar();
+                }catch(SearchServiceException searchException){
+                    searchException.printStackTrace();
+                }
+            }
+        });
     }
 
-    @Override
-    public void onTextChanged(String input){
-        try {
-            Log.e("xiang",input);
-            searchList = searchService.searchInput(input);
-            SearchBar();
-
-        } catch (SearchServiceException e) {
-            Log.e("xiang", "error searching");
-        }
-    }
 
     /*****
      * book distributor is work for distribute which book list showing
@@ -220,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
     }
 
     private void SearchBar(){
-        RecyclerView recyclerView = findViewById(R.id.search_bar_list);
+        RecyclerView recyclerView = findViewById(R.id.search_bar_recycle);
 
         LinearLayoutManager linearManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearManager);
