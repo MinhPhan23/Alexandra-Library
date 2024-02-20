@@ -11,6 +11,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.transition.TransitionManager;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -45,7 +46,9 @@ public class MainActivity extends AppCompatActivity{
     private Button libraryBtn, allListBtn, finishedBtn, inProgressBtn;
     private Button logOut, categoryBtn, account;
     private FrameLayout expandable;
-    private EditText editText;
+    private EditText searchInput;
+    private RecyclerView recyclerView;
+    private View rootView;
     private boolean library, all, inProgress,finish;
 
 
@@ -62,6 +65,22 @@ public class MainActivity extends AppCompatActivity{
         searchService = new SearchService();
 
         sideBarService = LoginActivity.getSideBarService();
+
+        /*****
+         * get root view
+         */
+        rootView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                    //check where is the touch position
+                    if(!isViewInBounds(recyclerView, (int)event.getRawX(), (int)event.getRawY())){
+                        toggleRecyclerViewGone();
+                    }
+                }
+                return false;
+            }
+        });
 
 
         /*****
@@ -151,7 +170,7 @@ public class MainActivity extends AppCompatActivity{
         /****
          * Get search input
          */
-        editText.addTextChangedListener(new TextWatcher() {
+        searchInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 //don't need to implement
@@ -169,9 +188,31 @@ public class MainActivity extends AppCompatActivity{
                     String input = s.toString();
                     Log.e("xiang", "input String: "+ input);
                     searchList = searchService.searchInput(input);
-                    SearchBar();
+                    if(searchList.size() == 0){
+                       toggleRecyclerViewGone();
+                    }
+                    else{
+                        toggleRecyclerViewVisible();
+                        SearchBar();
+                    }
+
                 }catch(SearchServiceException searchException){
                     searchException.printStackTrace();
+                }
+            }
+        });
+
+        /*****
+         * get search bar on focus
+         */
+        searchInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus && searchList.size() > 0){
+                    toggleRecyclerViewVisible();
+                }
+                else{
+                    toggleRecyclerViewGone();
                 }
             }
         });
@@ -197,6 +238,8 @@ public class MainActivity extends AppCompatActivity{
     }
 
     private void findByID(){
+        //Getting root view ID
+        rootView = findViewById(android.R.id.content);
         //Getting library button
         libraryBtn = findViewById(R.id.library_btn);
 
@@ -221,11 +264,13 @@ public class MainActivity extends AppCompatActivity{
         expandable = findViewById(R.id.frameLayout);
 
         //Getting Search Bar input immediately
-        editText = findViewById(R.id.searchInput);
+        searchInput = findViewById(R.id.searchInput);
+
+        //Getting Search bar Output recycler view
+        recyclerView = findViewById(R.id.search_bar_recycle);
     }
 
     private void SearchBar(){
-        RecyclerView recyclerView = findViewById(R.id.search_bar_recycle);
 
         LinearLayoutManager linearManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearManager);
@@ -240,6 +285,25 @@ public class MainActivity extends AppCompatActivity{
             }
         });
     }
+
+    public void toggleRecyclerViewGone(){
+        recyclerView.setVisibility(View.GONE);
+    }
+    public void toggleRecyclerViewVisible(){
+        recyclerView.setVisibility(View.VISIBLE);
+    }
+
+    public boolean isViewInBounds(View view, int x, int y){
+        int [] location = new int [2];
+        view.getLocationOnScreen(location);
+        int viewX = location[0];
+        int viewY = location[1];
+        int viewWidth = view.getWidth();
+        int viewHeight = view.getHeight();
+
+        return(x>viewX && x < (viewWidth+viewX)) && (y>viewY && y<(viewHeight+viewY));
+    }
+
 
     private void LibraryBookCategory(){
         if(grid){
