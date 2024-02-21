@@ -256,6 +256,7 @@ public class MainActivity extends AppCompatActivity{
     private void findByID(){
         //Getting root view ID
         rootView = findViewById(android.R.id.content);
+
         //Getting library button
         libraryBtn = findViewById(R.id.library_btn);
 
