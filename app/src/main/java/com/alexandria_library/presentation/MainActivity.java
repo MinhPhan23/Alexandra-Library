@@ -45,12 +45,12 @@ public class MainActivity extends AppCompatActivity{
     private SearchService searchService;
     private Button libraryBtn, allListBtn, finishedBtn, inProgressBtn;
     private Button logOut, categoryBtn, account;
+    private Button searchIcon;
     private FrameLayout expandable;
     private EditText searchInput;
     private RecyclerView recyclerView;
     private View rootView;
     private boolean library, all, inProgress,finish;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,13 +75,12 @@ public class MainActivity extends AppCompatActivity{
                 if(event.getAction() == MotionEvent.ACTION_DOWN){
                     //check where is the touch position
                     if(!isViewInBounds(recyclerView, (int)event.getRawX(), (int)event.getRawY())){
-                        toggleRecyclerViewGone();
+                        toggleSearchResultGone();
                     }
                 }
                 return false;
             }
         });
-
 
         /*****
          * allListBtn on click
@@ -91,6 +90,7 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View v) {
                 library = false; all = true; inProgress = false; finish = false;
                 bookDistributor();
+                toggleSearchResultGone();
             }
         });
 
@@ -102,6 +102,7 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View v) {
                 library = false; all = false; inProgress = true; finish = false;
                 bookDistributor();
+                toggleSearchResultGone();
             }
         });
 
@@ -113,6 +114,7 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View v) {
                 library = false; all = false; inProgress = false; finish = true;
                 bookDistributor();
+                toggleSearchResultGone();
             }
         });
 
@@ -124,6 +126,7 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View v) {
                 library = true; all = false; inProgress = false; finish = false;
                 bookDistributor();
+                toggleSearchResultGone();
             }
         });
 
@@ -135,6 +138,7 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View v) {
                 grid = !grid;
                 bookDistributor();
+                toggleSearchResultGone();
             }
         });
 
@@ -146,6 +150,7 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
+                toggleSearchResultGone();
             }
         });
 
@@ -164,6 +169,7 @@ public class MainActivity extends AppCompatActivity{
                     //from visibility to gone
                     expandable.setVisibility(View.GONE);
                 }
+                toggleSearchResultGone();
             }
         });
 
@@ -189,10 +195,10 @@ public class MainActivity extends AppCompatActivity{
                     Log.e("xiang", "input String: "+ input);
                     searchList = searchService.searchInput(input);
                     if(searchList.size() == 0){
-                       toggleRecyclerViewGone();
+                        toggleSearchResultGone();
                     }
                     else{
-                        toggleRecyclerViewVisible();
+                        toggleSearchResultVisible();
                         SearchBar();
                     }
 
@@ -209,11 +215,21 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(hasFocus && searchList.size() > 0){
-                    toggleRecyclerViewVisible();
+                    toggleSearchResultVisible();
                 }
                 else{
-                    toggleRecyclerViewGone();
+                    toggleSearchResultGone();
                 }
+            }
+        });
+
+        /*****
+         * search icon display result
+         */
+        searchIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleSearchResultVisible();
             }
         });
     }
@@ -268,10 +284,12 @@ public class MainActivity extends AppCompatActivity{
 
         //Getting Search bar Output recycler view
         recyclerView = findViewById(R.id.search_bar_recycle);
+
+        //Getting search result
+        searchIcon = findViewById(R.id.search_icon);
     }
 
     private void SearchBar(){
-
         LinearLayoutManager linearManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearManager);
 
@@ -286,10 +304,10 @@ public class MainActivity extends AppCompatActivity{
         });
     }
 
-    public void toggleRecyclerViewGone(){
+    public void toggleSearchResultGone(){
         recyclerView.setVisibility(View.GONE);
     }
-    public void toggleRecyclerViewVisible(){
+    public void toggleSearchResultVisible(){
         recyclerView.setVisibility(View.VISIBLE);
     }
 
@@ -331,6 +349,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onRecyclerItemClick(int position) {
                 Log.e("xiang", "onRecyclerItemClick:" +position);
+                toggleSearchResultGone();
             }
         });
     }
@@ -360,6 +379,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onRecyclerItemClick(int position) {
                 Log.e("xiang", "onRecyclerItemClick:" +position);
+                toggleSearchResultGone();
             }
         });
     }
@@ -390,6 +410,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onRecyclerItemClick(int position) {
                 Log.e("xiang", "onRecyclerItemClick:" +position);
+                toggleSearchResultGone();
             }
         });
     }
@@ -420,6 +441,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onRecyclerItemClick(int position) {
                 Log.e("xiang", "onRecyclerItemClick:" +position);
+                toggleSearchResultGone();
             }
         });
     }
