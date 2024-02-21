@@ -7,15 +7,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.transition.TransitionManager;
 import android.util.Log;
-import android.util.Pair;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ListView;
 
 import com.alexandria_library.R;
 import com.alexandria_library.dso.Book;
@@ -26,12 +27,12 @@ import com.alexandria_library.presentation.Adapter.AllBookListAdapter;
 import com.alexandria_library.presentation.Adapter.FinishedBookAdapter;
 import com.alexandria_library.presentation.Adapter.InProgressBookAdapter;
 import com.alexandria_library.presentation.Adapter.LibraryBookListAdapter;
-import com.alexandria_library.presentation.Adapter.SearchAdapter;
+import com.alexandria_library.presentation.Adapter.SearchListAdapter;
 import com.alexandria_library.presentation.Authentication.LoginActivity;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements SearchBar.SearchBarListener {
+public class MainActivity extends AppCompatActivity{
 
     private ArrayList<Book> searchList;
     private boolean grid = true;
@@ -39,13 +40,16 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
     private FinishedBookAdapter finishedBookAdapter;
     private InProgressBookAdapter inProgressBookAdapter;
     private LibraryBookListAdapter libraryBookListAdapter;
+    private SearchListAdapter searchListAdapter;
     private SideBarService sideBarService;
     private SearchService searchService;
-    private ListView listView;
     private Button libraryBtn, allListBtn, finishedBtn, inProgressBtn;
     private Button logOut, categoryBtn, account;
+    private Button searchIcon;
     private FrameLayout expandable;
-    private EditText editText;
+    private EditText searchInput;
+    private RecyclerView recyclerView;
+    private View rootView;
     private boolean library, all, inProgress,finish;
 
     @Override
@@ -58,19 +62,23 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
         bookDistributor();
 
         searchList = new ArrayList<>();
-        SearchBar.setupSearchBar(editText, this);
         searchService = new SearchService();
-        listView.setAdapter(new SearchAdapter(searchList, this));
 
         sideBarService = LoginActivity.getSideBarService();
+
         /*****
-         * libraryBtn on click
+         * get root view
          */
-        libraryBtn.setOnClickListener(new View.OnClickListener() {
+        rootView.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                library = true; all = false; inProgress = false; finish = false;
-                bookDistributor();
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                    //check where is the touch position
+                    if(!isViewInBounds(recyclerView, (int)event.getRawX(), (int)event.getRawY())){
+                        toggleSearchResultGone();
+                    }
+                }
+                return false;
             }
         });
 
@@ -82,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
             public void onClick(View v) {
                 library = false; all = true; inProgress = false; finish = false;
                 bookDistributor();
+                toggleSearchResultGone();
             }
         });
 
@@ -93,6 +102,7 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
             public void onClick(View v) {
                 library = false; all = false; inProgress = true; finish = false;
                 bookDistributor();
+                toggleSearchResultGone();
             }
         });
 
@@ -104,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
             public void onClick(View v) {
                 library = false; all = false; inProgress = false; finish = true;
                 bookDistributor();
+                toggleSearchResultGone();
             }
         });
 
@@ -115,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
             public void onClick(View v) {
                 library = true; all = false; inProgress = false; finish = false;
                 bookDistributor();
+                toggleSearchResultGone();
             }
         });
 
@@ -126,6 +138,7 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
             public void onClick(View v) {
                 grid = !grid;
                 bookDistributor();
+                toggleSearchResultGone();
             }
         });
 
@@ -137,6 +150,7 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
+                toggleSearchResultGone();
             }
         });
 
@@ -155,20 +169,71 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
                     //from visibility to gone
                     expandable.setVisibility(View.GONE);
                 }
+                toggleSearchResultGone();
             }
         });
 
+        /****
+         * Get search input
+         */
+        searchInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //don't need to implement
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //don't need to implement
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                try{
+                    //get search bar input when search bar changed
+                    String input = s.toString();
+                    Log.e("xiang", "input String: "+ input);
+                    searchList = searchService.searchInput(input);
+                    if(searchList.size() == 0){
+                        toggleSearchResultGone();
+                    }
+                    else{
+                        toggleSearchResultVisible();
+                        SearchBar();
+                    }
+
+                }catch(SearchServiceException searchException){
+                    searchException.printStackTrace();
+                }
+            }
+        });
+
+        /*****
+         * get search bar on focus
+         */
+        searchInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus && searchList.size() > 0){
+                    toggleSearchResultVisible();
+                }
+                else{
+                    toggleSearchResultGone();
+                }
+            }
+        });
+
+        /*****
+         * search icon display result
+         */
+        searchIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleSearchResultVisible();
+            }
+        });
     }
 
-    @Override
-    public void onTextChanged(String input){
-        try {
-            Log.e("xiang",input);
-            searchList = searchService.searchInput(input);
-        } catch (SearchServiceException e) {
-            Log.e("xiang", "error searching");
-        }
-    }
 
     /*****
      * book distributor is work for distribute which book list showing
@@ -189,6 +254,9 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
     }
 
     private void findByID(){
+        //Getting root view ID
+        rootView = findViewById(android.R.id.content);
+
         //Getting library button
         libraryBtn = findViewById(R.id.library_btn);
 
@@ -213,11 +281,48 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
         expandable = findViewById(R.id.frameLayout);
 
         //Getting Search Bar input immediately
-        editText = findViewById(R.id.searchInput);
+        searchInput = findViewById(R.id.searchInput);
 
-        //Getting List view
-        listView = findViewById(R.id.search_bar_list);
+        //Getting Search bar Output recycler view
+        recyclerView = findViewById(R.id.search_bar_recycle);
+
+        //Getting search result
+        searchIcon = findViewById(R.id.search_icon);
     }
+
+    private void SearchBar(){
+        LinearLayoutManager linearManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearManager);
+
+        searchListAdapter = new SearchListAdapter(searchList, this);
+        recyclerView.setAdapter(searchListAdapter);
+
+        searchListAdapter.setRecyclerItemClickListener(new SearchListAdapter.OnRecyclerItemClickListener() {
+            @Override
+            public void onRecyclerItemClick(int position) {
+                Log.e("xiang", "onRecyclerItemClick:" +position);
+            }
+        });
+    }
+
+    public void toggleSearchResultGone(){
+        recyclerView.setVisibility(View.GONE);
+    }
+    public void toggleSearchResultVisible(){
+        recyclerView.setVisibility(View.VISIBLE);
+    }
+
+    public boolean isViewInBounds(View view, int x, int y){
+        int [] location = new int [2];
+        view.getLocationOnScreen(location);
+        int viewX = location[0];
+        int viewY = location[1];
+        int viewWidth = view.getWidth();
+        int viewHeight = view.getHeight();
+
+        return(x>viewX && x < (viewWidth+viewX)) && (y>viewY && y<(viewHeight+viewY));
+    }
+
 
     private void LibraryBookCategory(){
         if(grid){
@@ -245,6 +350,7 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
             @Override
             public void onRecyclerItemClick(int position) {
                 Log.e("xiang", "onRecyclerItemClick:" +position);
+                toggleSearchResultGone();
             }
         });
     }
@@ -274,6 +380,7 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
             @Override
             public void onRecyclerItemClick(int position) {
                 Log.e("xiang", "onRecyclerItemClick:" +position);
+                toggleSearchResultGone();
             }
         });
     }
@@ -304,6 +411,7 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
             @Override
             public void onRecyclerItemClick(int position) {
                 Log.e("xiang", "onRecyclerItemClick:" +position);
+                toggleSearchResultGone();
             }
         });
     }
@@ -334,6 +442,7 @@ public class MainActivity extends AppCompatActivity implements SearchBar.SearchB
             @Override
             public void onRecyclerItemClick(int position) {
                 Log.e("xiang", "onRecyclerItemClick:" +position);
+                toggleSearchResultGone();
             }
         });
     }
