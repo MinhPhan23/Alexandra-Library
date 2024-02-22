@@ -10,11 +10,6 @@ import androidx.annotation.Nullable;
  * MySqliteOpenHelper is a tool class
  */
 public class MySqliteOpenHelper extends SQLiteOpenHelper {
-    final private String booksTable = "create table Books " + "(" +
-            "    _id         integer not null " +
-            "        primary key autoincrement, " +
-            "    book_name   text    not null, " +
-            "    book_author text    not null " + ");";
 
     private static SQLiteOpenHelper mySqlite;
     public static synchronized SQLiteOpenHelper getMySqlite(Context context){
