@@ -1,15 +1,17 @@
 package com.alexandria_library.logic;
 
+import com.alexandria_library.data.IBookPersistentIntermediate;
 import com.alexandria_library.dso.Book;
 import com.alexandria_library.data.stub.BookPersistentInterStub;
 
 import java.util.ArrayList;
 
 public class SearchService implements ISearchService{
-    private final BookPersistentInterStub data;
-    private final InfoOrganizer infoOrganizer;
-    public SearchService() {
-        data = new BookPersistentInterStub();
+    private final IBookPersistentIntermediate data;
+    private final IInfoOrganizer infoOrganizer;
+
+    public SearchService(IBookPersistentIntermediate data) {
+        this. data = data;
         infoOrganizer = new InfoOrganizer();
     }
 

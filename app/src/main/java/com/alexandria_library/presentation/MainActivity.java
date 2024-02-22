@@ -19,7 +19,10 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 
 import com.alexandria_library.R;
+import com.alexandria_library.data.IBookPersistentIntermediate;
+import com.alexandria_library.data.stub.BookPersistentInterStub;
 import com.alexandria_library.dso.Book;
+import com.alexandria_library.logic.ISearchService;
 import com.alexandria_library.logic.SearchService;
 import com.alexandria_library.logic.SearchServiceException;
 import com.alexandria_library.logic.SideBarService;
@@ -42,7 +45,8 @@ public class MainActivity extends AppCompatActivity{
     private LibraryBookListAdapter libraryBookListAdapter;
     private SearchListAdapter searchListAdapter;
     private SideBarService sideBarService;
-    private SearchService searchService;
+    private ISearchService searchService;
+    private IBookPersistentIntermediate data;
     private Button libraryBtn, allListBtn, finishedBtn, inProgressBtn;
     private Button logOut, categoryBtn, account;
     private Button searchIcon;
@@ -61,8 +65,10 @@ public class MainActivity extends AppCompatActivity{
         findByID();
         bookDistributor();
 
+        data = new BookPersistentInterStub();
+
         searchList = new ArrayList<>();
-        searchService = new SearchService();
+        searchService = new SearchService(data);
 
         sideBarService = LoginActivity.getSideBarService();
 
@@ -294,7 +300,7 @@ public class MainActivity extends AppCompatActivity{
         LinearLayoutManager linearManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearManager);
 
-        searchListAdapter = new SearchListAdapter(searchList, this);
+        searchListAdapter = new SearchListAdapter(searchList, this, searchService);
         recyclerView.setAdapter(searchListAdapter);
 
         searchListAdapter.setRecyclerItemClickListener(new SearchListAdapter.OnRecyclerItemClickListener() {
