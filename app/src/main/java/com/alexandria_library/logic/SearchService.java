@@ -7,10 +7,10 @@ import java.util.ArrayList;
 
 public class SearchService implements ISearchService{
     private final BookPersistentInterStub data;
-    private final InfoOrganizer infoOrganizer;
+    private final BookListRanker bookListRanker;
     public SearchService() {
         data = new BookPersistentInterStub();
-        infoOrganizer = new InfoOrganizer();
+        bookListRanker = new BookListRanker();
     }
 
     @Override
@@ -19,7 +19,7 @@ public class SearchService implements ISearchService{
             throw new SearchServiceException("Could not search for empty text");
         }
         ArrayList<Book> result = queryDatabase(keywords);
-        result = infoOrganizer.rankBooks(result, keywords.split(" "));
+        result = bookListRanker.rankBooks(result, keywords.split(" "));
         return result;
     }
 
