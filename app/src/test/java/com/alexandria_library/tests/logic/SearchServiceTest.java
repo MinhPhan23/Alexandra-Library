@@ -4,7 +4,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
+import com.alexandria_library.data.IBookPersistentIntermediate;
+import com.alexandria_library.data.stub.BookPersistentInterStub;
 import com.alexandria_library.dso.Book;
+import com.alexandria_library.logic.ISearchService;
 import com.alexandria_library.logic.SearchService;
 import com.alexandria_library.logic.SearchServiceException;
 
@@ -14,11 +17,13 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 public class SearchServiceTest {
-    private SearchService searchService;
+    private ISearchService searchService;
+    private IBookPersistentIntermediate data;
     @Before
     public void setUp() {
         System.out.println("Starting tests for SearchService");
-        searchService = new SearchService();
+        data = new BookPersistentInterStub();
+        searchService = new SearchService(data);
         assertNotNull(searchService);
     }
 
@@ -65,7 +70,6 @@ public class SearchServiceTest {
     public void testExactSearchAuthor() {
         System.out.println("Testing searching for authors by name");
         String keywords = "Harper Lee";
-        String[] keyword = keywords.split(" ");
         try {
             ArrayList<Book> bookList = searchService.searchInput(keywords);
             for (Book book : bookList) {
