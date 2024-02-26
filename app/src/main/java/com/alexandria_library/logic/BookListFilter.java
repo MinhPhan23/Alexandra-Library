@@ -4,21 +4,28 @@ import com.alexandria_library.dso.Book;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 
 public class BookListFilter implements IBookListFilter {
     @Override
     public ArrayList<Book> sortByTitle(ArrayList<Book> bookList) {
-        return null;
+        ArrayList<Book> sortedList = new ArrayList<>(bookList);
+        sortedList.sort(Comparator.comparing(Book::getName));
+        return sortedList;
     }
 
     @Override
     public ArrayList<Book> sortByDate(ArrayList<Book> bookList) {
-        return null;
+        ArrayList<Book> sortedList = new ArrayList<>(bookList);
+        sortedList.sort(Comparator.comparing(Book::getDate));
+        return sortedList;
     }
 
     @Override
     public ArrayList<Book> sortByAuthor(ArrayList<Book> bookList) {
-        return null;
+        ArrayList<Book> sortedList = new ArrayList<>(bookList);
+        sortedList.sort(Comparator.comparing(Book::getAuthor));
+        return sortedList;
     }
 
     @Override
