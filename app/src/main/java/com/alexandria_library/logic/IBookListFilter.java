@@ -4,7 +4,7 @@ import com.alexandria_library.dso.Book;
 
 import java.util.ArrayList;
 
-public interface IInfoOrganizer {
+public interface IBookListFilter {
     public ArrayList<Book> sortByTitle(ArrayList<Book> bookList);
 
     public ArrayList<Book> sortByDate(ArrayList<Book> bookList);
@@ -16,6 +16,4 @@ public interface IInfoOrganizer {
     public ArrayList<Book> filterByGenre(ArrayList<Book> bookList, String[] genres);
 
     public ArrayList<Book> filterByAuthor(ArrayList<Book> bookList, String[] authors);
-
-    public ArrayList<Book> rankBooks(ArrayList<Book> bookList, String[] tags);
 }
