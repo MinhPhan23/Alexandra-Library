@@ -1,11 +1,8 @@
 package com.alexandria_library.logic;
-import android.view.WindowInsets;
 
 import com.alexandria_library.application.Service;
 import com.alexandria_library.data.IBookPersistentIntermediate;
-import com.alexandria_library.data.IUser;
 import com.alexandria_library.dso.Book;
-import com.alexandria_library.data.IBook;
 import com.alexandria_library.dso.User;
 
 import java.util.ArrayList;

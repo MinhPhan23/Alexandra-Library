@@ -1,55 +1,28 @@
 package com.alexandria_library.dso;
 
-import java.util.ArrayList;
-
-public class User{
-    private ArrayList<Book> allBookList;
-    private ArrayList<Book> inProgressList;
-    private ArrayList<Book> finishedList;
+public class User implements IUser{
     private String userName;
     private String password;
-
 
     public User(String userName, String password){
         this.userName = userName;
         this.password = password;
-        allBookList = new ArrayList<>();
-        inProgressList = new ArrayList<>();
-        finishedList = new ArrayList<>();
     }
 
-    /******
-     * those are all getter functions for User.java's instance variables
-     * @return
+    /**
+     * Getter method for the username
+     * @return username
      */
-    public ArrayList<Book> getAllBookList(){
-        return allBookList;
-    }
-    public ArrayList<Book> getInProgressList(){
-        return inProgressList;
-    }
-    public ArrayList<Book> getFinishedList(){
-        return finishedList;
-    }
     public String getUserName(){
         return userName;
     }
+
+    /**
+     * Getter method for the user's password
+     * @return password
+     */
     public String getPassword(){
         return password;
     }
 
-    /*****
-     * three functions are adding newbook for each of three lists
-     * @param newBook
-     * @return
-     */
-    public boolean addBookToAll(Book newBook){
-        return allBookList.add(newBook);
-    }
-    public boolean addBookToInProgress(Book newBook){
-        return inProgressList.add(newBook);
-    }
-    public boolean addBookToFinished(Book newBook){
-        return finishedList.add(newBook);
-    }
 }

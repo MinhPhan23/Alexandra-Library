@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.alexandria_library.R;
 import com.alexandria_library.dso.Book;
+import com.alexandria_library.dso.Reader;
 import com.alexandria_library.logic.SideBarService;
 import com.alexandria_library.presentation.Authentication.LoginActivity;
 
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 
 public class AllBookListAdapter extends RecyclerView.Adapter<AllBookListAdapter.MyViewHolder> {
     private static SideBarService sideBarService;
-    private ArrayList<Book> allBookList;
+    private ArrayList<Book> allBooksList;
     private Context context;
 
     public AllBookListAdapter(Context context){
@@ -27,7 +28,10 @@ public class AllBookListAdapter extends RecyclerView.Adapter<AllBookListAdapter.
     }
     public void find(){
         if(sideBarService != null){
-            allBookList = sideBarService.getUser().getAllBookList();
+            if (sideBarService.getUser() instanceof Reader) {
+                Reader reader = (Reader) sideBarService.getUser();
+                allBooksList = reader.getAllBooksList();
+            }
         }
     }
 
@@ -41,24 +45,24 @@ public class AllBookListAdapter extends RecyclerView.Adapter<AllBookListAdapter.
     @Override
     public void onBindViewHolder(@NonNull AllBookListAdapter.MyViewHolder holder, int position) {
         //get book name
-        holder.title.setText(allBookList.get(position).getName());
+        holder.title.setText(allBooksList.get(position).getName());
         //get book ID
-        String parsedID = ""+allBookList.get(position).getID();
+        String parsedID = ""+allBooksList.get(position).getID();
         holder.id.setText(parsedID);
         //get book author
-        holder.author.setText(allBookList.get(position).getAuthor());
+        holder.author.setText(allBooksList.get(position).getAuthor());
         //get book data
-        String data = allBookList.get(position).getDate()+"";
+        String data = allBooksList.get(position).getDate()+"";
         holder.date.setText(data);
     }
 
     @Override
     public int getItemCount() {
-        if(allBookList == null){
+        if(allBooksList == null){
             return 0;
         }
         else {
-            return allBookList.size();
+            return allBooksList.size();
         }
     }
 

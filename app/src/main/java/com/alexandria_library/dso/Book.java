@@ -1,15 +1,11 @@
 package com.alexandria_library.dso;
 
-import android.os.Build;
-
-
 import androidx.annotation.NonNull;
 
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class Book {
+public class Book implements IBook{
 
     // instance variables
     private int id;
@@ -87,7 +83,7 @@ public class Book {
                 Arrays.equals(this.genres, book.getGenres());
     }
 
-
+    @NonNull
     @Override
     public String toString() {
         return "Book{" +
