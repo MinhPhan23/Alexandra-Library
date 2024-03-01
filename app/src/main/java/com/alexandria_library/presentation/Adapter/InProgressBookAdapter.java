@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.alexandria_library.R;
 import com.alexandria_library.dso.Book;
+import com.alexandria_library.dso.Reader;
 import com.alexandria_library.logic.SideBarService;
 import com.alexandria_library.presentation.Authentication.LoginActivity;
 
@@ -27,7 +28,10 @@ public class InProgressBookAdapter extends RecyclerView.Adapter<InProgressBookAd
     }
     public void find(){
         if(sideBarService != null){
-            inProgressList = sideBarService.getUser().getFinishedList();
+            if (sideBarService.getUser() instanceof Reader) {
+                Reader reader = (Reader) sideBarService.getUser();
+                inProgressList = reader.getFinishedList();
+            }
         }
     }
 

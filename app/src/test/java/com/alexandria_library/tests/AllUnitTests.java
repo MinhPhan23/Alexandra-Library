@@ -8,7 +8,7 @@ import org.junit.runners.Suite;
 import com.alexandria_library.tests.data.BookPersistentIntermediateTest;
 import com.alexandria_library.tests.data.UserPersistentStubTest;
 import com.alexandria_library.tests.dso.BookTest;
-import com.alexandria_library.tests.dso.UserTest;
+import com.alexandria_library.tests.dso.ReaderTest;
 import com.alexandria_library.tests.logic.AuthenticationTest;
 import com.alexandria_library.tests.logic.BookListRankerTest;
 import com.alexandria_library.tests.logic.SearchServiceTest;
@@ -21,7 +21,7 @@ import com.alexandria_library.tests.logic.SideBarServiceTest;
         AuthenticationTest.class,
         SideBarServiceTest.class,
         BookTest.class,
-        UserTest.class,
+        ReaderTest.class,
         BookPersistentIntermediateTest.class,
         UserPersistentStubTest.class
 })
