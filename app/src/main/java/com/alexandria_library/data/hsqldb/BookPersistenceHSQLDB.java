@@ -251,13 +251,42 @@ public class BookPersistenceHSQLDB implements IBookPersistenceSQLDB {
         return 0;
     }
 
-    @Override
-    public void delete(Book book, User user) {
 
+    @Override
+    public void deleteLibraryBook(ArrayList<Book> list, User user) throws SQLException{
+        for(int i = 0; i<list.size(); i++){
+            deleteFromLibrary(list.get(i), user);
+        }
+    }
+    @Override
+    public void deleteUserAllListBook(ArrayList<Book> list, User user) throws SQLException{
+        for (int i = 0; i<list.size(); i++){
+            deleteFromAllList(list.get(i), user);
+        }
+    }
+    @Override
+    public void deleteInProgressListBook(ArrayList<Book> list, User user) throws SQLException{
+        for (int i = 0; i<list.size(); i++){
+            deleteFromInProgressList(list.get(i), user);
+        }
+    }
+    @Override
+    public void deleteFinishedListBook(ArrayList<Book> list, User user) throws SQLException{
+        for (int i = 0; i<list.size(); i++){
+            deleteFromFinishedList(list.get(i), user);
+        }
     }
 
-    @Override
-    public void delete(ArrayList<Book> list, User user) {
+    private void deleteFromLibrary(Book book, User user) throws SQLException {
+
+    }
+    private void deleteFromAllList(Book book, User user) throws SQLException {
+
+    }
+    private void deleteFromInProgressList(Book book, User user) throws SQLException {
+
+    }
+    private void deleteFromFinishedList(Book book, User user) throws SQLException {
 
     }
 
