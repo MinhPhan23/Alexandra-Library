@@ -1,6 +1,7 @@
 package com.alexandria_library.logic;
 
 import com.alexandria_library.dso.Book;
+import com.alexandria_library.dso.Booklist;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,29 +10,29 @@ import java.util.List;
 
 public class BookListFilter implements IBookListFilter {
     @Override
-    public ArrayList<Book> sortByTitle(ArrayList<Book> bookList) {
-        ArrayList<Book> sortedList = new ArrayList<>(bookList);
+    public Booklist sortByTitle(Booklist bookList) {
+        Booklist sortedList = new Booklist(bookList);
         sortedList.sort(Comparator.comparing(Book::getName));
         return sortedList;
     }
 
     @Override
-    public ArrayList<Book> sortByDate(ArrayList<Book> bookList) {
-        ArrayList<Book> sortedList = new ArrayList<>(bookList);
+    public Booklist sortByDate(Booklist bookList) {
+        Booklist sortedList = new Booklist(bookList);
         sortedList.sort(Comparator.comparing(Book::getDate));
         return sortedList;
     }
 
     @Override
-    public ArrayList<Book> sortByAuthor(ArrayList<Book> bookList) {
-        ArrayList<Book> sortedList = new ArrayList<>(bookList);
+    public Booklist sortByAuthor(Booklist bookList) {
+        Booklist sortedList = new Booklist(bookList);
         sortedList.sort(Comparator.comparing(Book::getAuthor));
         return sortedList;
     }
 
     @Override
-    public ArrayList<Book> filterByTag(ArrayList<Book> bookList, String[] tags) {
-        ArrayList<Book> filteredBooks = new ArrayList<>();
+    public Booklist filterByTag(Booklist bookList, String[] tags) {
+        Booklist filteredBooks = new Booklist();
 
         for (Book book : bookList) {
             if (containsAll(book.getTags(), tags)) {
@@ -43,8 +44,8 @@ public class BookListFilter implements IBookListFilter {
     }
 
     @Override
-    public ArrayList<Book> filterByGenre(ArrayList<Book> bookList, String[] genres) {
-        ArrayList<Book> filteredBooks = new ArrayList<>();
+    public Booklist filterByGenre(Booklist bookList, String[] genres) {
+        Booklist filteredBooks = new Booklist();
 
         for (Book book : bookList) {
             if (containsAll(book.getGenres(), genres)) {
@@ -56,8 +57,8 @@ public class BookListFilter implements IBookListFilter {
     }
 
     @Override
-    public ArrayList<Book> filterByAuthor(ArrayList<Book> bookList, String[] authors) {
-        ArrayList<Book> filteredBooks = new ArrayList<>();
+    public Booklist filterByAuthor(Booklist bookList, String[] authors) {
+        Booklist filteredBooks = new Booklist();
 
         for (Book book : bookList) {
             if (Arrays.asList(authors).contains(book.getAuthor())) {

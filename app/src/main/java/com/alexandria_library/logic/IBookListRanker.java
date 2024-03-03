@@ -1,9 +1,9 @@
 package com.alexandria_library.logic;
 
-import com.alexandria_library.dso.Book;
+import com.alexandria_library.dso.Booklist;
 
 import java.util.ArrayList;
 
 public interface IBookListRanker {
-    public ArrayList<Book> rankBooks(ArrayList<Book> bookList, String[] tags);
+    public Booklist rankBooks(Booklist bookList, String[] tags);
 }

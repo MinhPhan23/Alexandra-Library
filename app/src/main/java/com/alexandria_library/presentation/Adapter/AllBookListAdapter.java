@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.alexandria_library.R;
 import com.alexandria_library.dso.Book;
+import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.dso.Reader;
 import com.alexandria_library.logic.SideBarService;
 import com.alexandria_library.presentation.Authentication.LoginActivity;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 
 public class AllBookListAdapter extends RecyclerView.Adapter<AllBookListAdapter.MyViewHolder> {
     private static SideBarService sideBarService;
-    private ArrayList<Book> allBooksList;
+    private Booklist allBooksList;
     private Context context;
 
     public AllBookListAdapter(Context context){

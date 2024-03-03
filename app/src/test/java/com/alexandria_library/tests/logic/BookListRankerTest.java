@@ -1,6 +1,7 @@
 package com.alexandria_library.tests.logic;
 
 import com.alexandria_library.dso.Book;
+import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.logic.BookListRanker;
 
 import org.junit.Test;
@@ -20,7 +21,7 @@ public class BookListRankerTest {
     Book book4 = new Book(3, "The three little pigs tales", "Emma Hall", "2 September 2014", new ArrayList<>(), new ArrayList<>(Arrays.asList("Folktale")));
     Book book5 = new Book(4, "The Three Mercenaries", "Minh Phan", "6 February 2023", new ArrayList<>(), new ArrayList<>(Arrays.asList("Novel", "Science Fiction", "Fantasy")));
 
-    ArrayList<Book> bookList = new ArrayList<Book>(Arrays.asList(book1, book2, book3, book4, book5));
+    Booklist bookList = new Booklist(Arrays.asList(book1, book2, book3, book4, book5));
 
     BookListRanker bookListRanker;
     @Before
@@ -33,8 +34,8 @@ public class BookListRankerTest {
     public void testRankBook1() {
         String keywords = "The three";
         String[] keywordList = keywords.split(" ");
-        ArrayList<Book> rankedBookList = bookListRanker.rankBooks(bookList, keywordList);
-        ArrayList<Book> expected = new ArrayList<Book>(Arrays.asList(book3, book1, book2, book5, book4));
+        Booklist rankedBookList = bookListRanker.rankBooks(bookList, keywordList);
+        Booklist expected = new Booklist(Arrays.asList(book3, book1, book2, book5, book4));
         assertEquals(expected, rankedBookList);
     }
 
@@ -42,8 +43,8 @@ public class BookListRankerTest {
     public void testRankBook2() {
         String keywords = "The three Alexander";
         String[] keywordList = keywords.split(" ");
-        ArrayList<Book> rankedBookList = bookListRanker.rankBooks(bookList, keywordList);
-        ArrayList<Book> expected = new ArrayList<Book>(Arrays.asList(book1, book3, book2, book5, book4));
+        Booklist rankedBookList = bookListRanker.rankBooks(bookList, keywordList);
+        Booklist expected = new Booklist(Arrays.asList(book1, book3, book2, book5, book4));
         assertEquals(expected, rankedBookList);
     }
 
@@ -51,8 +52,8 @@ public class BookListRankerTest {
     public void testRankBook3() {
         String keywords = "The three science fiction novel";
         String[] keywordList = keywords.split(" ");
-        ArrayList<Book> rankedBookList = bookListRanker.rankBooks(bookList, keywordList);
-        ArrayList<Book> expected = new ArrayList<Book>(Arrays.asList(book3, book2, book5, book1, book4));
+        Booklist rankedBookList = bookListRanker.rankBooks(bookList, keywordList);
+        Booklist expected = new Booklist(Arrays.asList(book3, book2, book5, book1, book4));
         assertEquals(expected, rankedBookList);
     }
 }

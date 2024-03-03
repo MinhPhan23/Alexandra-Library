@@ -9,16 +9,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.alexandria_library.R;
-import com.alexandria_library.dso.Book;
+import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.logic.ISearchService;
 import java.util.ArrayList;
 
 public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.MyViewHolder> {
     private static ISearchService searchService;
-    private ArrayList<Book> BookList;
+    private Booklist BookList;
     private Context context;
 
-    public SearchListAdapter(ArrayList<Book> list, Context context, ISearchService searchService){
+    public SearchListAdapter(Booklist list, Context context, ISearchService searchService){
         BookList = list;
         SearchListAdapter.searchService = searchService;
         this.context = context;
