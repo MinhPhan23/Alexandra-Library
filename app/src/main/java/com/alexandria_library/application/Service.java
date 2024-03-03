@@ -17,8 +17,8 @@ public class Service {
      */
     public static synchronized IUserPersistent getUserPersistence(){
         if(userPersistence == null){
-//          userPersistence = new UserPersistentStub();
-            userPersistence = new UserPersistenceHSQLDB(Main.getDBPathName());
+          userPersistence = new UserPersistentStub();
+          //userPersistence = new UserPersistenceHSQLDB(Main.getDBPathName());
         }
         return userPersistence;
     }
@@ -29,8 +29,8 @@ public class Service {
      */
     public static synchronized IBookPersistentIntermediate getBookPersistenceIntermediate(){
         if(bookPersistentIntermediate == null){
-//            bookPersistentIntermediate = new BookPersistentInterStub();
-            bookPersistentIntermediate - new BookPersistentInterStub(Main.getDBPathName());
+            bookPersistentIntermediate = new BookPersistentInterStub();
+            //bookPersistentIntermediate - new BookPersistentInterStub(Main.getDBPathName());
         }
         return bookPersistentIntermediate;
     }

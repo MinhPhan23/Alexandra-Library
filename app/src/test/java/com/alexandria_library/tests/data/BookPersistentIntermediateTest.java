@@ -2,6 +2,7 @@ package com.alexandria_library.tests.data;
 
 import com.alexandria_library.data.stub.BookPersistentInterStub;
 import com.alexandria_library.dso.Book;
+import com.alexandria_library.dso.Booklist;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -57,8 +58,8 @@ public class BookPersistentIntermediateTest {
         System.out.println("Testing delete(ArrayList)");
         int sizeBefore;
         int sizeAfter;
-        ArrayList<Book> testList1;
-        ArrayList<Book> testList2;
+        Booklist testList1;
+        Booklist testList2;
         sizeBefore = database.getBookList().size();
         Book book1 = new Book(1,"a", "b", "0000-00-00", defaultTags, defaultGenres);
         Book book2 = new Book(2,"a", "b", "0000-00-00", defaultTags, defaultGenres);
@@ -66,7 +67,7 @@ public class BookPersistentIntermediateTest {
         book1.setID(1);
         book2.setID(2);
         book3.setID(3);
-        testList1 = new ArrayList<Book>();
+        testList1 = new Booklist();
         testList1.add(book1);
         testList1.add(book2);
         testList1.add(book3);
@@ -134,9 +135,9 @@ public class BookPersistentIntermediateTest {
         Book book3 = new Book(3,"a", "b", "0000-00-00", defaultTags, defaultGenres);
         Book book4 = new Book(4,"a", "b", "0000-00-00", defaultTags, defaultGenres);
 
-        ArrayList<Book> testList;
+        Booklist testList;
 
-        testList = new ArrayList<Book>();
+        testList = new Booklist();
         testList.add(0, book1);
         testList.add(1, book2);
         testList.add(2, book3);
@@ -160,7 +161,7 @@ public class BookPersistentIntermediateTest {
         book4.setName("a");
         book4.setID(4);
 
-        testList = new ArrayList<Book>();
+        testList = new Booklist();
         testList.add(0, book1);
         testList.add(1, book2);
         testList.add(2, book3);
@@ -182,7 +183,7 @@ public class BookPersistentIntermediateTest {
         book4.setAuthor("b");
         book4.setID(4);
 
-        testList = new ArrayList<Book>();
+        testList = new Booklist();
         testList.add(0, book1);
         testList.add(1, book2);
         testList.add(2, book3);
@@ -196,7 +197,7 @@ public class BookPersistentIntermediateTest {
         book4.setTags(defaultTags);
         book4.setID(4);
 
-        testList = new ArrayList<Book>();
+        testList = new Booklist();
         testList.add(0, book1);
         testList.add(1, book2);
         testList.add(2, book3);
@@ -210,7 +211,7 @@ public class BookPersistentIntermediateTest {
         book4.setGenres(defaultGenres);
         book4.setID(4);
 
-        testList = new ArrayList<Book>();
+        testList = new Booklist();
         testList.add(0, book1);
         testList.add(1, book2);
         testList.add(2, book3);
@@ -282,7 +283,7 @@ public class BookPersistentIntermediateTest {
         System.out.println("Testing searchTag(String[])");
         int status;
         String[] tagsArray = null;
-        ArrayList<Book> testList;
+        Booklist testList;
 
         List<String>tags = new ArrayList<>();
         testList = database.searchTag(tags);
@@ -304,7 +305,7 @@ public class BookPersistentIntermediateTest {
         System.out.println("Testing searchGenre(String[])");
         int status;
         String[] genresArray = null;
-        ArrayList<Book> testList;
+        Booklist testList;
 
         List<String>genres = new ArrayList<>();
         testList = database.searchGenre(genres);
@@ -326,7 +327,7 @@ public class BookPersistentIntermediateTest {
         System.out.println("Testing searchAuthor(String)");
         int status;
         String author = null;
-        ArrayList<Book> testList;
+        Booklist testList;
 
         testList = database.searchAuthor(author);
         assertEquals(0, testList.size());
@@ -346,7 +347,7 @@ public class BookPersistentIntermediateTest {
         System.out.println("Testing searchName(String)");
         int status;
         String name = null;
-        ArrayList<Book> testList;
+        Booklist testList;
 
         testList = database.searchName(name);
         assertEquals(0, testList.size());
@@ -388,20 +389,20 @@ public class BookPersistentIntermediateTest {
     @Test
     public void searchArrayListTest(){
         System.out.println("Testing ArrayList search(ArrayList)");
-        ArrayList<Book> testList;
-        ArrayList<Book> searchList;
+        Booklist testList;
+        Booklist searchList;
         Book book1 = new Book(1,"a", "b", "0000-00-00", defaultTags, defaultGenres);
         Book book2 = new Book(2,"a", "b", "0000-00-00", defaultTags, defaultGenres);
         Book book3 = new Book(3,"a", "b", "0000-00-00", defaultTags, defaultGenres);
         book1.setID(1);
         book2.setID(2);
         book3.setID(3);
-        searchList = new ArrayList<Book>();
+        searchList = new Booklist();
         searchList.add(book1);
         searchList.add(book2);
         searchList.add(book3);
 
-        testList = database.search((ArrayList<Book>) null);
+        testList = database.search((Booklist) null);
         assertEquals(0, testList.size());
 
         testList = database.search(searchList);
@@ -416,7 +417,7 @@ public class BookPersistentIntermediateTest {
     @Test
     public void searchSQLTest(){
         System.out.println("Testing ArrayList search(PreparedStatement)");
-        ArrayList<Book> testList;
+        Booklist testList;
         testList = database.search((PreparedStatement) null);
         assertNull(testList);
     }

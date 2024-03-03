@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IBookPersistentIntermediate {
 
-    public int checkList(ArrayList<Book> list);
+    public int checkList(Booklist list);
 
     public int checkBook(Book book);
 
@@ -19,22 +19,22 @@ public interface IBookPersistentIntermediate {
 
     public void delete(Book book, User user);
 
-    public void delete(ArrayList<Book> list, User user);
+    public void delete(Booklist list, User user);
 
-    public ArrayList<Book> searchTag(List<String> tags);
+    public Booklist searchTag(List<String> tags);
 
-    public ArrayList<Book> searchGenre(List<String> genres);
+    public Booklist searchGenre(List<String> genres);
 
-    public ArrayList<Book> searchAuthor(String author);
+    public Booklist searchAuthor(String author);
 
-    public ArrayList<Book> searchName(String bookName);
+    public Booklist searchName(String bookName);
 
-    public ArrayList<Book> search(ArrayList<Book> list);
+    public Booklist search(Booklist list);
 
-    public ArrayList<Book> search(PreparedStatement statement);
+    public Booklist search(PreparedStatement statement);
 
     public Book search(Book book);
 
-    public ArrayList<Book> getBookList();
+    public Booklist getBookList();
 
 }
