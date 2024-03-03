@@ -16,8 +16,10 @@ public class BookPersistenceHSQLDB implements IBookPersistentIntermediate {
 
     private final String dbPath;
     private static int bookID = 1;
-    private static int tagID = 0;
-    private static int genreID = 0;
+    private static int tagID = 1;
+    private static int genreID = 1;
+    private static int bookTagID = 1;
+    private static int bookGenreID = 1;
 
     public BookPersistenceHSQLDB(final String dbPath){this.dbPath = dbPath;}
 
@@ -43,11 +45,11 @@ public class BookPersistenceHSQLDB implements IBookPersistentIntermediate {
             }
 
             String tag = rs.getString("TAG_NAME");
-            if(tag != null){
+            if(tag != null && !tags.contains(tag)){
                 tags.add(tag);
             }
             String genre = rs.getString("GENRE_NAME");
-            if(tag != null){
+            if(tag != null && !genres.contains(genre)){
                 genres.add(genre);
             }
         }
@@ -121,11 +123,115 @@ public class BookPersistenceHSQLDB implements IBookPersistentIntermediate {
             if(success == 0){
                 throw new SQLException ("@BookPersistenceHSQLDB.java addBook unsuccessful");
             }
-            else{
-                bookID++;
+
+            for(int i = 0; i<newBook.getTags().size(); i++){
+                String currentTag = newBook.getTags().get(i);
+                int findTagID = duplicateTag(currentTag);
+                if(findTagID < 0){
+                    int newTagID = addTag(currentTag);
+                    addBookTagRelation(bookID, newTagID);
+                }
+                else{
+                    addBookTagRelation(bookID, findTagID);
+                }
             }
+
+
+            bookID++;
         }
     }
+
+    public int addTag(String tagName) throws SQLException {
+        String insertTag = "INSERT INTO TAGS (TAG_NAME, TAG_ID) VALUES (?, ?)";
+        int result = tagID;
+        try(final Connection c = connection()){
+            PreparedStatement statement = c.prepareStatement(insertTag);
+
+            statement.setString(1, tagName);
+            statement.setInt(2, tagID);
+            int success = statement.executeUpdate();
+            if(success == 0){
+                throw new SQLException ("@BookPersistenceHSQLDB.java addTag unsuccessful");
+            }
+            tagID++;
+            statement.close();
+        }
+        return result;
+    }
+
+    public int addGenre(String genreName) throws SQLException{
+        String insertGenre = "INSERT INTO GENRES (GENRE_NAME, GENRE_ID) VALUES (?, ?)";
+        int result = genreID;
+        try(final Connection c = connection()){
+            PreparedStatement statement = c.prepareStatement(insertGenre);
+
+            statement.setString(1, genreName);
+            statement.setInt(2, genreID);
+            int success = statement.executeUpdate();
+            if(success == 0){
+                throw new SQLException ("@BookPersistenceHSQLDB.java addGenre unsuccessful");
+            }
+            genreID++;
+            statement.close();
+        }
+        return result;
+    }
+
+    public int addBookTagRelation(int bookID, int tagID) throws SQLException{
+        String insertBookTag = "INSERT INTO BOOKTAGS(BOOK_ID, TAG_ID, BOOKTAGS_PK) VALUES (?, ?, ?)";
+        int result = bookTagID;
+        try(final Connection c = connection()){
+            PreparedStatement statement = c.prepareStatement(insertBookTag);
+
+            statement.setInt(1, bookID);
+            statement.setInt(2, tagID);
+            statement.setInt(3, bookTagID);
+            int success = statement.executeUpdate();
+            if(success == 0){
+                throw new SQLException ("@BookPersistenceHSQLDB.java addBookTagRelation unsuccessful");
+            }
+            bookTagID++;
+            statement.close();
+        }
+        return result;
+    }
+
+    public int addBookGenreRelation(int bookID, int genreID) throws SQLException{
+        String insertBookGenre = "INSERT INTO BOOKGENRES(BOOK_ID, GENRE_ID, BOOKGENRES_PK) VALUES (?, ?, ?)";
+        int result = bookGenreID;
+        try(final Connection c = connection()){
+            PreparedStatement statement = c.prepareStatement(insertBookGenre);
+
+            statement.setInt(1, bookID);
+            statement.setInt(2, genreID);
+            statement.setInt(3, bookGenreID);
+            int success = statement.executeUpdate();
+            if(success == 0){
+                throw new SQLException ("@BookPersistenceHSQLDB.java addBookGenreRelation unsuccessful");
+            }
+            bookGenreID++;
+            statement.close();
+        }
+        return result;
+    }
+
+    private int duplicateTag (String tagName) throws SQLException {
+        String query = "SELECT * FROM TAGS";
+        int findTagID = -1;
+        try(final Connection c = connection()){
+            PreparedStatement statement = c.prepareStatement(query);
+            ResultSet rs = statement.executeQuery();
+
+            while(rs.next()){
+                int id = rs.getInt("TAG_ID");
+                if(rs.getString("TAG_NAME").equals(tagName)){
+                    findTagID = id;
+                }
+            }
+        }
+        return findTagID;
+    }
+
     @Override
     public int update(Book book, User user) {
         return 0;
@@ -146,7 +252,7 @@ public class BookPersistenceHSQLDB implements IBookPersistentIntermediate {
         return null;
     }
 
-    public ArrayList<Book> searchTag(String tagName, int tagID) throws SQLException{
+    public ArrayList<Book> searchBookByTag(String tagName, int tagID) throws SQLException{
         ArrayList<Book> books = new ArrayList<>();
         String query = "SELECT B.BOOK_ID, B.BOOK_NAME, B.BOOK_AUTHOR, B.BOOK_DATE, TG.TAG_NAME, GS.GENRE_NAME "+
                 "FROM BOOKS B "+
@@ -168,6 +274,24 @@ public class BookPersistenceHSQLDB implements IBookPersistentIntermediate {
             }
         }
         return books;
+    }
+
+    public ArrayList<String> searchTagByBook (Book book) throws SQLException{
+        ArrayList<String> result = new ArrayList<>();
+        String query = "SELECT TG.TAG_NAME FROM TAGS TG "+
+                        "JOIN BOOKTAGS BT ON  TG.TAG_ID = BT.TAG_ID "+
+                        "JOIN BOOKS B ON BT.BOOK_ID = B.BOOK_ID " +
+                        "WHERE B.BOOK_NAME = ? ";
+        try(Connection c = connection()){
+            PreparedStatement statement = c.prepareStatement(query);
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()){
+                String tagName = rs.getString("TAG_NAME");
+                result.add(tagName);
+            }
+        }
+        return result;
     }
 
     @Override
