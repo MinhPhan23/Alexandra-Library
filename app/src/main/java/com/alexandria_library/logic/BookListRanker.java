@@ -1,6 +1,7 @@
 package com.alexandria_library.logic;
 
 import com.alexandria_library.dso.Book;
+import com.alexandria_library.dso.Booklist;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,7 +12,7 @@ public class BookListRanker implements IBookListRanker {
     private final float AUTHOR_COEFFICIENT = 2f;
     private final float GENRE_COEFFICIENT = 1f;
     @Override
-    public ArrayList<Book> rankBooks(ArrayList<Book> bookList, String[] keywords){
+    public Booklist rankBooks(Booklist bookList, String[] keywords){
         float[] nameScore = new float[bookList.size()];
         float[] authorScore = new float[bookList.size()];
         float[] tagScore = new float[bookList.size()];
@@ -74,7 +75,7 @@ public class BookListRanker implements IBookListRanker {
         Collections.sort(order, (a, b) -> Float.compare(totalScore[b], totalScore[a]));
 
         // Insert books into a new ArrayList based on the highest score first
-        ArrayList<Book> sortedBooks = new ArrayList<>();
+        Booklist sortedBooks = new Booklist();
         for (int index : order) {
             sortedBooks.add(bookList.get(index));
         }

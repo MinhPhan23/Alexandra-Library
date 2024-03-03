@@ -1,24 +1,24 @@
 package com.alexandria_library.dso;
 
-import java.util.ArrayList;
+import com.alexandria_library.dso.Booklist;
 
 public class Reader extends User implements IReader{
-    private ArrayList<Book> allBooksList;
-    private ArrayList<Book> inProgressList;
-    private ArrayList<Book> finishedList;
+    private Booklist allBooksList;
+    private Booklist inProgressList;
+    private Booklist finishedList;
 
     public Reader(String userName, String password){
         super(userName, password);
-        allBooksList = new ArrayList<>();
-        inProgressList = new ArrayList<>();
-        finishedList = new ArrayList<>();
+        allBooksList = new Booklist();
+        inProgressList = new Booklist();
+        finishedList = new Booklist();
     }
 
     /**
      * Getter method for the list of all reader's books
      * @return "AllBooks" book list
      */
-    public ArrayList<Book> getAllBooksList(){
+    public Booklist getAllBooksList(){
         return allBooksList;
     }
 
@@ -26,7 +26,7 @@ public class Reader extends User implements IReader{
      * Getter method for the list of books that are currently being read
      * @return "In Progress" book list
      */
-    public ArrayList<Book> getInProgressList(){
+    public Booklist getInProgressList(){
         return inProgressList;
     }
 
@@ -34,7 +34,7 @@ public class Reader extends User implements IReader{
      * Getter method for the list of books that are finished
      * @return "Finished" book list
      */
-    public ArrayList<Book> getFinishedList(){
+    public Booklist getFinishedList(){
         return finishedList;
     }
 

@@ -2,7 +2,7 @@ package com.alexandria_library.logic;
 
 import com.alexandria_library.application.Service;
 import com.alexandria_library.data.IBookPersistentIntermediate;
-import com.alexandria_library.dso.Book;
+import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.dso.User;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class SideBarService {
     public User getUser(){
         return targetUser;
     }
-    public ArrayList<Book> getBookList(){
+    public Booklist getBookList(){
         return libraryBookData.getBookList();
     }
 }

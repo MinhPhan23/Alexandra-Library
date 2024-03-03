@@ -1,6 +1,6 @@
 package com.alexandria_library.dso;
 
-import java.util.ArrayList;
+import com.alexandria_library.dso.Booklist;
 
 public interface IReader {
 
@@ -8,17 +8,17 @@ public interface IReader {
      * Getter method for the list of all reader's books
      * @return "AllBooks" book list
      */
-    public ArrayList<Book> getAllBooksList();
+    public Booklist getAllBooksList();
     /**
      * Getter method for the list of books that are currently being read
      * @return "In Progress" book list
      */
-    public ArrayList<Book> getInProgressList();
+    public Booklist getInProgressList();
     /**
      * Getter method for the list of books that are finished
      * @return "Finished" book list
      */
-    public ArrayList<Book> getFinishedList();
+    public Booklist getFinishedList();
 
 
     /**

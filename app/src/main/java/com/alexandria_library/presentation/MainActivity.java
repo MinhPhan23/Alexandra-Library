@@ -21,7 +21,7 @@ import android.widget.FrameLayout;
 import com.alexandria_library.R;
 import com.alexandria_library.data.IBookPersistentIntermediate;
 import com.alexandria_library.data.stub.BookPersistentInterStub;
-import com.alexandria_library.dso.Book;
+import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.logic.ISearchService;
 import com.alexandria_library.logic.SearchService;
 import com.alexandria_library.logic.SearchServiceException;
@@ -37,7 +37,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity{
 
-    private ArrayList<Book> searchList;
+    private Booklist searchList;
     private boolean grid = true;
     private AllBookListAdapter allBookAdapter;
     private FinishedBookAdapter finishedBookAdapter;
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity{
 
         data = new BookPersistentInterStub();
 
-        searchList = new ArrayList<>();
+        searchList = new Booklist();
         searchService = new SearchService(data);
 
         sideBarService = LoginActivity.getSideBarService();

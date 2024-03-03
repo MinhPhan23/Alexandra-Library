@@ -1,6 +1,8 @@
 package com.alexandria_library.dso;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Booklist extends ArrayList<Book> implements IBooklist {
 
@@ -10,6 +12,12 @@ public class Booklist extends ArrayList<Book> implements IBooklist {
     public Booklist(){
         this.name = "";
         this.desc = "";
+    }
+
+    public Booklist(List list){
+        this.name = "";
+        this.desc = "";
+        super.addAll(list);
     }
 
     public String getName(){
