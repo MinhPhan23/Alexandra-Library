@@ -3,6 +3,7 @@ package com.alexandria_library.data.stub;
 import com.alexandria_library.data.IBookPersistentIntermediate;
 import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.User;
+import com.alexandria_library.dso.Booklist;
 
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import java.util.List;
 
 public class BookPersistentInterStub implements IBookPersistentIntermediate {
 
-    private final ArrayList<Book> bookList = new ArrayList<Book>();
+    private final Booklist bookList = new Booklist();
 
     private int index = 0;
 
@@ -227,7 +228,7 @@ public class BookPersistentInterStub implements IBookPersistentIntermediate {
         addBook(bookList, b30);
     }
 
-    public int checkList(ArrayList<Book> list){
+    public int checkList(Booklist list){
         int status = 0;
         if(list != null) {
             for (int i = 0; i < list.size(); i++) {
@@ -307,7 +308,7 @@ public class BookPersistentInterStub implements IBookPersistentIntermediate {
         }
     }
 
-    public void delete(ArrayList<Book> list, User user){
+    public void delete(Booklist list, User user){
         Book curr;
         if(checkCredentials(user) == 0 && checkList(list) == 0) {
             for (int i = 0; i < list.size(); i++) {
@@ -323,8 +324,8 @@ public class BookPersistentInterStub implements IBookPersistentIntermediate {
         }
     }
 
-    public ArrayList<Book> searchTag(List<String> tags){
-        ArrayList<Book> foundBooks = new ArrayList<Book>();
+    public Booklist searchTag(List<String> tags){
+        Booklist foundBooks = new Booklist();
         Book curr;
         if(tags != null){
             for(int i = 0; i < bookList.size(); i++){
@@ -337,8 +338,8 @@ public class BookPersistentInterStub implements IBookPersistentIntermediate {
         return foundBooks;
     }
 
-    public ArrayList<Book> searchGenre(List<String> genres){
-        ArrayList<Book> foundBooks = new ArrayList<Book>();
+    public Booklist searchGenre(List<String> genres){
+        Booklist foundBooks = new Booklist();
         Book curr;
         if(genres != null) {
             for (int i = 0; i < bookList.size(); i++) {
@@ -351,8 +352,8 @@ public class BookPersistentInterStub implements IBookPersistentIntermediate {
         return foundBooks;
     }
 
-    public ArrayList<Book> searchAuthor(String author){
-        ArrayList<Book> foundBooks = new ArrayList<Book>();
+    public Booklist searchAuthor(String author){
+        Booklist foundBooks = new Booklist();
         Book curr;
         if(author != null) {
             for (int i = 0; i < bookList.size(); i++) {
@@ -365,8 +366,8 @@ public class BookPersistentInterStub implements IBookPersistentIntermediate {
         return foundBooks;
     }
 
-    public ArrayList<Book> searchName(String bookName){
-        ArrayList<Book> foundBooks = new ArrayList<Book>();
+    public Booklist searchName(String bookName){
+        Booklist foundBooks = new Booklist();
         Book curr;
         if(bookName != null){
             for(int i = 0; i < bookList.size(); i++){
@@ -379,8 +380,8 @@ public class BookPersistentInterStub implements IBookPersistentIntermediate {
         return foundBooks;
     }
 
-    public ArrayList<Book> search(ArrayList<Book> list){
-        ArrayList<Book> foundBooks = new ArrayList<Book>();
+    public Booklist search(Booklist list){
+        Booklist foundBooks = new Booklist();
         Book curr;
         if(checkList(list) == 0) {
             for (int i = 0; i < list.size(); i++) {
@@ -393,7 +394,7 @@ public class BookPersistentInterStub implements IBookPersistentIntermediate {
         return foundBooks;
     }
 
-    public ArrayList<Book> search(PreparedStatement statement){
+    public Booklist search(PreparedStatement statement){
         return null;
     }
 
@@ -415,7 +416,7 @@ public class BookPersistentInterStub implements IBookPersistentIntermediate {
         return curr;
     }
 
-    private void addBook(ArrayList<Book> list, Book book){
+    private void addBook(Booklist list, Book book){
         boolean newBook = true;
         Book curr;
         if(checkBook(book) == 0) {
@@ -450,7 +451,7 @@ public class BookPersistentInterStub implements IBookPersistentIntermediate {
         return similar;
     }
 
-    public ArrayList<Book> getBookList(){
+    public Booklist getBookList(){
         return bookList;
     }
 }

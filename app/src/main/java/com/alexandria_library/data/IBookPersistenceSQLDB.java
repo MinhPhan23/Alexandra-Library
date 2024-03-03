@@ -1,6 +1,7 @@
 package com.alexandria_library.data;
 
 import com.alexandria_library.dso.Book;
+import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.dso.User;
 
 import java.sql.SQLException;
@@ -12,11 +13,11 @@ public interface IBookPersistenceSQLDB {
     public boolean upload(Book book, User user) throws SQLException;
     public int update(Book book, User user);
     public void delete(Book book, User user);
-    public void delete(ArrayList<Book> list, User user);
-    public ArrayList<Book> searchBookByTag(String tagName) throws SQLException;
+    public void delete(Booklist list, User user);
+    public Booklist searchBookByTag(String tagName) throws SQLException;
     public ArrayList<String> searchTagByBook (Book book) throws SQLException;
-    public ArrayList<Book> searchGenre (String genreName) throws SQLException;
-    public ArrayList<Book> searchAuthor(String author) throws SQLException;
-    public ArrayList<Book> searchName(String bookName) throws SQLException;
-    public ArrayList<Book> getBookList() throws SQLException;
+    public Booklist searchGenre (String genreName) throws SQLException;
+    public Booklist searchAuthor(String author) throws SQLException;
+    public Booklist searchName(String bookName) throws SQLException;
+    public Booklist getBookList() throws SQLException;
 }

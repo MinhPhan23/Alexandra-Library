@@ -3,8 +3,10 @@ package com.alexandria_library.data.hsqldb;
 import com.alexandria_library.data.IBookPersistenceSQLDB;
 import com.alexandria_library.data.IBookPersistentIntermediate;
 import com.alexandria_library.dso.Book;
+import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.dso.User;
 
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -257,13 +259,13 @@ public class BookPersistenceHSQLDB implements IBookPersistenceSQLDB {
     }
 
     @Override
-    public void delete(ArrayList<Book> list, User user) {
+    public void delete(Booklist list, User user) {
 
     }
 
     @Override
-    public ArrayList<Book> searchBookByTag(String tagName) throws SQLException{
-        ArrayList<Book> books = new ArrayList<>();
+    public Booklist searchBookByTag(String tagName) throws SQLException{
+        Booklist books = new Booklist();
         String query = "SELECT B.BOOK_ID, B.BOOK_NAME, B.BOOK_AUTHOR, B.BOOK_DATE, " +
                 "TG.TAG_NAME, GS.GENRE_NAME FROM BOOKS B "+
                 "JOIN BOOKTAGS BT ON B.BOOK_ID = BT.BOOK_ID "+
@@ -310,8 +312,8 @@ public class BookPersistenceHSQLDB implements IBookPersistenceSQLDB {
     }
 
     @Override
-    public ArrayList<Book> searchGenre (String genreName) throws SQLException{
-        ArrayList<Book> books = new ArrayList<>();
+    public Booklist searchGenre (String genreName) throws SQLException{
+        Booklist books = new Booklist();
         String query =
                 "SELECT B.BOOK_ID, B.BOOK_NAME, B.BOOK_AUTHOR, B.BOOK_DATE, " +
                         "TG.TAG_NAME, GS.GENRE_NAME FROM BOOKS B "+
@@ -338,8 +340,8 @@ public class BookPersistenceHSQLDB implements IBookPersistenceSQLDB {
     }
 
     @Override
-    public ArrayList<Book> searchAuthor(String author) throws SQLException{
-        ArrayList<Book> books = new ArrayList<>();
+    public Booklist searchAuthor(String author) throws SQLException{
+        Booklist books = new Booklist();
         String query = "SELECT B.BOOK_ID, B.BOOK_NAME, B.BOOK_AUTHOR, B.BOOK_DATE, " +
                 "TG.TAG_NAME, GS.GENRE_NAME FROM BOOKS B "+
                 "JOIN BOOKTAGS BT ON B.BOOK_ID = BT.BOOK_ID " +
@@ -365,8 +367,8 @@ public class BookPersistenceHSQLDB implements IBookPersistenceSQLDB {
     }
 
     @Override
-    public ArrayList<Book> searchName(String bookName) throws SQLException{
-        ArrayList<Book> books = new ArrayList<>();
+    public Booklist searchName(String bookName) throws SQLException{
+        Booklist books = new Booklist();
         String query = "SELECT B.BOOK_ID, B.BOOK_NAME, B.BOOK_AUTHOR, B.BOOK_DATE, " +
                 "TG.TAG_NAME, GS.GENRE_NAME FROM BOOKS B "+
                 "JOIN BOOKTAGS BT ON B.BOOK_ID = BT.BOOK_ID " +
@@ -392,8 +394,8 @@ public class BookPersistenceHSQLDB implements IBookPersistenceSQLDB {
     }
 
     @Override
-    public ArrayList<Book> getBookList() throws SQLException{
-        ArrayList<Book> books = new ArrayList<>();
+    public Booklist getBookList() throws SQLException{
+        Booklist books = new Booklist();
         String query = "SELECT B.BOOK_ID, B.BOOK_NAME, B.BOOK_AUTHOR, B.BOOK_DATE, " +
                 "TG.TAG_NAME, GS.GENRE_NAME FROM BOOKS B "+
                 "JOIN BOOKTAGS BT ON B.BOOK_ID = BT.BOOK_ID " +
