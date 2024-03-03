@@ -22,30 +22,30 @@ public class BookPersistenceHSQLDB implements IBookPersistentIntermediate {
         return DriverManager.getConnection("jdbc:hsqldb:file:" + dbPath + ";shutdown=true", "SA", "");
     }
 
-    private Book fromResultSet(final ResultSet rs) throws SQLException{
-        Book book = null;
-        List<String> tags = new ArrayList<>();
-        List<String> genres = new ArrayList<>();
+//    private Book fromResultSet(final ResultSet rs) throws SQLException{
+//        Book book = null;
+//        List<String> tags = new ArrayList<>();
+//        List<String> genres = new ArrayList<>();
+//
+//        while(rs.next()){
+//            if(book == null){
+//                //getting information
+//                final int bookID = rs.getInt("BOOK_ID");
+//                final String bookName = rs.getString("BOOK_NAME");
+//                final String bookAuthor = rs.getString("BOOK_AUTHOR");
+//                final String bookDate = rs.getString("BOOK_DATE");
+//                List<String> tempGenre = new ArrayList<>();
+//                List<String> tempTag = new ArrayList<>();
+//                book = new Book(bookID, bookName, bookAuthor, bookDate, tempTag, tempGenre);
+//            }
+//        }
+//
+//
+//    }
 
-        while(rs.next()){
-            if(book == null){
-                //getting information
-                final int bookID = rs.getInt("BOOK_ID");
-                final String bookName = rs.getString("BOOK_NAME");
-                final String bookAuthor = rs.getString("BOOK_AUTHOR");
-                final String bookDate = rs.getString("BOOK_DATE");
-                List<String> tempGenre = new ArrayList<>();
-                List<String> tempTag = new ArrayList<>();
-                book = new Book(bookID, bookName, bookAuthor, bookDate, tempTag, tempGenre);
-            }
-        }
-
-
-    }
-
-    private String[] getTagFromRS(final ResultSet rs) throws SQLException{
-        final
-    }
+//    private String[] getTagFromRS(final ResultSet rs) throws SQLException{
+//        final
+//    }
 
     @Override
     public int checkList(ArrayList<Book> list) {
