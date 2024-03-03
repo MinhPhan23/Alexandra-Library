@@ -2,6 +2,7 @@ package com.alexandria_library.application;
 
 import com.alexandria_library.data.IBookPersistentIntermediate;
 import com.alexandria_library.data.IUserPersistent;
+import com.alexandria_library.data.hsqldb.UserPersistenceHSQLDB;
 import com.alexandria_library.data.stub.BookPersistentInterStub;
 import com.alexandria_library.data.stub.UserPersistentStub;
 import com.alexandria_library.dso.User;
@@ -16,7 +17,8 @@ public class Service {
      */
     public static synchronized IUserPersistent getUserPersistence(){
         if(userPersistence == null){
-            userPersistence = new UserPersistentStub();
+//          userPersistence = new UserPersistentStub();
+            userPersistence = new UserPersistenceHSQLDB(Main.getDBPathName());
         }
         return userPersistence;
     }
@@ -25,10 +27,10 @@ public class Service {
      * get book persistence intermediate's mock data ready when service is begin
      * @return
      */
-
     public static synchronized IBookPersistentIntermediate getBookPersistenceIntermediate(){
         if(bookPersistentIntermediate == null){
-            bookPersistentIntermediate = new BookPersistentInterStub();
+//            bookPersistentIntermediate = new BookPersistentInterStub();
+            bookPersistentIntermediate - new BookPersistentInterStub(Main.getDBPathName());
         }
         return bookPersistentIntermediate;
     }
