@@ -20,8 +20,6 @@ public class AuthenticationTest {
         System.out.println("Starting Authentication test");
         authentication = new Authentication(new UserPersistentStub());
         assertNotNull(authentication);
-        authentication = new Authentication();
-        assertNotNull(authentication);
     }
 
     @Test
