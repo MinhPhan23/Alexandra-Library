@@ -77,7 +77,7 @@ public class BookPersistenceHSQLDB implements IBookPersistenceSQLDB {
     }
 
     private void addBook(Book newBook) throws SQLException{
-        String insert = "INSERT INTO BOOKS(BOOK_ID, BOOK_NAME, BOOK_AUTHOR, BOOK_DATE) VALUES (?, ?, ?)";
+        String insert = "INSERT INTO BOOKS(BOOK_ID, BOOK_NAME, BOOK_AUTHOR, BOOK_DATE) VALUES (?, ?, ?, ?)";
         try(final Connection c = connection()){
             PreparedStatement statement = c.prepareStatement(insert);
 
