@@ -38,15 +38,14 @@ public class SideBarServiceTest {
     }
     @Test
     public void testGetBookList() {
-        Book book1 = new Book(1 , "The Seven Husbands of Evalyn Hugo", "Taylor Jenkins Reid", "June 13, 2017",
+        Booklist mockBookList = new Booklist(Arrays.asList(
+             new Book(1 , "The Seven Husbands of Evalyn Hugo", "Taylor Jenkins Reid", "June 13, 2017",
                 new ArrayList<>(Arrays.asList("LGBT", "Adult")),
-                new ArrayList<>(Arrays.asList("Romance", "Contemporary", "Historical Fiction")));
-        Book book2 = new Book(4 , "The Book Thief", "Markus Zusak", "September 1, 2005",
+                new ArrayList<>(Arrays.asList("Romance", "Contemporary", "Historical Fiction"))),
+             new Book(4 , "The Book Thief", "Markus Zusak", "September 1, 2005",
                 new ArrayList<>(Arrays.asList("World War II", "Holocaust", "Books About Books")),
-                new ArrayList<>(Arrays.asList("War", "Classics", "Historical Fiction", "Young Adult")));
-        Booklist mockBookList = new Booklist();
-        mockBookList.add(book1);
-        mockBookList.add(book2);
+                new ArrayList<>(Arrays.asList("War", "Classics", "Historical Fiction", "Young Adult"))))
+        );
         when(mockBookData.getBookList()).thenReturn(mockBookList);
 
         Booklist bookList = sideBarService.getBookList();
