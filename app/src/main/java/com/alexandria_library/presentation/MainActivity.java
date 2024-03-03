@@ -32,6 +32,7 @@ import com.alexandria_library.presentation.Adapter.InProgressBookAdapter;
 import com.alexandria_library.presentation.Adapter.LibraryBookListAdapter;
 import com.alexandria_library.presentation.Adapter.SearchListAdapter;
 import com.alexandria_library.presentation.Authentication.LoginActivity;
+import com.alexandria_library.application.Service;
 
 import java.util.ArrayList;
 
@@ -65,7 +66,7 @@ public class MainActivity extends AppCompatActivity{
         findByID();
         bookDistributor();
 
-        data = new BookPersistentInterStub();
+        data = Service.getBookPersistenceIntermediate();
 
         searchList = new ArrayList<>();
         searchService = new SearchService(data);
