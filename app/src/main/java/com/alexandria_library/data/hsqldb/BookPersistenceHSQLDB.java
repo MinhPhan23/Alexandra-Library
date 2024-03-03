@@ -124,6 +124,7 @@ public class BookPersistenceHSQLDB implements IBookPersistentIntermediate {
                 throw new SQLException ("@BookPersistenceHSQLDB.java addBook unsuccessful");
             }
 
+            // adding new tag or make new relation with tag and book
             for(int i = 0; i<newBook.getTags().size(); i++){
                 String currentTag = newBook.getTags().get(i);
                 int findTagID = duplicateTag(currentTag);
@@ -136,8 +137,21 @@ public class BookPersistenceHSQLDB implements IBookPersistentIntermediate {
                 }
             }
 
+            // adding new genre or make new relation with genre and book
+            for(int j = 0; j<newBook.getGenres().size(); j++){
+                String currentGenre = newBook.getGenres().get(j);
+                int findGenreID = duplicateGenre(currentGenre);
+                if(findGenreID < 0){
+                    int newGenreID = addGenre(currentGenre);
+                    addBookGenreRelation(bookID, newGenreID);
+                }
+                else{
+                    addBookGenreRelation(bookID, findGenreID);
+                }
+            }
 
             bookID++;
+            statement.close();
         }
     }
 
@@ -225,6 +239,23 @@ public class BookPersistenceHSQLDB implements IBookPersistentIntermediate {
             while(rs.next()){
                 int id = rs.getInt("TAG_ID");
                 if(rs.getString("TAG_NAME").equals(tagName)){
+                    findTagID = id;
+                }
+            }
+        }
+        return findTagID;
+    }
+
+    private int duplicateGenre(String genreName) throws SQLException{
+        String query = "SELECT * FROM GENRES";
+        int findTagID = -1;
+        try(final Connection c = connection()){
+            PreparedStatement statement = c.prepareStatement(query);
+            ResultSet rs = statement.executeQuery();
+
+            while(rs.next()){
+                int id = rs.getInt("GENRE_ID");
+                if(rs.getString("GENRE_NAME").equals(genreName)){
                     findTagID = id;
                 }
             }
