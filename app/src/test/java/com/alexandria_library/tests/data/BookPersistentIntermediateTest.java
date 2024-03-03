@@ -442,30 +442,77 @@ public class BookPersistentIntermediateTest {
         database.delete(book, null);
     }
     @Test
-    public void similarStringArraysTest(){
-        System.out.println("Testing similarStringArrays(String[], String[])");
+    public void similarStringArraysTest1(){
+        System.out.println("Testing similarStringArrays(String[], String[]) 1");
+        boolean similar;
+        similar = database.similarStringArrays(null, null);
+        assert(!similar);
+    }
+
+    @Test
+    public void similarStringArraysTest2(){
+        System.out.println("Testing similarStringArrays(String[], String[]) 2");
         boolean similar;
         String[] array1 = {"a", "b", "c"};
         List<String>one = new ArrayList<>(Arrays.asList(array1));
         String[] array2 = {"a", "c", "b", "d", "e", "x"};
         List<String>two = new ArrayList<>(Arrays.asList(array2));
-        String[] array3 = {"a"};
-        List<String>three = new ArrayList<>(Arrays.asList(array3));
-        String[] array4 = {"x"};
-        List<String>four = new ArrayList<>(Arrays.asList(array4));
-        similar = database.similarStringArrays(null, null);
-        assert(!similar);
+
         similar = database.similarStringArrays(one, two);
         assert(similar);
-        similar = database.similarStringArrays(one, three);
+    }
+
+    @Test
+    public void similarStringArraysTest3(){
+        System.out.println("Testing similarStringArrays(String[], String[]) 3");
+        boolean similar;
+        String[] array1 = {"a", "b", "c"};
+        List<String>one = new ArrayList<>(Arrays.asList(array1));
+        String[] array2 = {"a"};
+        List<String>two = new ArrayList<>(Arrays.asList(array2));
+
+        similar = database.similarStringArrays(one, two);
         assert(similar);
-        similar = database.similarStringArrays(one, four);
+    }
+
+    @Test
+    public void similarStringArraysTest4(){
+        System.out.println("Testing similarStringArrays(String[], String[]) 4");
+        boolean similar;
+        String[] array1 = {"a", "b", "c"};
+        List<String>one = new ArrayList<>(Arrays.asList(array1));
+        String[] array2 = {"x"};
+        List<String>two = new ArrayList<>(Arrays.asList(array2));
+
+        similar = database.similarStringArrays(one, two);
         assert(!similar);
+    }
+
+    @Test
+    public void similarStringArraysTest5(){
+        System.out.println("Testing similarStringArrays(String[], String[]) 5");
+        boolean similar;
+        String[] array1 = {"a", "b", "c"};
+        List<String>one = new ArrayList<>(Arrays.asList(array1));
+
         similar = database.similarStringArrays(one, null);
         assert(!similar);
+    }
+
+    @Test
+    public void similarStringArraysTest6(){
+        System.out.println("Testing similarStringArrays(String[], String[]) 6");
+        boolean similar;
+        String[] array2 = {"a", "c", "b", "d", "e", "x"};
+        List<String>two = new ArrayList<>(Arrays.asList(array2));
+        String[] array4 = {"x"};
+        List<String>four = new ArrayList<>(Arrays.asList(array4));
+
         similar = database.similarStringArrays(two, four);
         assert(similar);
     }
+
+
     @Test
     public void getBookListTest(){
         System.out.println("Testing getBookList()");
