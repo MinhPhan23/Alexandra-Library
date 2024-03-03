@@ -38,12 +38,12 @@ public class SideBarServiceTest {
     public void testGetBookList() {
         ArrayList<Book> mockBookList = new ArrayList<>(Arrays.asList(
                 new Book(1 , "The Seven Husbands of Evalyn Hugo", "Taylor Jenkins Reid", "June 13, 2017",
-                        new String[]{"LGBT", "Adult"},
-                        new String[]{"Romance", "Contemporary", "Historical Fiction"}),
+                        new ArrayList<>(Arrays.asList("LGBT", "Adult")),
+                        new ArrayList<>(Arrays.asList("Romance", "Contemporary", "Historical Fiction"))),
 
                 new Book(4 , "The Book Thief", "Markus Zusak", "September 1, 2005",
-                        new String[]{"World War II", "Holocaust", "Books About Books"},
-                        new String[]{"War", "Classics", "Historical Fiction", "Young Adult"})
+                        new ArrayList<>(Arrays.asList("World War II", "Holocaust", "Books About Books")),
+                        new ArrayList<>(Arrays.asList("War", "Classics", "Historical Fiction", "Young Adult")))
         ));
         when(mockBookData.getBookList()).thenReturn(mockBookList);
 

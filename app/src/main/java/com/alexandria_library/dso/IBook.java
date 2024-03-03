@@ -2,6 +2,8 @@ package com.alexandria_library.dso;
 
 import androidx.annotation.NonNull;
 
+import java.util.List;
+
 public interface IBook {
 
     public void setID(int id);
@@ -16,13 +18,13 @@ public interface IBook {
 
     public String getAuthor();
 
-    public void setTags(String[] tags);
+    public void setTags(List<String> tags);
 
-    public String[] getTags();
+    public List<String> getTags();
 
-    public void setGenres(String[] genres);
+    public void setGenres(List<String>genres);
 
-    public String[] getGenres();
+    public List<String> getGenres();
 
     public void setDate(String date);
 

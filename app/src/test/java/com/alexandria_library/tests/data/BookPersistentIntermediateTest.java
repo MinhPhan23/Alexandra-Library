@@ -13,18 +13,26 @@ import static org.junit.Assert.assertNull;
 
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class BookPersistentIntermediateTest {
 
     BookPersistentInterStub database;
     Book book;
-    String[] defaultTags = {"c", "d", "e"};
-    String[] defaultGenres = {"f", "g", "h"};
+    List<String> defaultTags = new ArrayList<>();
+    List<String>defaultGenres = new ArrayList<>();
 
     @Before
     public void setUp(){
         System.out.println("Starting Unit Tests for BookPersistentIntermediate");
         database = new BookPersistentInterStub();
+        defaultTags.add("c");
+        defaultTags.add("d");
+        defaultTags.add("e");
+        defaultGenres.add("f");
+        defaultGenres.add("g");
+        defaultGenres.add("h");
         book = new Book(0, "a", "b", "0000-00-00", defaultTags, defaultGenres);
         assertNotNull(database);
         assertNotNull(book);
@@ -253,9 +261,11 @@ public class BookPersistentIntermediateTest {
         database.upload(testBook, null);
         testBook.setName("T");
         testBook.setAuthor("E");
-        String[] tags = {"S"};
+        List<String>tags = new ArrayList<>();
+        tags.add("S");
         testBook.setTags(tags);
-        String[] genres = {"T"};
+        List<String>genres = new ArrayList<>();
+        genres.add("T");
         testBook.setGenres(genres);
         status = database.update(testBook, null);
         assertEquals(0, status);
@@ -263,21 +273,23 @@ public class BookPersistentIntermediateTest {
         Book newBook = database.search(testBook);
         assertEquals(testBook.getName(), newBook.getName());
         assertEquals(testBook.getAuthor(), newBook.getAuthor());
-        assertArrayEquals(testBook.getTags(), newBook.getTags());
-        assertArrayEquals(testBook.getGenres(), newBook.getGenres());
+        assertEquals(testBook.getTags(), newBook.getTags());
+        assertEquals(testBook.getGenres(), newBook.getGenres());
         database.delete(newBook, null);
     }
     @Test
     public void searchTagTest(){
         System.out.println("Testing searchTag(String[])");
         int status;
-        String[] tags = null;
+        String[] tagsArray = null;
         ArrayList<Book> testList;
 
+        List<String>tags = new ArrayList<>();
         testList = database.searchTag(tags);
         assertEquals(0, testList.size());
 
-        tags = new String[]{"c", "d", "e"};
+        tagsArray = new String[]{"c", "d", "e"};
+        tags = new ArrayList<>(Arrays.asList(tagsArray));
         testList = database.searchTag(tags);
         assertEquals(0, testList.size());
 
@@ -291,13 +303,15 @@ public class BookPersistentIntermediateTest {
     public void searchGenreTest(){
         System.out.println("Testing searchGenre(String[])");
         int status;
-        String[] genres = null;
+        String[] genresArray = null;
         ArrayList<Book> testList;
 
+        List<String>genres = new ArrayList<>();
         testList = database.searchGenre(genres);
         assertEquals(0, testList.size());
 
-        genres = new String[]{"f", "g", "h"};
+        genresArray = new String[]{"f", "g", "h"};
+        genres = new ArrayList<>(Arrays.asList(genresArray));
         testList = database.searchTag(genres);
         assertEquals(0, testList.size());
 
@@ -364,8 +378,8 @@ public class BookPersistentIntermediateTest {
         testBook = database.search(book);
         assertEquals(book.getName(), testBook.getName());
         assertEquals(book.getAuthor(), testBook.getAuthor());
-        assertArrayEquals(book.getTags(), testBook.getTags());
-        assertArrayEquals(book.getGenres(), testBook.getGenres());
+        assertEquals(book.getTags(), testBook.getTags());
+        assertEquals(book.getGenres(), testBook.getGenres());
         assertEquals(book.getDate(), testBook.getDate());
         assertEquals(book.getID(), testBook.getID());
         database.delete(book, null);
@@ -432,20 +446,24 @@ public class BookPersistentIntermediateTest {
         System.out.println("Testing similarStringArrays(String[], String[])");
         boolean similar;
         String[] array1 = {"a", "b", "c"};
+        List<String>one = new ArrayList<>(Arrays.asList(array1));
         String[] array2 = {"a", "c", "b", "d", "e", "x"};
+        List<String>two = new ArrayList<>(Arrays.asList(array2));
         String[] array3 = {"a"};
+        List<String>three = new ArrayList<>(Arrays.asList(array3));
         String[] array4 = {"x"};
+        List<String>four = new ArrayList<>(Arrays.asList(array4));
         similar = database.similarStringArrays(null, null);
         assert(!similar);
-        similar = database.similarStringArrays(array1, array2);
+        similar = database.similarStringArrays(one, two);
         assert(similar);
-        similar = database.similarStringArrays(array1, array3);
+        similar = database.similarStringArrays(one, three);
         assert(similar);
-        similar = database.similarStringArrays(array1, array4);
+        similar = database.similarStringArrays(one, four);
         assert(!similar);
-        similar = database.similarStringArrays(array1, null);
+        similar = database.similarStringArrays(one, null);
         assert(!similar);
-        similar = database.similarStringArrays(array2, array4);
+        similar = database.similarStringArrays(two, four);
         assert(similar);
     }
     @Test

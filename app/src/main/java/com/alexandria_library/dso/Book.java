@@ -2,7 +2,7 @@ package com.alexandria_library.dso;
 
 import androidx.annotation.NonNull;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 public class Book implements IBook{
@@ -12,11 +12,11 @@ public class Book implements IBook{
     private String name;
     private String author;
     private String date;
-    private String[] tags;
-    private String[] genres;
+    private List<String>tags;
+    private List<String>genres;
 
     public Book (int bookID, String bookName, String bookAuthor, String bookDate,
-                 String[] bookTags, String[] bookGenres) {
+                 List<String>bookTags, List<String>bookGenres) {
         id = bookID;
         name = bookName;
         author = bookAuthor;
@@ -41,11 +41,11 @@ public class Book implements IBook{
         return date;
     }
 
-    public String[] getTags() {
+    public List<String> getTags() {
         return tags;
     }
 
-    public String[] getGenres() {
+    public List<String> getGenres() {
         return genres;
     }
 
@@ -66,11 +66,11 @@ public class Book implements IBook{
         date = bookDate;
     }
 
-    public void setTags(String[] bookTags) {
+    public void setTags(List<String> bookTags) {
         tags = bookTags;
     }
 
-    public void setGenres(String[] bookGenres) {
+    public void setGenres(List<String> bookGenres) {
         genres = bookGenres;
     }
 
@@ -79,8 +79,8 @@ public class Book implements IBook{
                 Objects.equals(this.name, book.getName()) &&
                 Objects.equals(this.author, book.getAuthor()) &&
                 Objects.equals(this.date, book.getDate()) &&
-                Arrays.equals(this.tags, book.getTags()) &&
-                Arrays.equals(this.genres, book.getGenres());
+                Objects.equals(this.tags, book.getTags()) &&
+                Objects.equals(this.genres, book.getGenres());
     }
 
     @NonNull
@@ -91,9 +91,8 @@ public class Book implements IBook{
                 ", name = '" + name + '\'' +
                 ", author = '" + author + '\'' +
                 ", date = '" + date + '\'' +
-                ", tag(s) = " + Arrays.toString(tags) +
-                ", genre(s) = " + Arrays.toString(genres) +
+                ", tag(s) = " + tags.toString() +
+                ", genre(s) = " + genres.toString() +
                 '}';
     }
-
 }

@@ -10,6 +10,10 @@ import org.junit.Test;
 import com.alexandria_library.dso.Reader;
 import com.alexandria_library.dso.Book;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class ReaderTest {
     private Reader reader;
     private Book book1, book2;
@@ -18,26 +22,35 @@ public class ReaderTest {
     public void setUp(){
         reader = new Reader("testReader", "testPass");
 
+        String[] tagsArray = new String[]{"Young Adult", "Twilight 1", "Vampires"};
+        String[] genreArray = new String[]{"Urban Fantasy", "Paranormal", "Romance"};
+        String[] tagsArray2 =  new String[]{"Post Apocalyptic", "Survival", "Hunger Games 1"};
+        String[] genreArray2 = new String[]{"Dystopia", "Science Fiction", "Fantasy", "Young Adult", "Action"};
+        List<String> tags = new ArrayList<>(Arrays.asList(tagsArray));
+        List<String> genres = new ArrayList<>(Arrays.asList(genreArray));
+        List<String> tags2 = new ArrayList<>(Arrays.asList(tagsArray2));
+        List<String> genres2 = new ArrayList<>(Arrays.asList(genreArray2));
+
         book1 = new Book(1 ,
                 "Twilight",
                 "Stephenie Meyer",
                 "October 5, 2005",
-                new String[]{"Young Adult", "Twilight 1", "Vampires"},
-                new String[]{"Urban Fantasy", "Paranormal", "Romance"});
+                tags,
+                genres);
 
         book2 = new Book(5 ,
                 "The Hunger Games",
                 "Suzanne Collins",
                 "September 14, 2008",
-                new String[]{"Post Apocalyptic", "Survival", "Hunger Games 1"},
-                new String[]{"Dystopia", "Science Fiction", "Fantasy", "Young Adult", "Action"});
+                tags2,
+                genres2);
 
         System.out.println("Starting unit tests for Reader");
     }
     @Test
     public void testNormalReader(){
         assertNotNull(reader);
-        assertEquals("testUser", reader.getUserName());
+        assertEquals("testReader", reader.getUserName());
         assertEquals("testPass", reader.getPassword());
         assertEquals(0, reader.getAllBooksList().size());
         assertEquals(0, reader.getFinishedList().size());
