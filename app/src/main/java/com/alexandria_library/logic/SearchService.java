@@ -4,6 +4,8 @@ import com.alexandria_library.data.IBookPersistentIntermediate;
 import com.alexandria_library.dso.Book;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class SearchService implements ISearchService{
     private final IBookPersistentIntermediate data;
@@ -25,7 +27,7 @@ public class SearchService implements ISearchService{
     }
 
     private ArrayList<Book> queryDatabase(String keywords) throws SearchServiceException{
-        String[] keywordList = keywords.split(" ");
+        List<String> keywordList = Arrays.asList(keywords.split(" "));
         ArrayList<Book> result = new ArrayList<>();
         ArrayList<Book> bookByName = data.searchName(keywords);
         ArrayList<Book> bookByAuthor = data.searchAuthor(keywords);

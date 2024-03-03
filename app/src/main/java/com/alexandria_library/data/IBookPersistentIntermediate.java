@@ -3,6 +3,7 @@ package com.alexandria_library.data;
 import com.alexandria_library.dso.*;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
+import java.util.List;
 
 public interface IBookPersistentIntermediate {
 
@@ -20,9 +21,9 @@ public interface IBookPersistentIntermediate {
 
     public void delete(ArrayList<Book> list, User user);
 
-    public ArrayList<Book> searchTag(String[] tags);
+    public ArrayList<Book> searchTag(List<String> tags);
 
-    public ArrayList<Book> searchGenre(String[] genres);
+    public ArrayList<Book> searchGenre(List<String> genres);
 
     public ArrayList<Book> searchAuthor(String author);
 

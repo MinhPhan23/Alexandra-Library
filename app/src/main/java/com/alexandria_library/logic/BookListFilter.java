@@ -5,6 +5,7 @@ import com.alexandria_library.dso.Book;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 
 public class BookListFilter implements IBookListFilter {
     @Override
@@ -67,7 +68,7 @@ public class BookListFilter implements IBookListFilter {
         return filteredBooks;
     }
 
-    private static boolean containsAll(String[] bookTags, String[] filterTags) {
+    private static boolean containsAll(List<String> bookTags, String[] filterTags) {
         for (String filterTag : filterTags) {
             boolean containsString = false;
             for (String bookTag : bookTags) {

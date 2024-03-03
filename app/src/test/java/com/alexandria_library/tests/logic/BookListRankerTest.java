@@ -9,13 +9,16 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-public class BookListRankerTest {
-    Book book1 = new Book(0, "The Three Musketeers", "Alexandre Dumas", "July 1844", new String[] {},  new String[] {"Novel", "Adventure", "historical novel", "Historical Fiction", "Adventure fiction"});
-    Book book2 = new Book(1, "The Three Body Problem", "Liu Cixin", "2008", new String[] {},  new String[] {"Novel", "Science fiction", "Speculative novel", "Chinese science fiction"});
-    Book book3 = new Book(2, "The three", "Sarah Lotz", "20 May 2014", new String[] {}, new String[] {"Thriller", "Horror fiction", "Suspense", "Psychological Fiction", "Dystopian Fiction", "Supernatural fiction", "Religious Fiction"});
+import java.util.List;
 
-    Book book4 = new Book(3, "The three little pigs tales", "Emma Hall", "2 September 2014", new String[] {}, new String[] {"Folktale"});
-    Book book5 = new Book(4, "The Three Mercenaries", "Minh Phan", "6 February 2023", new String[] {}, new String[] {"Novel", "Science Fiction", "Fantasy"});
+public class BookListRankerTest {
+    Book book1 = new Book(0, "The Three Musketeers", "Alexandre Dumas", "July 1844", new ArrayList<>(),  new ArrayList<>(Arrays.asList("Novel", "Adventure", "historical novel", "Historical Fiction", "Adventure fiction")));
+
+    Book book2 = new Book(1, "The Three Body Problem", "Liu Cixin", "2008", new ArrayList<>(),  new ArrayList<>(Arrays.asList("Novel", "Science fiction", "Speculative novel", "Chinese science fiction")));
+    Book book3 = new Book(2, "The three", "Sarah Lotz", "20 May 2014", new ArrayList<>(), new ArrayList<>(Arrays.asList("Thriller", "Horror fiction", "Suspense", "Psychological Fiction", "Dystopian Fiction", "Supernatural fiction", "Religious Fiction")));
+
+    Book book4 = new Book(3, "The three little pigs tales", "Emma Hall", "2 September 2014", new ArrayList<>(), new ArrayList<>(Arrays.asList("Folktale")));
+    Book book5 = new Book(4, "The Three Mercenaries", "Minh Phan", "6 February 2023", new ArrayList<>(), new ArrayList<>(Arrays.asList("Novel", "Science Fiction", "Fantasy")));
 
     ArrayList<Book> bookList = new ArrayList<Book>(Arrays.asList(book1, book2, book3, book4, book5));
 
