@@ -61,8 +61,6 @@ public class BookPersistenceHSQLDB implements IBookPersistenceSQLDB {
         return book;
     }
 
-
-
     @Override
     public int checkCredentials(User user){
         return 0;
