@@ -7,8 +7,8 @@ public class Reader extends User implements IReader{
     private Booklist inProgressList;
     private Booklist finishedList;
 
-    public Reader(String userName, String password){
-        super(userName, password);
+    public Reader(String userName, String password, int id){
+        super(userName, password, id);
         allBooksList = new Booklist();
         inProgressList = new Booklist();
         finishedList = new Booklist();

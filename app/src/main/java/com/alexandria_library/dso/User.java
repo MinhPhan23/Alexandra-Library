@@ -3,10 +3,12 @@ package com.alexandria_library.dso;
 public class User implements IUser{
     private String userName;
     private String password;
+    private int id;
 
-    public User(String userName, String password){
+    public User(String userName, String password, int id){
         this.userName = userName;
         this.password = password;
+        this.id = id;
     }
 
     /**
@@ -25,5 +27,10 @@ public class User implements IUser{
         return password;
     }
 
+    /**
+     * Getter method for the user's id
+     * @return id
+     */
+    public int getId(){return id;}
 
 }

@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class UserPersistentStub implements IUserPersistent {
+    private static int id = 1;
 
     private ArrayList<User> userList;
     public UserPersistentStub(){
@@ -18,11 +19,12 @@ public class UserPersistentStub implements IUserPersistent {
         /*****
          * create 5 users
          */
-        Reader user1 = new Reader("Xiang", "123");
-        Reader user2 = new Reader("Andrei", "123456");
-        Reader user3 = new Reader("Minh", "123456");
-        Reader user4 = new Reader("Carlo", "123456");
-        Reader user5 = new Reader("alina", "123456");
+        Reader user1 = new Reader("Xiang", "123", 1);
+        Reader user2 = new Reader("Andrei", "123456", 2);
+        Reader user3 = new Reader("Minh", "123456", 3);
+        Reader user4 = new Reader("Carlo", "123456", 4);
+        Reader user5 = new Reader("alina", "123456", 5);
+        id = 6;
 
         /****
          * add temperature books to some users
@@ -135,7 +137,8 @@ public class UserPersistentStub implements IUserPersistent {
 
 
     public boolean addNewUser(String userName, String password){
-        User newUser = new User(userName, password);
+        User newUser = new User(userName, password, id);
+        id++;
         return userList.add(newUser);
     }
 
