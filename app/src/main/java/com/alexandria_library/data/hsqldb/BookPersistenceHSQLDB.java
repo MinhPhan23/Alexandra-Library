@@ -1,5 +1,6 @@
 package com.alexandria_library.data.hsqldb;
 
+import com.alexandria_library.data.IBookPersistenceSQLDB;
 import com.alexandria_library.data.IBookPersistentIntermediate;
 import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.User;
@@ -12,7 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookPersistenceHSQLDB implements IBookPersistentIntermediate {
+public class BookPersistenceHSQLDB implements IBookPersistenceSQLDB {
 
     private final String dbPath;
     private static int bookID = 1;
@@ -61,43 +62,6 @@ public class BookPersistenceHSQLDB implements IBookPersistentIntermediate {
     }
 
 
-    @Override
-    public int checkList(ArrayList<Book> list){
-        int status = 0;
-        if(list != null) {
-            for (int i = 0; i < list.size(); i++) {
-                status += checkBook(list.get(i));
-            }
-        }
-        else{
-            status = -1;
-        }
-        return status;
-    }
-
-    @Override
-    public int checkBook(Book book){
-        int status = 0;
-        if(book == null){
-            status = -1;
-        }
-        else if(book.getName() == null || book.getName().equals("")){
-            status = 1;
-        }
-        else if(book.getAuthor() == null || book.getAuthor().equals("")){
-            status = 2;
-        }
-        else if(book.getTags() == null){
-            status = 3;
-        }
-        else if(book.getGenres() == null){
-            status = 4;
-        }
-        else if(book.getDate() == null){
-            status = 5;
-        }
-        return status;
-    }
 
     @Override
     public int checkCredentials(User user){
@@ -105,8 +69,13 @@ public class BookPersistenceHSQLDB implements IBookPersistentIntermediate {
     }
 
     @Override
-    public int upload(Book book, User user) {
-        return 0;
+    public boolean upload(Book book, User user) throws SQLException {
+        boolean result = false;
+        if(checkCredentials(user) == 0 && duplicateBook(book.getName())<0){
+            addBook(book);
+            result = true;
+        }
+        return result;
     }
 
     private void addBook(Book newBook) throws SQLException{
@@ -155,7 +124,7 @@ public class BookPersistenceHSQLDB implements IBookPersistentIntermediate {
         }
     }
 
-    public int addTag(String tagName) throws SQLException {
+    private int addTag(String tagName) throws SQLException {
         String insertTag = "INSERT INTO TAGS (TAG_NAME, TAG_ID) VALUES (?, ?)";
         int result = tagID;
         try(final Connection c = connection()){
@@ -173,7 +142,7 @@ public class BookPersistenceHSQLDB implements IBookPersistentIntermediate {
         return result;
     }
 
-    public int addGenre(String genreName) throws SQLException{
+    private int addGenre(String genreName) throws SQLException{
         String insertGenre = "INSERT INTO GENRES (GENRE_NAME, GENRE_ID) VALUES (?, ?)";
         int result = genreID;
         try(final Connection c = connection()){
@@ -191,7 +160,7 @@ public class BookPersistenceHSQLDB implements IBookPersistentIntermediate {
         return result;
     }
 
-    public int addBookTagRelation(int bookID, int tagID) throws SQLException{
+    private int addBookTagRelation(int bookID, int tagID) throws SQLException{
         String insertBookTag = "INSERT INTO BOOKTAGS(BOOK_ID, TAG_ID, BOOKTAGS_PK) VALUES (?, ?, ?)";
         int result = bookTagID;
         try(final Connection c = connection()){
@@ -210,7 +179,7 @@ public class BookPersistenceHSQLDB implements IBookPersistentIntermediate {
         return result;
     }
 
-    public int addBookGenreRelation(int bookID, int genreID) throws SQLException{
+    private int addBookGenreRelation(int bookID, int genreID) throws SQLException{
         String insertBookGenre = "INSERT INTO BOOKGENRES(BOOK_ID, GENRE_ID, BOOKGENRES_PK) VALUES (?, ?, ?)";
         int result = bookGenreID;
         try(final Connection c = connection()){
@@ -229,6 +198,22 @@ public class BookPersistenceHSQLDB implements IBookPersistentIntermediate {
         return result;
     }
 
+    private int duplicateBook (String bookName) throws SQLException{
+        String query = "SELECT * FROM BOOKS";
+        int findBookID = -1;
+        try(final Connection c = connection()){
+            PreparedStatement statement = c.prepareStatement(query);
+            ResultSet rs = statement.executeQuery();
+
+            while(rs.next()){
+                int id = rs.getInt("BOOK_ID");
+                if(rs.getString("BOOK_NAME").equals(bookName)){
+                    findBookID = id;
+                }
+            }
+        }
+        return findBookID;
+    }
     private int duplicateTag (String tagName) throws SQLException {
         String query = "SELECT * FROM TAGS";
         int findTagID = -1;
@@ -279,19 +264,144 @@ public class BookPersistenceHSQLDB implements IBookPersistentIntermediate {
     }
 
     @Override
-    public ArrayList<Book> searchTag(List<String> tags) {
-        return null;
-    }
-
-    public ArrayList<Book> searchBookByTag(String tagName, int tagID) throws SQLException{
+    public ArrayList<Book> searchBookByTag(String tagName) throws SQLException{
         ArrayList<Book> books = new ArrayList<>();
-        String query = "SELECT B.BOOK_ID, B.BOOK_NAME, B.BOOK_AUTHOR, B.BOOK_DATE, TG.TAG_NAME, GS.GENRE_NAME "+
-                "FROM BOOKS B "+
+        String query = "SELECT B.BOOK_ID, B.BOOK_NAME, B.BOOK_AUTHOR, B.BOOK_DATE, " +
+                "TG.TAG_NAME, GS.GENRE_NAME FROM BOOKS B "+
                 "JOIN BOOKTAGS BT ON B.BOOK_ID = BT.BOOK_ID "+
                 "JOIN TAGS TG ON BT.TAG_ID = TG.TAG_ID " +
                 "JOIN BOOKGENRES BG ON B.BOOK_ID = BG.BOOK_ID "+
                 "JOIN GENRES GS ON BG.GENRE_ID = GS.GENRE_ID "+
                 "WHERE TG.TAG_NAME = ?";
+
+        try(Connection c = connection()){
+            PreparedStatement statement = c.prepareStatement(query);
+            statement.setString(1, tagName);
+            ResultSet rs = statement.executeQuery();
+
+            while(rs.next()){
+                Book newBook = fromResultSet(rs);
+                if(newBook != null){
+                    books.add(newBook);
+                }
+            }
+            rs.close();
+        }
+        return books;
+    }
+
+    @Override
+    public ArrayList<String> searchTagByBook (Book book) throws SQLException{
+        ArrayList<String> result = new ArrayList<>();
+        String query = "SELECT TG.TAG_NAME FROM TAGS TG "+
+                        "JOIN BOOKTAGS BT ON TG.TAG_ID = BT.TAG_ID "+
+                        "JOIN BOOKS B ON BT.BOOK_ID = B.BOOK_ID " +
+                        "WHERE B.BOOK_NAME = ? ";
+        try(Connection c = connection()){
+            PreparedStatement statement = c.prepareStatement(query);
+            statement.setString(1, book.getName());
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()){
+                String tagName = rs.getString("TAG_NAME");
+                result.add(tagName);
+            }
+            rs.close();
+        }
+        return result;
+    }
+
+    @Override
+    public ArrayList<Book> searchGenre (String genreName) throws SQLException{
+        ArrayList<Book> books = new ArrayList<>();
+        String query =
+                "SELECT B.BOOK_ID, B.BOOK_NAME, B.BOOK_AUTHOR, B.BOOK_DATE, " +
+                        "TG.TAG_NAME, GS.GENRE_NAME FROM BOOKS B "+
+                "JOIN BOOKTAGS BT ON B.BOOK_ID = BT.BOOK_ID " +
+                "JOIN TAGS TG ON BT.TAG_ID = TG.TAG_ID "+
+                "JOIN BOOKGENRES BG ON B.BOOK_ID = BG.BOOK_ID "+
+                "JOIN GENRES GS ON BG.GENRE_ID = GS.GENRE_ID "+
+                "WHERE GS.GENRE_NAME = ? ";
+
+        try(Connection c = connection()){
+            PreparedStatement statement = c.prepareStatement(query);
+            statement.setString(1, genreName);
+            ResultSet rs = statement.executeQuery();
+
+            while(rs.next()){
+                Book newBook = fromResultSet(rs);
+                if(newBook != null){
+                    books.add(newBook);
+                }
+            }
+            rs.close();
+        }
+        return books;
+    }
+
+    @Override
+    public ArrayList<Book> searchAuthor(String author) throws SQLException{
+        ArrayList<Book> books = new ArrayList<>();
+        String query = "SELECT B.BOOK_ID, B.BOOK_NAME, B.BOOK_AUTHOR, B.BOOK_DATE, " +
+                "TG.TAG_NAME, GS.GENRE_NAME FROM BOOKS B "+
+                "JOIN BOOKTAGS BT ON B.BOOK_ID = BT.BOOK_ID " +
+                "JOIN TAGS TG ON BT.TAG_ID = TG.TAG_ID "+
+                "JOIN BOOKGENRES BG ON B.BOOK_ID = BG.BOOK_ID "+
+                "JOIN GENRES GS ON BG.GENRE_ID = GS.GENRE_ID "+
+                "WHERE B.BOOK_AUTHOR = ? ";
+
+        try(Connection c = connection()){
+            PreparedStatement statement = c.prepareStatement(query);
+            statement.setString(1, author);
+            ResultSet rs = statement.executeQuery();
+
+            while(rs.next()){
+                Book newBook = fromResultSet(rs);
+                if(newBook != null){
+                    books.add(newBook);
+                }
+            }
+            rs.close();
+        }
+        return books;
+    }
+
+    @Override
+    public ArrayList<Book> searchName(String bookName) throws SQLException{
+        ArrayList<Book> books = new ArrayList<>();
+        String query = "SELECT B.BOOK_ID, B.BOOK_NAME, B.BOOK_AUTHOR, B.BOOK_DATE, " +
+                "TG.TAG_NAME, GS.GENRE_NAME FROM BOOKS B "+
+                "JOIN BOOKTAGS BT ON B.BOOK_ID = BT.BOOK_ID " +
+                "JOIN TAGS TG ON BT.TAG_ID = TG.TAG_ID "+
+                "JOIN BOOKGENRES BG ON B.BOOK_ID = BG.BOOK_ID "+
+                "JOIN GENRES GS ON BG.GENRE_ID = GS.GENRE_ID "+
+                "WHERE B.BOOK_NAME = ? ";
+
+        try(Connection c = connection()){
+            PreparedStatement statement = c.prepareStatement(query);
+            statement.setString(1, bookName);
+            ResultSet rs = statement.executeQuery();
+
+            while(rs.next()){
+                Book newBook = fromResultSet(rs);
+                if(newBook != null){
+                    books.add(newBook);
+                }
+            }
+            rs.close();
+        }
+        return books;
+    }
+
+    @Override
+    public ArrayList<Book> getBookList() throws SQLException{
+        ArrayList<Book> books = new ArrayList<>();
+        String query = "SELECT B.BOOK_ID, B.BOOK_NAME, B.BOOK_AUTHOR, B.BOOK_DATE, " +
+                "TG.TAG_NAME, GS.GENRE_NAME FROM BOOKS B "+
+                "JOIN BOOKTAGS BT ON B.BOOK_ID = BT.BOOK_ID " +
+                "JOIN TAGS TG ON BT.TAG_ID = TG.TAG_ID "+
+                "JOIN BOOKGENRES BG ON B.BOOK_ID = BG.BOOK_ID "+
+                "JOIN GENRES GS ON BG.GENRE_ID = GS.GENRE_ID ";
 
         try(Connection c = connection()){
             PreparedStatement statement = c.prepareStatement(query);
@@ -303,60 +413,8 @@ public class BookPersistenceHSQLDB implements IBookPersistentIntermediate {
                     books.add(newBook);
                 }
             }
+            rs.close();
         }
         return books;
-    }
-
-    public ArrayList<String> searchTagByBook (Book book) throws SQLException{
-        ArrayList<String> result = new ArrayList<>();
-        String query = "SELECT TG.TAG_NAME FROM TAGS TG "+
-                        "JOIN BOOKTAGS BT ON  TG.TAG_ID = BT.TAG_ID "+
-                        "JOIN BOOKS B ON BT.BOOK_ID = B.BOOK_ID " +
-                        "WHERE B.BOOK_NAME = ? ";
-        try(Connection c = connection()){
-            PreparedStatement statement = c.prepareStatement(query);
-            ResultSet rs = statement.executeQuery();
-
-            while (rs.next()){
-                String tagName = rs.getString("TAG_NAME");
-                result.add(tagName);
-            }
-        }
-        return result;
-    }
-
-    @Override
-    public ArrayList<Book> searchGenre(List<String> genres) {
-        return null;
-    }
-
-    @Override
-    public ArrayList<Book> searchAuthor(String author) {
-        return null;
-    }
-
-    @Override
-    public ArrayList<Book> searchName(String bookName) {
-        return null;
-    }
-
-    @Override
-    public ArrayList<Book> search(ArrayList<Book> list) {
-        return null;
-    }
-
-    @Override
-    public ArrayList<Book> search(PreparedStatement statement) {
-        return null;
-    }
-
-    @Override
-    public Book search(Book book) {
-        return null;
-    }
-
-    @Override
-    public ArrayList<Book> getBookList() {
-        return null;
     }
 }
