@@ -125,7 +125,7 @@ public class UserPersistentStub implements IUserPersistent {
         User found = null;
         for(int i = 0; i<userList.size() && found == null; i++){
             User current = userList.get(i);
-            if(current.getUserName().equals(userName) && current.getPassword().equals(password)){
+            if(current.getUserName().equals(userName)){
                 found = current;
             }
         }
