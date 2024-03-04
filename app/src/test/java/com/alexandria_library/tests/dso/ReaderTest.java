@@ -20,7 +20,7 @@ public class ReaderTest {
 
     @Before
     public void setUp(){
-        reader = new Reader("testReader", "testPass");
+        reader = new Reader("testReader", "testPass", 1);
 
         String[] tagsArray = new String[]{"Young Adult", "Twilight 1", "Vampires"};
         String[] genreArray = new String[]{"Urban Fantasy", "Paranormal", "Romance"};
@@ -59,7 +59,7 @@ public class ReaderTest {
     @Test
     public void testEdgeReader(){
         Reader edgeReader;
-        edgeReader = new Reader(" ", " ");
+        edgeReader = new Reader(" ", " ", 0);
         assertNotNull(edgeReader);
         assertEquals(" ", edgeReader.getUserName());
         assertEquals(" ", edgeReader.getPassword());

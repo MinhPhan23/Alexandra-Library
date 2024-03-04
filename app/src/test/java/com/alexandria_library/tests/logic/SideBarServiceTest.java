@@ -26,7 +26,7 @@ public class SideBarServiceTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        testUser = new User("userTest", "passwordTest");
+        testUser = new User("userTest", "passwordTest", 1);
         sideBarService = new SideBarService(testUser);
         assertNotNull(sideBarService);
         sideBarService = new SideBarService(testUser, mockBookData);
