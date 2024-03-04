@@ -111,13 +111,11 @@ public class UserPersistenceHSQLDB implements IUserPersistenceHSQLDB {
     }
 
 
-// === Adding book to specific user' list Implement Start ===
-    /*******
-     * Part for adding book to specific user's list (reading list, finished list, customer list)
-     * @param list
-     * @param user
-     * @throws SQLException
-     */
+/*******
+ * === Adding book to specific user' list Implement Start ===
+ * Part for adding book to specific user's list (reading list, finished list, customer list)
+ *******/
+    //add book to custom list
     @Override
     public void addBookToCustomList(ArrayList<Book> list, User user) throws SQLException{
         final String addToCustomListQuery =  "INSERT INTO CUSTOMLIST(BOOK_ID, USER_ID, CUSTOMLIST_PK) VALUES (?, ?, ?) ";
@@ -128,6 +126,7 @@ public class UserPersistenceHSQLDB implements IUserPersistenceHSQLDB {
                 customListID++;
         }
     }
+    //add book to reading list
     @Override
     public void addBookToReadingList(ArrayList<Book> list, User user) throws SQLException{
         final String addToReadingQuery = "INSERT INTO READINGLIST(BOOK_ID, USER_ID, READINGLIST_PK) VALUES(?, ?, ?)";
@@ -138,6 +137,7 @@ public class UserPersistenceHSQLDB implements IUserPersistenceHSQLDB {
                 readingListID++;
         }
     }
+    //add book to finished list
     @Override
     public void addBookToFinishedList(ArrayList<Book> list, User user) throws SQLException{
         final String addToFinishedQuery = "INSERT INTO FINISHEDLIST(BOOK_ID, USER_ID, FINISHEDLIST_PK) VALUES (?, ?, ?)";
@@ -148,6 +148,7 @@ public class UserPersistenceHSQLDB implements IUserPersistenceHSQLDB {
                 finishedListID++;
         }
     }
+    //(PRIVATE) add book to specific user's list
     private boolean addBookToUserList(String query, Book book, User user, int id) throws SQLException{
         boolean added = false;
         try(final Connection c = connection()){
@@ -162,78 +163,61 @@ public class UserPersistenceHSQLDB implements IUserPersistenceHSQLDB {
         }
         return added;
     }
-// === Adding book to specific user' list Implement End ===
+/*******
+ * === Adding book to specific user' list Implement End ===
+ *******/
 
 
 
-
+/*******
+ * === DELETE START ===
+ * delete book from specific user's list
+ */
+    //delete book from user's custom list
     @Override
-    public void deleteUserAllListBook(ArrayList<Book> list, User user) throws SQLException{
+    public void deleteUserCustomListBook(ArrayList<Book> list, User user) throws SQLException{
+        String query = "DELETE FROM CUSTOMLIST WHERE BOOK_ID = ? AND USER_ID = ?";
         if(user instanceof Reader){
             Reader reader = (Reader) user;
             for (int i = 0; i<list.size(); i++){
-                deleteFromAllList(list.get(i), reader);
+                deleteFromList(query, list.get(i), reader);
             }
         }
     }
+    //delete book from user's reading list
     @Override
-    public void deleteInProgressListBook(ArrayList<Book> list, User user) throws SQLException{
+    public void deleteReadingListBook(ArrayList<Book> list, User user) throws SQLException{
+        String query = "DELETE FROM READINGLIST WHERE BOOK_ID = ? AND USER_ID = ?";
         if(user instanceof Reader){
             Reader reader = (Reader) user;
             for (int i = 0; i<list.size(); i++){
-                deleteFromInProgressList(list.get(i), reader);
+                deleteFromList(query, list.get(i), reader);
             }
         }
-
     }
+    //delete book from user's finished list
     @Override
     public void deleteFinishedListBook(ArrayList<Book> list, User user) throws SQLException{
+        String query = "DELETE FROM FINISHEDLIST WHERE BOOK_ID = ? AND USER_ID = ?";
         if(user instanceof Reader){
             Reader reader = (Reader) user;
             for (int i = 0; i<list.size(); i++){
-                deleteFromFinishedList(list.get(i), reader);
+                deleteFromList(query, list.get(i), reader);
             }
         }
     }
-
-    private void deleteFromAllList(Book book, Reader reader) throws SQLException {
+    //(PRIVATE) delete book from specific user's list
+    private void deleteFromList(String query, Book book, Reader reader) throws SQLException{
         int bookID = book.getID();
         int readerID = reader.getId();
-        String query = "DELETE FROM CUSTOMLIST WHERE BOOK_ID = ? AND USER_ID = ?";
-        try(Connection c = connection()){
-            PreparedStatement statement = c.prepareStatement(query);
+        try(final Connection c = connection()){
+            final PreparedStatement statement = c.prepareStatement(query);
             statement.setInt(1, bookID);
             statement.setInt(2, readerID);
-            ResultSet rs = statement.executeQuery();
-            statement.close();
-            rs.close();
+            statement.executeUpdate();
         }
     }
-    private void deleteFromInProgressList(Book book, Reader reader) throws SQLException {
-        int bookID = book.getID();
-        int readerID = reader.getId();
-        String query = "DELETE FROM READINGLIST WHERE BOOK_ID = ? AND USER_ID = ?";
-        try(Connection c = connection()){
-            PreparedStatement statement = c.prepareStatement(query);
-            statement.setInt(1, bookID);
-            statement.setInt(2, readerID);
-            ResultSet rs = statement.executeQuery();
-            statement.close();
-            rs.close();
-        }
-    }
-    private void deleteFromFinishedList(Book book, Reader reader) throws SQLException {
-        int bookID = book.getID();
-        int readerID = reader.getId();
-        String query = "DELETE FROM FINISHEDLIST WHERE BOOK_ID = ? AND USER_ID = ?";
-        try(Connection c = connection()){
-            PreparedStatement statement = c.prepareStatement(query);
-            statement.setInt(1, bookID);
-            statement.setInt(2, readerID);
-            ResultSet rs = statement.executeQuery();
-            statement.close();
-            rs.close();
-        }
-    }
-
+/********
+ * === DELETE END ===
+ ********/
 }
