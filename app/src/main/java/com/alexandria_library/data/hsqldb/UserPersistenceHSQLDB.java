@@ -1,5 +1,6 @@
 package com.alexandria_library.data.hsqldb;
 
+import com.alexandria_library.data.IUserPersistenceHSQLDB;
 import com.alexandria_library.dso.User;
 
 import java.sql.Connection;
@@ -11,7 +12,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserPersistenceHSQLDB {
+public class UserPersistenceHSQLDB implements IUserPersistenceHSQLDB {
     private final String dbPath;
     private static int userID = 1;
 
@@ -44,6 +45,7 @@ public class UserPersistenceHSQLDB {
         return users;
     }
 
+    @Override
     public boolean addNewUser(String userName, String password) throws SQLException{
         boolean result = false;
         try(final Connection c = connection()){
@@ -60,6 +62,8 @@ public class UserPersistenceHSQLDB {
         }
         return result;
     }
+
+    @Override
     public User findUser(String userName, String password) throws SQLException{
         User found = null;
         try(final Connection c = connection()){
@@ -77,6 +81,7 @@ public class UserPersistenceHSQLDB {
         return found;
     }
 
+    @Override
     public User findUser(String userName) throws SQLException{
         User found = null;
         try(final Connection c = connection()){
