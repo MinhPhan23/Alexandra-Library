@@ -39,13 +39,15 @@ public class SearchServiceTest {
 
         assertNotNull(actualMessage);
         assertTrue(actualMessage.contains(expectedMessage));
-
+    }
+    @Test
+    public void testNullSearch() {
         System.out.println("Test null String object");
-        exception = assertThrows(SearchServiceException.class, () -> {
+        Exception exception = assertThrows(SearchServiceException.class, () -> {
             searchService.searchInput(null);
         });
-        expectedMessage = "Could not search for empty text";
-        actualMessage = exception.getMessage();
+        String expectedMessage = "Could not search for empty text";
+        String actualMessage = exception.getMessage();
 
         assertNotNull(actualMessage);
         assertTrue(actualMessage.contains(expectedMessage));
