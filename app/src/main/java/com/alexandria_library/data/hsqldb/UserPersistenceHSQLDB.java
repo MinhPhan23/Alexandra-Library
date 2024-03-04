@@ -4,6 +4,7 @@ import com.alexandria_library.application.Service;
 import com.alexandria_library.data.IBookPersistenceHSQLDB;
 import com.alexandria_library.data.IUserPersistenceHSQLDB;
 import com.alexandria_library.dso.Book;
+import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.dso.Reader;
 import com.alexandria_library.dso.User;
 
@@ -19,9 +20,15 @@ import java.util.List;
 public class UserPersistenceHSQLDB implements IUserPersistenceHSQLDB {
     private final String dbPath;
     private static int userID = 1;
-    private IBookPersistenceHSQLDB bookPersistenceHSQLDB = Service.getBookPersistenceHSQLDB();
+    private static int customListID = 1;
+    private static int readingListID = 1;
+    private static int finishedListID = 1;
+    private IBookPersistenceHSQLDB bookPersistenceHSQLDB;
 
-    public UserPersistenceHSQLDB(final String dbPath){this.dbPath = dbPath;}
+    public UserPersistenceHSQLDB(final String dbPath) {
+        this.dbPath = dbPath;
+        bookPersistenceHSQLDB = Service.getBookPersistenceHSQLDB();
+    }
 
     private Connection connection() throws SQLException {
         return DriverManager.getConnection("jdbc:hsqldb:file:" + dbPath + ";shutdown=true", "SA", "");
@@ -103,22 +110,59 @@ public class UserPersistenceHSQLDB implements IUserPersistenceHSQLDB {
         return found;
     }
 
-//
-//    public boolean addBookToCustomList(ArrayList<Book> list, User user) throws SQLException{
-//
-//    }
-//    public boolean addBookToInProgressList(ArrayList<Book> list, User user) throws SQLException{
-//
-//    }
-//    public boolean addBookToFinishedList(ArrayList<Book> list, User user) throws SQLException{
-//
-//    }
 
+// === Adding book to specific user' list Implement Start ===
+    /*******
+     * Part for adding book to specific user's list (reading list, finished list, customer list)
+     * @param list
+     * @param user
+     * @throws SQLException
+     */
+    @Override
+    public void addBookToCustomList(ArrayList<Book> list, User user) throws SQLException{
+        final String addToCustomListQuery =  "INSERT INTO CUSTOMLIST(BOOK_ID, USER_ID, CUSTOMLIST_PK) VALUES (?, ?, ?) ";
+        for(int i = 0; i<list.size(); i++){
+            boolean checkEachAdd = addBookToUserList(addToCustomListQuery, list.get(i), user, customListID);
 
+            if(checkEachAdd)
+                customListID++;
+        }
+    }
+    @Override
+    public void addBookToReadingList(ArrayList<Book> list, User user) throws SQLException{
+        final String addToReadingQuery = "INSERT INTO READINGLIST(BOOK_ID, USER_ID, READINGLIST_PK) VALUES(?, ?, ?)";
+        for(int i = 0; i<list.size(); i++){
+            boolean checkEachAdd = addBookToUserList(addToReadingQuery, list.get(i), user, readingListID);
 
+            if(checkEachAdd)
+                readingListID++;
+        }
+    }
+    @Override
+    public void addBookToFinishedList(ArrayList<Book> list, User user) throws SQLException{
+        final String addToFinishedQuery = "INSERT INTO FINISHEDLIST(BOOK_ID, USER_ID, FINISHEDLIST_PK) VALUES (?, ?, ?)";
+        for (int i = 0; i<list.size(); i++){
+            boolean checkEachAdd = addBookToUserList(addToFinishedQuery, list.get(i), user, finishedListID);
 
-
-
+            if(checkEachAdd)
+                finishedListID++;
+        }
+    }
+    private boolean addBookToUserList(String query, Book book, User user, int id) throws SQLException{
+        boolean added = false;
+        try(final Connection c = connection()){
+            final PreparedStatement st = c.prepareStatement(query);
+            st.setInt(1, book.getID());
+            st.setInt(2, user.getId());
+            st.setInt(3, id);
+            int addAffected = st.executeUpdate();
+            if(addAffected > 0){
+                added = true;
+            }
+        }
+        return added;
+    }
+// === Adding book to specific user' list Implement End ===
 
 
 
@@ -151,7 +195,6 @@ public class UserPersistenceHSQLDB implements IUserPersistenceHSQLDB {
             }
         }
     }
-
 
     private void deleteFromAllList(Book book, Reader reader) throws SQLException {
         int bookID = book.getID();

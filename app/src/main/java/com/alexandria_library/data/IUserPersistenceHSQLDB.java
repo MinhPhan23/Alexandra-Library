@@ -39,7 +39,13 @@ public interface IUserPersistenceHSQLDB {
      */
     public User findUser(String userName)throws SQLException;
 
+    //Start for deleting book from user's list
     public void deleteUserAllListBook(ArrayList<Book> list, User user) throws SQLException;
     public void deleteInProgressListBook(ArrayList<Book> list, User user) throws SQLException;
     public void deleteFinishedListBook(ArrayList<Book> list, User user) throws SQLException;
+
+    //start for adding book to user's list
+    public void addBookToCustomList(ArrayList<Book> list, User user) throws SQLException;
+    public void addBookToReadingList(ArrayList<Book> list, User user) throws SQLException;
+    public void addBookToFinishedList(ArrayList<Book> list, User user) throws SQLException;
 }

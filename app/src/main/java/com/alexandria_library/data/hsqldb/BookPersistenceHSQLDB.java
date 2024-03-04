@@ -405,7 +405,7 @@ public class BookPersistenceHSQLDB implements IBookPersistenceHSQLDB {
     }
 
     @Override
-    public Booklist getBookList() throws SQLException{
+    public Booklist getLibraryBookList() throws SQLException{
         Booklist books = new Booklist();
         String query = "SELECT B.BOOK_ID, B.BOOK_NAME, B.BOOK_AUTHOR, B.BOOK_DATE, " +
                 "TG.TAG_NAME, GS.GENRE_NAME FROM BOOKS B "+
@@ -429,6 +429,31 @@ public class BookPersistenceHSQLDB implements IBookPersistenceHSQLDB {
         return books;
     }
 
+    @Override
+    public Booklist findUserCustomList(User user) throws SQLException{
+        String user_custom_list_query = "SELECT * FROM BOOKS B "+
+                "JOIN CUSTOMLIST CL ON B.BOOK_ID = CL.BOOK_ID "+
+                "JOIN USERS US ON CL.USER_ID = US.USER_ID "+
+                "WHERE USER_ID = ? ";
+        return getUserBookList(user_custom_list_query, user);
+    }
+    @Override
+    public Booklist findUserInProgressList(User user) throws SQLException{
+        String user_inprogress_list_query = "SELECT * FROM BOOKS B "+
+                "JOIN READINGLIST RL ON B.BOOK_ID = RL.BOOK_ID "+
+                "JOIN USERS US ON RL.USER_ID = US.USER_ID "+
+                "WHERE USER_ID = ?";
+        return getUserBookList(user_inprogress_list_query, user);
+    }
+    @Override
+    public Booklist findUserFinishedList(User user) throws SQLException{
+        String user_finished_list_query = "SELECT * FROM BOOKS B "+
+                "JOIN FINISHEDLIST FL ON B.BOOK_ID = FL.BOOK_ID "+
+                "JOIN USERS US ON FL.USER_ID = US.USER_ID "+
+                "WHERE USER_ID = ? ";
+        return getUserBookList(user_finished_list_query, user);
+    }
+
     /******
      * Father function for get user's list
      * three child are get CustomList, get FinishedList, get InProgressList
@@ -437,7 +462,7 @@ public class BookPersistenceHSQLDB implements IBookPersistenceHSQLDB {
      * @return
      * @throws SQLException
      */
-    public Booklist getUserBookList(String query, User user) throws SQLException{
+    private Booklist getUserBookList(String query, User user) throws SQLException{
         Booklist list = new Booklist();
         try(final Connection c = connection()){
             final PreparedStatement st = c.prepareStatement(query);
