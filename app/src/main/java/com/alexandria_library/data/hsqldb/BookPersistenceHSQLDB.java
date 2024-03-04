@@ -296,16 +296,54 @@ public class BookPersistenceHSQLDB implements IBookPersistenceSQLDB {
     }
 
     private void deleteFromLibrary(Book book, Librarian librarian) throws SQLException {
-
+        int bookID = book.getID();
+        String query = "DELETE FROM BOOKS WHERE BOOK_ID = ?";
+        try(Connection c = connection()){
+            PreparedStatement statement = c.prepareStatement(query);
+            statement.setInt(1, bookID);
+            ResultSet rs = statement.executeQuery();
+            statement.close();
+            rs.close();
+        }
     }
     private void deleteFromAllList(Book book, Reader reader) throws SQLException {
-
+        int bookID = book.getID();
+        int readerID = reader.getId();
+        String query = "DELETE FROM CUSTOMLIST WHERE BOOK_ID = ? AND USER_ID = ?";
+        try(Connection c = connection()){
+            PreparedStatement statement = c.prepareStatement(query);
+            statement.setInt(1, bookID);
+            statement.setInt(2, readerID);
+            ResultSet rs = statement.executeQuery();
+            statement.close();
+            rs.close();
+        }
     }
     private void deleteFromInProgressList(Book book, Reader reader) throws SQLException {
-
+        int bookID = book.getID();
+        int readerID = reader.getId();
+        String query = "DELETE FROM READINGLIST WHERE BOOK_ID = ? AND USER_ID = ?";
+        try(Connection c = connection()){
+            PreparedStatement statement = c.prepareStatement(query);
+            statement.setInt(1, bookID);
+            statement.setInt(2, readerID);
+            ResultSet rs = statement.executeQuery();
+            statement.close();
+            rs.close();
+        }
     }
     private void deleteFromFinishedList(Book book, Reader reader) throws SQLException {
-
+        int bookID = book.getID();
+        int readerID = reader.getId();
+        String query = "DELETE FROM FINISHEDLIST WHERE BOOK_ID = ? AND USER_ID = ?";
+        try(Connection c = connection()){
+            PreparedStatement statement = c.prepareStatement(query);
+            statement.setInt(1, bookID);
+            statement.setInt(2, readerID);
+            ResultSet rs = statement.executeQuery();
+            statement.close();
+            rs.close();
+        }
     }
 
     @Override
