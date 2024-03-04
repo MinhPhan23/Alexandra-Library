@@ -1,6 +1,10 @@
 package com.alexandria_library.data.hsqldb;
 
+import com.alexandria_library.application.Service;
+import com.alexandria_library.data.IBookPersistenceHSQLDB;
 import com.alexandria_library.data.IUserPersistenceHSQLDB;
+import com.alexandria_library.dso.Book;
+import com.alexandria_library.dso.Reader;
 import com.alexandria_library.dso.User;
 
 import java.sql.Connection;
@@ -15,6 +19,7 @@ import java.util.List;
 public class UserPersistenceHSQLDB implements IUserPersistenceHSQLDB {
     private final String dbPath;
     private static int userID = 1;
+    private IBookPersistenceHSQLDB bookPersistenceHSQLDB = Service.getBookPersistenceHSQLDB();
 
     public UserPersistenceHSQLDB(final String dbPath){this.dbPath = dbPath;}
 
@@ -96,6 +101,96 @@ public class UserPersistenceHSQLDB implements IUserPersistenceHSQLDB {
             statement.close();
         }
         return found;
+    }
+
+//
+//    public boolean addBookToCustomList(ArrayList<Book> list, User user) throws SQLException{
+//
+//    }
+//    public boolean addBookToInProgressList(ArrayList<Book> list, User user) throws SQLException{
+//
+//    }
+//    public boolean addBookToFinishedList(ArrayList<Book> list, User user) throws SQLException{
+//
+//    }
+
+
+
+
+
+
+
+
+
+
+    @Override
+    public void deleteUserAllListBook(ArrayList<Book> list, User user) throws SQLException{
+        if(user instanceof Reader){
+            Reader reader = (Reader) user;
+            for (int i = 0; i<list.size(); i++){
+                deleteFromAllList(list.get(i), reader);
+            }
+        }
+    }
+    @Override
+    public void deleteInProgressListBook(ArrayList<Book> list, User user) throws SQLException{
+        if(user instanceof Reader){
+            Reader reader = (Reader) user;
+            for (int i = 0; i<list.size(); i++){
+                deleteFromInProgressList(list.get(i), reader);
+            }
+        }
+
+    }
+    @Override
+    public void deleteFinishedListBook(ArrayList<Book> list, User user) throws SQLException{
+        if(user instanceof Reader){
+            Reader reader = (Reader) user;
+            for (int i = 0; i<list.size(); i++){
+                deleteFromFinishedList(list.get(i), reader);
+            }
+        }
+    }
+
+
+    private void deleteFromAllList(Book book, Reader reader) throws SQLException {
+        int bookID = book.getID();
+        int readerID = reader.getId();
+        String query = "DELETE FROM CUSTOMLIST WHERE BOOK_ID = ? AND USER_ID = ?";
+        try(Connection c = connection()){
+            PreparedStatement statement = c.prepareStatement(query);
+            statement.setInt(1, bookID);
+            statement.setInt(2, readerID);
+            ResultSet rs = statement.executeQuery();
+            statement.close();
+            rs.close();
+        }
+    }
+    private void deleteFromInProgressList(Book book, Reader reader) throws SQLException {
+        int bookID = book.getID();
+        int readerID = reader.getId();
+        String query = "DELETE FROM READINGLIST WHERE BOOK_ID = ? AND USER_ID = ?";
+        try(Connection c = connection()){
+            PreparedStatement statement = c.prepareStatement(query);
+            statement.setInt(1, bookID);
+            statement.setInt(2, readerID);
+            ResultSet rs = statement.executeQuery();
+            statement.close();
+            rs.close();
+        }
+    }
+    private void deleteFromFinishedList(Book book, Reader reader) throws SQLException {
+        int bookID = book.getID();
+        int readerID = reader.getId();
+        String query = "DELETE FROM FINISHEDLIST WHERE BOOK_ID = ? AND USER_ID = ?";
+        try(Connection c = connection()){
+            PreparedStatement statement = c.prepareStatement(query);
+            statement.setInt(1, bookID);
+            statement.setInt(2, readerID);
+            ResultSet rs = statement.executeQuery();
+            statement.close();
+            rs.close();
+        }
     }
 
 }

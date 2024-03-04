@@ -1,8 +1,10 @@
 package com.alexandria_library.data;
 
+import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.User;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public interface IUserPersistenceHSQLDB {
@@ -36,4 +38,8 @@ public interface IUserPersistenceHSQLDB {
      * @return true for found, false for not found;
      */
     public User findUser(String userName)throws SQLException;
+
+    public void deleteUserAllListBook(ArrayList<Book> list, User user) throws SQLException;
+    public void deleteInProgressListBook(ArrayList<Book> list, User user) throws SQLException;
+    public void deleteFinishedListBook(ArrayList<Book> list, User user) throws SQLException;
 }
