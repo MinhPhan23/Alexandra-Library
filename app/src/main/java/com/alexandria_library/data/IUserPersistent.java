@@ -13,17 +13,17 @@ public interface IUserPersistent {
     public boolean addNewUser(String userName, String password);
 
     /*****
-     * check if the user exists in the system by username and password
+     * check if the user exists in the system
      * @param userName a username to check
      * @param password a password to check
-     * @return true for found, false for not found;
+     * @return An user object if found, null if not
      */
     public User findUser(String userName, String password);
 
     /*****
      * check if the user exists in the system by username only
      * @param userName a username to check
-     * @return true for found, false for not found;
+     * @return An user object if found, null if not
      */
     public User findUser(String userName);
 

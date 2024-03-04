@@ -13,11 +13,13 @@ import android.widget.TextView;
 
 import com.alexandria_library.R;
 import com.alexandria_library.logic.Authentication;
+import com.alexandria_library.logic.AuthenticationException;
+import com.alexandria_library.logic.IAuthentication;
 
 public class RegisterActivity extends AppCompatActivity {
     private EditText userName, password, doubleCheckPW;
     private Button goRegister;
-    private Authentication authentication;
+    private IAuthentication authentication;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +33,8 @@ public class RegisterActivity extends AppCompatActivity {
                 registerBtnClicked(v);
             }
         });
-        /******
-         * also can use "enter" keyword to instead of click register button
-         */
+
+        //also can use "enter" keyword to instead of click register button
         doubleCheckPW.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -58,23 +59,14 @@ public class RegisterActivity extends AppCompatActivity {
         String name = userName.getText().toString();
         String pw = password.getText().toString();
         String doublePW = doubleCheckPW.getText().toString();
-        checkRegister(name, pw, doublePW);
-    }
-
-    private void checkRegister(String name, String pw, String doublePW){
-        if(name == null || pw == null || doublePW == null){
-            return;
-        }
-        else if (!pw.equals(doublePW)){
-            return;
-        }
-        else if(authentication.findExist(name, pw) != null){
-            return;
-        }
-        else{
-            authentication.insertNewUser(name, pw);
+        try {
+            authentication.register(name, pw, doublePW);
             Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
             startActivity(i);
+        }
+        catch (AuthenticationException e) {
+            //Print error message here
+            System.out.println(e.getMessage());
         }
     }
 }
