@@ -45,7 +45,7 @@ public class Authentication implements IAuthentication{
             throw new AuthenticationException("Username does not exist");
         }
         if (!user.getPassword().equals(password)) {
-            throw new AuthenticationException("Password in not correct");
+            throw new AuthenticationException("Password is not correct");
         }
         return user;
     }
