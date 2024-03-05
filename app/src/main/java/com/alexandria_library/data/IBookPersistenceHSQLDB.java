@@ -21,6 +21,6 @@ public interface IBookPersistenceHSQLDB {
     public Booklist findUserCustomList(User user) throws SQLException;
     public Booklist findUserInProgressList(User user) throws SQLException;
     public Booklist findUserFinishedList(User user) throws SQLException;
-    public void deleteLibraryBook(ArrayList<Book> list, User user) throws SQLException;
+    public void deleteLibraryBook(Booklist list, User user) throws SQLException;
 
 }

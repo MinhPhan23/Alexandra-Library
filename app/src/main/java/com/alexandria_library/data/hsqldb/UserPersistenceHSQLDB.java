@@ -1,7 +1,5 @@
 package com.alexandria_library.data.hsqldb;
 
-import com.alexandria_library.application.Service;
-import com.alexandria_library.data.IBookPersistenceHSQLDB;
 import com.alexandria_library.data.IUserPersistenceHSQLDB;
 import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
@@ -23,11 +21,9 @@ public class UserPersistenceHSQLDB implements IUserPersistenceHSQLDB {
     private static int customListID = 1;
     private static int readingListID = 1;
     private static int finishedListID = 1;
-    private IBookPersistenceHSQLDB bookPersistenceHSQLDB;
 
     public UserPersistenceHSQLDB(final String dbPath) {
         this.dbPath = dbPath;
-        bookPersistenceHSQLDB = Service.getBookPersistenceHSQLDB();
     }
 
     private Connection connection() throws SQLException {
@@ -117,7 +113,7 @@ public class UserPersistenceHSQLDB implements IUserPersistenceHSQLDB {
  *******/
     //add book to custom list
     @Override
-    public void addBookToCustomList(ArrayList<Book> list, User user) throws SQLException{
+    public void addBookToCustomList(Booklist list, User user) throws SQLException{
         final String addToCustomListQuery =  "INSERT INTO CUSTOMLIST(BOOK_ID, USER_ID, CUSTOMLIST_PK) VALUES (?, ?, ?) ";
         for(int i = 0; i<list.size(); i++){
             boolean checkEachAdd = addBookToUserList(addToCustomListQuery, list.get(i), user, customListID);
@@ -128,7 +124,7 @@ public class UserPersistenceHSQLDB implements IUserPersistenceHSQLDB {
     }
     //add book to reading list
     @Override
-    public void addBookToReadingList(ArrayList<Book> list, User user) throws SQLException{
+    public void addBookToReadingList(Booklist list, User user) throws SQLException{
         final String addToReadingQuery = "INSERT INTO READINGLIST(BOOK_ID, USER_ID, READINGLIST_PK) VALUES(?, ?, ?)";
         for(int i = 0; i<list.size(); i++){
             boolean checkEachAdd = addBookToUserList(addToReadingQuery, list.get(i), user, readingListID);
@@ -139,7 +135,7 @@ public class UserPersistenceHSQLDB implements IUserPersistenceHSQLDB {
     }
     //add book to finished list
     @Override
-    public void addBookToFinishedList(ArrayList<Book> list, User user) throws SQLException{
+    public void addBookToFinishedList(Booklist list, User user) throws SQLException{
         final String addToFinishedQuery = "INSERT INTO FINISHEDLIST(BOOK_ID, USER_ID, FINISHEDLIST_PK) VALUES (?, ?, ?)";
         for (int i = 0; i<list.size(); i++){
             boolean checkEachAdd = addBookToUserList(addToFinishedQuery, list.get(i), user, finishedListID);
@@ -175,7 +171,7 @@ public class UserPersistenceHSQLDB implements IUserPersistenceHSQLDB {
  */
     //delete book from user's custom list
     @Override
-    public void deleteUserCustomListBook(ArrayList<Book> list, User user) throws SQLException{
+    public void deleteUserCustomListBook(Booklist list, User user) throws SQLException{
         String query = "DELETE FROM CUSTOMLIST WHERE BOOK_ID = ? AND USER_ID = ?";
         if(user instanceof Reader){
             Reader reader = (Reader) user;
@@ -186,7 +182,7 @@ public class UserPersistenceHSQLDB implements IUserPersistenceHSQLDB {
     }
     //delete book from user's reading list
     @Override
-    public void deleteReadingListBook(ArrayList<Book> list, User user) throws SQLException{
+    public void deleteReadingListBook(Booklist list, User user) throws SQLException{
         String query = "DELETE FROM READINGLIST WHERE BOOK_ID = ? AND USER_ID = ?";
         if(user instanceof Reader){
             Reader reader = (Reader) user;
@@ -197,7 +193,7 @@ public class UserPersistenceHSQLDB implements IUserPersistenceHSQLDB {
     }
     //delete book from user's finished list
     @Override
-    public void deleteFinishedListBook(ArrayList<Book> list, User user) throws SQLException{
+    public void deleteFinishedListBook(Booklist list, User user) throws SQLException{
         String query = "DELETE FROM FINISHEDLIST WHERE BOOK_ID = ? AND USER_ID = ?";
         if(user instanceof Reader){
             Reader reader = (Reader) user;

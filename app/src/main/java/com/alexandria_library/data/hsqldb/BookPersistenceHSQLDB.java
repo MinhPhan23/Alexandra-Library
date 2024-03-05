@@ -254,15 +254,12 @@ public class BookPersistenceHSQLDB implements IBookPersistenceHSQLDB {
 
 
     @Override
-    public void deleteLibraryBook(ArrayList<Book> list, User user) throws SQLException{
-        if(user instanceof Librarian){
-            Librarian librarian = (Librarian) user;
-            for(int i = 0; i<list.size(); i++){
-                deleteFromLibrary(list.get(i), librarian);
-            }
+    public void deleteLibraryBook(Booklist list, User user) throws SQLException{
+        for(int i = 0; i<list.size(); i++){
+            deleteFromLibrary(list.get(i));
         }
     }
-    private void deleteFromLibrary(Book book, Librarian librarian) throws SQLException {
+    private void deleteFromLibrary(Book book) throws SQLException {
         int bookID = book.getID();
         String query = "DELETE FROM BOOKS WHERE BOOK_ID = ?";
         try(Connection c = connection()){

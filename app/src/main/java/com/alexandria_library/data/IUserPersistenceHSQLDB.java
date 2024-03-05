@@ -1,6 +1,7 @@
 package com.alexandria_library.data;
 
 import com.alexandria_library.dso.Book;
+import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.dso.User;
 
 import java.sql.SQLException;
@@ -41,12 +42,12 @@ public interface IUserPersistenceHSQLDB {
 
 
     //ADD book to user's list
-    public void addBookToCustomList(ArrayList<Book> list, User user) throws SQLException;
-    public void addBookToReadingList(ArrayList<Book> list, User user) throws SQLException;
-    public void addBookToFinishedList(ArrayList<Book> list, User user) throws SQLException;
+    public void addBookToCustomList(Booklist list, User user) throws SQLException;
+    public void addBookToReadingList(Booklist list, User user) throws SQLException;
+    public void addBookToFinishedList(Booklist list, User user) throws SQLException;
 
     //DELETE book from user's list
-    public void deleteUserCustomListBook(ArrayList<Book> list, User user) throws SQLException;
-    public void deleteReadingListBook(ArrayList<Book> list, User user) throws SQLException;
-    public void deleteFinishedListBook(ArrayList<Book> list, User user) throws SQLException;
+    public void deleteUserCustomListBook(Booklist list, User user) throws SQLException;
+    public void deleteReadingListBook(Booklist list, User user) throws SQLException;
+    public void deleteFinishedListBook(Booklist list, User user) throws SQLException;
 }
