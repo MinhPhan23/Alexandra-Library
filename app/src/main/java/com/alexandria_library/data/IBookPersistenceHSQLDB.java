@@ -26,5 +26,4 @@ public interface IBookPersistenceHSQLDB {
     public Booklist getUserCustomList(User user) throws SQLException;
     public Booklist getUserInProgressList(User user) throws SQLException;
     public Booklist getUserFinishedList(User user) throws SQLException;
-
 }
