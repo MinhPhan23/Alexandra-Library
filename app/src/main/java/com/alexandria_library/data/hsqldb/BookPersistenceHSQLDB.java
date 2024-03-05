@@ -272,33 +272,6 @@ public class BookPersistenceHSQLDB implements IBookPersistenceHSQLDB {
     }
 
     @Override
-    public Booklist searchBookByTag(String tagName) throws SQLException{
-        Booklist books = new Booklist();
-        String query = "SELECT B.BOOK_ID, B.BOOK_NAME, B.BOOK_AUTHOR, B.BOOK_DATE, " +
-                "TG.TAG_NAME, GS.GENRE_NAME FROM BOOKS B "+
-                "JOIN BOOKTAGS BT ON B.BOOK_ID = BT.BOOK_ID "+
-                "JOIN TAGS TG ON BT.TAG_ID = TG.TAG_ID " +
-                "JOIN BOOKGENRES BG ON B.BOOK_ID = BG.BOOK_ID "+
-                "JOIN GENRES GS ON BG.GENRE_ID = GS.GENRE_ID "+
-                "WHERE TG.TAG_NAME = ?";
-
-        try(Connection c = connection()){
-            PreparedStatement statement = c.prepareStatement(query);
-            statement.setString(1, tagName);
-            ResultSet rs = statement.executeQuery();
-
-            while(rs.next()){
-                Book newBook = fromResultSet(rs);
-                if(newBook != null){
-                    books.add(newBook);
-                }
-            }
-            rs.close();
-        }
-        return books;
-    }
-
-    @Override
     public ArrayList<String> searchTagByBook (Book book) throws SQLException{
         ArrayList<String> result = new ArrayList<>();
         String query = "SELECT TG.TAG_NAME FROM TAGS TG "+
@@ -317,88 +290,6 @@ public class BookPersistenceHSQLDB implements IBookPersistenceHSQLDB {
             rs.close();
         }
         return result;
-    }
-
-    @Override
-    public Booklist searchGenre (String genreName) throws SQLException{
-        Booklist books = new Booklist();
-        String query =
-                "SELECT B.BOOK_ID, B.BOOK_NAME, B.BOOK_AUTHOR, B.BOOK_DATE, " +
-                        "TG.TAG_NAME, GS.GENRE_NAME FROM BOOKS B "+
-                "JOIN BOOKTAGS BT ON B.BOOK_ID = BT.BOOK_ID " +
-                "JOIN TAGS TG ON BT.TAG_ID = TG.TAG_ID "+
-                "JOIN BOOKGENRES BG ON B.BOOK_ID = BG.BOOK_ID "+
-                "JOIN GENRES GS ON BG.GENRE_ID = GS.GENRE_ID "+
-                "WHERE GS.GENRE_NAME = ? ";
-
-        try(Connection c = connection()){
-            PreparedStatement statement = c.prepareStatement(query);
-            statement.setString(1, genreName);
-            ResultSet rs = statement.executeQuery();
-
-            while(rs.next()){
-                Book newBook = fromResultSet(rs);
-                if(newBook != null){
-                    books.add(newBook);
-                }
-            }
-            rs.close();
-        }
-        return books;
-    }
-
-    @Override
-    public Booklist searchAuthor(String author) throws SQLException{
-        Booklist books = new Booklist();
-        String query = "SELECT B.BOOK_ID, B.BOOK_NAME, B.BOOK_AUTHOR, B.BOOK_DATE, " +
-                "TG.TAG_NAME, GS.GENRE_NAME FROM BOOKS B "+
-                "JOIN BOOKTAGS BT ON B.BOOK_ID = BT.BOOK_ID " +
-                "JOIN TAGS TG ON BT.TAG_ID = TG.TAG_ID "+
-                "JOIN BOOKGENRES BG ON B.BOOK_ID = BG.BOOK_ID "+
-                "JOIN GENRES GS ON BG.GENRE_ID = GS.GENRE_ID "+
-                "WHERE B.BOOK_AUTHOR = ? ";
-
-        try(Connection c = connection()){
-            PreparedStatement statement = c.prepareStatement(query);
-            statement.setString(1, author);
-            ResultSet rs = statement.executeQuery();
-
-            while(rs.next()){
-                Book newBook = fromResultSet(rs);
-                if(newBook != null){
-                    books.add(newBook);
-                }
-            }
-            rs.close();
-        }
-        return books;
-    }
-
-    @Override
-    public Booklist searchName(String bookName) throws SQLException{
-        Booklist books = new Booklist();
-        String query = "SELECT B.BOOK_ID, B.BOOK_NAME, B.BOOK_AUTHOR, B.BOOK_DATE, " +
-                "TG.TAG_NAME, GS.GENRE_NAME FROM BOOKS B "+
-                "JOIN BOOKTAGS BT ON B.BOOK_ID = BT.BOOK_ID " +
-                "JOIN TAGS TG ON BT.TAG_ID = TG.TAG_ID "+
-                "JOIN BOOKGENRES BG ON B.BOOK_ID = BG.BOOK_ID "+
-                "JOIN GENRES GS ON BG.GENRE_ID = GS.GENRE_ID "+
-                "WHERE B.BOOK_NAME = ? ";
-
-        try(Connection c = connection()){
-            PreparedStatement statement = c.prepareStatement(query);
-            statement.setString(1, bookName);
-            ResultSet rs = statement.executeQuery();
-
-            while(rs.next()){
-                Book newBook = fromResultSet(rs);
-                if(newBook != null){
-                    books.add(newBook);
-                }
-            }
-            rs.close();
-        }
-        return books;
     }
 
     @Override
@@ -426,24 +317,106 @@ public class BookPersistenceHSQLDB implements IBookPersistenceHSQLDB {
         return books;
     }
 
+
+/*****
+ * === SEARCH book by multiple requests START ===
+ */
     @Override
-    public Booklist findUserCustomList(User user) throws SQLException{
+    public Booklist searchTag(String tagName) throws SQLException{
+        String query = "SELECT B.BOOK_ID, B.BOOK_NAME, B.BOOK_AUTHOR, B.BOOK_DATE, " +
+                        "TG.TAG_NAME, GS.GENRE_NAME FROM BOOKS B "+
+                        "JOIN BOOKTAGS BT ON B.BOOK_ID = BT.BOOK_ID "+
+                        "JOIN TAGS TG ON BT.TAG_ID = TG.TAG_ID " +
+                        "JOIN BOOKGENRES BG ON B.BOOK_ID = BG.BOOK_ID "+
+                        "JOIN GENRES GS ON BG.GENRE_ID = GS.GENRE_ID "+
+                        "WHERE TG.TAG_NAME = ?";
+        return searchBook(query, tagName);
+    }
+
+    @Override
+    public Booklist searchGenre (String genreName) throws SQLException{
+        String query = "SELECT B.BOOK_ID, B.BOOK_NAME, B.BOOK_AUTHOR, B.BOOK_DATE, " +
+                        "TG.TAG_NAME, GS.GENRE_NAME FROM BOOKS B "+
+                        "JOIN BOOKTAGS BT ON B.BOOK_ID = BT.BOOK_ID " +
+                        "JOIN TAGS TG ON BT.TAG_ID = TG.TAG_ID "+
+                        "JOIN BOOKGENRES BG ON B.BOOK_ID = BG.BOOK_ID "+
+                        "JOIN GENRES GS ON BG.GENRE_ID = GS.GENRE_ID "+
+                        "WHERE GS.GENRE_NAME = ? ";
+        return searchBook(query, genreName);
+    }
+
+    @Override
+    public Booklist searchAuthor(String author) throws SQLException{
+        String query = "SELECT B.BOOK_ID, B.BOOK_NAME, B.BOOK_AUTHOR, B.BOOK_DATE, " +
+                        "TG.TAG_NAME, GS.GENRE_NAME FROM BOOKS B "+
+                        "JOIN BOOKTAGS BT ON B.BOOK_ID = BT.BOOK_ID " +
+                        "JOIN TAGS TG ON BT.TAG_ID = TG.TAG_ID "+
+                        "JOIN BOOKGENRES BG ON B.BOOK_ID = BG.BOOK_ID "+
+                        "JOIN GENRES GS ON BG.GENRE_ID = GS.GENRE_ID "+
+                        "WHERE B.BOOK_AUTHOR = ? ";
+        return searchBook(query, author);
+    }
+
+    @Override
+    public Booklist searchName(String bookName) throws SQLException{
+        String query = "SELECT B.BOOK_ID, B.BOOK_NAME, B.BOOK_AUTHOR, B.BOOK_DATE, " +
+                        "TG.TAG_NAME, GS.GENRE_NAME FROM BOOKS B "+
+                        "JOIN BOOKTAGS BT ON B.BOOK_ID = BT.BOOK_ID " +
+                        "JOIN TAGS TG ON BT.TAG_ID = TG.TAG_ID "+
+                        "JOIN BOOKGENRES BG ON B.BOOK_ID = BG.BOOK_ID "+
+                        "JOIN GENRES GS ON BG.GENRE_ID = GS.GENRE_ID "+
+                        "WHERE B.BOOK_NAME = ? ";
+        return searchBook(query, bookName);
+    }
+
+    //(PRIVATE) search book for multiple request, (book name, author, genre, tag)
+    private Booklist searchBook(String query, String require) throws SQLException{
+        Booklist books = new Booklist();
+        try(final Connection c = connection()){
+            final PreparedStatement statement = c.prepareStatement(query);
+            statement.setString(1,require);
+
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()){
+                Book newBook = fromResultSet(rs);
+                if(newBook != null){
+                    books.add(newBook);
+                }
+            }
+            rs.close();
+            statement.close();
+        }
+        return books;
+    }
+/*****
+ * === SEARCH book by mulitple requests END ===
+ */
+
+
+
+/******
+ * === GET user's list START ===
+ */
+    @Override
+    public Booklist getUserCustomList(User user) throws SQLException{
         String user_custom_list_query = "SELECT * FROM BOOKS B "+
                 "JOIN CUSTOMLIST CL ON B.BOOK_ID = CL.BOOK_ID "+
                 "JOIN USERS US ON CL.USER_ID = US.USER_ID "+
                 "WHERE USER_ID = ? ";
         return getUserBookList(user_custom_list_query, user);
     }
+
     @Override
-    public Booklist findUserInProgressList(User user) throws SQLException{
+    public Booklist getUserInProgressList(User user) throws SQLException{
         String user_inprogress_list_query = "SELECT * FROM BOOKS B "+
                 "JOIN READINGLIST RL ON B.BOOK_ID = RL.BOOK_ID "+
                 "JOIN USERS US ON RL.USER_ID = US.USER_ID "+
                 "WHERE USER_ID = ?";
         return getUserBookList(user_inprogress_list_query, user);
     }
+
     @Override
-    public Booklist findUserFinishedList(User user) throws SQLException{
+    public Booklist getUserFinishedList(User user) throws SQLException{
         String user_finished_list_query = "SELECT * FROM BOOKS B "+
                 "JOIN FINISHEDLIST FL ON B.BOOK_ID = FL.BOOK_ID "+
                 "JOIN USERS US ON FL.USER_ID = US.USER_ID "+
@@ -475,4 +448,9 @@ public class BookPersistenceHSQLDB implements IBookPersistenceHSQLDB {
         }
         return list;
     }
+
+/******
+ * === GET user's list END ===
+ */
+
 }
