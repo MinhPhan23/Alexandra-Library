@@ -1,9 +1,8 @@
 package com.alexandria_library.tests.logic;
 import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.logic.SideBarService;
-import com.alexandria_library.data.IBookPersistentIntermediate;
+import com.alexandria_library.data.IBookPersistentStub;
 import com.alexandria_library.dso.Book;
-import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.dso.User;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +18,7 @@ import static org.mockito.Mockito.*;
 
 public class SideBarServiceTest {
     @Mock
-    private IBookPersistentIntermediate mockBookData;
+    private IBookPersistentStub mockBookData;
     private User testUser;
     private SideBarService sideBarService;
 

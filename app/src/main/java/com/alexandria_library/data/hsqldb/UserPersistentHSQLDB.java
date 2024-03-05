@@ -1,6 +1,6 @@
 package com.alexandria_library.data.hsqldb;
 
-import com.alexandria_library.data.IUserPersistenceHSQLDB;
+import com.alexandria_library.data.IUserPersistentHSQLDB;
 import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.dso.Reader;
@@ -15,14 +15,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserPersistenceHSQLDB implements IUserPersistenceHSQLDB {
+public class UserPersistentHSQLDB implements IUserPersistentHSQLDB {
     private final String dbPath;
     private static int userID = 1;
     private static int customListID = 1;
     private static int readingListID = 1;
     private static int finishedListID = 1;
 
-    public UserPersistenceHSQLDB(final String dbPath) {
+    public UserPersistentHSQLDB(final String dbPath) {
         this.dbPath = dbPath;
     }
 

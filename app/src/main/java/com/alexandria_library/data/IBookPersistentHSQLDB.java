@@ -7,7 +7,7 @@ import com.alexandria_library.dso.User;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public interface IBookPersistenceHSQLDB {
+public interface IBookPersistentHSQLDB {
 
     public int checkCredentials(User user);
     public boolean upload(Book book, User user) throws SQLException;

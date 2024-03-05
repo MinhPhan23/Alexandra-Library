@@ -1,25 +1,25 @@
 package com.alexandria_library.application;
 
-import com.alexandria_library.data.IBookPersistenceHSQLDB;
-import com.alexandria_library.data.IBookPersistentIntermediate;
-import com.alexandria_library.data.IUserPersistenceHSQLDB;
-import com.alexandria_library.data.IUserPersistent;
-import com.alexandria_library.data.hsqldb.BookPersistenceHSQLDB;
-import com.alexandria_library.data.hsqldb.UserPersistenceHSQLDB;
+import com.alexandria_library.data.IBookPersistentHSQLDB;
+import com.alexandria_library.data.IBookPersistentStub;
+import com.alexandria_library.data.IUserPersistentHSQLDB;
+import com.alexandria_library.data.IUserPersistentStub;
+import com.alexandria_library.data.hsqldb.BookPersistentHSQLDB;
+import com.alexandria_library.data.hsqldb.UserPersistentHSQLDB;
 import com.alexandria_library.data.stub.BookPersistentInterStub;
 import com.alexandria_library.data.stub.UserPersistentStub;
 
 public class Service {
-    private static IUserPersistent userPersistence = null;
-    private static IBookPersistentIntermediate bookPersistentIntermediate = null;
-    private static IBookPersistenceHSQLDB bookPersistenceHSQLDB = null;
-    private static IUserPersistenceHSQLDB userPersistenceHSQLDB = null;
+    private static IUserPersistentStub userPersistence = null;
+    private static IBookPersistentStub bookPersistentIntermediate = null;
+    private static IBookPersistentHSQLDB bookPersistenceHSQLDB = null;
+    private static IUserPersistentHSQLDB userPersistenceHSQLDB = null;
 
     /******
      * get user persistence mock data ready when service begin
      * @return
      */
-    public static synchronized IUserPersistent getUserPersistence(){
+    public static synchronized IUserPersistentStub getUserPersistence(){
         if(userPersistence == null){
           userPersistence = new UserPersistentStub();
         }
@@ -30,7 +30,7 @@ public class Service {
      * get book persistence intermediate's mock data ready when service is begin
      * @return
      */
-    public static synchronized IBookPersistentIntermediate getBookPersistenceIntermediate(){
+    public static synchronized IBookPersistentStub getBookPersistenceIntermediate(){
         if(bookPersistentIntermediate == null){
             bookPersistentIntermediate = new BookPersistentInterStub();
         }
@@ -40,9 +40,9 @@ public class Service {
     /******
      * get book persistence HSQLDB intermediate's information
      */
-    public static synchronized IBookPersistenceHSQLDB getBookPersistenceHSQLDB(){
+    public static synchronized IBookPersistentHSQLDB getBookPersistenceHSQLDB(){
         if(bookPersistenceHSQLDB == null){
-            bookPersistenceHSQLDB = new BookPersistenceHSQLDB(Main.getDBPathName());
+            bookPersistenceHSQLDB = new BookPersistentHSQLDB(Main.getDBPathName());
         }
         return bookPersistenceHSQLDB;
     }
@@ -50,9 +50,9 @@ public class Service {
     /******
      * get user persistence HSQLDB data ready when service begin
      */
-    public static synchronized IUserPersistenceHSQLDB getUserPersistenceHSQLDB(){
+    public static synchronized IUserPersistentHSQLDB getUserPersistenceHSQLDB(){
         if(userPersistenceHSQLDB == null){
-            userPersistenceHSQLDB = new UserPersistenceHSQLDB(Main.getDBPathName());
+            userPersistenceHSQLDB = new UserPersistentHSQLDB(Main.getDBPathName());
         }
         return userPersistenceHSQLDB;
     }

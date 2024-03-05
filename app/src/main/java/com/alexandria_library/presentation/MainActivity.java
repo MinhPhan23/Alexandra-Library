@@ -19,8 +19,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 
 import com.alexandria_library.R;
-import com.alexandria_library.data.IBookPersistentIntermediate;
-import com.alexandria_library.data.stub.BookPersistentInterStub;
+import com.alexandria_library.data.IBookPersistentStub;
 import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.logic.ISearchService;
 import com.alexandria_library.logic.SearchService;
@@ -34,8 +33,6 @@ import com.alexandria_library.presentation.Adapter.SearchListAdapter;
 import com.alexandria_library.presentation.Authentication.LoginActivity;
 import com.alexandria_library.application.Service;
 
-import java.util.ArrayList;
-
 public class MainActivity extends AppCompatActivity{
 
     private Booklist searchList;
@@ -47,7 +44,7 @@ public class MainActivity extends AppCompatActivity{
     private SearchListAdapter searchListAdapter;
     private SideBarService sideBarService;
     private ISearchService searchService;
-    private IBookPersistentIntermediate data;
+    private IBookPersistentStub data;
     private Button libraryBtn, allListBtn, finishedBtn, inProgressBtn;
     private Button logOut, categoryBtn, account;
     private Button searchIcon;

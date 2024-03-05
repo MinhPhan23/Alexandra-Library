@@ -1,15 +1,13 @@
 package com.alexandria_library.logic;
 
 import com.alexandria_library.application.Service;
-import com.alexandria_library.data.IBookPersistentIntermediate;
+import com.alexandria_library.data.IBookPersistentStub;
 import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.dso.User;
 
-import java.util.ArrayList;
-
 public class SideBarService {
     private final User targetUser;
-    private final IBookPersistentIntermediate libraryBookData;
+    private final IBookPersistentStub libraryBookData;
 
     /*****
      * SideBarService constructor
@@ -20,7 +18,7 @@ public class SideBarService {
         targetUser = user;
     }
 
-    public SideBarService(User user, IBookPersistentIntermediate libraryBookData){
+    public SideBarService(User user, IBookPersistentStub libraryBookData){
         this.libraryBookData = libraryBookData;
         targetUser = user;
     }
