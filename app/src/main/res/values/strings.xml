@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">AlexandriaLibrary-7</string>
+    <string name="select_all_that_apply">Select all that apply</string>
+    <string name="genres">Genres</string>
+    <string name="tags">Tags</string>
 </resources>
