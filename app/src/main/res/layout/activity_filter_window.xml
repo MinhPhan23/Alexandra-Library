@@ -3,7 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="250dp"
-    android:layout_height="350dp">
+    android:layout_height="350dp"
+    android:background="@color/side_bar_background"
+    android:translationX="1020dp"
+    android:translationY="60dp">
 
     <com.google.android.material.chip.ChipGroup
         android:layout_width="235dp"
@@ -70,6 +73,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Genres"
+        android:textColor="@color/white"
         android:textSize="14sp"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="45dp" />
@@ -79,6 +83,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Tags"
+        android:textColor="@color/white"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="191dp" />
 
@@ -143,6 +148,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Select all that apply"
+        android:textColor="@color/white"
         android:textSize="12sp"
         tools:layout_editor_absoluteX="139dp"
         tools:layout_editor_absoluteY="16dp" />
