@@ -10,6 +10,7 @@ import com.alexandria_library.tests.data.UserPersistentStubTest;
 import com.alexandria_library.tests.dso.BookTest;
 import com.alexandria_library.tests.dso.ReaderTest;
 import com.alexandria_library.tests.logic.AuthenticationTest;
+import com.alexandria_library.tests.logic.BookListFilterTest;
 import com.alexandria_library.tests.logic.BookListRankerTest;
 import com.alexandria_library.tests.logic.SearchServiceTest;
 import com.alexandria_library.tests.logic.SideBarServiceTest;
@@ -18,6 +19,7 @@ import com.alexandria_library.tests.logic.SideBarServiceTest;
 @Suite.SuiteClasses({
         SearchServiceTest.class,
         BookListRankerTest.class,
+        BookListFilterTest.class,
         AuthenticationTest.class,
         SideBarServiceTest.class,
         BookTest.class,
