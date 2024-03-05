@@ -14,7 +14,7 @@ public interface IBookPersistenceHSQLDB {
     public int update(Book book, User user);
     public void deleteLibraryBook(Booklist list, User user) throws SQLException;
     public ArrayList<String> searchTagByBook (Book book) throws SQLException;
-    public Booklist getLibraryBookList() throws SQLException;
+    public Booklist getBookList() throws SQLException;
 
     //START searching book
     public Booklist searchTag(String tagName) throws SQLException;

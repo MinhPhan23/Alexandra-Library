@@ -297,7 +297,7 @@ public class BookPersistenceHSQLDB implements IBookPersistenceHSQLDB {
     }
 
     @Override
-    public Booklist getLibraryBookList() throws SQLException{
+    public Booklist getBookList() throws SQLException{
         Booklist books = new Booklist();
         String query = "SELECT B.BOOK_ID, B.BOOK_NAME, B.BOOK_AUTHOR, B.BOOK_DATE, " +
                 "TG.TAG_NAME, GS.GENRE_NAME FROM BOOKS B "+
@@ -333,7 +333,7 @@ public class BookPersistenceHSQLDB implements IBookPersistenceHSQLDB {
                         "JOIN TAGS TG ON BT.TAG_ID = TG.TAG_ID " +
                         "JOIN BOOKGENRES BG ON B.BOOK_ID = BG.BOOK_ID "+
                         "JOIN GENRES GS ON BG.GENRE_ID = GS.GENRE_ID "+
-                        "WHERE TG.TAG_NAME = ?";
+                        "WHERE TG.TAG_NAME LIKE ?";
         return searchBook(query, tagName);
     }
 
@@ -345,7 +345,7 @@ public class BookPersistenceHSQLDB implements IBookPersistenceHSQLDB {
                         "JOIN TAGS TG ON BT.TAG_ID = TG.TAG_ID "+
                         "JOIN BOOKGENRES BG ON B.BOOK_ID = BG.BOOK_ID "+
                         "JOIN GENRES GS ON BG.GENRE_ID = GS.GENRE_ID "+
-                        "WHERE GS.GENRE_NAME = ? ";
+                        "WHERE GS.GENRE_NAME LIKE ? ";
         return searchBook(query, genreName);
     }
 
@@ -357,7 +357,7 @@ public class BookPersistenceHSQLDB implements IBookPersistenceHSQLDB {
                         "JOIN TAGS TG ON BT.TAG_ID = TG.TAG_ID "+
                         "JOIN BOOKGENRES BG ON B.BOOK_ID = BG.BOOK_ID "+
                         "JOIN GENRES GS ON BG.GENRE_ID = GS.GENRE_ID "+
-                        "WHERE B.BOOK_AUTHOR = ? ";
+                        "WHERE B.BOOK_AUTHOR LIKE ? ";
         return searchBook(query, author);
     }
 
@@ -369,16 +369,17 @@ public class BookPersistenceHSQLDB implements IBookPersistenceHSQLDB {
                         "JOIN TAGS TG ON BT.TAG_ID = TG.TAG_ID "+
                         "JOIN BOOKGENRES BG ON B.BOOK_ID = BG.BOOK_ID "+
                         "JOIN GENRES GS ON BG.GENRE_ID = GS.GENRE_ID "+
-                        "WHERE B.BOOK_NAME = ? ";
+                        "WHERE B.BOOK_NAME LIKE ? ";
         return searchBook(query, bookName);
     }
 
     //(PRIVATE) search book for multiple request, (book name, author, genre, tag)
     private Booklist searchBook(String query, String require) throws SQLException{
         Booklist books = new Booklist();
+        String vagueRequire = "%"+require+"%";
         try(final Connection c = connection()){
             final PreparedStatement statement = c.prepareStatement(query);
-            statement.setString(1,require);
+            statement.setString(1,vagueRequire);
 
             ResultSet rs = statement.executeQuery();
             while(rs.next()){
