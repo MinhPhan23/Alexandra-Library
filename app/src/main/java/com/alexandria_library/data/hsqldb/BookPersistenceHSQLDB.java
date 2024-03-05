@@ -104,7 +104,6 @@ public class BookPersistenceHSQLDB implements IBookPersistenceHSQLDB {
                     addBookTagRelation(bookID, findTagID);
                 }
             }
-
             // adding new genre or make new relation with genre and book
             for(int j = 0; j<newBook.getGenres().size(); j++){
                 String currentGenre = newBook.getGenres().get(j);
@@ -117,7 +116,6 @@ public class BookPersistenceHSQLDB implements IBookPersistenceHSQLDB {
                     addBookGenreRelation(bookID, findGenreID);
                 }
             }
-
             bookID++;
             statement.close();
         }
@@ -192,10 +190,10 @@ public class BookPersistenceHSQLDB implements IBookPersistenceHSQLDB {
                 throw new SQLException ("@BookPersistenceHSQLDB.java addBookGenreRelation unsuccessful");
             }
             bookGenreID++;
-            statement.close();
         }
         return result;
     }
+
 
     private int duplicateBook (String bookName) throws SQLException{
         String query = "SELECT * FROM BOOKS";
@@ -210,6 +208,8 @@ public class BookPersistenceHSQLDB implements IBookPersistenceHSQLDB {
                     findBookID = id;
                 }
             }
+            rs.close();
+            statement.close();
         }
         return findBookID;
     }
@@ -226,6 +226,8 @@ public class BookPersistenceHSQLDB implements IBookPersistenceHSQLDB {
                     findTagID = id;
                 }
             }
+            rs.close();
+            statement.close();
         }
         return findTagID;
     }
@@ -243,6 +245,8 @@ public class BookPersistenceHSQLDB implements IBookPersistenceHSQLDB {
                     findTagID = id;
                 }
             }
+            rs.close();
+            statement.close();
         }
         return findTagID;
     }
@@ -318,7 +322,7 @@ public class BookPersistenceHSQLDB implements IBookPersistenceHSQLDB {
     }
 
 
-/*****
+/*************************************************************************************************
  * === SEARCH book by multiple requests START ===
  */
     @Override
@@ -388,13 +392,13 @@ public class BookPersistenceHSQLDB implements IBookPersistenceHSQLDB {
         }
         return books;
     }
-/*****
+/**
  * === SEARCH book by mulitple requests END ===
- */
+ *************************************************************************************************/
 
 
 
-/******
+/*************************************************************************************************
  * === GET user's list START ===
  */
     @Override
@@ -449,8 +453,7 @@ public class BookPersistenceHSQLDB implements IBookPersistenceHSQLDB {
         return list;
     }
 
-/******
+/**
  * === GET user's list END ===
- */
-
+ *************************************************************************************************/
 }

@@ -40,14 +40,18 @@ public interface IUserPersistenceHSQLDB {
      */
     public User findUser(String userName)throws SQLException;
 
-
-    //ADD book to user's list
+    /***********************************************************************************
+     * ADD book to user's list */
     public void addBookToCustomList(Booklist list, User user) throws SQLException;
     public void addBookToReadingList(Booklist list, User user) throws SQLException;
     public void addBookToFinishedList(Booklist list, User user) throws SQLException;
+    /*************************************************************************************/
 
-    //DELETE book from user's list
+
+    /***********************************************************************************
+     * DELETE book from user's list */
     public void deleteUserCustomListBook(Booklist list, User user) throws SQLException;
     public void deleteReadingListBook(Booklist list, User user) throws SQLException;
     public void deleteFinishedListBook(Booklist list, User user) throws SQLException;
+    /*************************************************************************************/
 }
