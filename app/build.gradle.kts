@@ -44,4 +44,7 @@ dependencies {
     //add RecyclerView dependency package
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("org.mockito:mockito-core:4.11.0")
+
+    //add HSQLDB driver
+    implementation("org.hsqldb:hsqldb:2.4.1")
 }
