@@ -67,13 +67,18 @@ public class BookPersistentHSQLDB implements IBookPersistentHSQLDB {
     }
 
     @Override
-    public boolean upload(Book book, User user) throws SQLException {
+    public boolean upload(Book book, User user) {
         boolean result = false;
-        if(checkCredentials(user) == 0 && duplicateBook(book.getName())<0){
-            addBook(book);
-            result = true;
+        try{
+            if(checkCredentials(user) == 0 && duplicateBook(book.getName())<0){
+                addBook(book);
+                result = true;
+            }
+            return result;
         }
-        return result;
+        catch (final SQLException e){
+            throw new PersistenceException(e);
+        }
     }
 
     private void addBook(Book newBook) throws SQLException{
@@ -257,9 +262,14 @@ public class BookPersistentHSQLDB implements IBookPersistentHSQLDB {
 
 
     @Override
-    public void deleteLibraryBook(Booklist list, User user) throws SQLException{
-        for(int i = 0; i<list.size(); i++){
-            deleteFromLibrary(list.get(i));
+    public void deleteLibraryBook(Booklist list, User user) {
+        try {
+            for(int i = 0; i<list.size(); i++){
+                deleteFromLibrary(list.get(i));
+            }
+        }
+        catch (final SQLException e){
+            throw new PersistenceException(e);
         }
     }
     private void deleteFromLibrary(Book book) throws SQLException {
@@ -275,7 +285,7 @@ public class BookPersistentHSQLDB implements IBookPersistentHSQLDB {
     }
 
     @Override
-    public ArrayList<String> searchTagByBook (Book book) throws SQLException{
+    public ArrayList<String> searchTagByBook (Book book){
         ArrayList<String> result = new ArrayList<>();
         String query = "SELECT TG.TAG_NAME FROM TAGS TG "+
                         "JOIN BOOKTAGS BT ON TG.TAG_ID = BT.TAG_ID "+
@@ -291,12 +301,16 @@ public class BookPersistentHSQLDB implements IBookPersistentHSQLDB {
                 result.add(tagName);
             }
             rs.close();
+
+            return result;
         }
-        return result;
+        catch (final SQLException e){
+            throw new PersistenceException(e);
+        }
     }
 
     @Override
-    public Booklist getBookList() throws SQLException{
+    public Booklist getBookList(){
         Booklist books = new Booklist();
         String query = "SELECT B.BOOK_ID, B.BOOK_NAME, B.BOOK_AUTHOR, B.BOOK_DATE, " +
                 "TG.TAG_NAME, GS.GENRE_NAME FROM BOOKS B "+
@@ -316,8 +330,12 @@ public class BookPersistentHSQLDB implements IBookPersistentHSQLDB {
                 }
             }
             rs.close();
+            return books;
         }
-        return books;
+        catch (final SQLException e){
+            throw new PersistenceException(e);
+        }
+
     }
 
 
@@ -325,7 +343,7 @@ public class BookPersistentHSQLDB implements IBookPersistentHSQLDB {
  * === SEARCH book by multiple requests START ===
  */
     @Override
-    public Booklist searchTag(String tagName) throws SQLException{
+    public Booklist searchTag(String tagName){
         String query = "SELECT B.BOOK_ID, B.BOOK_NAME, B.BOOK_AUTHOR, B.BOOK_DATE, " +
                         "TG.TAG_NAME, GS.GENRE_NAME FROM BOOKS B "+
                         "JOIN BOOKTAGS BT ON B.BOOK_ID = BT.BOOK_ID "+
@@ -333,11 +351,16 @@ public class BookPersistentHSQLDB implements IBookPersistentHSQLDB {
                         "JOIN BOOKGENRES BG ON B.BOOK_ID = BG.BOOK_ID "+
                         "JOIN GENRES GS ON BG.GENRE_ID = GS.GENRE_ID "+
                         "WHERE TG.TAG_NAME LIKE ?";
-        return searchBook(query, tagName);
+        try{
+            return searchBook(query, tagName);
+        }
+        catch (final SQLException e){
+            throw new PersistenceException(e);
+        }
     }
 
     @Override
-    public Booklist searchGenre (String genreName) throws SQLException{
+    public Booklist searchGenre (String genreName){
         String query = "SELECT B.BOOK_ID, B.BOOK_NAME, B.BOOK_AUTHOR, B.BOOK_DATE, " +
                         "TG.TAG_NAME, GS.GENRE_NAME FROM BOOKS B "+
                         "JOIN BOOKTAGS BT ON B.BOOK_ID = BT.BOOK_ID " +
@@ -345,11 +368,16 @@ public class BookPersistentHSQLDB implements IBookPersistentHSQLDB {
                         "JOIN BOOKGENRES BG ON B.BOOK_ID = BG.BOOK_ID "+
                         "JOIN GENRES GS ON BG.GENRE_ID = GS.GENRE_ID "+
                         "WHERE GS.GENRE_NAME LIKE ? ";
-        return searchBook(query, genreName);
+        try {
+            return searchBook(query, genreName);
+        }
+        catch (final SQLException e){
+            throw new PersistenceException(e);
+        }
     }
 
     @Override
-    public Booklist searchAuthor(String author) throws SQLException{
+    public Booklist searchAuthor(String author){
         String query = "SELECT B.BOOK_ID, B.BOOK_NAME, B.BOOK_AUTHOR, B.BOOK_DATE, " +
                         "TG.TAG_NAME, GS.GENRE_NAME FROM BOOKS B "+
                         "JOIN BOOKTAGS BT ON B.BOOK_ID = BT.BOOK_ID " +
@@ -357,11 +385,16 @@ public class BookPersistentHSQLDB implements IBookPersistentHSQLDB {
                         "JOIN BOOKGENRES BG ON B.BOOK_ID = BG.BOOK_ID "+
                         "JOIN GENRES GS ON BG.GENRE_ID = GS.GENRE_ID "+
                         "WHERE B.BOOK_AUTHOR LIKE ? ";
-        return searchBook(query, author);
+        try {
+            return searchBook(query, author);
+        }
+        catch (final SQLException e){
+            throw new PersistenceException(e);
+        }
     }
 
     @Override
-    public Booklist searchName(String bookName) throws SQLException{
+    public Booklist searchName(String bookName){
         String query = "SELECT B.BOOK_ID, B.BOOK_NAME, B.BOOK_AUTHOR, B.BOOK_DATE, " +
                         "TG.TAG_NAME, GS.GENRE_NAME FROM BOOKS B "+
                         "JOIN BOOKTAGS BT ON B.BOOK_ID = BT.BOOK_ID " +
@@ -369,7 +402,13 @@ public class BookPersistentHSQLDB implements IBookPersistentHSQLDB {
                         "JOIN BOOKGENRES BG ON B.BOOK_ID = BG.BOOK_ID "+
                         "JOIN GENRES GS ON BG.GENRE_ID = GS.GENRE_ID "+
                         "WHERE B.BOOK_NAME LIKE ? ";
-        return searchBook(query, bookName);
+
+        try {
+            return searchBook(query, bookName);
+        }
+        catch (final SQLException e){
+            throw new PersistenceException(e);
+        }
     }
 
     //(PRIVATE) search book for multiple request, (book name, author, genre, tag)
@@ -402,30 +441,47 @@ public class BookPersistentHSQLDB implements IBookPersistentHSQLDB {
  * === GET user's list START ===
  */
     @Override
-    public Booklist getUserCustomList(User user) throws SQLException{
+    public Booklist getUserCustomList(User user){
         String user_custom_list_query = "SELECT * FROM BOOKS B "+
                 "JOIN CUSTOMLIST CL ON B.BOOK_ID = CL.BOOK_ID "+
                 "JOIN USERS US ON CL.USER_ID = US.USER_ID "+
                 "WHERE USER_ID = ? ";
-        return getUserBookList(user_custom_list_query, user);
+        try {
+            return getUserBookList(user_custom_list_query, user);
+        }
+        catch (final SQLException e){
+            throw new PersistenceException(e);
+        }
     }
 
     @Override
-    public Booklist getUserInProgressList(User user) throws SQLException{
+    public Booklist getUserInProgressList(User user) {
         String user_inprogress_list_query = "SELECT * FROM BOOKS B "+
                 "JOIN READINGLIST RL ON B.BOOK_ID = RL.BOOK_ID "+
                 "JOIN USERS US ON RL.USER_ID = US.USER_ID "+
                 "WHERE USER_ID = ?";
-        return getUserBookList(user_inprogress_list_query, user);
+
+        try {
+            return getUserBookList(user_inprogress_list_query, user);
+        }
+        catch (final SQLException e){
+            throw new PersistenceException(e);
+        }
     }
 
     @Override
-    public Booklist getUserFinishedList(User user) throws SQLException{
+    public Booklist getUserFinishedList(User user){
         String user_finished_list_query = "SELECT * FROM BOOKS B "+
                 "JOIN FINISHEDLIST FL ON B.BOOK_ID = FL.BOOK_ID "+
                 "JOIN USERS US ON FL.USER_ID = US.USER_ID "+
                 "WHERE USER_ID = ? ";
-        return getUserBookList(user_finished_list_query, user);
+
+        try {
+            return getUserBookList(user_finished_list_query, user);
+        }
+        catch (final SQLException e){
+            throw new PersistenceException(e);
+        }
     }
 
     /******
