@@ -2,7 +2,7 @@ package com.alexandria_library.data;
 
 import com.alexandria_library.dso.User;
 
-public interface IUserPersistent {
+public interface IUserPersistentStub {
 
     /*****
      * add a new user to user list

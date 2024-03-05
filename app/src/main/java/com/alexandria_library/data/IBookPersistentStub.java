@@ -2,10 +2,9 @@ package com.alexandria_library.data;
 
 import com.alexandria_library.dso.*;
 import java.sql.PreparedStatement;
-import java.util.ArrayList;
 import java.util.List;
 
-public interface IBookPersistentIntermediate {
+public interface IBookPersistentStub {
 
     public int checkList(Booklist list);
 

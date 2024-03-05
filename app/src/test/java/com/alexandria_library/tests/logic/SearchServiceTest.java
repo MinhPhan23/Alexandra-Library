@@ -4,7 +4,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
-import com.alexandria_library.data.IBookPersistentIntermediate;
+import com.alexandria_library.data.IBookPersistentStub;
 import com.alexandria_library.data.stub.BookPersistentInterStub;
 import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
@@ -15,11 +15,9 @@ import com.alexandria_library.logic.SearchServiceException;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-
 public class SearchServiceTest {
     private ISearchService searchService;
-    private IBookPersistentIntermediate data;
+    private IBookPersistentStub data;
     @Before
     public void setUp() {
         System.out.println("Starting tests for SearchService");

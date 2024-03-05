@@ -1,6 +1,6 @@
 package com.alexandria_library.data.stub;
 
-import com.alexandria_library.data.IBookPersistentIntermediate;
+import com.alexandria_library.data.IBookPersistentStub;
 import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.User;
 import com.alexandria_library.dso.Booklist;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class BookPersistentInterStub implements IBookPersistentIntermediate {
+public class BookPersistentInterStub implements IBookPersistentStub {
 
     private final Booklist bookList = new Booklist();
 

@@ -1,9 +1,8 @@
 package com.alexandria_library.data.hsqldb;
 
-import com.alexandria_library.data.IBookPersistenceHSQLDB;
+import com.alexandria_library.data.IBookPersistentHSQLDB;
 import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
-import com.alexandria_library.dso.Librarian;
 import com.alexandria_library.dso.User;
 
 import java.sql.Connection;
@@ -14,7 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookPersistenceHSQLDB implements IBookPersistenceHSQLDB {
+public class BookPersistentHSQLDB implements IBookPersistentHSQLDB {
 
     private final String dbPath;
     private static int bookID = 1;
@@ -23,7 +22,7 @@ public class BookPersistenceHSQLDB implements IBookPersistenceHSQLDB {
     private static int bookTagID = 1;
     private static int bookGenreID = 1;
 
-    public BookPersistenceHSQLDB(final String dbPath){this.dbPath = dbPath;}
+    public BookPersistentHSQLDB(final String dbPath){this.dbPath = dbPath;}
 
     private Connection connection() throws SQLException {
         return DriverManager.getConnection("jdbc:hsqldb:file:" + dbPath + ";shutdown=true", "SA", "");

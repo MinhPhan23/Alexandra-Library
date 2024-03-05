@@ -1,14 +1,12 @@
 package com.alexandria_library.data;
 
-import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.dso.User;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-public interface IUserPersistenceHSQLDB {
+public interface IUserPersistentHSQLDB {
 
     /*****
      * get all user in database
