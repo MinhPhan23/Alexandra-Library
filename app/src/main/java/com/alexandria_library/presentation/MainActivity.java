@@ -30,6 +30,7 @@ import com.alexandria_library.logic.SearchService;
 import com.alexandria_library.logic.SearchServiceException;
 import com.alexandria_library.logic.SideBarService;
 import com.alexandria_library.presentation.Adapter.AllBookListAdapter;
+import com.alexandria_library.presentation.Adapter.AllGenresListAdapter;
 import com.alexandria_library.presentation.Adapter.AllTagsListAdapter;
 import com.alexandria_library.presentation.Adapter.FinishedBookAdapter;
 import com.alexandria_library.presentation.Adapter.InProgressBookAdapter;
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity{
     private LibraryBookListAdapter libraryBookListAdapter;
     private SearchListAdapter searchListAdapter;
     private AllTagsListAdapter tagsAdapter;
+    private AllGenresListAdapter genresAdapter;
     private SideBarService sideBarService;
     private ISearchService searchService;
     private IBookListFilter bookListFilter;
@@ -76,6 +78,7 @@ public class MainActivity extends AppCompatActivity{
         sideBarService = LoginActivity.getSideBarService();
         bookListFilter = new BookListFilter();
         tagsDisplay();
+        genresDisplay();
 
 
 
@@ -474,6 +477,23 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onRecyclerItemClick(int position) {
                 Log.e("xiang", "tags: " + position);
+            }
+        });
+    }
+
+    private void genresDisplay(){
+        RecyclerView recyclerView = findViewById(R.id.genres_view);
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
+        recyclerView.setLayoutManager(gridLayoutManager);
+
+        genresAdapter = new AllGenresListAdapter(this, bookListFilter);
+        recyclerView.setAdapter(genresAdapter);
+
+        genresAdapter.setRecyclerItemClickListener(new AllGenresListAdapter.OnRecyclerItemClickListener() {
+            @Override
+            public void onRecyclerItemClick(int position) {
+                Log.e("xiang", "genres: " + position);
             }
         });
     }

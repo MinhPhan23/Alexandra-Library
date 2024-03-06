@@ -7,6 +7,7 @@ import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.alexandria_library.R;
 import com.alexandria_library.application.Service;
 import com.alexandria_library.data.IBookPersistent;
@@ -14,23 +15,22 @@ import com.alexandria_library.logic.IBookListFilter;
 
 import java.util.ArrayList;
 
-public class AllTagsListAdapter extends RecyclerView.Adapter<AllTagsListAdapter.MyViewHolder> {
+public class AllGenresListAdapter extends RecyclerView.Adapter<AllGenresListAdapter.MyViewHolder> {
     private static IBookListFilter bookFilter;
     private static IBookPersistent bookPersistent;
-    private ArrayList<String> allTags;
-    private OnRecyclerItemClickListener myOnItemClickListener;
-
+    private ArrayList<String> allGenres;
+    private AllGenresListAdapter.OnRecyclerItemClickListener myOnItemClickListener;
     private Context context;
 
-    public AllTagsListAdapter(Context context, IBookListFilter bookFilter){
+    public AllGenresListAdapter(Context context, IBookListFilter bookFilter){
         bookPersistent = Service.getBookPersistent();
-        AllTagsListAdapter.bookFilter = bookFilter;
+        AllGenresListAdapter.bookFilter = bookFilter;
         find();
         this.context = context;
     }
     public void find(){
         if(bookFilter != null){
-            allTags = bookFilter.getAllTags(bookPersistent);
+            allGenres = bookFilter.getAllGenre(bookPersistent);
         }
     }
 
@@ -42,20 +42,20 @@ public class AllTagsListAdapter extends RecyclerView.Adapter<AllTagsListAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AllTagsListAdapter.MyViewHolder holder, int position){
-        holder.tagsTitle.setText(allTags.get(position));
+    public void onBindViewHolder(@NonNull AllGenresListAdapter.MyViewHolder holder, int position){
+        holder.genreTitles.setText(allGenres.get(position));
     }
 
     @Override
     public int getItemCount(){
-        return allTags.size();
+        return allGenres.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-        private final CheckBox tagsTitle;
+        private final CheckBox genreTitles;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            tagsTitle = itemView.findViewById(R.id.checkBox);
+            genreTitles = itemView.findViewById(R.id.checkBox);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -68,7 +68,7 @@ public class AllTagsListAdapter extends RecyclerView.Adapter<AllTagsListAdapter.
         }
     }
 
-    public void setRecyclerItemClickListener(OnRecyclerItemClickListener listener){
+    public void setRecyclerItemClickListener(AllGenresListAdapter.OnRecyclerItemClickListener listener){
         myOnItemClickListener = listener;
     }
     public interface OnRecyclerItemClickListener {
