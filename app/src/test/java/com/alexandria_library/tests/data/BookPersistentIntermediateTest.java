@@ -40,7 +40,10 @@ public class BookPersistentIntermediateTest {
         book = new Book(0, "a", "b", "0000-00-00", defaultTags, defaultGenres);
         librarian = new Librarian("test", "test", 0);
         assertNotNull(database);
+        assertNotNull(librarian);
         assertNotNull(book);
+        assertNotNull(defaultTags);
+        assertNotNull(defaultGenres);
     }
 
     @Test
