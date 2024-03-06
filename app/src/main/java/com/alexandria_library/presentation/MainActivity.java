@@ -22,11 +22,15 @@ import com.alexandria_library.R;
 import com.alexandria_library.data.IBookPersistent;
 import com.alexandria_library.data.IBookPersistentStub;
 import com.alexandria_library.dso.Booklist;
+import com.alexandria_library.logic.BookListFilter;
+import com.alexandria_library.logic.IBookListFilter;
+import com.alexandria_library.logic.IBookListRanker;
 import com.alexandria_library.logic.ISearchService;
 import com.alexandria_library.logic.SearchService;
 import com.alexandria_library.logic.SearchServiceException;
 import com.alexandria_library.logic.SideBarService;
 import com.alexandria_library.presentation.Adapter.AllBookListAdapter;
+import com.alexandria_library.presentation.Adapter.AllTagsListAdapter;
 import com.alexandria_library.presentation.Adapter.FinishedBookAdapter;
 import com.alexandria_library.presentation.Adapter.InProgressBookAdapter;
 import com.alexandria_library.presentation.Adapter.LibraryBookListAdapter;
@@ -43,8 +47,10 @@ public class MainActivity extends AppCompatActivity{
     private InProgressBookAdapter inProgressBookAdapter;
     private LibraryBookListAdapter libraryBookListAdapter;
     private SearchListAdapter searchListAdapter;
+    private AllTagsListAdapter tagsAdapter;
     private SideBarService sideBarService;
     private ISearchService searchService;
+    private IBookListFilter bookListFilter;
     private IBookPersistent data;
     private Button libraryBtn, allListBtn, finishedBtn, inProgressBtn;
     private Button logOut, categoryBtn, account;
@@ -54,8 +60,6 @@ public class MainActivity extends AppCompatActivity{
     private RecyclerView recyclerView;
     private View rootView;
     private boolean library, all, inProgress,finish;
-    private Button test1;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,17 +69,14 @@ public class MainActivity extends AppCompatActivity{
         findByID();
         bookDistributor();
 
+
         searchList = new Booklist();
         searchService = new SearchService();
 
         sideBarService = LoginActivity.getSideBarService();
+        bookListFilter = new BookListFilter();
+        tagsDisplay();
 
-        test1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
 
 
         /*****
@@ -301,8 +302,6 @@ public class MainActivity extends AppCompatActivity{
         //Getting search result
         searchIcon = findViewById(R.id.search_icon);
 
-        //TESTING
-        test1 = findViewById(R.id.test1);
     }
 
     private void SearchBar(){
@@ -458,6 +457,23 @@ public class MainActivity extends AppCompatActivity{
             public void onRecyclerItemClick(int position) {
                 Log.e("xiang", "onRecyclerItemClick:" +position);
                 toggleSearchResultGone();
+            }
+        });
+    }
+
+    private void tagsDisplay(){
+        RecyclerView recyclerView = findViewById(R.id.tags_view);
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
+        recyclerView.setLayoutManager(gridLayoutManager);
+
+        tagsAdapter = new AllTagsListAdapter(this, bookListFilter);
+        recyclerView.setAdapter(tagsAdapter);
+
+        tagsAdapter.setRecyclerItemClickListener(new AllTagsListAdapter.OnRecyclerItemClickListener() {
+            @Override
+            public void onRecyclerItemClick(int position) {
+                Log.e("xiang", "tags: " + position);
             }
         });
     }

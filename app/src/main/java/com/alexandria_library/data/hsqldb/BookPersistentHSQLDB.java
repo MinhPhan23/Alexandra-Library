@@ -260,6 +260,47 @@ public class BookPersistentHSQLDB implements IBookPersistentHSQLDB {
         return 0;
     }
 
+    @Override
+    public ArrayList<String> getAllTags(){
+        String query = "SELECT * FROM TAGS";
+        ArrayList<String> list = new ArrayList<>();
+        try(final Connection c = connection()){
+            PreparedStatement statement = c.prepareStatement(query);
+            ResultSet rs = statement.executeQuery();
+
+            while(rs.next()){
+                String getTags = rs.getString("TAG_NAME");
+                list.add(getTags);
+            }
+            rs.close();
+            statement.close();
+            return list;
+        }
+        catch (SQLException e){
+            throw new PersistenceException(e);
+        }
+    }
+
+    @Override
+    public ArrayList<String> getAllGenres(){
+        String query = "SELECT * FROM GENRES";
+        ArrayList<String> list = new ArrayList<>();
+        try(final Connection c = connection()){
+            PreparedStatement statement = c.prepareStatement(query);
+            ResultSet rs = statement.executeQuery();
+
+            while(rs.next()){
+                String getGenre = rs.getString("GENRE_NAME");
+                list.add(getGenre);
+            }
+            rs.close();
+            statement.close();
+            return list;
+        }
+        catch (SQLException e){
+            throw new PersistenceException(e);
+        }
+    }
 
     @Override
     public void deleteLibraryBook(Booklist list, User user) {
