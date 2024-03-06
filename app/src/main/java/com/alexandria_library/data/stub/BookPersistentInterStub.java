@@ -2,6 +2,7 @@ package com.alexandria_library.data.stub;
 
 import com.alexandria_library.data.IBookPersistentStub;
 import com.alexandria_library.dso.Book;
+import com.alexandria_library.dso.Librarian;
 import com.alexandria_library.dso.User;
 import com.alexandria_library.dso.Booklist;
 
@@ -13,8 +14,6 @@ import java.util.List;
 public class BookPersistentInterStub implements IBookPersistentStub {
 
     private final Booklist bookList = new Booklist();
-
-    private int index = 0;
 
     public BookPersistentInterStub(){
         String[] tags1Array = new String[]{"LGBT", "Adult"};
@@ -266,7 +265,9 @@ public class BookPersistentInterStub implements IBookPersistentStub {
 
 
     public int checkCredentials(User user){
-        return 0;
+        int authrorized = 1;
+        if(user != null && user instanceof Librarian) authrorized = 0;
+        return authrorized;
     }
 
     public int upload(Book book, User user){

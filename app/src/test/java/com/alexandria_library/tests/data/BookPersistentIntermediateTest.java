@@ -3,6 +3,7 @@ package com.alexandria_library.tests.data;
 import com.alexandria_library.data.stub.BookPersistentInterStub;
 import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
+import com.alexandria_library.dso.Librarian;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +22,8 @@ public class BookPersistentIntermediateTest {
 
     BookPersistentInterStub database;
     Book book;
+
+    Librarian librarian;
     List<String> defaultTags = new ArrayList<>();
     List<String>defaultGenres = new ArrayList<>();
 
@@ -35,6 +38,7 @@ public class BookPersistentIntermediateTest {
         defaultGenres.add("g");
         defaultGenres.add("h");
         book = new Book(0, "a", "b", "0000-00-00", defaultTags, defaultGenres);
+        librarian = new Librarian("test", "test", 0);
         assertNotNull(database);
         assertNotNull(book);
     }
@@ -44,9 +48,9 @@ public class BookPersistentIntermediateTest {
         System.out.println("Testing delete(Book)");
         int sizeBefore;
         int sizeAfter;
-        database.upload(book, null);
+        database.upload(book, librarian);
         sizeBefore = database.getBookList().size();
-        database.delete(book, null);
+        database.delete(book, librarian);
         sizeAfter = database.getBookList().size();
         Book testBook = database.search(book);
         assertEquals(sizeAfter + 1, sizeBefore);
@@ -71,7 +75,7 @@ public class BookPersistentIntermediateTest {
         testList1.add(book1);
         testList1.add(book2);
         testList1.add(book3);
-        database.delete(testList1, null);
+        database.delete(testList1, librarian);
         sizeAfter = database.getBookList().size();
         testList2 = database.search(testList1);
         assertEquals(sizeAfter + testList1.size(), sizeBefore);
@@ -79,8 +83,8 @@ public class BookPersistentIntermediateTest {
     }
 
     @Test
-    public void checkBookTest(){
-        System.out.println("Testing checkBook()");
+    public void checkBookTest1(){
+        System.out.println("Testing checkBook() 1");
         int status;
 
         book.setName("");
@@ -92,7 +96,12 @@ public class BookPersistentIntermediateTest {
         book.setName("a");
         status = database.checkBook(book);
         assertEquals(0, status);
+    }
 
+    @Test
+    public void checkBookTest2() {
+        System.out.println("Testing checkBook() 2");
+        int status;
         book.setAuthor("");
         status = database.checkBook(book);
         assertEquals(2, status);
@@ -102,21 +111,36 @@ public class BookPersistentIntermediateTest {
         book.setAuthor("b");
         status = database.checkBook(book);
         assertEquals(0, status);
+    }
 
+    @Test
+    public void checkBookTest3() {
+        System.out.println("Testing checkBook() 3");
+        int status;
         book.setTags(null);
         status = database.checkBook(book);
         assertEquals(3, status);
         book.setTags(defaultTags);
         status = database.checkBook(book);
         assertEquals(0, status);
+    }
 
+    @Test
+    public void checkBookTest4() {
+        System.out.println("Testing checkBook() 4");
+        int status;
         book.setGenres(null);
         status = database.checkBook(book);
         assertEquals(4, status);
         book.setGenres(defaultGenres);
         status = database.checkBook(book);
         assertEquals(0, status);
+    }
 
+    @Test
+    public void checkBookTest5() {
+        System.out.println("Testing checkBook() 5");
+        int status;
         book.setDate(null);
         status = database.checkBook(book);
         assertEquals(5, status);
@@ -125,6 +149,8 @@ public class BookPersistentIntermediateTest {
         status = database.checkBook(book);
         assertEquals(0, status);
     }
+
+
 
     @Test
     public void checkListTest(){
@@ -226,9 +252,15 @@ public class BookPersistentIntermediateTest {
     }
 
     @Test
-    public void checkCredentialsTest(){
+    public void checkCredentialsTest1(){
         System.out.println("Testing checkCredentials(User)");
-        assertEquals(0, database.checkCredentials(null));
+        assertEquals(1, database.checkCredentials(null));
+    }
+
+    @Test
+    public void checkCredentialsTest2(){
+        System.out.println("Testing checkCredentials(User)");
+        assertEquals(0, database.checkCredentials(librarian));
     }
     @Test
     public void uploadTest(){
@@ -239,12 +271,12 @@ public class BookPersistentIntermediateTest {
         sizeBefore = database.getBookList().size();
         testBook = database.search(book);
         assertNull(testBook);
-        database.upload(book, null);
+        database.upload(book, librarian);
         sizeAfter = database.getBookList().size();
         testBook = database.search(book);
         assertNotNull(testBook);
         assertEquals(sizeAfter - 1, sizeBefore);
-        database.delete(book, null);
+        database.delete(book, librarian);
     }
     @Test
     public void updateTest(){
@@ -252,14 +284,14 @@ public class BookPersistentIntermediateTest {
         Book testBook = book;
         int status;
         testBook.setName("");
-        status = database.update(testBook, null);
+        status = database.update(testBook, librarian);
         assertEquals(-1, status);
 
         testBook.setName("a");
-        status = database.update(testBook, null);
+        status = database.update(testBook, librarian);
         assertEquals(1, status);
 
-        database.upload(testBook, null);
+        database.upload(testBook, librarian);
         testBook.setName("T");
         testBook.setAuthor("E");
         List<String>tags = new ArrayList<>();
@@ -268,7 +300,7 @@ public class BookPersistentIntermediateTest {
         List<String>genres = new ArrayList<>();
         genres.add("T");
         testBook.setGenres(genres);
-        status = database.update(testBook, null);
+        status = database.update(testBook, librarian);
         assertEquals(0, status);
 
         Book newBook = database.search(testBook);
@@ -276,7 +308,7 @@ public class BookPersistentIntermediateTest {
         assertEquals(testBook.getAuthor(), newBook.getAuthor());
         assertEquals(testBook.getTags(), newBook.getTags());
         assertEquals(testBook.getGenres(), newBook.getGenres());
-        database.delete(newBook, null);
+        database.delete(newBook, librarian);
     }
     @Test
     public void searchTagTest(){
@@ -294,11 +326,11 @@ public class BookPersistentIntermediateTest {
         testList = database.searchTag(tags);
         assertEquals(0, testList.size());
 
-        status = database.upload(book, null);
+        status = database.upload(book, librarian);
         assertEquals(0, status);
         testList = database.searchTag(tags);
         assertEquals(1, testList.size());
-        database.delete(book, null);
+        database.delete(book, librarian);
     }
     @Test
     public void searchGenreTest(){
@@ -316,11 +348,11 @@ public class BookPersistentIntermediateTest {
         testList = database.searchTag(genres);
         assertEquals(0, testList.size());
 
-        status = database.upload(book, null);
+        status = database.upload(book, librarian);
         assertEquals(0, status);
         testList = database.searchGenre(genres);
         assertEquals(1, testList.size());
-        database.delete(book, null);
+        database.delete(book, librarian);
     }
     @Test
     public void searchAuthorTest(){
@@ -336,11 +368,11 @@ public class BookPersistentIntermediateTest {
         testList = database.searchAuthor(author);
         assertEquals(0, testList.size());
 
-        status = database.upload(book, null);
+        status = database.upload(book, librarian);
         assertEquals(0, status);
         testList = database.searchAuthor(author);
         assertEquals(1, testList.size());
-        database.delete(book, null);
+        database.delete(book, librarian);
     }
     @Test
     public void searchNameTest(){
@@ -356,11 +388,11 @@ public class BookPersistentIntermediateTest {
         testList = database.searchName(name);
         assertEquals(0, testList.size());
 
-        status = database.upload(book, null);
+        status = database.upload(book, librarian);
         assertEquals(0, status);
         testList = database.searchName(name);
         assertEquals(1, testList.size());
-        database.delete(book, null);
+        database.delete(book, librarian);
     }
     @Test
     public void searchBookTest(){
@@ -373,7 +405,7 @@ public class BookPersistentIntermediateTest {
         testBook = database.search(book);
         assertNull(testBook);
 
-        status = database.upload(book, null);
+        status = database.upload(book, librarian);
         assertEquals(0, status);
 
         testBook = database.search(book);
@@ -383,7 +415,7 @@ public class BookPersistentIntermediateTest {
         assertEquals(book.getGenres(), testBook.getGenres());
         assertEquals(book.getDate(), testBook.getDate());
         assertEquals(book.getID(), testBook.getID());
-        database.delete(book, null);
+        database.delete(book, librarian);
     }
 
     @Test
@@ -408,9 +440,9 @@ public class BookPersistentIntermediateTest {
         testList = database.search(searchList);
         assertEquals(3, testList.size());
 
-        database.upload(book1, null);
-        database.upload(book2, null);
-        database.upload(book3, null);
+        database.upload(book1, librarian);
+        database.upload(book2, librarian);
+        database.upload(book3, librarian);
         testList = database.search(searchList);
         assertEquals(3, testList.size());
     }
@@ -432,15 +464,15 @@ public class BookPersistentIntermediateTest {
         testBook = database.search(book);
         assertNull(testBook);
 
-        database.upload(book, null);
-        database.upload(book, null);
-        database.upload(book, null);
+        database.upload(book, librarian);
+        database.upload(book, librarian);
+        database.upload(book, librarian);
         sizeAfter = database.getBookList().size();
         testBook = database.search(book);
         assertNotNull(testBook);
 
         assertEquals(sizeAfter - 1, sizeBefore);
-        database.delete(book, null);
+        database.delete(book, librarian);
     }
     @Test
     public void similarStringArraysTest1(){
@@ -532,9 +564,9 @@ public class BookPersistentIntermediateTest {
         testBook = database.search(book3);
         assertNull(testBook);
 
-        database.upload(book1, null);
-        database.upload(book2, null);
-        database.upload(book3, null);
+        database.upload(book1, librarian);
+        database.upload(book2, librarian);
+        database.upload(book3, librarian);
         sizeAfter = database.getBookList().size();
         assertEquals(sizeBefore + 3, sizeAfter);
 
@@ -544,8 +576,8 @@ public class BookPersistentIntermediateTest {
         assertNotNull(testBook);
         testBook = database.search(book3);
         assertNotNull(testBook);
-        database.delete(book1, null);
-        database.delete(book2, null);
-        database.delete(book3, null);
+        database.delete(book1, librarian);
+        database.delete(book2, librarian);
+        database.delete(book3, librarian);
     }
 }
