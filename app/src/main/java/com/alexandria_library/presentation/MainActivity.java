@@ -302,7 +302,7 @@ public class MainActivity extends AppCompatActivity{
         searchIcon = findViewById(R.id.search_icon);
 
         //TESTING
-        test1 = findViewById(R.id.test1);
+        //test1 = findViewById(R.id.test1);
     }
 
     private void SearchBar(){

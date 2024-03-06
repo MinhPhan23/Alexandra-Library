@@ -1,44 +1,26 @@
 package com.alexandria_library.tests.data;
 
-import static org.junit.Assert.assertNotNull;
-
-import com.alexandria_library.application.Main;
-import com.alexandria_library.application.Service;
-import com.alexandria_library.data.IBookPersistent;
 import com.alexandria_library.data.hsqldb.BookPersistentHSQLDB;
-import com.alexandria_library.dso.Book;
+import com.alexandria_library.logic.SearchService;
+import com.alexandria_library.logic.SearchServiceException;
+import com.alexandria_library.tests.util.dbCopy;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.File;
 
 public class BookPersistentHSQLDBTest {
 
-    private IBookPersistent data;
+    SearchService searchService;
 
-    Book book;
-
-    List<String> defaultTags;
-    List<String>defaultGenres;
+    private File tempDB;
 
     @Before
     public void setUp(){
-        defaultTags = new ArrayList<>();
-        defaultGenres = new ArrayList<>();
-        defaultTags.add("c");
-        defaultTags.add("d");
-        defaultTags.add("e");
-        defaultGenres.add("f");
-        defaultGenres.add("g");
-        defaultGenres.add("h");
-        book = new Book(0, "a", "b", "0000-00-00", defaultTags, defaultGenres);
-        data = new BookPersistentHSQLDB(Main.getDBPathName());
-        assertNotNull(book);
-        assertNotNull(data);
-        assertNotNull(defaultTags);
-        assertNotNull(defaultGenres);
+        tempDB = dbCopy.dbCopy();
+
+        searchService = new SearchService();
     }
 
     ////////////////////////////////////////////
@@ -46,47 +28,12 @@ public class BookPersistentHSQLDBTest {
     ////////////////////////////////////////////
 
     @Test
-    public void uploadTest(){
+    public void searchInputTest(){
         System.out.println("Testing upload(Book, User)");
-        System.out.println(data.getBookList().get(0).getName());
+        try {
+            System.out.println(searchService.searchInput("test idk whast going on").get(0).getName());
+        } catch (SearchServiceException e) {
+            System.out.println("Error fuckkkk");;
+        }
     }
-
-    @Test
-    public void deleteLibraryBookTest(){
-        System.out.println("Testing deleteLibraryBook(Booklist, User");
-    }
-
-    @Test
-    public void searchTagByBookTest(){
-        System.out.println("Testing searchTagByBook(Book)");
-    }
-
-    @Test
-    public void searchTagTest(){
-        System.out.println("Testing searchTag(String)");
-    }
-
-    @Test
-    public void searchGenreTest(){
-        System.out.println("Testing searchGenre(String)");
-    }
-
-    @Test
-    public void getUserCustomListTest(){
-        System.out.println("Testing getUserCustomList(User)");
-    }
-
-    @Test
-    public void getUserInProgressListTest(){
-        System.out.println("Testing getUserInProgressList(User)");
-    }
-
-    @Test
-    public void getUserFinishedListTest(){
-        System.out.println("Testing getUserFinishedList(User)");
-    }
-
-    ////////////////////////////////////////////
-    /////////////INTEGRATION TESTS//////////////
-    ////////////////////////////////////////////
 }
