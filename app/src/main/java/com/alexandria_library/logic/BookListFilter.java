@@ -74,6 +74,16 @@ public class BookListFilter implements IBookListFilter {
         return filteredBooks;
     }
 
+    @Override
+    public Booklist getFilteredList(Booklist books, String[] tags, String[] genres){
+        Booklist tagFiltered = filterByTag(books, tags);
+        if(tagFiltered.size() != 0){
+            //filter genre by using what we get from tag's filtered
+            return filterByGenre(tagFiltered, genres);
+        }
+        return null;
+    }
+
     private static boolean containsAll(List<String> bookTags, String[] filterTags) {
         for (String filterTag : filterTags) {
             boolean containsString = false;

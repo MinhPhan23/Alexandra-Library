@@ -34,6 +34,12 @@ public class AllGenresListAdapter extends RecyclerView.Adapter<AllGenresListAdap
         }
     }
 
+    public String getGenreName(int position){
+        if(allGenres.size() != 0){
+            return allGenres.get(position);
+        }
+        return null;
+    }
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){

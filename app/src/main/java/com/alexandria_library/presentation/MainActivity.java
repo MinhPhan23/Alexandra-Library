@@ -39,6 +39,8 @@ import com.alexandria_library.presentation.Adapter.SearchListAdapter;
 import com.alexandria_library.presentation.Authentication.LoginActivity;
 import com.alexandria_library.application.Service;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity{
 
     private Booklist searchList;
@@ -53,33 +55,44 @@ public class MainActivity extends AppCompatActivity{
     private SideBarService sideBarService;
     private ISearchService searchService;
     private IBookListFilter bookListFilter;
-    private IBookPersistent data;
+    private IBookPersistent bookPersistent;
     private Button libraryBtn, allListBtn, finishedBtn, inProgressBtn;
     private Button logOut, categoryBtn, account;
+    private Button filter;
     private Button searchIcon;
     private FrameLayout expandable;
     private EditText searchInput;
     private RecyclerView recyclerView;
     private View rootView;
     private boolean library, all, inProgress,finish;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    private Booklist allLibraryBooks;
+    private Booklist filterBooks;
+    private ArrayList<String> tagsClicked;
+    private ArrayList<String> genresClicked;
 
+    private void initializer(){
+        bookPersistent = Service.getBookPersistent();
+        allLibraryBooks = bookPersistent.getBookList();
+        filterBooks = new Booklist();
         library = true; all = false; inProgress = false; finish = false;
-        findByID();
-        bookDistributor();
-
-
         searchList = new Booklist();
         searchService = new SearchService();
 
         sideBarService = LoginActivity.getSideBarService();
         bookListFilter = new BookListFilter();
+        tagsClicked = new ArrayList<>();
+        genresClicked = new ArrayList<>();
+    }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        initializer();
+        findByID();
+
+        bookDistributor();
         tagsDisplay();
         genresDisplay();
-
 
 
         /*****
@@ -248,6 +261,23 @@ public class MainActivity extends AppCompatActivity{
                 toggleSearchResultVisible();
             }
         });
+
+        /*****
+         * filter button clicked
+         */
+        filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String [] allTags = new String[tagsClicked.size()];
+                String [] allGenres = new String[genresClicked.size()];
+                allTags = tagsClicked.toArray(allTags);
+                allGenres = genresClicked.toArray(allGenres);
+                Booklist getResult = bookListFilter.getFilteredList(allLibraryBooks, allTags, allGenres);
+                if(getResult.size() != 0){
+
+                }
+            }
+        });
     }
 
 
@@ -305,6 +335,8 @@ public class MainActivity extends AppCompatActivity{
         //Getting search result
         searchIcon = findViewById(R.id.search_icon);
 
+        //Getting filter result
+        filter = findViewById(R.id.filter_button);
     }
 
     private void SearchBar(){
@@ -476,7 +508,10 @@ public class MainActivity extends AppCompatActivity{
         tagsAdapter.setRecyclerItemClickListener(new AllTagsListAdapter.OnRecyclerItemClickListener() {
             @Override
             public void onRecyclerItemClick(int position) {
-                Log.e("xiang", "tags: " + position);
+                String getTagName = tagsAdapter.getTagsName(position);
+                if(getTagName != null){
+                    tagsClicked.add(getTagName);
+                }
             }
         });
     }
@@ -493,7 +528,10 @@ public class MainActivity extends AppCompatActivity{
         genresAdapter.setRecyclerItemClickListener(new AllGenresListAdapter.OnRecyclerItemClickListener() {
             @Override
             public void onRecyclerItemClick(int position) {
-                Log.e("xiang", "genres: " + position);
+                String getGenreName = genresAdapter.getGenreName(position);
+                if(getGenreName != null){
+                    genresClicked.add(getGenreName);
+                }
             }
         });
     }

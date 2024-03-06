@@ -33,6 +33,12 @@ public class AllTagsListAdapter extends RecyclerView.Adapter<AllTagsListAdapter.
             allTags = bookFilter.getAllTags(bookPersistent);
         }
     }
+    public String getTagsName(int position){
+        if(allTags.size() != 0){
+            return allTags.get(position);
+        }
+        return null;
+    }
 
     @NonNull
     @Override
