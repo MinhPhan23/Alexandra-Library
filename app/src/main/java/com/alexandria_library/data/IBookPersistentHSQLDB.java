@@ -7,23 +7,18 @@ import com.alexandria_library.dso.User;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public interface IBookPersistentHSQLDB {
+public interface IBookPersistentHSQLDB extends IBookPersistent{
 
-    public int checkCredentials(User user);
-    public boolean upload(Book book, User user) throws SQLException;
-    public int update(Book book, User user);
-    public void deleteLibraryBook(Booklist list, User user) throws SQLException;
-    public ArrayList<String> searchTagByBook (Book book) throws SQLException;
-    public Booklist getBookList() throws SQLException;
+    public boolean upload(Book book, User user);
+    public void deleteLibraryBook(Booklist list, User user);
+    public ArrayList<String> searchTagByBook (Book book);
 
     //START searching book
-    public Booklist searchTag(String tagName) throws SQLException;
-    public Booklist searchGenre (String genreName) throws SQLException;
-    public Booklist searchAuthor(String author) throws SQLException;
-    public Booklist searchName(String bookName) throws SQLException;
+    public Booklist searchTag(String tagName);
+    public Booklist searchGenre (String genreName);
 
     //START finding book
-    public Booklist getUserCustomList(User user) throws SQLException;
-    public Booklist getUserInProgressList(User user) throws SQLException;
-    public Booklist getUserFinishedList(User user) throws SQLException;
+    public Booklist getUserCustomList(User user);
+    public Booklist getUserInProgressList(User user);
+    public Booklist getUserFinishedList(User user);
 }

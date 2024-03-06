@@ -1,17 +1,17 @@
 package com.alexandria_library.logic;
 
 import com.alexandria_library.application.Service;
-import com.alexandria_library.data.IUserPersistentStub;
+import com.alexandria_library.data.IUserPersistent;
 import com.alexandria_library.dso.User;
 
 public class Authentication implements IAuthentication{
 
-    private final IUserPersistentStub userData;
+    private final IUserPersistent userData;
 
     public Authentication(){
-        userData = Service.getUserPersistence();
+        userData = Service.getUserPersistent();
     }
-    public Authentication(IUserPersistentStub userData){
+    public Authentication(IUserPersistent userData){
         this.userData = userData;
     }
 

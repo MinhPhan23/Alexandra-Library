@@ -17,12 +17,10 @@ import org.junit.Test;
 
 public class SearchServiceTest {
     private ISearchService searchService;
-    private IBookPersistentStub data;
     @Before
     public void setUp() {
         System.out.println("Starting tests for SearchService");
-        data = new BookPersistentInterStub();
-        searchService = new SearchService(data);
+        searchService = new SearchService();
         assertNotNull(searchService);
     }
 

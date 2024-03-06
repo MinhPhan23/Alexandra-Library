@@ -1,6 +1,6 @@
 package com.alexandria_library.data.stub;
 
-import com.alexandria_library.data.IUserPersistentStub;
+import com.alexandria_library.data.IUserPersistent;
 import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Reader;
 import com.alexandria_library.dso.User;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class UserPersistentStub implements IUserPersistentStub {
+public class UserPersistentStub implements IUserPersistent {
     private static int id = 1;
 
     private ArrayList<User> userList;
