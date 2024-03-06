@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity{
     private RecyclerView recyclerView;
     private View rootView;
     private boolean library, all, inProgress,finish;
+    private Button test1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +69,14 @@ public class MainActivity extends AppCompatActivity{
         searchService = new SearchService();
 
         sideBarService = LoginActivity.getSideBarService();
+
+        test1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
 
         /*****
          * get root view
@@ -291,6 +300,9 @@ public class MainActivity extends AppCompatActivity{
 
         //Getting search result
         searchIcon = findViewById(R.id.search_icon);
+
+        //TESTING
+        test1 = findViewById(R.id.test1);
     }
 
     private void SearchBar(){
