@@ -25,7 +25,7 @@ public class BookPersistentHSQLDB implements IBookPersistentHSQLDB {
     public BookPersistentHSQLDB(final String dbPath){this.dbPath = dbPath;}
 
     private Connection connection() throws SQLException {
-        return DriverManager.getConnection("jdbc:hsqldb:file:" + dbPath + ";shutdown=true", "SA", "");
+        return DriverManager.getConnection("jdbc:hsqldb:file:" + dbPath + ";shutdown=true", "SA", "123");
     }
 
     private Book fromResultSet(final ResultSet rs) throws SQLException{

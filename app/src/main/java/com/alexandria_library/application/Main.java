@@ -2,7 +2,7 @@ package com.alexandria_library.application;
 
 public class Main {
 
-    private static String dbName = "AlexandriaLibrary";
+    private static String dbName = "LibraryDB";
 
     public static void main(String [] args){
 

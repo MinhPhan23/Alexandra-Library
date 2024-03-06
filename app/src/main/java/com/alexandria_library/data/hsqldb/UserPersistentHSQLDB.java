@@ -27,7 +27,7 @@ public class UserPersistentHSQLDB implements IUserPersistentHSQLDB {
     }
 
     private Connection connection() throws SQLException {
-        return DriverManager.getConnection("jdbc:hsqldb:file:" + dbPath + ";shutdown=true", "SA", "");
+        return DriverManager.getConnection("jdbc:hsqldb:file:" + dbPath + ";shutdown=true", "SA", "123");
     }
 
     private User fromResultSet(final ResultSet rs) throws SQLException{

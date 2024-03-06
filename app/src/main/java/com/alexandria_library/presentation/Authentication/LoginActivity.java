@@ -38,10 +38,10 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        copyDatabaseToDevice(); //copy database
+
         find();
         authentication = new Authentication();
-
-        HSQLDBHelper.copyDatabaseToDevice(this); //copy database
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,7 +105,12 @@ public class LoginActivity extends AppCompatActivity {
     public String getTest(){
         return ":shdfsd";
     }
+
     private void setErrorMess(EditText layout, String message){
         layout.setError(message);
+    }
+
+    private void copyDatabaseToDevice() {
+        HSQLDBHelper.copyDatabaseToDevice(this);
     }
 }
