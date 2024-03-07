@@ -18,11 +18,11 @@ import org.junit.Test;
 
 public class SearchServiceTest {
     private ISearchService searchService;
-    private IBookPersistent bookPersistent;
+
     @Before
     public void setUp() {
         System.out.println("Starting tests for SearchService");
-        bookPersistent = new BookPersistentInterStub();
+        IBookPersistent bookPersistent = new BookPersistentInterStub();
         searchService = new SearchService(bookPersistent);
         assertNotNull(searchService);
     }
@@ -63,8 +63,10 @@ public class SearchServiceTest {
                 String bookName = book.getName();
                 assertTrue(bookName.contains(keywords));
             }
-        } catch (SearchServiceException ignored) {
-
+        } catch (SearchServiceException e) {
+            assert(false);
+            System.out.println("Something wrong with the test");
+            e.printStackTrace();
         }
     }
 
@@ -78,8 +80,10 @@ public class SearchServiceTest {
                 String authorName = book.getAuthor();
                 assertTrue(authorName.contains(keywords));
             }
-        } catch (SearchServiceException ignored) {
-
+        } catch (SearchServiceException e) {
+            assert(false);
+            System.out.println("Something wrong with the test");
+            e.printStackTrace();
         }
     }
     @Test
@@ -100,8 +104,10 @@ public class SearchServiceTest {
                 }
                 assertTrue(check);
             }
-        } catch (SearchServiceException ignored) {
-
+        } catch (SearchServiceException e) {
+            assert(false);
+            System.out.println("Something wrong with the test");
+            e.printStackTrace();
         }
     }
 }

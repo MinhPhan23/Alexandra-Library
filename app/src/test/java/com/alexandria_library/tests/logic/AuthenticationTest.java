@@ -36,8 +36,10 @@ public class AuthenticationTest {
             assertEquals( "Thor", data.findUser("Thor").getUserName());
             assertEquals("123abc", data.findUser("Thor").getPassword());
         }
-        catch (Exception ignored){
-
+        catch (Exception e){
+            assert(false);
+            System.out.println("Something wrong with the test");
+            e.printStackTrace();
         }
     }
 
@@ -180,8 +182,10 @@ public class AuthenticationTest {
             assertEquals("Minh", user.getUserName());
             assertEquals("123456", user.getPassword());
         }
-        catch (Exception ignored) {
-
+        catch (Exception e) {
+            assert(false);
+            System.out.println("Something wrong with the test");
+            e.printStackTrace();
         }
     }
 
