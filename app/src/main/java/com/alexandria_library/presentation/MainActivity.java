@@ -58,15 +58,15 @@ public class MainActivity extends AppCompatActivity{
     private ISearchService searchService;
     private IBookListFilter bookListFilter;
     private IBookPersistent bookPersistent;
-    private Button libraryBtn, allListBtn, finishedBtn, inProgressBtn;
+    private Button libraryBtn, allListBtn, finishedBtn, inProgressBtn, filterOpenBtn;
     private Button logOut, categoryBtn, account;
     private Button filter;
     private Button searchIcon;
     private FrameLayout expandable;
     private EditText searchInput;
-    private RecyclerView recyclerView;
-    private View rootView;
-    private boolean library, all, inProgress,finish;
+    private RecyclerView recyclerView, filterBox;
+    private View rootView, filterPage;
+    private boolean library, all, inProgress,finish, filterOpen;
     private Booklist allLibraryBooks;
     private Booklist filterBooks;
     private ArrayList<String> tagsClicked;
@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity{
         bookPersistent = Service.getBookPersistent();
         allLibraryBooks = bookPersistent.getBookList();
         filterBooks = new Booklist();
-        library = true; all = false; inProgress = false; finish = false;
+        library = true; all = false; inProgress = false; finish = false; filterOpen = false;
         searchList = new Booklist();
         searchService = new SearchService();
 
@@ -122,6 +122,7 @@ public class MainActivity extends AppCompatActivity{
                 library = false; all = true; inProgress = false; finish = false;
                 bookDistributor();
                 toggleSearchResultGone();
+                toggleFilterGone();
             }
         });
 
@@ -134,6 +135,7 @@ public class MainActivity extends AppCompatActivity{
                 library = false; all = false; inProgress = true; finish = false;
                 bookDistributor();
                 toggleSearchResultGone();
+                toggleFilterGone();
             }
         });
 
@@ -146,6 +148,7 @@ public class MainActivity extends AppCompatActivity{
                 library = false; all = false; inProgress = false; finish = true;
                 bookDistributor();
                 toggleSearchResultGone();
+                toggleFilterGone();
             }
         });
 
@@ -158,6 +161,7 @@ public class MainActivity extends AppCompatActivity{
                 library = true; all = false; inProgress = false; finish = false;
                 bookDistributor();
                 toggleSearchResultGone();
+                toggleFilterGone();
             }
         });
 
@@ -170,6 +174,7 @@ public class MainActivity extends AppCompatActivity{
                 grid = !grid;
                 bookDistributor();
                 toggleSearchResultGone();
+                toggleFilterGone();
             }
         });
 
@@ -191,6 +196,7 @@ public class MainActivity extends AppCompatActivity{
         account.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 TransitionManager.beginDelayedTransition((ViewGroup) expandable.getParent());
                 if(expandable.getVisibility() == View.GONE){
                     //from gone to visibility
@@ -223,7 +229,6 @@ public class MainActivity extends AppCompatActivity{
                 try{
                     //get search bar input when search bar changed
                     String input = s.toString();
-                    Log.e("xiang", "input String: "+ input);
                     searchList = searchService.searchInput(input);
                     if(searchList.size() == 0){
                         toggleSearchResultGone();
@@ -251,6 +256,7 @@ public class MainActivity extends AppCompatActivity{
                 else{
                     toggleSearchResultGone();
                 }
+                toggleFilterGone();
             }
         });
 
@@ -261,6 +267,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 toggleSearchResultVisible();
+                toggleFilterGone();
             }
         });
 
@@ -274,6 +281,21 @@ public class MainActivity extends AppCompatActivity{
                 tagsClicked.clear();
                 genresClicked.clear();
 
+            }
+        });
+
+        /*****
+         * filter page open or close
+         */
+        filterOpenBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (filterOpen) {
+                    toggleFilterGone();
+                }
+                else{
+                    toggleFilterVisible();
+                }
             }
         });
     }
@@ -335,6 +357,15 @@ public class MainActivity extends AppCompatActivity{
 
         //Getting filter result
         filter = findViewById(R.id.filter_button);
+
+        //Getting filter open btn
+        filterOpenBtn = findViewById(R.id.filter_open_btn);
+
+        //Getting filter display box
+        filterBox = findViewById(R.id.filter_book);
+
+        //Getting filter control bar
+        filterPage = findViewById(R.id.filter_page);
     }
 
     private void SearchBar(){
@@ -347,7 +378,6 @@ public class MainActivity extends AppCompatActivity{
         searchListAdapter.setRecyclerItemClickListener(new SearchListAdapter.OnRecyclerItemClickListener() {
             @Override
             public void onRecyclerItemClick(int position) {
-                Log.e("xiang", "onRecyclerItemClick:" +position);
             }
         });
     }
@@ -357,6 +387,17 @@ public class MainActivity extends AppCompatActivity{
     }
     public void toggleSearchResultVisible(){
         recyclerView.setVisibility(View.VISIBLE);
+    }
+    public void toggleFilterVisible(){
+        filterPage.setVisibility(View.VISIBLE);
+        filterBox.setVisibility(View.VISIBLE);
+        filterOpen = true;
+    }
+    public void toggleFilterGone(){
+        filterPage.setVisibility(View.GONE);
+        filterBox.setVisibility(View.GONE);
+        filterOpen = false;
+        bookDistributor();
     }
 
     public boolean isViewInBounds(View view, int x, int y){
@@ -396,7 +437,6 @@ public class MainActivity extends AppCompatActivity{
         libraryBookListAdapter.setRecyclerItemClickListener(new LibraryBookListAdapter.OnRecyclerItemClickListener() {
             @Override
             public void onRecyclerItemClick(int position) {
-                Log.e("xiang", "onRecyclerItemClick:" +position);
                 toggleSearchResultGone();
             }
         });
@@ -426,7 +466,6 @@ public class MainActivity extends AppCompatActivity{
         allBookAdapter.setRecyclerItemClickListener(new AllBookListAdapter.OnRecyclerItemClickListener() {
             @Override
             public void onRecyclerItemClick(int position) {
-                Log.e("xiang", "onRecyclerItemClick:" +position);
                 toggleSearchResultGone();
             }
         });
@@ -457,7 +496,6 @@ public class MainActivity extends AppCompatActivity{
         finishedBookAdapter.setRecyclerItemClickListener(new FinishedBookAdapter.OnRecyclerItemClickListener() {
             @Override
             public void onRecyclerItemClick(int position) {
-                Log.e("xiang", "onRecyclerItemClick:" +position);
                 toggleSearchResultGone();
             }
         });
@@ -488,7 +526,6 @@ public class MainActivity extends AppCompatActivity{
         inProgressBookAdapter.setRecyclerItemClickListener(new InProgressBookAdapter.OnRecyclerItemClickListener() {
             @Override
             public void onRecyclerItemClick(int position) {
-                Log.e("xiang", "onRecyclerItemClick:" +position);
                 toggleSearchResultGone();
             }
         });
@@ -506,7 +543,6 @@ public class MainActivity extends AppCompatActivity{
         tagsAdapter.setRecyclerItemClickListener(new AllTagsListAdapter.OnRecyclerItemClickListener() {
             @Override
             public void onRecyclerItemClick(int position) {
-                Log.e("xiang", "tags position"+position);
                 String getTagName = tagsAdapter.getTagsName(position);
                 if(getTagName != null){
                     tagsClicked.add(getTagName);
@@ -527,7 +563,6 @@ public class MainActivity extends AppCompatActivity{
         genresAdapter.setRecyclerItemClickListener(new AllGenresListAdapter.OnRecyclerItemClickListener() {
             @Override
             public void onRecyclerItemClick(int position) {
-                Log.e("xiang", "genre position"+position);
                 String getGenreName = genresAdapter.getGenreName(position);
                 if(getGenreName != null){
                     genresClicked.add(getGenreName);
@@ -546,7 +581,6 @@ public class MainActivity extends AppCompatActivity{
         filterBookAdapter.setRecyclerItemClickListener(new FilterBookAdapter.OnRecyclerItemClickListener() {
             @Override
             public void onRecyclerItemClick(int position) {
-                Log.e("xiang", "filter book:" + position);
             }
         });
 
