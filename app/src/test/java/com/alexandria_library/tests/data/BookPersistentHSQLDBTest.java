@@ -2,7 +2,9 @@ package com.alexandria_library.tests.data;
 
 import com.alexandria_library.data.hsqldb.BookPersistentHSQLDB;
 import com.alexandria_library.logic.SearchService;
+import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.logic.SearchServiceException;
+import com.alexandria_library.tests.util.TestUtils;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,10 +20,10 @@ public class BookPersistentHSQLDBTest {
 
     @Before
     public void setUp() throws IOException {
-        //tempDB = dbCopy.dbCopy();
-        //BookPersistentHSQLDB db = new BookPersistentHSQLDB(tempDB.getAbsolutePath().replace(".script", ""));
+        tempDB = TestUtils.copyDB();
+        BookPersistentHSQLDB db = new BookPersistentHSQLDB(tempDB.getAbsolutePath().replace(".script", ""));
 
-        searchService = new SearchService();
+        searchService = new SearchService(db);
     }
 
     ////////////////////////////////////////////
@@ -29,12 +31,11 @@ public class BookPersistentHSQLDBTest {
     ////////////////////////////////////////////
 
     @Test
-    public void dummyTest(){
+    public void dummyTest() throws SearchServiceException{
         System.out.println("Testing upload(Book, User)");
-        try {
-            System.out.println(searchService.searchInput("test idk whast going on").get(0).getName());
-        } catch (SearchServiceException e) {
-            System.out.println("Error fuckkkk");;
+        Booklist result = searchService.searchInput("The");
+        for(int i = 0; i < result.size(); i++){
+            System.out.println(result.get(i).getName());
         }
     }
 }
