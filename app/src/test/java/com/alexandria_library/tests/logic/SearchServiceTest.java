@@ -4,6 +4,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
+import com.alexandria_library.data.IBookPersistent;
 import com.alexandria_library.data.IBookPersistentStub;
 import com.alexandria_library.data.stub.BookPersistentInterStub;
 import com.alexandria_library.dso.Book;
@@ -17,10 +18,12 @@ import org.junit.Test;
 
 public class SearchServiceTest {
     private ISearchService searchService;
+    private IBookPersistent bookPersistent;
     @Before
     public void setUp() {
         System.out.println("Starting tests for SearchService");
-        searchService = new SearchService();
+        bookPersistent = new BookPersistentInterStub();
+        searchService = new SearchService(bookPersistent);
         assertNotNull(searchService);
     }
 
