@@ -1,6 +1,6 @@
 package com.alexandria_library.data.hsqldb;
 
-import com.alexandria_library.data.IUserPersistentHSQLDB;
+import com.alexandria_library.data.DataInterface.IUserPersistentHSQLDB;
 import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.dso.Reader;

@@ -1,9 +1,10 @@
 package com.alexandria_library.data.stub;
 
-import com.alexandria_library.data.IUserPersistent;
+import com.alexandria_library.data.DataInterface.IUserPersistent;
 import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Reader;
 import com.alexandria_library.dso.User;
+import com.alexandria_library.logic.DefaultBooklist;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -80,50 +81,53 @@ public class UserPersistentStub implements IUserPersistent {
         /****
          * add all books to user1's all book list
          */
-        user1.addBookToAll(b1);
-        user1.addBookToAll(b2);
-        user1.addBookToAll(b3);
-        user1.addBookToAll(b4);
-        user1.addBookToAll(b5);
-        user1.addBookToAll(b6);
-        user1.addBookToAll(b7);
-        user1.addBookToAll(b8);
-        user1.addBookToFinished(b1);
-        user1.addBookToFinished(b2);
-        user1.addBookToFinished(b3);
-        user1.addBookToFinished(b4);
-        user1.addBookToFinished(b5);
-        user1.addBookToFinished(b6);
-        user1.addBookToFinished(b7);
-        user1.addBookToInProgress(b8);
-        user1.addBookToInProgress(b7);
-        user1.addBookToInProgress(b6);
-        user1.addBookToInProgress(b5);
-        user1.addBookToInProgress(b4);
-        user1.addBookToInProgress(b3);
-        user1.addBookToInProgress(b2);
+        DefaultBooklist defaultBooklist = new DefaultBooklist();
+        try {
+            defaultBooklist.addBookToAll(user1, b1);
+            defaultBooklist.addBookToAll(user1, b2);
+            defaultBooklist.addBookToAll(user1, b3);
+            defaultBooklist.addBookToAll(user1, b4);
+            defaultBooklist.addBookToAll(user1, b5);
+            defaultBooklist.addBookToAll(user1, b6);
+            defaultBooklist.addBookToAll(user1, b7);
+            defaultBooklist.addBookToAll(user1, b8);
+            defaultBooklist.addBookToFinished(user1,b1);
+            defaultBooklist.addBookToFinished(user1,b2);
+            defaultBooklist.addBookToFinished(user1,b3);
+            defaultBooklist.addBookToFinished(user1,b4);
+            defaultBooklist.addBookToFinished(user1,b5);
+            defaultBooklist.addBookToFinished(user1,b6);
+            defaultBooklist.addBookToFinished(user1,b7);
+            defaultBooklist.addBookToInProgress(user1, b8);
+            defaultBooklist.addBookToInProgress(user1, b7);
+            defaultBooklist.addBookToInProgress(user1, b6);
+            defaultBooklist.addBookToInProgress(user1, b5);
+            defaultBooklist.addBookToInProgress(user1, b4);
+            defaultBooklist.addBookToInProgress(user1, b3);
+            defaultBooklist.addBookToInProgress(user1, b2);
 
-
-
-        user2.addBookToAll(b1);
-        user2.addBookToAll(b2);
-        user2.addBookToAll(b3);
-        user2.addBookToAll(b4);
-        user2.addBookToAll(b5);
-        user2.addBookToAll(b6);
-        user2.addBookToAll(b7);
-        user2.addBookToAll(b8);
-        user2.addBookToFinished(b3);
-        user2.addBookToFinished(b4);
-        user2.addBookToFinished(b5);
-        user2.addBookToFinished(b6);
-        user2.addBookToFinished(b7);
-        user2.addBookToInProgress(b6);
-        user2.addBookToInProgress(b5);
-        user2.addBookToInProgress(b4);
-        user2.addBookToInProgress(b3);
-        user2.addBookToInProgress(b2);
-
+            defaultBooklist.addBookToAll(user2, b1);
+            defaultBooklist.addBookToAll(user2, b2);
+            defaultBooklist.addBookToAll(user2, b3);
+            defaultBooklist.addBookToAll(user2, b4);
+            defaultBooklist.addBookToAll(user2, b5);
+            defaultBooklist.addBookToAll(user2, b6);
+            defaultBooklist.addBookToAll(user2, b7);
+            defaultBooklist.addBookToAll(user2, b8);
+            defaultBooklist.addBookToFinished(user2, b3);
+            defaultBooklist.addBookToFinished(user2, b4);
+            defaultBooklist.addBookToFinished(user2, b5);
+            defaultBooklist.addBookToFinished(user2, b6);
+            defaultBooklist.addBookToFinished(user2, b7);
+            defaultBooklist.addBookToInProgress(user2, b6);
+            defaultBooklist.addBookToInProgress(user2, b5);
+            defaultBooklist.addBookToInProgress(user2, b4);
+            defaultBooklist.addBookToInProgress(user2, b3);
+            defaultBooklist.addBookToInProgress(user2, b2);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Something is wrong with creating stub data");
+        }
 
         /***
          * add users to user persistent
