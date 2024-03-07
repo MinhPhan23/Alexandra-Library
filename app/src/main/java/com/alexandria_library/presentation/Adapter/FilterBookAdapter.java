@@ -31,13 +31,10 @@ public class FilterBookAdapter extends RecyclerView.Adapter<FilterBookAdapter.My
 
         tagArray = transferListToArray(tagsList);
         genreArray = transferListToArray(genresList);
-        this.allLibraryBooks = allLibraryBooks;
-        initializer(context, filter);
-        findBooks();
-    }
-    public void initializer(Context context, IBookListFilter filter){
         FilterBookAdapter.filter = filter;
         this.context = context;
+        this.allLibraryBooks = allLibraryBooks;
+        findBooks();
     }
 
     public void findBooks(){
