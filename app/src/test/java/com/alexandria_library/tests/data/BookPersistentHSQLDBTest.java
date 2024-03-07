@@ -30,7 +30,7 @@ public class BookPersistentHSQLDBTest {
     ////////////////////////////////////////////
 
     @Test
-    public void searchInputTest(){
+    public void dummyTest(){
         System.out.println("Testing upload(Book, User)");
         try {
             System.out.println(searchService.searchInput("test idk whast going on").get(0).getName());
