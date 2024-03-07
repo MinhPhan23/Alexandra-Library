@@ -1,11 +1,14 @@
 package com.alexandria_library.application;
 
+import com.alexandria_library.presentation.CLI;
+
 public class Main {
 
     private static String dbName = "LibraryDB";
 
     public static void main(String [] args){
-
+        CLI.run();
+        System.out.println("ALL done");
     }
 
     public static void setDBPathName(final String name){
@@ -24,5 +27,4 @@ public class Main {
     public static String getDBPathName(){
         return dbName;
     }
-
 }

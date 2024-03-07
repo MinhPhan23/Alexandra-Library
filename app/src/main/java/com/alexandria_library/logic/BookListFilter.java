@@ -110,7 +110,7 @@ public class BookListFilter implements IBookListFilter {
     }
 
     @Override
-    public ArrayList<String > getAllGenre(IBookPersistent bookPersistent){
+    public ArrayList<String> getAllGenre(IBookPersistent bookPersistent){
         ArrayList<String> allGenres = new ArrayList<>();
         if(bookPersistent instanceof BookPersistentHSQLDB){
             allGenres = ((BookPersistentHSQLDB)bookPersistent).getAllGenres();
