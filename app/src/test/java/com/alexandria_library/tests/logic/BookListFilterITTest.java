@@ -18,7 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public class BookListFilterITest {
+public class BookListFilterITTest {
     private BookListFilter bookListFilter;
     private Booklist libraryBooks;
     private File tempDB;
