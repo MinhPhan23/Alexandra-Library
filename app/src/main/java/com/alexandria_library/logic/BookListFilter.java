@@ -74,7 +74,8 @@ public class BookListFilter implements IBookListFilter {
     @Override
     public Booklist getFilteredList(Booklist books, String[] tags, String[] genres){
         Booklist tagFiltered = filterByTag(books, tags);
-        if(tagFiltered.size() != 0){
+        System.out.println(tagFiltered.toString());
+        if(!tagFiltered.isEmpty()){
             //filter genre by using what we get from tag's filtered
             return filterByGenre(tagFiltered, genres);
         }
