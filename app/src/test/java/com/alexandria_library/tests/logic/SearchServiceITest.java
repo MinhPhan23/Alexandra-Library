@@ -20,15 +20,14 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 
-public class SearchServiceIT {
+public class SearchServiceITest {
     private ISearchService searchService;
-    private IBookPersistent bookPersistent;
     private File tempDB;
     @Before
     public void setUp() throws IOException {
         System.out.println("Starting tests for SearchService");
         this.tempDB = TestUtils.copyDB();
-        bookPersistent = new BookPersistentHSQLDB(this.tempDB.getAbsolutePath().replace(".script",""));
+        IBookPersistent bookPersistent = new BookPersistentHSQLDB(this.tempDB.getAbsolutePath().replace(".script", ""));
         searchService = new SearchService(bookPersistent);
         assertNotNull(searchService);
     }
@@ -87,8 +86,10 @@ public class SearchServiceIT {
                 String bookName = book.getName();
                 assertTrue(bookName.contains(keywords));
             }
-        } catch (SearchServiceException ignored) {
-
+        } catch (SearchServiceException e) {
+            assert(false);
+            System.out.println("Something wrong with the test");
+            e.printStackTrace();
         }
     }
 
@@ -102,8 +103,10 @@ public class SearchServiceIT {
                 String authorName = book.getAuthor();
                 assertTrue(authorName.contains(keywords));
             }
-        } catch (SearchServiceException ignored) {
-
+        } catch (SearchServiceException e) {
+            assert(false);
+            System.out.println("Something wrong with the test");
+            e.printStackTrace();
         }
     }
     @Test
@@ -124,8 +127,10 @@ public class SearchServiceIT {
                 }
                 assertTrue(check);
             }
-        } catch (SearchServiceException ignored) {
-
+        } catch (SearchServiceException e) {
+            assert(false);
+            System.out.println("Something wrong with the test");
+            e.printStackTrace();
         }
     }
 

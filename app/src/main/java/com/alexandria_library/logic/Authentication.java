@@ -15,24 +15,12 @@ public class Authentication implements IAuthentication{
         this.userData = userData;
     }
 
-    /*****
-     * Insert new user to user stub
-     * @param userName
-     * @param password
-     * @return :true for success added, otherwise for false
-     */
     private boolean insertNewUser(String userName, String password){
         return userData.addNewUser(userName, password);
     }
 
-    /*****
-     * find exiting user
-     * @param userName
-     * @param password
-     * @return : specific user, or null
-     */
-    private User checkExistingUser(String userName, String password){
-        return userData.findUser(userName, password);
+    private User checkExistingUser(String userName){
+        return userData.findUser(userName);
     }
 
     @Override
@@ -40,7 +28,7 @@ public class Authentication implements IAuthentication{
         if (userName==null || userName.equals("") || password==null || password.equals("")) {
             throw new AuthenticationException("Username and Password cannot be empty");
         }
-        User user = checkExistingUser(userName, password);
+        User user = checkExistingUser(userName);
         if (user == null) {
             throw new AuthenticationException("Username does not exist");
         }
@@ -58,7 +46,7 @@ public class Authentication implements IAuthentication{
         if (!password.equals(doublePassword)) {
             throw new AuthenticationException("Double password does not match");
         }
-        User user = checkExistingUser(userName, password);
+        User user = checkExistingUser(userName);
         if (user != null) {
             throw new AuthenticationException("Username already exist");
         }
