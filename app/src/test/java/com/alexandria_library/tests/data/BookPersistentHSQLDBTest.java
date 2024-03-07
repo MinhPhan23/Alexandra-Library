@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.IOException;
 
 public class BookPersistentHSQLDBTest {
 
@@ -17,8 +18,9 @@ public class BookPersistentHSQLDBTest {
     private File tempDB;
 
     @Before
-    public void setUp(){
-        tempDB = dbCopy.dbCopy();
+    public void setUp() throws IOException {
+        //tempDB = dbCopy.dbCopy();
+        //BookPersistentHSQLDB db = new BookPersistentHSQLDB(tempDB.getAbsolutePath().replace(".script", ""));
 
         searchService = new SearchService();
     }
