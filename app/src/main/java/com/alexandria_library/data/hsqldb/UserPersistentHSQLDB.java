@@ -17,7 +17,7 @@ import java.util.List;
 
 public class UserPersistentHSQLDB implements IUserPersistentHSQLDB {
     private final String dbPath;
-    private static int userID = 1;
+    private static int userID = 6; //start with 6 because group members are default users
     private static int customListID = 1;
     private static int readingListID = 1;
     private static int finishedListID = 1;
