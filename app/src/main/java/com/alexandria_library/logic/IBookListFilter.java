@@ -1,5 +1,6 @@
 package com.alexandria_library.logic;
 
+import com.alexandria_library.data.IBookPersistent;
 import com.alexandria_library.dso.Booklist;
 
 
@@ -17,4 +18,7 @@ public interface IBookListFilter {
     public Booklist filterByGenre(Booklist bookList, String[] genres);
 
     public Booklist filterByAuthor(Booklist bookList, String[] authors);
+    public Booklist getFilteredList(Booklist books, String[] tags, String[] genres);
+    public ArrayList<String> getAllTags(IBookPersistent bookPersistent);
+    public ArrayList<String > getAllGenre(IBookPersistent bookPersistent);
 }

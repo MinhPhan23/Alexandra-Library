@@ -22,17 +22,25 @@ import com.alexandria_library.R;
 import com.alexandria_library.data.IBookPersistent;
 import com.alexandria_library.data.IBookPersistentStub;
 import com.alexandria_library.dso.Booklist;
+import com.alexandria_library.logic.BookListFilter;
+import com.alexandria_library.logic.IBookListFilter;
+import com.alexandria_library.logic.IBookListRanker;
 import com.alexandria_library.logic.ISearchService;
 import com.alexandria_library.logic.SearchService;
 import com.alexandria_library.logic.SearchServiceException;
 import com.alexandria_library.logic.SideBarService;
 import com.alexandria_library.presentation.Adapter.AllBookListAdapter;
+import com.alexandria_library.presentation.Adapter.AllGenresListAdapter;
+import com.alexandria_library.presentation.Adapter.AllTagsListAdapter;
+import com.alexandria_library.presentation.Adapter.FilterBookAdapter;
 import com.alexandria_library.presentation.Adapter.FinishedBookAdapter;
 import com.alexandria_library.presentation.Adapter.InProgressBookAdapter;
 import com.alexandria_library.presentation.Adapter.LibraryBookListAdapter;
 import com.alexandria_library.presentation.Adapter.SearchListAdapter;
 import com.alexandria_library.presentation.Authentication.LoginActivity;
 import com.alexandria_library.application.Service;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -43,39 +51,50 @@ public class MainActivity extends AppCompatActivity{
     private InProgressBookAdapter inProgressBookAdapter;
     private LibraryBookListAdapter libraryBookListAdapter;
     private SearchListAdapter searchListAdapter;
+    private AllTagsListAdapter tagsAdapter;
+    private AllGenresListAdapter genresAdapter;
+    private FilterBookAdapter filterBookAdapter;
     private SideBarService sideBarService;
     private ISearchService searchService;
-    private IBookPersistent data;
+    private IBookListFilter bookListFilter;
+    private IBookPersistent bookPersistent;
     private Button libraryBtn, allListBtn, finishedBtn, inProgressBtn;
     private Button logOut, categoryBtn, account;
+    private Button filter;
     private Button searchIcon;
     private FrameLayout expandable;
     private EditText searchInput;
     private RecyclerView recyclerView;
     private View rootView;
     private boolean library, all, inProgress,finish;
-    private Button test1;
+    private Booklist allLibraryBooks;
+    private Booklist filterBooks;
+    private ArrayList<String> tagsClicked;
+    private ArrayList<String> genresClicked;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
+    private void initializer(){
+        bookPersistent = Service.getBookPersistent();
+        allLibraryBooks = bookPersistent.getBookList();
+        filterBooks = new Booklist();
         library = true; all = false; inProgress = false; finish = false;
-        findByID();
-        bookDistributor();
-
         searchList = new Booklist();
         searchService = new SearchService();
 
         sideBarService = LoginActivity.getSideBarService();
+        bookListFilter = new BookListFilter();
+        tagsClicked = new ArrayList<>();
+        genresClicked = new ArrayList<>();
+    }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        initializer();
+        findByID();
 
-        test1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+        bookDistributor();
+        tagsDisplay();
+        genresDisplay();
 
 
         /*****
@@ -244,6 +263,19 @@ public class MainActivity extends AppCompatActivity{
                 toggleSearchResultVisible();
             }
         });
+
+        /*****
+         * filter button clicked
+         */
+        filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                filterBookDisplay(tagsClicked, genresClicked);
+                tagsClicked.clear();
+                genresClicked.clear();
+
+            }
+        });
     }
 
 
@@ -301,8 +333,8 @@ public class MainActivity extends AppCompatActivity{
         //Getting search result
         searchIcon = findViewById(R.id.search_icon);
 
-        //TESTING
-        test1 = findViewById(R.id.test1);
+        //Getting filter result
+        filter = findViewById(R.id.filter_button);
     }
 
     private void SearchBar(){
@@ -462,4 +494,61 @@ public class MainActivity extends AppCompatActivity{
         });
     }
 
+    private void tagsDisplay(){
+        RecyclerView recyclerView = findViewById(R.id.tags_view);
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
+        recyclerView.setLayoutManager(gridLayoutManager);
+
+        tagsAdapter = new AllTagsListAdapter(this, bookListFilter);
+        recyclerView.setAdapter(tagsAdapter);
+
+        tagsAdapter.setRecyclerItemClickListener(new AllTagsListAdapter.OnRecyclerItemClickListener() {
+            @Override
+            public void onRecyclerItemClick(int position) {
+                Log.e("xiang", "tags position"+position);
+                String getTagName = tagsAdapter.getTagsName(position);
+                if(getTagName != null){
+                    tagsClicked.add(getTagName);
+                }
+            }
+        });
+    }
+
+    private void genresDisplay(){
+        RecyclerView recyclerView = findViewById(R.id.genres_view);
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
+        recyclerView.setLayoutManager(gridLayoutManager);
+
+        genresAdapter = new AllGenresListAdapter(this, bookListFilter);
+        recyclerView.setAdapter(genresAdapter);
+
+        genresAdapter.setRecyclerItemClickListener(new AllGenresListAdapter.OnRecyclerItemClickListener() {
+            @Override
+            public void onRecyclerItemClick(int position) {
+                Log.e("xiang", "genre position"+position);
+                String getGenreName = genresAdapter.getGenreName(position);
+                if(getGenreName != null){
+                    genresClicked.add(getGenreName);
+                }
+            }
+        });
+    }
+
+    private void filterBookDisplay(ArrayList<String> tags, ArrayList<String> genre){
+        RecyclerView recyclerView = findViewById(R.id.filter_book);
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        filterBookAdapter = new FilterBookAdapter(this, bookListFilter, allLibraryBooks, tags, genre);
+        recyclerView.setAdapter(filterBookAdapter);
+        filterBookAdapter.setRecyclerItemClickListener(new FilterBookAdapter.OnRecyclerItemClickListener() {
+            @Override
+            public void onRecyclerItemClick(int position) {
+                Log.e("xiang", "filter book:" + position);
+            }
+        });
+
+    }
 }
