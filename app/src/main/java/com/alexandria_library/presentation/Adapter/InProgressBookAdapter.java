@@ -9,7 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.alexandria_library.R;
-import com.alexandria_library.dso.Book;
+import com.alexandria_library.dso.Booklist;
+import com.alexandria_library.dso.Reader;
 import com.alexandria_library.logic.SideBarService;
 import com.alexandria_library.presentation.Authentication.LoginActivity;
 
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 
 public class InProgressBookAdapter extends RecyclerView.Adapter<InProgressBookAdapter.MyViewHolder> {
     private static SideBarService sideBarService;
-    private ArrayList<Book> inProgressList;
+    private Booklist inProgressList;
     private Context context;
 
     public InProgressBookAdapter(Context context){
@@ -27,7 +28,10 @@ public class InProgressBookAdapter extends RecyclerView.Adapter<InProgressBookAd
     }
     public void find(){
         if(sideBarService != null){
-            inProgressList = sideBarService.getUser().getFinishedList();
+            if (sideBarService.getUser() instanceof Reader) {
+                Reader reader = (Reader) sideBarService.getUser();
+                inProgressList = reader.getFinishedList();
+            }
         }
     }
 

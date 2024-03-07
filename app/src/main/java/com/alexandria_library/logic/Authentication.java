@@ -1,41 +1,58 @@
 package com.alexandria_library.logic;
 
 import com.alexandria_library.application.Service;
-import com.alexandria_library.data.IUser;
+import com.alexandria_library.data.IUserPersistent;
 import com.alexandria_library.dso.User;
 
-public class Authentication {
+public class Authentication implements IAuthentication{
 
-    private final IUser userData;
+    private final IUserPersistent userData;
 
     public Authentication(){
-        userData = Service.getUserPersistence();
+        userData = Service.getUserPersistent();
     }
-    public Authentication(IUser userData){
+    public Authentication(IUserPersistent userData){
         this.userData = userData;
     }
 
-    /*****
-     * Insert new user to user stub
-     * @param userName
-     * @param password
-     * @return :true for success added, otherwise for false
-     */
-    public boolean insertNewUser(String userName, String password){
-        boolean success = false;
-        if(userData.findUser(userName) == null){
-            success = userData.addNewUser(userName, password);
-        }
-        return success;
+    private boolean insertNewUser(String userName, String password){
+        return userData.addNewUser(userName, password);
     }
 
-    /*****
-     * find exiting user
-     * @param userName
-     * @param password
-     * @return : specific user, or null
-     */
-    public User findExist(String userName, String password){
-        return userData.findUser(userName, password);
+    private User checkExistingUser(String userName){
+        return userData.findUser(userName);
+    }
+
+    @Override
+    public User login(String userName, String password) throws AuthenticationException{
+        if (userName==null || userName.equals("") || password==null || password.equals("")) {
+            throw new AuthenticationException("Username and Password cannot be empty");
+        }
+        User user = checkExistingUser(userName);
+        if (user == null) {
+            throw new AuthenticationException("Username does not exist");
+        }
+        if (!user.getPassword().equals(password)) {
+            throw new AuthenticationException("Password is not correct");
+        }
+        return user;
+    }
+
+    @Override
+    public void register(String userName, String password, String doublePassword) throws AuthenticationException {
+        if(userName == null || password == null || doublePassword == null || userName.equals("") || password.equals("") || doublePassword.equals("")){
+            throw new AuthenticationException("Username and Password cannot be empty");
+        }
+        if (!password.equals(doublePassword)) {
+            throw new AuthenticationException("Double password does not match");
+        }
+        User user = checkExistingUser(userName);
+        if (user != null) {
+            throw new AuthenticationException("Username already exist");
+        }
+        boolean success = insertNewUser(userName, password);
+        if (!success) {
+            throw new AuthenticationException("Cannot add reason due to some failures, please try again");
+        }
     }
 }

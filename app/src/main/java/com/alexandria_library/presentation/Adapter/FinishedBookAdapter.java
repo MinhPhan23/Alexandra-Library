@@ -9,7 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.alexandria_library.R;
-import com.alexandria_library.dso.Book;
+import com.alexandria_library.dso.Booklist;
+import com.alexandria_library.dso.Reader;
 import com.alexandria_library.logic.SideBarService;
 import com.alexandria_library.presentation.Authentication.LoginActivity;
 
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 
 public class FinishedBookAdapter extends RecyclerView.Adapter<FinishedBookAdapter.MyViewHolder> {
     private static SideBarService sideBarService;
-    private ArrayList<Book> finishedList;
+    private Booklist finishedList;
     private Context context;
 
     public FinishedBookAdapter(Context context){
@@ -27,7 +28,10 @@ public class FinishedBookAdapter extends RecyclerView.Adapter<FinishedBookAdapte
     }
     public void find(){
         if(sideBarService != null){
-            finishedList = sideBarService.getUser().getFinishedList();
+            if (sideBarService.getUser() instanceof Reader) {
+                Reader reader = (Reader) sideBarService.getUser();
+                finishedList = reader.getFinishedList();
+            }
         }
     }
 

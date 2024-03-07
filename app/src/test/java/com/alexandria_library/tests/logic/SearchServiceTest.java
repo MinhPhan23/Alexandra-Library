@@ -4,21 +4,26 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
+import com.alexandria_library.data.IBookPersistent;
+import com.alexandria_library.data.IBookPersistentStub;
+import com.alexandria_library.data.stub.BookPersistentInterStub;
 import com.alexandria_library.dso.Book;
+import com.alexandria_library.dso.Booklist;
+import com.alexandria_library.logic.ISearchService;
 import com.alexandria_library.logic.SearchService;
 import com.alexandria_library.logic.SearchServiceException;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-
 public class SearchServiceTest {
-    private SearchService searchService;
+    private ISearchService searchService;
+
     @Before
     public void setUp() {
         System.out.println("Starting tests for SearchService");
-        searchService = new SearchService();
+        IBookPersistent bookPersistent = new BookPersistentInterStub();
+        searchService = new SearchService(bookPersistent);
         assertNotNull(searchService);
     }
 
@@ -34,13 +39,15 @@ public class SearchServiceTest {
 
         assertNotNull(actualMessage);
         assertTrue(actualMessage.contains(expectedMessage));
-
+    }
+    @Test
+    public void testNullSearch() {
         System.out.println("Test null String object");
-        exception = assertThrows(SearchServiceException.class, () -> {
+        Exception exception = assertThrows(SearchServiceException.class, () -> {
             searchService.searchInput(null);
         });
-        expectedMessage = "Could not search for empty text";
-        actualMessage = exception.getMessage();
+        String expectedMessage = "Could not search for empty text";
+        String actualMessage = exception.getMessage();
 
         assertNotNull(actualMessage);
         assertTrue(actualMessage.contains(expectedMessage));
@@ -51,13 +58,15 @@ public class SearchServiceTest {
         System.out.println("Testing searching for books by name");
         String keywords = "The Book Thief";
         try {
-            ArrayList<Book> bookList = searchService.searchInput(keywords);
+            Booklist bookList = searchService.searchInput(keywords);
             for (Book book : bookList) {
                 String bookName = book.getName();
                 assertTrue(bookName.contains(keywords));
             }
-        } catch (SearchServiceException ignored) {
-
+        } catch (SearchServiceException e) {
+            assert(false);
+            System.out.println("Something wrong with the test");
+            e.printStackTrace();
         }
     }
 
@@ -65,15 +74,16 @@ public class SearchServiceTest {
     public void testExactSearchAuthor() {
         System.out.println("Testing searching for authors by name");
         String keywords = "Harper Lee";
-        String[] keyword = keywords.split(" ");
         try {
-            ArrayList<Book> bookList = searchService.searchInput(keywords);
+            Booklist bookList = searchService.searchInput(keywords);
             for (Book book : bookList) {
                 String authorName = book.getAuthor();
                 assertTrue(authorName.contains(keywords));
             }
-        } catch (SearchServiceException ignored) {
-
+        } catch (SearchServiceException e) {
+            assert(false);
+            System.out.println("Something wrong with the test");
+            e.printStackTrace();
         }
     }
     @Test
@@ -82,7 +92,7 @@ public class SearchServiceTest {
         String keywords = "The Three Alexander";
         String[] keyword = keywords.split(" ");
         try {
-            ArrayList<Book> bookList = searchService.searchInput(keywords);
+            Booklist bookList = searchService.searchInput(keywords);
             for (Book book : bookList) {
                 String bookName = book.getName();
                 boolean check = false;
@@ -94,8 +104,10 @@ public class SearchServiceTest {
                 }
                 assertTrue(check);
             }
-        } catch (SearchServiceException ignored) {
-
+        } catch (SearchServiceException e) {
+            assert(false);
+            System.out.println("Something wrong with the test");
+            e.printStackTrace();
         }
     }
 }

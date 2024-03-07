@@ -1,37 +1,37 @@
 package com.alexandria_library.application;
 
-import com.alexandria_library.data.IBookPersistentIntermediate;
-import com.alexandria_library.data.IUser;
-import com.alexandria_library.data.stub.BookPersistentInterStub;
+import com.alexandria_library.data.IBookPersistent;
+import com.alexandria_library.data.IUserPersistentHSQLDB;
+import com.alexandria_library.data.IUserPersistent;
+import com.alexandria_library.data.hsqldb.BookPersistentHSQLDB;
+import com.alexandria_library.data.hsqldb.UserPersistentHSQLDB;
 import com.alexandria_library.data.stub.UserPersistentStub;
-import com.alexandria_library.dso.User;
 
 public class Service {
-    private static IUser userPersistence = null;
-    private static IBookPersistentIntermediate bookPersistentIntermediate = null;
+    private static IUserPersistent userPersistent = null;
+    private static IBookPersistent bookPersistent = null;
 
     /******
-     * get user persistence mock data ready when service begin
+     * get user persistence
      * @return
      */
-    public static synchronized IUser getUserPersistence(){
-        if(userPersistence == null){
-            userPersistence = new UserPersistentStub();
+    public static synchronized IUserPersistent getUserPersistent(){
+        if(userPersistent == null){
+            //userPersistent = new UserPersistentStub();
+            userPersistent = new UserPersistentHSQLDB(Main.getDBPathName());
         }
-        return userPersistence;
+        return userPersistent;
     }
 
     /******
-     * get book persistence intermediate's mock data ready when service is begin
+     * get book persistence
      * @return
      */
-
-    public static synchronized IBookPersistentIntermediate getBookPersistenceIntermediate(){
-        if(bookPersistentIntermediate == null){
-            bookPersistentIntermediate = new BookPersistentInterStub();
+    public static synchronized IBookPersistent getBookPersistent(){
+        if(bookPersistent == null){
+            //bookPersistent = new BookPersistentInterStub();
+            bookPersistent = new BookPersistentHSQLDB(Main.getDBPathName());
         }
-        return bookPersistentIntermediate;
+        return bookPersistent;
     }
-
-
 }

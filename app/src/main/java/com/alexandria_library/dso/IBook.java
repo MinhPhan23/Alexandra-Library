@@ -1,10 +1,8 @@
-package com.alexandria_library.data;
+package com.alexandria_library.dso;
 
 import androidx.annotation.NonNull;
 
-import com.alexandria_library.dso.Book;
-
-import java.time.LocalDate;
+import java.util.List;
 
 public interface IBook {
 
@@ -20,19 +18,17 @@ public interface IBook {
 
     public String getAuthor();
 
-    public void setTags(String[] tags);
+    public void setTags(List<String> tags);
 
-    public String[] getTags();
+    public List<String> getTags();
 
-    public void setGenres(String[] genres);
+    public void setGenres(List<String>genres);
 
-    public String[] getGenres();
-
-    public void setDate(LocalDate date);
+    public List<String> getGenres();
 
     public void setDate(String date);
 
-    public LocalDate getDate();
+    public String getDate();
 
     public boolean equals(final Book book);
 

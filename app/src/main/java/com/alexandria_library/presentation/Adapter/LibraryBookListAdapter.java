@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.alexandria_library.R;
-import com.alexandria_library.dso.Book;
+import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.logic.SideBarService;
 import com.alexandria_library.presentation.Authentication.LoginActivity;
 
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 public class LibraryBookListAdapter extends RecyclerView.Adapter<LibraryBookListAdapter.MyViewHolder> {
     private static SideBarService sideBarService;
-    private ArrayList<Book> libraryBookList;
+    private Booklist libraryBookList;
     private Context context;
 
     public LibraryBookListAdapter(Context context){

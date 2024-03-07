@@ -1,29 +1,25 @@
 package com.alexandria_library.logic;
-import android.view.WindowInsets;
 
 import com.alexandria_library.application.Service;
-import com.alexandria_library.data.IBookPersistentIntermediate;
-import com.alexandria_library.data.IUser;
-import com.alexandria_library.dso.Book;
-import com.alexandria_library.data.IBook;
+import com.alexandria_library.data.IBookPersistent;
+import com.alexandria_library.data.IBookPersistentStub;
+import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.dso.User;
-
-import java.util.ArrayList;
 
 public class SideBarService {
     private final User targetUser;
-    private final IBookPersistentIntermediate libraryBookData;
+    private final IBookPersistent libraryBookData;
 
     /*****
      * SideBarService constructor
      * @param user
      */
     public SideBarService(User user){
-        libraryBookData = Service.getBookPersistenceIntermediate();
+        libraryBookData = Service.getBookPersistent();
         targetUser = user;
     }
 
-    public SideBarService(User user, IBookPersistentIntermediate libraryBookData){
+    public SideBarService(User user, IBookPersistent libraryBookData){
         this.libraryBookData = libraryBookData;
         targetUser = user;
     }
@@ -35,7 +31,7 @@ public class SideBarService {
     public User getUser(){
         return targetUser;
     }
-    public ArrayList<Book> getBookList(){
+    public Booklist getBookList(){
         return libraryBookData.getBookList();
     }
 }
