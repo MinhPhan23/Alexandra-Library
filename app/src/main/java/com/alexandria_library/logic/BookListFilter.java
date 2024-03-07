@@ -2,12 +2,9 @@ package com.alexandria_library.logic;
 
 import com.alexandria_library.data.IBookPersistent;
 import com.alexandria_library.data.hsqldb.BookPersistentHSQLDB;
-import com.alexandria_library.data.hsqldb.PersistenceException;
 import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
-import com.alexandria_library.presentation.Adapter.AllTagsListAdapter;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;

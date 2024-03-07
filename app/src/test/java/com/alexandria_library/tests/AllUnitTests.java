@@ -9,6 +9,7 @@ import com.alexandria_library.tests.data.BookPersistentHSQLDBTest;
 import com.alexandria_library.tests.data.BookPersistentIntermediateTest;
 import com.alexandria_library.tests.data.BookPersistentTest;
 import com.alexandria_library.tests.data.UserPersistentStubTest;
+import com.alexandria_library.tests.dso.BookListTest;
 import com.alexandria_library.tests.dso.BookTest;
 import com.alexandria_library.tests.dso.ReaderTest;
 import com.alexandria_library.tests.logic.AuthenticationTest;
@@ -24,6 +25,7 @@ import com.alexandria_library.tests.logic.SideBarServiceTest;
         BookListFilterTest.class,
         AuthenticationTest.class,
         SideBarServiceTest.class,
+        BookListTest.class,
         BookTest.class,
         ReaderTest.class,
         BookPersistentIntermediateTest.class,
