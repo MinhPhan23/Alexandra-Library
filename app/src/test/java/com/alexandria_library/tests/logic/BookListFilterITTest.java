@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import com.alexandria_library.application.Service;
 import com.alexandria_library.data.IBookPersistent;
 import com.alexandria_library.data.hsqldb.BookPersistentHSQLDB;
+import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.logic.BookListFilter;
 import com.alexandria_library.tests.util.TestUtils;
@@ -16,6 +17,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BookListFilterITTest {
@@ -92,7 +94,6 @@ public class BookListFilterITTest {
             assertTrue(tags.contains("High School")|| tags.contains("Coming of Age"));
         }
     }
-
     @Test
     public void testSuccussFitlerByTag3(){
         String[] existTags = {"Books About Books", "Coming of Age", "Hunger Games 1"};
@@ -106,7 +107,6 @@ public class BookListFilterITTest {
                             ||tags.contains("Hunger Games 1"));
         }
     }
-
     @Test
     public void testFailureFilterByGenre(){
         String[] nonExistTags = {"xxx", "uuu", "xxx"};
@@ -115,12 +115,12 @@ public class BookListFilterITTest {
     }
     @Test
     public void testSuccussFitlerByGenre1(){
-        String[] existGenre = {"Romance"};
+        String[] existGenre = {"Historical Fiction"};
         Booklist getFiltered = bookListFilter.filterByGenre(libraryBooks, existGenre);
 
         for(int i = 0; i<getFiltered.size(); i++){
             List<String> genre = getFiltered.get(i).getGenres();
-            assertTrue(genre.contains("Romance"));
+            assertTrue(genre.contains("Historical Fiction"));
         }
     }
     @Test
@@ -132,7 +132,6 @@ public class BookListFilterITTest {
             assertTrue(genres.contains("Science Fiction")|| genres.contains("Classics"));
         }
     }
-
     @Test
     public void testSuccussFitlerByGenre3(){
         String[] existGenre = {"Dystopia", "Fiction", "War"};
@@ -146,7 +145,6 @@ public class BookListFilterITTest {
                     ||genre.contains("War"));
         }
     }
-
     @Test
     public void testFailureFilterByAuthor(){
         String[] nonExistAuthors = {"xxx", "uuu", "xxx"};
@@ -160,14 +158,31 @@ public class BookListFilterITTest {
         for(int i = 0; i<getFiltered.size(); i++){
             assertEquals(getFiltered.get(i).getAuthor(),"Taylor Jenkins Reid");
         }
-
     }
     @Test
     public void testGetFilteredList(){
         String[] existGenre = {"Romance"};
         String[] existTags = {"LGBT"};
         Booklist fitered = bookListFilter.getFilteredList(libraryBooks, existTags, existGenre);
-        System.out.println(fitered.toString());
         assertFalse(fitered.isEmpty());
+        for(int i = 0; i<fitered.size(); i++){
+            Book currentBook = fitered.get(i);
+            List<String> tags = currentBook.getTags();
+            List<String> genres = currentBook.getGenres();
+            assertTrue(tags.contains("LGBT"));
+            assertTrue(genres.contains("Romance"));
+        }
+    }
+    @Test
+    public void testGetAllTags(){
+        ArrayList<String> getTags = bookListFilter.getAllTags(Service.getBookPersistent());
+        assertFalse(getTags.isEmpty());
+        assertEquals(13, getTags.size());
+    }
+    @Test
+    public void testGetAllGenre(){
+        ArrayList<String> getGenres = bookListFilter.getAllGenre(Service.getBookPersistent());
+        assertFalse(getGenres.isEmpty());
+        assertEquals(12, getGenres.size());
     }
 }

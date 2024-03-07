@@ -56,24 +56,12 @@ public class BookListFilter implements IBookListFilter {
     public Booklist filterByGenre(Booklist bookList, String[] genres) {
         Booklist filteredBooks = new Booklist();
 
-        if(bookPersistent instanceof BookPersistentHSQLDB){
-            for(int i = 0; i < genres.length; i++){
-                Booklist result = ((BookPersistentHSQLDB) bookPersistent).searchGenre(genres[i]);
-                System.out.println(result.toString());
-                for(int j = 0; j<result.size(); j++){
-                    if(!filteredBooks.contains(result.get(j))){
-                        filteredBooks.add(result.get(j));
-                    }
-                }
+        for (Book book : bookList) {
+            if (containsAll(book.getGenres(), genres)) {
+                filteredBooks.add(book);
             }
         }
-        else{
-            for (Book book : bookList) {
-                if (containsAll(book.getGenres(), genres)) {
-                    filteredBooks.add(book);
-                }
-            }
-        }
+
         return filteredBooks;
     }
 
@@ -93,7 +81,6 @@ public class BookListFilter implements IBookListFilter {
     @Override
     public Booklist getFilteredList(Booklist books, String[] tags, String[] genres){
         Booklist tagFiltered = filterByTag(books, tags);
-        System.out.println(tagFiltered.toString());
         if(!tagFiltered.isEmpty()){
             //filter genre by using what we get from tag's filtered
             return filterByGenre(tagFiltered, genres);
