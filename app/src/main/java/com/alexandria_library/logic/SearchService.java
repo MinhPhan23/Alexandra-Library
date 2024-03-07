@@ -19,10 +19,10 @@ public class SearchService implements ISearchService{
         bookListRanker = new BookListRanker();
         data = Service.getBookPersistent();
     }
-//    public SearchService(IBookPersistent data) {
-//        this. data = data;
-//        bookListRanker = new BookListRanker();
-//    }
+    public SearchService(IBookPersistent data) {
+        this. data = data;
+        bookListRanker = new BookListRanker();
+    }
 
     @Override
     public Booklist searchInput(String keywords) throws SearchServiceException {
