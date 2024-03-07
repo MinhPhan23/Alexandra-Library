@@ -43,8 +43,10 @@ public class AuthenticationITest {
         System.out.println("Test register new user");
         try {
             authentication.register(name1, pass1, pass1);
-            assertEquals( name1, data.findUser(name1).getUserName());
-            assertEquals(pass1, data.findUser(name1).getPassword());
+            User user = authentication.login(name1, pass1);
+            assertEquals( name1, user.getUserName());
+            assertEquals(pass1, user.getPassword());
+
         }
         catch (Exception e){
             assert(false);
@@ -169,6 +171,7 @@ public class AuthenticationITest {
     public void test10_LoginSuccess() {
         System.out.println("Test finding existing user");
         try {
+            authentication.register(name1, pass1, pass1);
             User user = authentication.login(name1, pass1);
             assertNotNull(user);
             assertEquals(name1, user.getUserName());
@@ -184,6 +187,7 @@ public class AuthenticationITest {
     @Test
     public void test11_WrongPassword() {
         Exception exception = assertThrows(AuthenticationException.class, () -> {
+            authentication.register(name1, pass1, pass1);
             authentication.login(name1, pass2);
         });
         String expectedMessage = "Password is not correct";
@@ -266,8 +270,9 @@ public class AuthenticationITest {
         System.out.println("Test register second new user");
         try {
             authentication.register(name2, pass2, pass2);
-            assertEquals( name2, data.findUser(name2).getUserName());
-            assertEquals(pass2, data.findUser(name2).getPassword());
+            User user = authentication.login(name2, pass2);
+            assertEquals( name2, user.getUserName());
+            assertEquals(pass2, user.getPassword());
         }
         catch (Exception e){
             assert(false);
@@ -279,6 +284,9 @@ public class AuthenticationITest {
     @Test
     public void test18_ExistingUserIntact() {
         try {
+            authentication.register(name1, pass1, pass1);
+            authentication.register(name2, pass2, pass2);
+
             User user = authentication.login(name1, pass1);
             assertNotNull(user);
             assertEquals(name1, user.getUserName());
