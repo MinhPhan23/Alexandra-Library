@@ -1,8 +1,13 @@
 package com.alexandria_library.logic;
 
+import com.alexandria_library.data.IBookPersistent;
+import com.alexandria_library.data.hsqldb.BookPersistentHSQLDB;
+import com.alexandria_library.data.hsqldb.PersistenceException;
 import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
+import com.alexandria_library.presentation.Adapter.AllTagsListAdapter;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -69,6 +74,16 @@ public class BookListFilter implements IBookListFilter {
         return filteredBooks;
     }
 
+    @Override
+    public Booklist getFilteredList(Booklist books, String[] tags, String[] genres){
+        Booklist tagFiltered = filterByTag(books, tags);
+        if(tagFiltered.size() != 0){
+            //filter genre by using what we get from tag's filtered
+            return filterByGenre(tagFiltered, genres);
+        }
+        return null;
+    }
+
     private static boolean containsAll(List<String> bookTags, String[] filterTags) {
         for (String filterTag : filterTags) {
             boolean containsString = false;
@@ -83,5 +98,23 @@ public class BookListFilter implements IBookListFilter {
             }
         }
         return true;
+    }
+
+    @Override
+    public ArrayList<String> getAllTags(IBookPersistent bookPersistent){
+        ArrayList<String> allTags = new ArrayList<>();
+        if(bookPersistent instanceof BookPersistentHSQLDB){
+            allTags = ((BookPersistentHSQLDB)bookPersistent).getAllTags();
+        }
+        return allTags;
+    }
+
+    @Override
+    public ArrayList<String > getAllGenre(IBookPersistent bookPersistent){
+        ArrayList<String> allGenres = new ArrayList<>();
+        if(bookPersistent instanceof BookPersistentHSQLDB){
+            allGenres = ((BookPersistentHSQLDB)bookPersistent).getAllGenres();
+        }
+        return allGenres;
     }
 }
