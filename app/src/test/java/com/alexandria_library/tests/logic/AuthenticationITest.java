@@ -24,7 +24,6 @@ import java.io.IOException;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class AuthenticationITest {
     private Authentication authentication;
-    private IUserPersistent data;
     private File tempDB;
 
     private final String name1 = "Thor";
@@ -33,9 +32,10 @@ public class AuthenticationITest {
     private final String pass2 = "abcdef";
     @Before
     public void setUp() throws IOException {
-        tempDB = TestUtils.copyDB();
-        data = new UserPersistentHSQLDB(tempDB.getAbsolutePath().replace(".script", ""));
+        this.tempDB = TestUtils.copyDB();
+        IUserPersistent data = new UserPersistentHSQLDB(tempDB.getAbsolutePath().replace(".script", ""));
         authentication = new Authentication(data);
+        assertNotNull(authentication);
     }
 
     @Test
