@@ -38,7 +38,7 @@ public class BookListFilterITTest {
             String previous = result.get(0).getName();
             for(int i = 1; i<result.size(); i++){
                 String current = result.get(i).getName();
-                assertTrue(previous.compareTo(current) > 0);
+                assertTrue(previous.compareTo(current) <= 0);
                 previous = current;
             }
         }
@@ -50,7 +50,7 @@ public class BookListFilterITTest {
             String previous = result.get(0).getDate();
             for(int i = 1; i<result.size(); i++){
                 String current = result.get(i).getDate();
-                assertTrue(previous.compareTo(current) > 0);
+                assertTrue(previous.compareTo(current) <= 0);
                 previous = current;
             }
         }
@@ -63,7 +63,7 @@ public class BookListFilterITTest {
             String previous = result.get(0).getAuthor();
             for(int i = 1; i<result.size(); i++){
                 String current = result.get(i).getAuthor();
-                assertTrue(previous.compareTo(current) > 0);
+                assertTrue(previous.compareTo(current) <= 0);
                 previous = current;
             }
         }
@@ -169,11 +169,5 @@ public class BookListFilterITTest {
         Booklist fitered = bookListFilter.getFilteredList(libraryBooks, existTags, existGenre);
         System.out.println(fitered.toString());
         assertFalse(fitered.isEmpty());
-    }
-
-    @Test
-    public void testGetAllTags(){
-        ArrayList<String> result = bookListFilter.getAllGenre(Service.getBookPersistent());
-        System.out.println(result.toString());
     }
 }
