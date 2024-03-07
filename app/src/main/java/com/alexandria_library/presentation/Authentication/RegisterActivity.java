@@ -65,8 +65,11 @@ public class RegisterActivity extends AppCompatActivity {
             startActivity(i);
         }
         catch (AuthenticationException e) {
-            //Print error message here
-            System.out.println(e.getMessage());
+            setErrorMess(password, e.getMessage());
         }
+    }
+
+    private void setErrorMess(EditText layout, String message){
+        layout.setError(message);
     }
 }

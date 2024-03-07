@@ -33,7 +33,6 @@ public class BookPersistentHSQLDB implements IBookPersistentHSQLDB {
         List<String> tags = new ArrayList<>();
         List<String> genres = new ArrayList<>();
 
-        while(rs.next()){
             if(book == null){
                 //getting information
                 final int bookID = rs.getInt("BOOK_ID");
@@ -53,7 +52,6 @@ public class BookPersistentHSQLDB implements IBookPersistentHSQLDB {
             if(tag != null && !genres.contains(genre)){
                 genres.add(genre);
             }
-        }
         if(book != null){
             book.setTags(tags);
             book.setGenres(genres);
@@ -463,8 +461,8 @@ public class BookPersistentHSQLDB implements IBookPersistentHSQLDB {
             ResultSet rs = statement.executeQuery();
             while(rs.next()){
                 Book newBook = fromResultSet(rs);
-                if(newBook != null){
-                    books.add(newBook);
+                if(newBook != null && isUniqueBook(books, newBook)){
+                        books.add(newBook);
                 }
             }
             rs.close();
@@ -548,6 +546,17 @@ public class BookPersistentHSQLDB implements IBookPersistentHSQLDB {
             st.close();
         }
         return list;
+    }
+
+    private boolean isUniqueBook(Booklist list, Book book){
+        boolean unique = true;
+        for(int i = 0; i < list.size(); i++){
+            if(list.get(i).getID() == book.getID()){
+                unique = false;
+                break;
+            }
+        }
+        return unique;
     }
 
 /**
