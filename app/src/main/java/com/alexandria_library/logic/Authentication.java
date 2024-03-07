@@ -1,8 +1,9 @@
 package com.alexandria_library.logic;
 
 import com.alexandria_library.application.Service;
-import com.alexandria_library.data.IUserPersistent;
+import com.alexandria_library.data.DataInterface.IUserPersistent;
 import com.alexandria_library.dso.User;
+import com.alexandria_library.logic.Exception.AuthenticationException;
 
 public class Authentication implements IAuthentication{
 
@@ -36,7 +37,7 @@ public class Authentication implements IAuthentication{
     }
 
     @Override
-    public User login(String userName, String password) throws AuthenticationException{
+    public User login(String userName, String password) throws AuthenticationException {
         if (userName==null || userName.equals("") || password==null || password.equals("")) {
             throw new AuthenticationException("Username and Password cannot be empty");
         }

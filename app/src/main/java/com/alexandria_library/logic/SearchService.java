@@ -1,12 +1,11 @@
 package com.alexandria_library.logic;
 
 import com.alexandria_library.application.Service;
-import com.alexandria_library.data.IBookPersistent;
-import com.alexandria_library.data.IBookPersistentHSQLDB;
-import com.alexandria_library.data.IBookPersistentStub;
+import com.alexandria_library.data.DataInterface.IBookPersistent;
 import com.alexandria_library.data.hsqldb.BookPersistentHSQLDB;
 import com.alexandria_library.data.stub.BookPersistentInterStub;
 import com.alexandria_library.dso.Booklist;
+import com.alexandria_library.logic.Exception.SearchServiceException;
 
 import java.util.Arrays;
 import java.util.List;

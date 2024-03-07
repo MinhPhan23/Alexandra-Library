@@ -2,9 +2,7 @@ package com.alexandria_library.presentation.Authentication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -14,19 +12,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.alexandria_library.R;
-import com.alexandria_library.application.Main;
 import com.alexandria_library.data.utils.HSQLDBHelper;
 import com.alexandria_library.dso.User;
 import com.alexandria_library.logic.Authentication;
-import com.alexandria_library.logic.AuthenticationException;
+import com.alexandria_library.logic.Exception.AuthenticationException;
 import com.alexandria_library.logic.IAuthentication;
 import com.alexandria_library.logic.SideBarService;
 import com.alexandria_library.presentation.MainActivity;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
 
 public class LoginActivity extends AppCompatActivity {
     private Button login, register;

@@ -10,7 +10,6 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class BookListRankerTest {
     Book book1 = new Book(0, "The Three Musketeers", "Alexandre Dumas", "July 1844", new ArrayList<>(),  new ArrayList<>(Arrays.asList("Novel", "Adventure", "historical novel", "Historical Fiction", "Adventure fiction")));

@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.alexandria_library.R;
 import com.alexandria_library.logic.Authentication;
-import com.alexandria_library.logic.AuthenticationException;
+import com.alexandria_library.logic.Exception.AuthenticationException;
 import com.alexandria_library.logic.IAuthentication;
 
 public class RegisterActivity extends AppCompatActivity {

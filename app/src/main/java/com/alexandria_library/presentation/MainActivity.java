@@ -19,12 +19,11 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 
 import com.alexandria_library.R;
-import com.alexandria_library.data.IBookPersistent;
-import com.alexandria_library.data.IBookPersistentStub;
+import com.alexandria_library.data.DataInterface.IBookPersistent;
 import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.logic.ISearchService;
 import com.alexandria_library.logic.SearchService;
-import com.alexandria_library.logic.SearchServiceException;
+import com.alexandria_library.logic.Exception.SearchServiceException;
 import com.alexandria_library.logic.SideBarService;
 import com.alexandria_library.presentation.Adapter.AllBookListAdapter;
 import com.alexandria_library.presentation.Adapter.FinishedBookAdapter;
@@ -32,7 +31,6 @@ import com.alexandria_library.presentation.Adapter.InProgressBookAdapter;
 import com.alexandria_library.presentation.Adapter.LibraryBookListAdapter;
 import com.alexandria_library.presentation.Adapter.SearchListAdapter;
 import com.alexandria_library.presentation.Authentication.LoginActivity;
-import com.alexandria_library.application.Service;
 
 public class MainActivity extends AppCompatActivity{
 

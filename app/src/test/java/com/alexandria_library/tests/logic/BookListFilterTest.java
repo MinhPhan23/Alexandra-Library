@@ -8,9 +8,7 @@ import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class BookListFilterTest {
     Book book1 = new Book(1, "The Great Gatsby", "F. Scott Fitzgerald", "1925-04-10",

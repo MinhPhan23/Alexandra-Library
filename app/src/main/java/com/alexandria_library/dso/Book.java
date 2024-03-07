@@ -2,10 +2,12 @@ package com.alexandria_library.dso;
 
 import androidx.annotation.NonNull;
 
+import com.alexandria_library.dso.dsoInterface.IBook;
+
 import java.util.List;
 import java.util.Objects;
 
-public class Book implements IBook{
+public class Book implements IBook {
 
     // instance variables
     private int id;
