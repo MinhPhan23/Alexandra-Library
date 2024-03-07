@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import com.alexandria_library.application.Service;
 import com.alexandria_library.data.IBookPersistent;
 import com.alexandria_library.data.hsqldb.BookPersistentHSQLDB;
 import com.alexandria_library.dso.Booklist;
@@ -117,6 +118,7 @@ public class BookListFilterITtest {
     public void testSuccussFitlerByGenre1(){
         String[] existGenre = {"Romance"};
         Booklist getFiltered = bookListFilter.filterByGenre(libraryBooks, existGenre);
+
         for(int i = 0; i<getFiltered.size(); i++){
             List<String> genre = getFiltered.get(i).getGenres();
             assertTrue(genre.contains("Romance"));
@@ -168,5 +170,11 @@ public class BookListFilterITtest {
         Booklist fitered = bookListFilter.getFilteredList(libraryBooks, existTags, existGenre);
         System.out.println(fitered.toString());
         assertFalse(fitered.isEmpty());
+    }
+
+    @Test
+    public void testGetAllTags(){
+        ArrayList<String> result = bookListFilter.getAllGenre(Service.getBookPersistent());
+        System.out.println(result.toString());
     }
 }

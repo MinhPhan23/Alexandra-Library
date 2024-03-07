@@ -1,5 +1,8 @@
 package com.alexandria_library.logic;
 
+import androidx.activity.SystemBarStyle;
+
+import com.alexandria_library.application.Service;
 import com.alexandria_library.data.IBookPersistent;
 import com.alexandria_library.data.hsqldb.BookPersistentHSQLDB;
 import com.alexandria_library.dso.Book;
@@ -11,6 +14,10 @@ import java.util.Comparator;
 import java.util.List;
 
 public class BookListFilter implements IBookListFilter {
+    IBookPersistent bookPersistent;
+    public BookListFilter(){
+        bookPersistent = Service.getBookPersistent();
+    }
     @Override
     public Booklist sortByTitle(Booklist bookList) {
         Booklist sortedList = new Booklist(bookList);
@@ -49,12 +56,24 @@ public class BookListFilter implements IBookListFilter {
     public Booklist filterByGenre(Booklist bookList, String[] genres) {
         Booklist filteredBooks = new Booklist();
 
-        for (Book book : bookList) {
-            if (containsAll(book.getGenres(), genres)) {
-                filteredBooks.add(book);
+        if(bookPersistent instanceof BookPersistentHSQLDB){
+            for(int i = 0; i < genres.length; i++){
+                Booklist result = ((BookPersistentHSQLDB) bookPersistent).searchGenre(genres[i]);
+                System.out.println(result.toString());
+                for(int j = 0; j<result.size(); j++){
+                    if(!filteredBooks.contains(result.get(j))){
+                        filteredBooks.add(result.get(j));
+                    }
+                }
             }
         }
-
+        else{
+            for (Book book : bookList) {
+                if (containsAll(book.getGenres(), genres)) {
+                    filteredBooks.add(book);
+                }
+            }
+        }
         return filteredBooks;
     }
 
