@@ -1,4 +1,4 @@
-package com.alexandria_library.data;
+package com.alexandria_library.data.DataInterface;
 
 import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;

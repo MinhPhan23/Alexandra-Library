@@ -1,6 +1,8 @@
-package com.alexandria_library.dso;
+package com.alexandria_library.dso.dsoInterface;
 
 import androidx.annotation.NonNull;
+
+import com.alexandria_library.dso.Book;
 
 import java.util.List;
 

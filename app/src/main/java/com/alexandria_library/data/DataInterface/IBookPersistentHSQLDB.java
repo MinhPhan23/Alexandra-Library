@@ -1,10 +1,9 @@
-package com.alexandria_library.data;
+package com.alexandria_library.data.DataInterface;
 
 import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.dso.User;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 public interface IBookPersistentHSQLDB extends IBookPersistent{
