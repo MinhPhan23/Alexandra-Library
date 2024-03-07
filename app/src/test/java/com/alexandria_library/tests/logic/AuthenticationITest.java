@@ -6,35 +6,47 @@ import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 import com.alexandria_library.data.IUserPersistent;
-import com.alexandria_library.data.stub.UserPersistentStub;
+import com.alexandria_library.data.hsqldb.UserPersistentHSQLDB;
 import com.alexandria_library.dso.User;
 import com.alexandria_library.logic.Authentication;
 import com.alexandria_library.logic.AuthenticationException;
+import com.alexandria_library.tests.util.TestUtils;
 
+import org.junit.After;
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
-public class AuthenticationTest {
+import java.io.File;
+import java.io.IOException;
+
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+public class AuthenticationITest {
     private Authentication authentication;
     private IUserPersistent data;
+    private File tempDB;
+
+    private final String name1 = "Thor";
+    private final String pass1 = "123abc";
+    private final String name2 = "Mika";
+    private final String pass2 = "abcdef";
     @Before
-    public void setUp() {
-        System.out.println("Starting Authentication test");
-        authentication = new Authentication();
-        assertNotNull(authentication);
-        authentication = new Authentication(new UserPersistentStub());
-        assertNotNull(authentication);
+    public void setUp() throws IOException {
+        tempDB = TestUtils.copyDB();
+        data = new UserPersistentHSQLDB(tempDB.getAbsolutePath().replace(".script", ""));
+        authentication = new Authentication(data);
     }
 
     @Test
-    public void testNormalRegister() {
-        data = new UserPersistentStub();
-        authentication = new Authentication(data);
+    public void test01_NormalRegister() {
         System.out.println("Test register new user");
         try {
-            authentication.register("Thor", "123abc", "123abc");
-            assertEquals( "Thor", data.findUser("Thor").getUserName());
-            assertEquals("123abc", data.findUser("Thor").getPassword());
+            authentication.register(name1, pass1, pass1);
+            User user = authentication.login(name1, pass1);
+            assertEquals( name1, user.getUserName());
+            assertEquals(pass1, user.getPassword());
+
         }
         catch (Exception e){
             assert(false);
@@ -44,9 +56,7 @@ public class AuthenticationTest {
     }
 
     @Test
-    public void testRegisterExistNewUser() {
-        data = new UserPersistentStub();
-        authentication = new Authentication(data);
+    public void test02_RegisterExistNewUser() {
         System.out.println("Test register existing user");
         Exception exception = assertThrows(AuthenticationException.class, () -> {
             authentication.register("Minh", "1fdsa", "1fdsa");
@@ -60,12 +70,10 @@ public class AuthenticationTest {
     }
 
     @Test
-    public void testNotMatchingDoublePassword() {
-        data = new UserPersistentStub();
-        authentication = new Authentication(data);
+    public void test03_NotMatchingDoublePassword() {
         System.out.println("Test register with non matching passwords");
         Exception exception = assertThrows(AuthenticationException.class, () -> {
-            authentication.register("Thor", "1fdsa", "1abc");
+            authentication.register("Mika", pass1, pass2);
         });
 
         String expectedMessage = "Double password does not match";
@@ -76,9 +84,7 @@ public class AuthenticationTest {
     }
 
     @Test
-    public void testNullUsernameRegister() {
-        data = new UserPersistentStub();
-        authentication = new Authentication(data);
+    public void test04_NullUsernameRegister() {
         System.out.println("Test register with null username");
         Exception exception = assertThrows(AuthenticationException.class, () -> {
             authentication.register(null, "1fdsa", "1abc");
@@ -92,9 +98,7 @@ public class AuthenticationTest {
     }
 
     @Test
-    public void testEmptyUsernameRegister() {
-        data = new UserPersistentStub();
-        authentication = new Authentication(data);
+    public void test05_EmptyUsernameRegister() {
         System.out.println("Test register with empty username");
         Exception exception = assertThrows(AuthenticationException.class, () -> {
             authentication.register("", "1fdsa", "1abc");
@@ -108,12 +112,10 @@ public class AuthenticationTest {
     }
 
     @Test
-    public void testNullPasswordRegister() {
-        data = new UserPersistentStub();
-        authentication = new Authentication(data);
+    public void test06_NullPasswordRegister() {
         System.out.println("Test register with null password");
         Exception exception = assertThrows(AuthenticationException.class, () -> {
-            authentication.register("Thor", null, "1abc");
+            authentication.register(name2, null, "1abc");
         });
 
         String expectedMessage = "Username and Password cannot be empty";
@@ -124,12 +126,10 @@ public class AuthenticationTest {
     }
 
     @Test
-    public void testEmptyPasswordRegister() {
-        data = new UserPersistentStub();
-        authentication = new Authentication(data);
+    public void test07_EmptyPasswordRegister() {
         System.out.println("Test register with empty password");
         Exception exception = assertThrows(AuthenticationException.class, () -> {
-            authentication.register("Thor", "", "1abc");
+            authentication.register(name2, "", "1abc");
         });
 
         String expectedMessage = "Username and Password cannot be empty";
@@ -140,12 +140,10 @@ public class AuthenticationTest {
     }
 
     @Test
-    public void testNull2PasswordRegister() {
-        data = new UserPersistentStub();
-        authentication = new Authentication(data);
+    public void test08_Null2PasswordRegister() {
         System.out.println("Test register with null double password");
         Exception exception = assertThrows(AuthenticationException.class, () -> {
-            authentication.register("Thor", "123abc", null);
+            authentication.register(name2, "123abc", null);
         });
 
         String expectedMessage = "Username and Password cannot be empty";
@@ -156,12 +154,10 @@ public class AuthenticationTest {
     }
 
     @Test
-    public void testEmpty2PasswordRegister() {
-        data = new UserPersistentStub();
-        authentication = new Authentication(data);
+    public void test09_Empty2PasswordRegister() {
         System.out.println("Test register with empty double password");
         Exception exception = assertThrows(AuthenticationException.class, () -> {
-            authentication.register("Thor", "123abc", "");
+            authentication.register(name2, "123abc", "");
         });
 
         String expectedMessage = "Username and Password cannot be empty";
@@ -172,15 +168,14 @@ public class AuthenticationTest {
     }
 
     @Test
-    public void testLoginSuccess() {
-        data = new UserPersistentStub();
-        authentication = new Authentication(data);
+    public void test10_LoginSuccess() {
         System.out.println("Test finding existing user");
         try {
-            User user = authentication.login("Minh", "123456");
+            authentication.register(name1, pass1, pass1);
+            User user = authentication.login(name1, pass1);
             assertNotNull(user);
-            assertEquals("Minh", user.getUserName());
-            assertEquals("123456", user.getPassword());
+            assertEquals(name1, user.getUserName());
+            assertEquals(pass1, user.getPassword());
         }
         catch (Exception e) {
             assert(false);
@@ -190,11 +185,10 @@ public class AuthenticationTest {
     }
 
     @Test
-    public void testWrongPassword() {
-        data = new UserPersistentStub();
-        authentication = new Authentication(data);
+    public void test11_WrongPassword() {
         Exception exception = assertThrows(AuthenticationException.class, () -> {
-            authentication.login("Minh", "123");
+            authentication.register(name1, pass1, pass1);
+            authentication.login(name1, pass2);
         });
         String expectedMessage = "Password is not correct";
         String actualMessage = exception.getMessage();
@@ -204,11 +198,9 @@ public class AuthenticationTest {
     }
 
     @Test
-    public void testNotExistingUSer() {
-        data = new UserPersistentStub();
-        authentication = new Authentication(data);
+    public void test12_NotExistingUSer() {
         Exception exception = assertThrows(AuthenticationException.class, () -> {
-            authentication.login("Thor", "123");
+            authentication.login(name2, pass2);
         });
         String expectedMessage = "Username does not exist";
         String actualMessage = exception.getMessage();
@@ -218,9 +210,7 @@ public class AuthenticationTest {
     }
 
     @Test
-    public void testNullUsernameLogin() {
-        data = new UserPersistentStub();
-        authentication = new Authentication(data);
+    public void test13_NullUsernameLogin() {
         System.out.println("Test login with null username");
         Exception exception = assertThrows(AuthenticationException.class, () -> {
             authentication.login(null, "1fdsa");
@@ -234,9 +224,7 @@ public class AuthenticationTest {
     }
 
     @Test
-    public void testEmptyUsernameLogin() {
-        data = new UserPersistentStub();
-        authentication = new Authentication(data);
+    public void test14_EmptyUsernameLogin() {
         System.out.println("Test register with empty username");
         Exception exception = assertThrows(AuthenticationException.class, () -> {
             authentication.login("", "1fdsa");
@@ -250,12 +238,10 @@ public class AuthenticationTest {
     }
 
     @Test
-    public void testNullPasswordLogin() {
-        data = new UserPersistentStub();
-        authentication = new Authentication(data);
+    public void test15_NullPasswordLogin() {
         System.out.println("Test register with null password");
         Exception exception = assertThrows(AuthenticationException.class, () -> {
-            authentication.login("Thor", null);
+            authentication.login(name1, null);
         });
 
         String expectedMessage = "Username and Password cannot be empty";
@@ -266,12 +252,10 @@ public class AuthenticationTest {
     }
 
     @Test
-    public void testEmptyPasswordLogin() {
-        data = new UserPersistentStub();
-        authentication = new Authentication(data);
+    public void test16_EmptyPasswordLogin() {
         System.out.println("Test register with empty password");
         Exception exception = assertThrows(AuthenticationException.class, () -> {
-            authentication.login("Thor", "");
+            authentication.login(name1, "");
         });
 
         String expectedMessage = "Username and Password cannot be empty";
@@ -279,5 +263,54 @@ public class AuthenticationTest {
 
         assertNotNull(actualMessage);
         assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    public void test17_RegisterSecondNewUser() {
+        System.out.println("Test register second new user");
+        try {
+            authentication.register(name2, pass2, pass2);
+            User user = authentication.login(name2, pass2);
+            assertEquals( name2, user.getUserName());
+            assertEquals(pass2, user.getPassword());
+        }
+        catch (Exception e){
+            assert(false);
+            System.out.println("Something wrong with the test");
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void test18_ExistingUserIntact() {
+        try {
+            authentication.register(name1, pass1, pass1);
+            authentication.register(name2, pass2, pass2);
+
+            User user = authentication.login(name1, pass1);
+            assertNotNull(user);
+            assertEquals(name1, user.getUserName());
+            assertEquals(pass1, user.getPassword());
+
+            user = authentication.login(name2, pass2);
+            assertNotNull(user);
+            assertEquals(name2, user.getUserName());
+            assertEquals(pass2, user.getPassword());
+
+            user = authentication.login("xiang", "123");
+            assertNotNull(user);
+            assertEquals("xiang", user.getUserName());
+            assertEquals("123", user.getPassword());
+        }
+        catch (Exception e){
+            assert(false);
+            System.out.println("Something wrong with the test");
+            e.printStackTrace();
+        }
+    }
+
+    @After
+    public void tearDown(){
+        this.tempDB.delete();
     }
 }

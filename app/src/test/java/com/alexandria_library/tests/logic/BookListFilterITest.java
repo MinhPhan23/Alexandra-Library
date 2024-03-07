@@ -16,10 +16,9 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-public class BookListFilterITtest {
+public class BookListFilterITest {
     private BookListFilter bookListFilter;
     private Booklist libraryBooks;
     private File tempDB;
