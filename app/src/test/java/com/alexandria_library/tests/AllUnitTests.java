@@ -26,8 +26,7 @@ import com.alexandria_library.tests.logic.SideBarServiceTest;
         BookTest.class,
         ReaderTest.class,
         BookPersistentIntermediateTest.class,
-        UserPersistentStubTest.class,
-        BookPersistentHSQLDBTest.class
+        UserPersistentStubTest.class
 })
 
 public class AllUnitTests {

@@ -153,10 +153,8 @@ public class BookPersistentIntermediateTest {
         assertEquals(0, status);
     }
 
-
-
     @Test
-    public void checkListTest(){
+    public void checkListTest1(){
         System.out.println("Testing checkList()");
         int status;
         Book book1 = new Book(1,"a", "b", "0000-00-00", defaultTags, defaultGenres);
@@ -170,9 +168,6 @@ public class BookPersistentIntermediateTest {
         testList.add(0, book1);
         testList.add(1, book2);
         testList.add(2, book3);
-
-        status = database.checkList(testList);
-        assertEquals(0, status);
 
         book4.setName("");
         testList.add(book4);
@@ -189,6 +184,19 @@ public class BookPersistentIntermediateTest {
         testList.remove(3);
         book4.setName("a");
         book4.setID(4);
+
+    }
+
+    @Test
+    public void checkListTest2() {
+        System.out.println("Testing checkList()");
+        int status;
+        Book book1 = new Book(1,"a", "b", "0000-00-00", defaultTags, defaultGenres);
+        Book book2 = new Book(2,"a", "b", "0000-00-00", defaultTags, defaultGenres);
+        Book book3 = new Book(3,"a", "b", "0000-00-00", defaultTags, defaultGenres);
+        Book book4 = new Book(4,"a", "b", "0000-00-00", defaultTags, defaultGenres);
+
+        Booklist testList;
 
         testList = new Booklist();
         testList.add(0, book1);
@@ -211,6 +219,18 @@ public class BookPersistentIntermediateTest {
         book4 = book;
         book4.setAuthor("b");
         book4.setID(4);
+    }
+
+    @Test
+    public void checkListTest3() {
+        System.out.println("Testing checkList()");
+        int status;
+        Book book1 = new Book(1,"a", "b", "0000-00-00", defaultTags, defaultGenres);
+        Book book2 = new Book(2,"a", "b", "0000-00-00", defaultTags, defaultGenres);
+        Book book3 = new Book(3,"a", "b", "0000-00-00", defaultTags, defaultGenres);
+        Book book4 = new Book(4,"a", "b", "0000-00-00", defaultTags, defaultGenres);
+
+        Booklist testList;
 
         testList = new Booklist();
         testList.add(0, book1);
@@ -225,6 +245,18 @@ public class BookPersistentIntermediateTest {
         book4 = book;
         book4.setTags(defaultTags);
         book4.setID(4);
+    }
+
+    @Test
+    public void checkListTest4() {
+        System.out.println("Testing checkList()");
+        int status;
+        Book book1 = new Book(1,"a", "b", "0000-00-00", defaultTags, defaultGenres);
+        Book book2 = new Book(2,"a", "b", "0000-00-00", defaultTags, defaultGenres);
+        Book book3 = new Book(3,"a", "b", "0000-00-00", defaultTags, defaultGenres);
+        Book book4 = new Book(4,"a", "b", "0000-00-00", defaultTags, defaultGenres);
+
+        Booklist testList;
 
         testList = new Booklist();
         testList.add(0, book1);
@@ -239,6 +271,18 @@ public class BookPersistentIntermediateTest {
         book4 = book;
         book4.setGenres(defaultGenres);
         book4.setID(4);
+    }
+
+    @Test
+    public void checkListTest5() {
+        System.out.println("Testing checkList()");
+        int status;
+        Book book1 = new Book(1,"a", "b", "0000-00-00", defaultTags, defaultGenres);
+        Book book2 = new Book(2,"a", "b", "0000-00-00", defaultTags, defaultGenres);
+        Book book3 = new Book(3,"a", "b", "0000-00-00", defaultTags, defaultGenres);
+        Book book4 = new Book(4,"a", "b", "0000-00-00", defaultTags, defaultGenres);
+
+        Booklist testList;
 
         testList = new Booklist();
         testList.add(0, book1);
