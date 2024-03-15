@@ -23,12 +23,23 @@ public class Authentication implements IAuthentication{
         return userData.findUser(userName);
     }
 
+    private User checkExistingLibrarian(String userName){
+        return userData.findLibrarian(userName);
+    }
+
     @Override
-    public User login(String userName, String password) throws AuthenticationException{
+    public User login(String userName, String password, boolean librarianMode) throws AuthenticationException{
         if (userName==null || userName.equals("") || password==null || password.equals("")) {
             throw new AuthenticationException("Username and Password cannot be empty");
         }
-        User user = checkExistingUser(userName);
+        User user;
+        if(librarianMode){
+            user = checkExistingLibrarian(userName);
+        }
+        else{
+            user = checkExistingUser(userName);
+        }
+
         if (user == null) {
             throw new AuthenticationException("Username does not exist");
         }

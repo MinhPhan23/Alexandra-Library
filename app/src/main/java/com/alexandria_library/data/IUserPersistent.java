@@ -27,4 +27,10 @@ public interface IUserPersistent {
      */
     public User findUser(String userName);
 
+    /*****
+     * check if the librarian exists in the system by username only
+     * @param userName a username to check
+     * @return An user object if found, null if not
+     */
+    public User findLibrarian(String userName);
 }

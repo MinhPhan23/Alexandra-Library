@@ -3,6 +3,7 @@ package com.alexandria_library.presentation.Authentication;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -19,13 +20,24 @@ import com.alexandria_library.logic.IAuthentication;
 public class RegisterActivity extends AppCompatActivity {
     private EditText userName, password, doubleCheckPW;
     private Button goRegister;
+    private Button librarianModeBtn, userModeBtn;
+    private boolean librarianMode;
+
     private IAuthentication authentication;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        Bundle crossActivityVariables = getIntent().getExtras();
+        if(crossActivityVariables != null){
+            librarianMode = crossActivityVariables.getBoolean("librarianMode");
+        }
+        else{
+            librarianMode = false;
+        }
         find();
+        updateModeBtns();//updates the button state to communicate if in librarian mode
         authentication = new Authentication();
         goRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,6 +58,38 @@ public class RegisterActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        librarianModeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!librarianMode){
+                    librarianMode = true;
+                    updateModeBtns();
+                }
+            }
+        });
+
+        userModeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(librarianMode){
+                    librarianMode = false;
+                    updateModeBtns();
+                }
+            }
+        });
+    }
+
+    private void updateModeBtns() {
+        if(librarianMode){
+            librarianModeBtn.setTextColor(Color.parseColor("#FFFFFF"));
+            userModeBtn.setTextColor(Color.parseColor("#321450"));
+        }
+        else{
+            librarianModeBtn.setTextColor(Color.parseColor("#000000"));
+            userModeBtn.setTextColor(Color.parseColor("#FFFFFF"));
+        }
+        librarianModeBtn.invalidate();
     }
 
     void find(){
@@ -53,6 +97,8 @@ public class RegisterActivity extends AppCompatActivity {
         password = findViewById(R.id.register_password_input);
         doubleCheckPW = findViewById(R.id.register_confirm_password_input);
         goRegister = findViewById(R.id.Create_register_btn);
+        librarianModeBtn = findViewById(R.id.librarian_mode_btn);
+        userModeBtn = findViewById(R.id.user_mode_btn);
     }
 
     private void registerBtnClicked(View v){
@@ -62,6 +108,7 @@ public class RegisterActivity extends AppCompatActivity {
         try {
             authentication.register(name, pw, doublePW);
             Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
+            i.putExtra("librarianMode", librarianMode);
             startActivity(i);
         }
         catch (AuthenticationException e) {

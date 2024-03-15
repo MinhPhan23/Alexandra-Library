@@ -118,6 +118,26 @@ public class UserPersistentHSQLDB implements IUserPersistentHSQLDB {
         }
     }
 
+    @Override
+    public User findLibrarian(String userName){
+        User found = null;
+        try(final Connection c = connection()){
+            final PreparedStatement statement = c.prepareStatement("SELECT * FROM LIBRARIANS WHERE USER_NAME = ?");
+            statement.setString(1, userName);
+
+            final ResultSet rs =statement.executeQuery();
+            if(rs.next()){
+                found =fromResultSet(rs);
+            }
+            rs.close();
+            statement.close();
+            return found;
+        }
+        catch (final SQLException e){
+            throw new PersistenceException(e);
+        }
+    }
+
 
 /*******
  * === Adding book to specific user' list Implement Start ===

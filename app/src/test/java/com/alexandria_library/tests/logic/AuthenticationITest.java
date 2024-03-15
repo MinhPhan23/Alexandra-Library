@@ -43,7 +43,7 @@ public class AuthenticationITest {
         System.out.println("Test register new user");
         try {
             authentication.register(name1, pass1, pass1);
-            User user = authentication.login(name1, pass1);
+            User user = authentication.login(name1, pass1, false);
             assertEquals( name1, user.getUserName());
             assertEquals(pass1, user.getPassword());
 
@@ -172,7 +172,7 @@ public class AuthenticationITest {
         System.out.println("Test finding existing user");
         try {
             authentication.register(name1, pass1, pass1);
-            User user = authentication.login(name1, pass1);
+            User user = authentication.login(name1, pass1, false);
             assertNotNull(user);
             assertEquals(name1, user.getUserName());
             assertEquals(pass1, user.getPassword());
@@ -188,7 +188,7 @@ public class AuthenticationITest {
     public void test11_WrongPassword() {
         Exception exception = assertThrows(AuthenticationException.class, () -> {
             authentication.register(name1, pass1, pass1);
-            authentication.login(name1, pass2);
+            authentication.login(name1, pass2, false);
         });
         String expectedMessage = "Password is not correct";
         String actualMessage = exception.getMessage();
@@ -200,7 +200,7 @@ public class AuthenticationITest {
     @Test
     public void test12_NotExistingUSer() {
         Exception exception = assertThrows(AuthenticationException.class, () -> {
-            authentication.login(name2, pass2);
+            authentication.login(name2, pass2, false);
         });
         String expectedMessage = "Username does not exist";
         String actualMessage = exception.getMessage();
@@ -213,7 +213,7 @@ public class AuthenticationITest {
     public void test13_NullUsernameLogin() {
         System.out.println("Test login with null username");
         Exception exception = assertThrows(AuthenticationException.class, () -> {
-            authentication.login(null, "1fdsa");
+            authentication.login(null, "1fdsa", false);
         });
 
         String expectedMessage = "Username and Password cannot be empty";
@@ -227,7 +227,7 @@ public class AuthenticationITest {
     public void test14_EmptyUsernameLogin() {
         System.out.println("Test register with empty username");
         Exception exception = assertThrows(AuthenticationException.class, () -> {
-            authentication.login("", "1fdsa");
+            authentication.login("", "1fdsa", false);
         });
 
         String expectedMessage = "Username and Password cannot be empty";
@@ -241,7 +241,7 @@ public class AuthenticationITest {
     public void test15_NullPasswordLogin() {
         System.out.println("Test register with null password");
         Exception exception = assertThrows(AuthenticationException.class, () -> {
-            authentication.login(name1, null);
+            authentication.login(name1, null, false);
         });
 
         String expectedMessage = "Username and Password cannot be empty";
@@ -255,7 +255,7 @@ public class AuthenticationITest {
     public void test16_EmptyPasswordLogin() {
         System.out.println("Test register with empty password");
         Exception exception = assertThrows(AuthenticationException.class, () -> {
-            authentication.login(name1, "");
+            authentication.login(name1, "", false);
         });
 
         String expectedMessage = "Username and Password cannot be empty";
@@ -270,7 +270,7 @@ public class AuthenticationITest {
         System.out.println("Test register second new user");
         try {
             authentication.register(name2, pass2, pass2);
-            User user = authentication.login(name2, pass2);
+            User user = authentication.login(name2, pass2, false);
             assertEquals( name2, user.getUserName());
             assertEquals(pass2, user.getPassword());
         }
@@ -287,17 +287,17 @@ public class AuthenticationITest {
             authentication.register(name1, pass1, pass1);
             authentication.register(name2, pass2, pass2);
 
-            User user = authentication.login(name1, pass1);
+            User user = authentication.login(name1, pass1, false);
             assertNotNull(user);
             assertEquals(name1, user.getUserName());
             assertEquals(pass1, user.getPassword());
 
-            user = authentication.login(name2, pass2);
+            user = authentication.login(name2, pass2, false);
             assertNotNull(user);
             assertEquals(name2, user.getUserName());
             assertEquals(pass2, user.getPassword());
 
-            user = authentication.login("xiang", "123");
+            user = authentication.login("xiang", "123", false);
             assertNotNull(user);
             assertEquals("xiang", user.getUserName());
             assertEquals("123", user.getPassword());

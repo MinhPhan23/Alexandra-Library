@@ -43,8 +43,16 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         copyDatabaseToDevice(); //copy database
-        librarianMode = false;
+        Bundle crossActivityVariables = getIntent().getExtras();//brings over te state of the buttons from the registration screen
+        if(crossActivityVariables != null){
+            librarianMode = crossActivityVariables.getBoolean("librarianMode");
+        }
+        else{
+            librarianMode = false;
+        }
+
         find();
+        updateModeBtns();//updates the button state to communicate if in librarian mode
         authentication = new Authentication();
 
         login.setOnClickListener(new View.OnClickListener() {
@@ -81,11 +89,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(!librarianMode){
-                    librarianModeBtn.setTextColor(Color.parseColor("#321450"));
-                    userModeBtn.setTextColor(Color.parseColor("#FFFFFF"));
                     librarianMode = true;
-                    librarianModeBtn.invalidate();
-                    userModeBtn.invalidate();
+                    updateModeBtns();
                 }
             }
         });
@@ -94,21 +99,30 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(librarianMode){
-                    librarianModeBtn.setTextColor(Color.parseColor("#FFFFFF"));
-                    userModeBtn.setTextColor(Color.parseColor("#321450"));
                     librarianMode = false;
-                    librarianModeBtn.invalidate();
-                    userModeBtn.invalidate();
+                    updateModeBtns();
                 }
             }
         });
+    }
+
+    private void updateModeBtns() {
+        if(librarianMode){
+            librarianModeBtn.setTextColor(Color.parseColor("#FFFFFF"));
+            userModeBtn.setTextColor(Color.parseColor("#321450"));
+        }
+        else{
+            librarianModeBtn.setTextColor(Color.parseColor("#000000"));
+            userModeBtn.setTextColor(Color.parseColor("#FFFFFF"));
+        }
+        librarianModeBtn.invalidate();
     }
 
     private void loginBtnClicked(View v){
         String name = userName.getText().toString();
         String pw = password.getText().toString();
         try {
-            User user = authentication.login(name, pw);
+            User user = authentication.login(name, pw, librarianMode);
             sideBarService = new SideBarService(user);
             Intent i = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(i);
@@ -119,6 +133,7 @@ public class LoginActivity extends AppCompatActivity {
     }
     private void registerBtnClicked(View v){
         Intent i = new Intent(LoginActivity.this, RegisterActivity.class);
+        i.putExtra("librarianMode", librarianMode);
         startActivity(i);
     }
 
