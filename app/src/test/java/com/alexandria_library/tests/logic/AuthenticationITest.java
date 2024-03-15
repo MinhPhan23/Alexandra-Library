@@ -309,6 +309,19 @@ public class AuthenticationITest {
         }
     }
 
+    @Test
+    public void test01_existing_librarian(){
+        System.out.println("test for librarian login");
+        try{
+            User librarian = authentication.login("Andrei", "123", true);
+            assertEquals("Andrei", librarian.getUserName());
+            assertEquals("123", librarian.getPassword());
+        }
+        catch (Exception e){
+            assert (false);
+        }
+    }
+
     @After
     public void tearDown(){
         this.tempDB.delete();
