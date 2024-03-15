@@ -8,9 +8,14 @@ import java.util.ArrayList;
 
 public interface IBookPersistentHSQLDB extends IBookPersistent{
 
+    /*****
+     * those functions we are not using, because we will use on iterations 3
+     */
     public boolean upload(Book book, User user);
     public void deleteLibraryBook(Booklist list, User user);
     public ArrayList<String> searchTagByBook (Book book);
+    public ArrayList<String> getAllTags ();
+    public ArrayList<String> getAllGenres();
 
     //START searching book
     public Booklist searchTag(String tagName);

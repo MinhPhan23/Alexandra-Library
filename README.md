@@ -54,3 +54,9 @@ Find our [Repository Standards](docs/RepoStandards.md)
 - [Vision Statement](https://code.cs.umanitoba.ca/comp3350-winter2024/alexandrialibrary/-/blob/main/vision_statement.md?ref_type=heads)
 - [Features](https://code.cs.umanitoba.ca/comp3350-winter2024/alexandrialibrary/-/issues/?sort=created_date&state=opened&label_name%5B%5D=Feature&first_page_size=20)
 - [User Stories](https://code.cs.umanitoba.ca/comp3350-winter2024/alexandrialibrary/-/issues/?sort=created_date&state=opened&label_name%5B%5D=User%20Story&first_page_size=20)
+
+## [Iteration 1](https://code.cs.umanitoba.ca/comp3350-winter2024/alexandrialibrary/-/milestones/1#tab-issues)
+Find our [Iteration 1](https://code.cs.umanitoba.ca/comp3350-winter2024/alexandrialibrary/-/milestones/1#tab-issues)
+
+## [Iteration 2](https://code.cs.umanitoba.ca/comp3350-winter2024/alexandrialibrary/-/milestones/2#tab-issues)
+Find our [Iteration 2](https://code.cs.umanitoba.ca/comp3350-winter2024/alexandrialibrary/-/milestones/2#tab-issues)

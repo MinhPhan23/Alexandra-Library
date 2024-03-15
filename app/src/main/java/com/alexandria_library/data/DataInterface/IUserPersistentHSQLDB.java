@@ -9,9 +9,12 @@ import java.util.List;
 public interface IUserPersistentHSQLDB extends IUserPersistent{
 
     /*****
+     * those functions we are not using, because we will use on iterations 3
+     */
+
+    /*****
      * get all user in database
      * @return : List<User>
-     * @throws SQLException
      */
     public List<User> getUserSequential();
 

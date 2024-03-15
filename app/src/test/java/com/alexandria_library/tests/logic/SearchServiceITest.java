@@ -5,24 +5,29 @@ import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 import com.alexandria_library.data.IBookPersistent;
-import com.alexandria_library.data.IBookPersistentStub;
-import com.alexandria_library.data.stub.BookPersistentInterStub;
+import com.alexandria_library.data.hsqldb.BookPersistentHSQLDB;
 import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.logic.ISearchService;
 import com.alexandria_library.logic.SearchService;
-import com.alexandria_library.logic.Exception.SearchServiceException;
+import com.alexandria_library.logic.SearchServiceException;
+import com.alexandria_library.tests.util.TestUtils;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class SearchServiceTest {
-    private ISearchService searchService;
+import java.io.File;
+import java.io.IOException;
 
+public class SearchServiceITest {
+    private ISearchService searchService;
+    private File tempDB;
     @Before
-    public void setUp() {
+    public void setUp() throws IOException {
         System.out.println("Starting tests for SearchService");
-        IBookPersistent bookPersistent = new BookPersistentInterStub();
+        this.tempDB = TestUtils.copyDB();
+        IBookPersistent bookPersistent = new BookPersistentHSQLDB(this.tempDB.getAbsolutePath().replace(".script", ""));
         searchService = new SearchService(bookPersistent);
         assertNotNull(searchService);
     }
@@ -30,23 +35,45 @@ public class SearchServiceTest {
     @Test
     public void testEmptySearch() {
         System.out.println("Test empty keywords String");
-        Exception exception = assertThrows(SearchServiceException.class, () -> searchService.searchInput(""));
-
-        String expectedMessage = "Could not search for empty text";
-        String actualMessage = exception.getMessage();
-
-        assertNotNull(actualMessage);
-        assertTrue(actualMessage.contains(expectedMessage));
+        assertThrows(SearchServiceException.class, () -> {
+            searchService.searchInput("");
+        });
     }
+
+    @Test
+    public void testEmptySearchReturnMessage() {
+        System.out.println("Test empty keywords String");
+        String returnMessage = "";
+        String expectedMessage = "Could not search for empty text";
+        try{
+            searchService.searchInput("");
+        } catch (SearchServiceException e) {
+            returnMessage = e.getMessage();
+        }
+
+        assertTrue(returnMessage.contains(expectedMessage));
+    }
+
     @Test
     public void testNullSearch() {
         System.out.println("Test null String object");
-        Exception exception = assertThrows(SearchServiceException.class, () -> searchService.searchInput(null));
-        String expectedMessage = "Could not search for empty text";
-        String actualMessage = exception.getMessage();
+        assertThrows(SearchServiceException.class, () -> {
+            searchService.searchInput(null);
+        });
+    }
 
-        assertNotNull(actualMessage);
-        assertTrue(actualMessage.contains(expectedMessage));
+    @Test
+    public void testNullSearchReturnMessage() {
+        System.out.println("Test empty keywords String");
+        String returnMessage = "";
+        String expectedMessage = "Could not search for empty text";
+        try{
+            searchService.searchInput("");
+        } catch (SearchServiceException e) {
+            returnMessage = e.getMessage();
+        }
+
+        assertTrue(returnMessage.contains(expectedMessage));
     }
 
     @Test
@@ -105,5 +132,10 @@ public class SearchServiceTest {
             System.out.println("Something wrong with the test");
             e.printStackTrace();
         }
+    }
+
+    @After
+    public void tearDown(){
+        this.tempDB.delete();
     }
 }
