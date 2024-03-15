@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -30,6 +31,9 @@ import java.io.InputStreamReader;
 
 public class LoginActivity extends AppCompatActivity {
     private Button login, register;
+
+    private Button librarianModeBtn, userModeBtn;
+    private boolean librarianMode;
     private EditText userName, password;
     private IAuthentication authentication;
     private static SideBarService sideBarService;
@@ -39,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         copyDatabaseToDevice(); //copy database
-
+        librarianMode = false;
         find();
         authentication = new Authentication();
 
@@ -72,6 +76,32 @@ public class LoginActivity extends AppCompatActivity {
                 registerBtnClicked(v);
             }
         });
+
+        librarianModeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!librarianMode){
+                    librarianModeBtn.setTextColor(Color.parseColor("#321450"));
+                    userModeBtn.setTextColor(Color.parseColor("#FFFFFF"));
+                    librarianMode = true;
+                    librarianModeBtn.invalidate();
+                    userModeBtn.invalidate();
+                }
+            }
+        });
+
+        userModeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(librarianMode){
+                    librarianModeBtn.setTextColor(Color.parseColor("#FFFFFF"));
+                    userModeBtn.setTextColor(Color.parseColor("#321450"));
+                    librarianMode = false;
+                    librarianModeBtn.invalidate();
+                    userModeBtn.invalidate();
+                }
+            }
+        });
     }
 
     private void loginBtnClicked(View v){
@@ -101,6 +131,8 @@ public class LoginActivity extends AppCompatActivity {
         register = findViewById(R.id.register_btn);
         userName = findViewById(R.id.login_userName_input);
         password = findViewById(R.id.login_password_input);
+        librarianModeBtn = findViewById(R.id.librarian_mode_btn);
+        userModeBtn = findViewById(R.id.user_mode_btn);
     }
 
     private void setErrorMess(EditText layout, String message){

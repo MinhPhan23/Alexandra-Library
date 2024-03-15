@@ -68,7 +68,7 @@
         android:layout_width="226dp"
         android:layout_height="85dp"
         android:layout_marginEnd="524dp"
-        android:background="@color/drak_purple"
+        android:background="@color/dark_purple"
         android:drawableTop="@drawable/baseline_arrow_forward_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

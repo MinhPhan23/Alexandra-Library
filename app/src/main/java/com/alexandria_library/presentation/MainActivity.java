@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -66,7 +67,7 @@ public class MainActivity extends AppCompatActivity{
     private EditText searchInput;
     private RecyclerView recyclerView, filterBox;
     private View rootView, filterPage;
-    private boolean library, all, inProgress,finish, filterOpen;
+    private boolean library, all, inProgress, finish, filterOpen;
     private Booklist allLibraryBooks;
     private Booklist filterBooks;
     private ArrayList<String> tagsClicked;
@@ -76,7 +77,11 @@ public class MainActivity extends AppCompatActivity{
         bookPersistent = Service.getBookPersistent();
         allLibraryBooks = bookPersistent.getBookList();
         filterBooks = new Booklist();
-        library = true; all = false; inProgress = false; finish = false; filterOpen = false;
+        library = true;
+        all = false;
+        inProgress = false;
+        finish = false;
+        filterOpen = false;
         searchList = new Booklist();
         searchService = new SearchService();
 
