@@ -1,6 +1,4 @@
-package com.alexandria_library.dso.dsoInterface;
-
-import com.alexandria_library.dso.Booklist;
+package com.alexandria_library.dso;
 
 import java.util.ArrayList;
 

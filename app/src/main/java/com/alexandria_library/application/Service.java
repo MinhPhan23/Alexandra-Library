@@ -1,7 +1,7 @@
 package com.alexandria_library.application;
 
-import com.alexandria_library.data.DataInterface.IBookPersistent;
-import com.alexandria_library.data.DataInterface.IUserPersistent;
+import com.alexandria_library.data.IBookPersistent;
+import com.alexandria_library.data.IUserPersistent;
 import com.alexandria_library.data.hsqldb.BookPersistentHSQLDB;
 import com.alexandria_library.data.hsqldb.UserPersistentHSQLDB;
 

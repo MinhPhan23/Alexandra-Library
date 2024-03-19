@@ -1,7 +1,5 @@
 package com.alexandria_library.dso;
 
-import com.alexandria_library.dso.dsoInterface.IUser;
-
 public class User implements IUser {
     private String userName;
     private String password;

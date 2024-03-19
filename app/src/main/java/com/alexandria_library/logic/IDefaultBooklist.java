@@ -1,7 +1,7 @@
 package com.alexandria_library.logic;
 
 import com.alexandria_library.dso.Book;
-import com.alexandria_library.dso.dsoInterface.IReader;
+import com.alexandria_library.dso.IReader;
 import com.alexandria_library.logic.Exception.BooklistException;
 
 public interface IDefaultBooklist {

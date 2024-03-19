@@ -1,7 +1,7 @@
 package com.alexandria_library.logic;
 
 import com.alexandria_library.application.Service;
-import com.alexandria_library.data.DataInterface.IUserPersistent;
+import com.alexandria_library.data.IUserPersistent;
 import com.alexandria_library.dso.User;
 import com.alexandria_library.logic.Exception.AuthenticationException;
 

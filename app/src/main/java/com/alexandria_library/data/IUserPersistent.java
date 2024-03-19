@@ -1,4 +1,4 @@
-package com.alexandria_library.data.DataInterface;
+package com.alexandria_library.data;
 
 import com.alexandria_library.dso.User;
 

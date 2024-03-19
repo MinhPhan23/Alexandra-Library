@@ -1,7 +1,5 @@
 package com.alexandria_library.dso;
 
-import com.alexandria_library.dso.dsoInterface.IReader;
-
 import java.util.ArrayList;
 
 public class Reader extends User implements IReader {

@@ -5,7 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
-import com.alexandria_library.data.DataInterface.IUserPersistent;
+import com.alexandria_library.data.IUserPersistent;
 import com.alexandria_library.data.stub.UserPersistentStub;
 import com.alexandria_library.dso.User;
 import com.alexandria_library.logic.Authentication;

@@ -1,9 +1,8 @@
-package com.alexandria_library.data.DataInterface;
+package com.alexandria_library.data;
 
 import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.dso.User;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public interface IUserPersistentHSQLDB extends IUserPersistent{

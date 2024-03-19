@@ -1,9 +1,9 @@
 package com.alexandria_library.logic;
 
 import com.alexandria_library.application.Service;
-import com.alexandria_library.data.DataInterface.IBookPersistent;
+import com.alexandria_library.data.IBookPersistent;
 import com.alexandria_library.dso.Booklist;
-import com.alexandria_library.dso.dsoInterface.IUser;
+import com.alexandria_library.dso.IUser;
 
 public class SideBarService {
     private final IUser targetUser;

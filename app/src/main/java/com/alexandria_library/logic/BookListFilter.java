@@ -1,7 +1,5 @@
 package com.alexandria_library.logic;
 
-import androidx.activity.SystemBarStyle;
-
 import com.alexandria_library.application.Service;
 import com.alexandria_library.data.IBookPersistent;
 import com.alexandria_library.data.hsqldb.BookPersistentHSQLDB;

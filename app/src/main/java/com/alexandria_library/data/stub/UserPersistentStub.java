@@ -1,6 +1,6 @@
 package com.alexandria_library.data.stub;
 
-import com.alexandria_library.data.DataInterface.IUserPersistent;
+import com.alexandria_library.data.IUserPersistent;
 import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Reader;
 import com.alexandria_library.dso.User;

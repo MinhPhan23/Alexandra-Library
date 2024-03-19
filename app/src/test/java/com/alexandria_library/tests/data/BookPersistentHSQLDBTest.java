@@ -3,7 +3,7 @@ package com.alexandria_library.tests.data;
 import com.alexandria_library.data.hsqldb.BookPersistentHSQLDB;
 import com.alexandria_library.logic.SearchService;
 import com.alexandria_library.dso.Booklist;
-import com.alexandria_library.logic.SearchServiceException;
+import com.alexandria_library.logic.Exception.SearchServiceException;
 import com.alexandria_library.tests.util.TestUtils;
 
 import org.junit.Before;

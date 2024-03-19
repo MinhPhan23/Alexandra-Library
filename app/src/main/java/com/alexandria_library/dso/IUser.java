@@ -1,4 +1,4 @@
-package com.alexandria_library.dso.dsoInterface;
+package com.alexandria_library.dso;
 
 public interface IUser {
     /**
