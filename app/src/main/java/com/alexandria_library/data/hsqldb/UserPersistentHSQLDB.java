@@ -1,6 +1,6 @@
 package com.alexandria_library.data.hsqldb;
 
-import com.alexandria_library.data.IUserPersistentHSQLDB;
+import com.alexandria_library.data.IUserPersistent;
 import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.dso.Reader;
@@ -15,7 +15,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserPersistentHSQLDB implements IUserPersistentHSQLDB {
+public class UserPersistentHSQLDB implements IUserPersistent {
     private final String dbPath;
     private static int userID = 6; //start with 6 because group members are default users
     private static int customListID = 1;

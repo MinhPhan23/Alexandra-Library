@@ -15,7 +15,6 @@ public class Service {
      */
     public static synchronized IUserPersistent getUserPersistent(){
         if(userPersistent == null){
-            //userPersistent = new UserPersistentStub();
             userPersistent = new UserPersistentHSQLDB(Main.getDBPathName());
         }
         return userPersistent;
@@ -27,7 +26,6 @@ public class Service {
      */
     public static synchronized IBookPersistent getBookPersistent(){
         if(bookPersistent == null){
-            //bookPersistent = new BookPersistentInterStub();
             bookPersistent = new BookPersistentHSQLDB(Main.getDBPathName());
         }
         return bookPersistent;
