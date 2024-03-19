@@ -5,7 +5,6 @@ import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 import com.alexandria_library.data.IBookPersistent;
-import com.alexandria_library.data.IBookPersistentStub;
 import com.alexandria_library.data.stub.BookPersistentInterStub;
 import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
