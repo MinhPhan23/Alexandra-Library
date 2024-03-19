@@ -31,6 +31,8 @@ public class User implements IUser {
      * Getter method for the user's id
      * @return id
      */
-    public int getId(){return id;}
+    public int getId(){
+        return id;
+    }
 
 }

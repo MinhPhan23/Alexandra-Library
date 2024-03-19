@@ -1,13 +1,25 @@
 package com.alexandria_library.logic;
 
+import com.alexandria_library.application.Service;
+import com.alexandria_library.data.IBookPersistent;
+import com.alexandria_library.data.IBookPersistentHSQLDB;
+import com.alexandria_library.data.IUserPersistent;
 import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.dso.IReader;
+import com.alexandria_library.dso.User;
 import com.alexandria_library.logic.Exception.BooklistException;
 
 import java.util.ArrayList;
 
 public class CustomBooklist implements ICustomBooklist{
+    IUserPersistent data;
+    public  CustomBooklist() {
+        data = Service.getUserPersistent();
+    }
+    public  CustomBooklist(IUserPersistent data) {
+        this.data = data;
+    }
 
     private void addNonDuplicate(Booklist booklist, Book book) throws BooklistException {
         for (Book eachBook: booklist) {
@@ -26,6 +38,7 @@ public class CustomBooklist implements ICustomBooklist{
             if (booklist.getName().equals(eachBooklist.getName())) {
                 exist = true;
                 addNonDuplicate(eachBooklist, book);
+                data.addBookToCustomList(booklist, (User) reader);
             }
         }
         if (!exist) {
