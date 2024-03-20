@@ -45,18 +45,17 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity{
-
-    private Booklist searchList;
+    /////////////////READER GLOBAL VARIABLES///////////
     private boolean grid = true;
-    private AllBookListAdapter allBookAdapter;
-    private FinishedBookAdapter finishedBookAdapter;
-    private InProgressBookAdapter inProgressBookAdapter;
-    private LibraryBookListAdapter libraryBookListAdapter;
-    private SearchListAdapter searchListAdapter;
+    private boolean library, all, inProgress, finish, filterOpen;
+    private Booklist searchList;
+    private Booklist allLibraryBooks;
+    private ArrayList<String> tagsClicked;
+    private ArrayList<String> genresClicked;
+
+    /////////////////READER MODE UI/////////////////
     private AllTagsListAdapter tagsAdapter;
     private AllGenresListAdapter genresAdapter;
-    private FilterBookAdapter filterBookAdapter;
-    //private SideBarService sideBarService;
     private ISearchService searchService;
     private IBookListFilter bookListFilter;
     private IBookPersistent bookPersistent;
@@ -66,22 +65,20 @@ public class MainActivity extends AppCompatActivity{
     private Button searchIcon;
     private Button librarianAddBtn, listTextButton;
     private FrameLayout expandable;
-    private ConstraintLayout addBookMenu;
-    private EditText addBookName, addBookAuthor, addBookTags, addBookGenres, addBookDate;
-    private Button addBookCreateBtn, addBookCancelBtn;
     private EditText searchInput;
     private RecyclerView recyclerView, filterBox;
     private View rootView, filterPage;
-    private boolean library, all, inProgress, finish, filterOpen, librarianMode;
-    private Booklist allLibraryBooks;
-    private Booklist filterBooks;
-    private ArrayList<String> tagsClicked;
-    private ArrayList<String> genresClicked;
+
+    /////////////////////LIBRARIAN MODE UI////////////////////////
+    private boolean librarianMode;
+    private Button addBookCreateBtn, addBookCancelBtn;
+    private ConstraintLayout addBookMenu;
+    private EditText addBookName, addBookAuthor, addBookTags, addBookGenres, addBookDate;
+    /////////////////////////////////////////////////////////////
 
     private void initializer(){
         bookPersistent = Service.getBookPersistent();
         allLibraryBooks = bookPersistent.getBookList();
-        filterBooks = new Booklist();
         library = true;
         all = false;
         inProgress = false;
@@ -89,7 +86,6 @@ public class MainActivity extends AppCompatActivity{
         filterOpen = false;
         searchList = new Booklist();
         searchService = new SearchService();
-        //sideBarService = LoginActivity.getSideBarService();
         bookListFilter = new BookListFilter();
         tagsClicked = new ArrayList<>();
         genresClicked = new ArrayList<>();
@@ -100,14 +96,17 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
         initializer();
         Bundle crossActivityVariables = getIntent().getExtras();
-        if(crossActivityVariables != null){
+
+        if(crossActivityVariables != null){//transfers librarianMode state from other views
             librarianMode = crossActivityVariables.getBoolean("librarianMode");
         }
         else{
             librarianMode = false;
         }
+
         find();
-        if(librarianMode){
+
+        if(librarianMode){//hides elements when in librarian or user mode
             allListBtn.setVisibility(View.INVISIBLE);
             inProgressBtn.setVisibility(View.INVISIBLE);
             finishedBtn.setVisibility(View.INVISIBLE);
@@ -116,11 +115,12 @@ public class MainActivity extends AppCompatActivity{
         else{
             librarianAddBtn.setVisibility(View.INVISIBLE);
         }
+
         bookDistributor();
         tagsDisplay();
         genresDisplay();
 
-
+        /////////////////READER MODE UI/////////////////
         /*****
          * get root view
          */
@@ -326,6 +326,9 @@ public class MainActivity extends AppCompatActivity{
 
         /////////////////////LIBRARIAN MODE UI////////////////////////
 
+        /*****
+         * opens the add book menu
+         */
         librarianAddBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
@@ -333,6 +336,9 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
+        /*****
+         * sends the book info for creation
+         */
         addBookCreateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -340,6 +346,9 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
+        /*****
+         * closes the add book menu
+         */
         addBookCancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -445,7 +454,7 @@ public class MainActivity extends AppCompatActivity{
         LinearLayoutManager linearManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearManager);
 
-        searchListAdapter = new SearchListAdapter(searchList, this, searchService);
+        SearchListAdapter searchListAdapter = new SearchListAdapter(searchList, this, searchService);
         recyclerView.setAdapter(searchListAdapter);
 
         searchListAdapter.setRecyclerItemClickListener(new SearchListAdapter.OnRecyclerItemClickListener() {
@@ -486,6 +495,7 @@ public class MainActivity extends AppCompatActivity{
 
 
     private void LibraryBookCategory(){
+        LibraryBookListAdapter libraryBookListAdapter;
         if(grid){
             //Setting Grid of book display
             RecyclerView recyclerView = findViewById(R.id.gridView);
@@ -515,6 +525,7 @@ public class MainActivity extends AppCompatActivity{
         });
     }
     private void AllBookCategory(){
+        AllBookListAdapter allBookAdapter;
         if(grid){
             //Setting Grid of book display
             RecyclerView recyclerView = findViewById(R.id.gridView);
@@ -545,6 +556,7 @@ public class MainActivity extends AppCompatActivity{
     }
     
     private void FinishedBookCategory(){
+        FinishedBookAdapter finishedBookAdapter;
         if(grid){
             //Setting Grid of book display
             RecyclerView recyclerView = findViewById(R.id.gridView);
@@ -575,6 +587,7 @@ public class MainActivity extends AppCompatActivity{
     }
     
     private void InProgressBookCategory(){
+        InProgressBookAdapter inProgressBookAdapter;
         if(grid){
             //Setting Grid of book display
             RecyclerView recyclerView = findViewById(R.id.gridView);
@@ -649,7 +662,7 @@ public class MainActivity extends AppCompatActivity{
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
         recyclerView.setLayoutManager(gridLayoutManager);
-        filterBookAdapter = new FilterBookAdapter(this, bookListFilter, allLibraryBooks, tags, genre);
+        FilterBookAdapter filterBookAdapter = new FilterBookAdapter(this, bookListFilter, allLibraryBooks, tags, genre);
         recyclerView.setAdapter(filterBookAdapter);
         filterBookAdapter.setRecyclerItemClickListener(new FilterBookAdapter.OnRecyclerItemClickListener() {
             @Override
