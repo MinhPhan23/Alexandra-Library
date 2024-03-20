@@ -1,17 +1,16 @@
 package com.alexandria_library.presentation;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.transition.TransitionManager;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,11 +20,9 @@ import android.widget.FrameLayout;
 
 import com.alexandria_library.R;
 import com.alexandria_library.data.IBookPersistent;
-import com.alexandria_library.data.IBookPersistentStub;
 import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.logic.BookListFilter;
 import com.alexandria_library.logic.IBookListFilter;
-import com.alexandria_library.logic.IBookListRanker;
 import com.alexandria_library.logic.ISearchService;
 import com.alexandria_library.logic.SearchService;
 import com.alexandria_library.logic.SearchServiceException;
@@ -40,6 +37,7 @@ import com.alexandria_library.presentation.Adapter.LibraryBookListAdapter;
 import com.alexandria_library.presentation.Adapter.SearchListAdapter;
 import com.alexandria_library.presentation.Authentication.LoginActivity;
 import com.alexandria_library.application.Service;
+import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.ArrayList;
 
@@ -63,11 +61,15 @@ public class MainActivity extends AppCompatActivity{
     private Button logOut, categoryBtn, account;
     private Button filter;
     private Button searchIcon;
+    private Button librarianRecentBtn, librarianAddBtn, listTextButton;
     private FrameLayout expandable;
+    private ConstraintLayout addBookMenu;
+
+    private MaterialToolbar addBookTitleHeader;
     private EditText searchInput;
     private RecyclerView recyclerView, filterBox;
     private View rootView, filterPage;
-    private boolean library, all, inProgress, finish, filterOpen;
+    private boolean library, all, inProgress, finish, filterOpen, librarianMode;
     private Booklist allLibraryBooks;
     private Booklist filterBooks;
     private ArrayList<String> tagsClicked;
@@ -84,7 +86,6 @@ public class MainActivity extends AppCompatActivity{
         filterOpen = false;
         searchList = new Booklist();
         searchService = new SearchService();
-
         sideBarService = LoginActivity.getSideBarService();
         bookListFilter = new BookListFilter();
         tagsClicked = new ArrayList<>();
@@ -95,8 +96,24 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initializer();
-        findByID();
-
+        Bundle crossActivityVariables = getIntent().getExtras();
+        if(crossActivityVariables != null){
+            librarianMode = crossActivityVariables.getBoolean("librarianMode");
+        }
+        else{
+            librarianMode = false;
+        }
+        find();
+        if(librarianMode){
+            allListBtn.setVisibility(View.INVISIBLE);
+            inProgressBtn.setVisibility(View.INVISIBLE);
+            finishedBtn.setVisibility(View.INVISIBLE);
+            listTextButton.setVisibility(View.INVISIBLE);
+        }
+        else{
+            librarianAddBtn.setVisibility(View.INVISIBLE);
+            librarianRecentBtn.setVisibility(View.INVISIBLE);
+        }
         bookDistributor();
         tagsDisplay();
         genresDisplay();
@@ -189,8 +206,9 @@ public class MainActivity extends AppCompatActivity{
         logOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
+                Intent i = new Intent(MainActivity.this, LoginActivity.class);
+                i.putExtra("librarianMode", librarianMode);
+                startActivity(i);
                 toggleSearchResultGone();
             }
         });
@@ -303,6 +321,20 @@ public class MainActivity extends AppCompatActivity{
                 }
             }
         });
+
+        librarianAddBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+
+            }
+        });
+
+        librarianRecentBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
 
@@ -324,7 +356,7 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    private void findByID(){
+    private void find(){
         //Getting root view ID
         rootView = findViewById(android.R.id.content);
 
@@ -335,7 +367,7 @@ public class MainActivity extends AppCompatActivity{
         allListBtn = findViewById(R.id.all_btn);
 
         //Getting Finished button
-        finishedBtn = findViewById(R.id.finished);
+        finishedBtn = findViewById(R.id.recently_added);
 
         //Getting in progress button
         inProgressBtn = findViewById(R.id.in_progress_btn);
@@ -371,6 +403,19 @@ public class MainActivity extends AppCompatActivity{
 
         //Getting filter control bar
         filterPage = findViewById(R.id.filter_page);
+
+        //made the text a button so we can make it invisible
+        listTextButton = findViewById(R.id.my_list_text);
+
+        //Button to see all the books in the library only for librarian interface due to diffirent layout
+        librarianAddBtn = findViewById(R.id.librarian_add_btn);
+
+        //Button for librarians to see newly added books to the library
+        librarianRecentBtn = findViewById(R.id.librarian_recently_added);
+
+        addBookMenu = findViewById(R.id.add_book_layout);
+
+        addBookTitleHeader = findViewById(R.id.add_book_title_header);
     }
 
     private void SearchBar(){

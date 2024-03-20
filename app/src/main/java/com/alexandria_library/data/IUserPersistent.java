@@ -13,6 +13,14 @@ public interface IUserPersistent {
     public boolean addNewUser(String userName, String password);
 
     /*****
+     * add a new librarian to librarian list
+     * @param userName new username
+     * @param password user's password
+     * @return true if added successfully
+     */
+    public boolean addNewLibrarian(String userName, String password);
+
+    /*****
      * check if the user exists in the system
      * @param userName a username to check
      * @param password a password to check

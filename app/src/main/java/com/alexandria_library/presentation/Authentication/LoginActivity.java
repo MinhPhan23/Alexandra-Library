@@ -2,9 +2,7 @@ package com.alexandria_library.presentation.Authentication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -15,7 +13,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.alexandria_library.R;
-import com.alexandria_library.application.Main;
 import com.alexandria_library.data.utils.HSQLDBHelper;
 import com.alexandria_library.dso.User;
 import com.alexandria_library.logic.Authentication;
@@ -23,11 +20,6 @@ import com.alexandria_library.logic.AuthenticationException;
 import com.alexandria_library.logic.IAuthentication;
 import com.alexandria_library.logic.SideBarService;
 import com.alexandria_library.presentation.MainActivity;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
 
 public class LoginActivity extends AppCompatActivity {
     private Button login, register;
@@ -125,6 +117,7 @@ public class LoginActivity extends AppCompatActivity {
             User user = authentication.login(name, pw, librarianMode);
             sideBarService = new SideBarService(user);
             Intent i = new Intent(LoginActivity.this, MainActivity.class);
+            i.putExtra("librarianMode", librarianMode);
             startActivity(i);
         }
         catch (AuthenticationException e) {
@@ -142,7 +135,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void find(){
-        login = findViewById(R.id.login_Create_register_btn);
+        login = findViewById(R.id.create_book_btn);
         register = findViewById(R.id.register_btn);
         userName = findViewById(R.id.login_userName_input);
         password = findViewById(R.id.login_password_input);

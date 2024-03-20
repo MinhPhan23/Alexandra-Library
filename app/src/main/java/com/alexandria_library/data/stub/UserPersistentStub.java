@@ -156,6 +156,12 @@ public class UserPersistentStub implements IUserPersistent {
         return userList.add(newUser);
     }
 
+    public boolean addNewLibrarian(String userName, String password){
+        User newUser = new User(userName, password, userID);
+        librarianID++;
+        return librarianList.add(newUser);
+    }
+
     public User findUser(String userName, String password){
         User found = null;
         for(int i = 0; i<userList.size() && found == null; i++){

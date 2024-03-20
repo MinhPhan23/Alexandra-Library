@@ -17,7 +17,8 @@ import java.util.List;
 
 public class UserPersistentHSQLDB implements IUserPersistentHSQLDB {
     private final String dbPath;
-    private static int userID = 6; //start with 6 because group members are default users
+    private static int userID = 6; //start with 6 because group members are default \
+    private static int librarianID = 6; //start with 6 because group members are default users
     private static int customListID = 1;
     private static int readingListID = 1;
     private static int finishedListID = 1;
@@ -78,6 +79,27 @@ public class UserPersistentHSQLDB implements IUserPersistentHSQLDB {
     }
 
     @Override
+    public boolean addNewLibrarian(String userName, String password){
+        boolean result = false;
+        try(final Connection c = connection()){
+            final PreparedStatement statement = c.prepareStatement("INSERT INTO LIBRARIANS(USER_ID, USER_NAME, PASSWORD) VALUES (?, ?, ?)");
+            statement.setInt(1, librarianID);
+            statement.setString(2, userName);
+            statement.setString(3, password);
+            int affectedRow = statement.executeUpdate();
+
+            if(affectedRow > 0){
+                result = true;
+                librarianID++;
+            }
+            return result;
+        }
+        catch (final SQLException e){
+            throw new PersistenceException(e);
+        }
+    }
+
+    @Override
     public User findUser(String userName, String password){
         User found = null;
         try(final Connection c = connection()){
@@ -107,7 +129,7 @@ public class UserPersistentHSQLDB implements IUserPersistentHSQLDB {
 
             final ResultSet rs =statement.executeQuery();
             if(rs.next()){
-                found =fromResultSet(rs);
+                found = fromResultSet(rs);
             }
             rs.close();
             statement.close();

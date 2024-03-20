@@ -42,4 +42,27 @@ public class UserPersistentStubTest {
         User user = userStub.findUser(userName);
         assertNull("User should not be found", user);
     }
+
+    ///////////////////////LIBRARIANS/////////////////////////
+
+    @Test
+    public void testAddNewLibrarian() {
+        boolean result = userStub.addNewLibrarian("testLibrarian", "testPassword");
+        assertTrue("User should be added successfully", result);
+    }
+
+    @Test
+    public void testFindExistingLibrarianByUserName() {
+        String userName = "Andrei";
+        User user = userStub.findLibrarian(userName);
+        assertNotNull("User should be found", user);
+        assertEquals("User name should match", userName, user.getUserName());
+    }
+
+    @Test
+    public void testLibrarianNotFound() {
+        String userName = "NonExistentUser";
+        User user = userStub.findLibrarian(userName);
+        assertNull("User should not be found", user);
+    }
 }

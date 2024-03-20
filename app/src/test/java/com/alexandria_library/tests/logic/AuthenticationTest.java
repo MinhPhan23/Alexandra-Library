@@ -32,7 +32,7 @@ public class AuthenticationTest {
         authentication = new Authentication(data);
         System.out.println("Test register new user");
         try {
-            authentication.register("Thor", "123abc", "123abc");
+            authentication.register("Thor", "123abc", "123abc", false);
             assertEquals( "Thor", data.findUser("Thor").getUserName());
             assertEquals("123abc", data.findUser("Thor").getPassword());
         }
@@ -49,7 +49,7 @@ public class AuthenticationTest {
         authentication = new Authentication(data);
         System.out.println("Test register existing user");
         Exception exception = assertThrows(AuthenticationException.class, () -> {
-            authentication.register("Minh", "1fdsa", "1fdsa");
+            authentication.register("Minh", "1fdsa", "1fdsa", false);
         });
 
         String expectedMessage = "Username already exist";
@@ -65,7 +65,7 @@ public class AuthenticationTest {
         authentication = new Authentication(data);
         System.out.println("Test register with non matching passwords");
         Exception exception = assertThrows(AuthenticationException.class, () -> {
-            authentication.register("Thor", "1fdsa", "1abc");
+            authentication.register("Thor", "1fdsa", "1abc", false);
         });
 
         String expectedMessage = "Double password does not match";
@@ -81,7 +81,7 @@ public class AuthenticationTest {
         authentication = new Authentication(data);
         System.out.println("Test register with null username");
         Exception exception = assertThrows(AuthenticationException.class, () -> {
-            authentication.register(null, "1fdsa", "1abc");
+            authentication.register(null, "1fdsa", "1abc", false);
         });
 
         String expectedMessage = "Username and Password cannot be empty";
@@ -97,7 +97,7 @@ public class AuthenticationTest {
         authentication = new Authentication(data);
         System.out.println("Test register with empty username");
         Exception exception = assertThrows(AuthenticationException.class, () -> {
-            authentication.register("", "1fdsa", "1abc");
+            authentication.register("", "1fdsa", "1abc", false);
         });
 
         String expectedMessage = "Username and Password cannot be empty";
@@ -113,7 +113,7 @@ public class AuthenticationTest {
         authentication = new Authentication(data);
         System.out.println("Test register with null password");
         Exception exception = assertThrows(AuthenticationException.class, () -> {
-            authentication.register("Thor", null, "1abc");
+            authentication.register("Thor", null, "1abc", false);
         });
 
         String expectedMessage = "Username and Password cannot be empty";
@@ -129,7 +129,7 @@ public class AuthenticationTest {
         authentication = new Authentication(data);
         System.out.println("Test register with empty password");
         Exception exception = assertThrows(AuthenticationException.class, () -> {
-            authentication.register("Thor", "", "1abc");
+            authentication.register("Thor", "", "1abc", false);
         });
 
         String expectedMessage = "Username and Password cannot be empty";
@@ -145,7 +145,7 @@ public class AuthenticationTest {
         authentication = new Authentication(data);
         System.out.println("Test register with null double password");
         Exception exception = assertThrows(AuthenticationException.class, () -> {
-            authentication.register("Thor", "123abc", null);
+            authentication.register("Thor", "123abc", null, false);
         });
 
         String expectedMessage = "Username and Password cannot be empty";
@@ -161,7 +161,7 @@ public class AuthenticationTest {
         authentication = new Authentication(data);
         System.out.println("Test register with empty double password");
         Exception exception = assertThrows(AuthenticationException.class, () -> {
-            authentication.register("Thor", "123abc", "");
+            authentication.register("Thor", "123abc", "", false);
         });
 
         String expectedMessage = "Username and Password cannot be empty";

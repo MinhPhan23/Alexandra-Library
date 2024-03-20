@@ -106,7 +106,8 @@ public class RegisterActivity extends AppCompatActivity {
         String pw = password.getText().toString();
         String doublePW = doubleCheckPW.getText().toString();
         try {
-            authentication.register(name, pw, doublePW);
+            authentication.register(name, pw, doublePW, librarianMode);
+
             Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
             i.putExtra("librarianMode", librarianMode);
             startActivity(i);
