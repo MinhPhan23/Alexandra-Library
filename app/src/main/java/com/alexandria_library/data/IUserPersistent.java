@@ -1,6 +1,8 @@
 package com.alexandria_library.data;
 
 import com.alexandria_library.dso.Booklist;
+import com.alexandria_library.dso.IReader;
+import com.alexandria_library.dso.IUser;
 import com.alexandria_library.dso.User;
 
 import java.util.List;

@@ -19,6 +19,8 @@ public class CustomBooklistTest {
     private Reader reader;
     private CustomBooklist customBooklist;
     private Book book1, book2;
+
+    private Booklist newList1, newList2;
     @Before
     public void setUp() {
         customBooklist = new CustomBooklist();
@@ -45,6 +47,12 @@ public class CustomBooklistTest {
                 "September 14, 2008",
                 tags2,
                 genres2);
+
+        newList1 = new Booklist();
+        newList1.add(book1);
+
+        newList2 = new Booklist();
+        newList2.add(book2);
 
         assertNotNull(customBooklist);
     }
@@ -139,8 +147,8 @@ public class CustomBooklistTest {
         try {
             customBooklist.addBooklist(reader, list1);
             customBooklist.addBooklist(reader, list2);
-            customBooklist.addBookToCustom(reader, book1, list1);
-            customBooklist.addBookToCustom(reader, book2, list2);
+            customBooklist.addBookToCustom(reader, newList1, list1);
+            customBooklist.addBookToCustom(reader, newList2, list2);
 
             assertTrue(list1.contains(book1));
             assertTrue(list2.contains(book2));
@@ -157,7 +165,7 @@ public class CustomBooklistTest {
         Booklist list1 = new Booklist();
         list1.setName("list1");
 
-        Exception exception = assertThrows(BooklistException.class, () -> customBooklist.addBookToCustom(reader, book1, list1));
+        Exception exception = assertThrows(BooklistException.class, () -> customBooklist.addBookToCustom(reader, newList1, list1));
 
         String expectedMessage = "The list list1 does not exist";
         String actualMessage = exception.getMessage();
@@ -174,11 +182,11 @@ public class CustomBooklistTest {
 
         Exception exception = assertThrows(BooklistException.class, () -> {
             customBooklist.addBooklist(reader, list1);
-            customBooklist.addBookToCustom(reader, book1, list1);
-            customBooklist.addBookToCustom(reader, book1, list1);
+            customBooklist.addBookToCustom(reader, newList1, list1);
+            customBooklist.addBookToCustom(reader, newList1, list1);
         });
 
-        String expectedMessage = "The book Twilight is already in list list1";
+        String expectedMessage = "The book(s) Twilight is already in list list1";
         String actualMessage = exception.getMessage();
 
         assertNotNull(actualMessage);

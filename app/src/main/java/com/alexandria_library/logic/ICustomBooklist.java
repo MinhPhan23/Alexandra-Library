@@ -13,7 +13,7 @@ public interface ICustomBooklist {
      * @param booklist the custom list
      * @return
      */
-    public void addBookToCustom(IReader reader, Book book, Booklist booklist) throws BooklistException;
+    public void addBookToCustom(IReader reader, Booklist newBook, Booklist booklist) throws BooklistException;
 
     public void addBooklist(IReader reader, String name) throws BooklistException;
 

@@ -1,8 +1,6 @@
 package com.alexandria_library.logic;
 
 import com.alexandria_library.application.Service;
-import com.alexandria_library.data.IBookPersistent;
-import com.alexandria_library.data.IBookPersistentHSQLDB;
 import com.alexandria_library.data.IUserPersistent;
 import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
@@ -13,7 +11,7 @@ import com.alexandria_library.logic.Exception.BooklistException;
 import java.util.ArrayList;
 
 public class CustomBooklist implements ICustomBooklist{
-    IUserPersistent data;
+    private final IUserPersistent data;
     public  CustomBooklist() {
         data = Service.getUserPersistent();
     }
@@ -21,24 +19,27 @@ public class CustomBooklist implements ICustomBooklist{
         this.data = data;
     }
 
-    private void addNonDuplicate(Booklist booklist, Book book) throws BooklistException {
-        for (Book eachBook: booklist) {
-            if (eachBook.equals(book)) {
-                throw new BooklistException(String.format("The book %s is already in list %s", book.getName(), booklist.getName()));
+    private void checkDuplicate(Booklist booklist, Booklist newBook) throws BooklistException {
+        Booklist compareList = new Booklist(newBook);
+        compareList.retainAll(booklist);
+        if (compareList.size() > 0) {
+            String bookNames = "";
+            for (Book book : compareList) {
+                bookNames += (book.getName()+" ");
             }
+            throw new BooklistException(String.format("The book(s) %sis already in list %s", bookNames, booklist.getName()));
         }
-        booklist.add(book);
     }
 
     @Override
-    public void addBookToCustom(IReader reader, Book book, Booklist booklist) throws BooklistException {
+    public void addBookToCustom(IReader reader, Booklist newBook, Booklist booklist) throws BooklistException {
         ArrayList<Booklist> customBooklist = reader.getAllCustomList();
         boolean exist = false;
         for (Booklist eachBooklist : customBooklist) {
             if (booklist.getName().equals(eachBooklist.getName())) {
                 exist = true;
-                addNonDuplicate(eachBooklist, book);
-                data.addBookToCustomList(booklist, (User) reader);
+                checkDuplicate(booklist, newBook);
+                booklist.addAll(newBook);
             }
         }
         if (!exist) {
