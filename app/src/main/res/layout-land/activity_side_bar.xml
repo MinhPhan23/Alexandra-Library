@@ -33,19 +33,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/librarian_recently_added"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="166dp"
-        android:layout_height="43dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="244dp"
-        android:drawableLeft="@drawable/baseline_access_time_24"
-        android:text="Recent"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/view"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
         android:id="@+id/account"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="161dp"

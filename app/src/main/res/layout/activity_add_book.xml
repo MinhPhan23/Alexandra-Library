@@ -55,7 +55,6 @@
             android:background="#FFFFFF"
             android:ems="10"
             android:inputType="text"
-            android:text="Date of Publication"
             app:layout_constraintBottom_toTopOf="@+id/add_book_main_panel"
             app:layout_constraintEnd_toStartOf="@+id/add_book_main_panel" />
 
@@ -68,7 +67,6 @@
             android:background="#FFFFFF"
             android:ems="10"
             android:inputType="text"
-            android:text="Book Name"
             app:layout_constraintBottom_toTopOf="@+id/add_book_author"
             app:layout_constraintEnd_toStartOf="@+id/add_book_main_panel" />
 
@@ -81,7 +79,6 @@
             android:background="#FFFFFF"
             android:ems="10"
             android:inputType="text"
-            android:text="Author"
             app:layout_constraintBottom_toTopOf="@+id/add_book_tags"
             app:layout_constraintEnd_toStartOf="@+id/add_book_main_panel" />
 
@@ -94,7 +91,6 @@
             android:background="#FFFFFF"
             android:ems="10"
             android:inputType="text"
-            android:text="Tags"
             app:layout_constraintBottom_toTopOf="@+id/add_book_genres"
             app:layout_constraintEnd_toStartOf="@+id/add_book_main_panel" />
 
@@ -107,20 +103,92 @@
             android:background="#FFFFFF"
             android:ems="10"
             android:inputType="text"
-            android:text="Genres"
             app:layout_constraintBottom_toTopOf="@+id/add_book_date"
             app:layout_constraintEnd_toStartOf="@+id/add_book_main_panel" />
 
         <Button
-            android:id="@+id/create_book_btn"
+            android:id="@+id/add_book_create_btn"
             android:layout_width="82dp"
             android:layout_height="82dp"
-            android:layout_marginStart="82dp"
+            android:layout_marginStart="156dp"
             android:layout_marginBottom="-200dp"
             android:background="@color/dark_purple"
             android:drawableTop="@drawable/baseline_arrow_forward_24"
             app:layout_constraintBottom_toTopOf="@+id/add_book_main_panel"
             app:layout_constraintStart_toEndOf="@+id/add_book_author" />
+
+        <Button
+            android:id="@+id/add_book_cancel_btn"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:background="@color/dark_purple"
+            android:drawableTop="@drawable/close"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/add_book_name_text"
+            android:layout_width="128dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="38dp"
+            android:text="Title"
+            android:textColor="@color/white"
+            android:textColorLink="#FFFFFF"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintStart_toEndOf="@+id/add_book_name"
+            app:layout_constraintTop_toBottomOf="@+id/add_book_title_header" />
+
+        <TextView
+            android:id="@+id/add_book_name_text"
+            android:layout_width="128dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="107dp"
+            android:text="Author"
+            android:textColor="@color/white"
+            android:textColorLink="#FFFFFF"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toTopOf="@+id/add_book_name_text"
+            app:layout_constraintStart_toEndOf="@+id/add_book_author" />
+
+        <TextView
+            android:id="@+id/add_book_name_text"
+            android:layout_width="128dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="60dp"
+            android:text="Tags"
+            android:textColor="@color/white"
+            android:textColorLink="#FFFFFF"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toTopOf="@+id/add_book_name_text"
+            app:layout_constraintStart_toEndOf="@+id/add_book_tags" />
+
+        <TextView
+            android:id="@+id/add_book_name_text"
+            android:layout_width="128dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="10dp"
+            android:text="Genres"
+            android:textColor="@color/white"
+            android:textColorLink="#FFFFFF"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toTopOf="@+id/add_book_name_text"
+            app:layout_constraintStart_toEndOf="@+id/add_book_genres" />
+
+        <TextView
+            android:id="@+id/add_book_name_text"
+            android:layout_width="128dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="-270dp"
+            android:text="Date"
+            android:textColor="@color/white"
+            android:textColorLink="#FFFFFF"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toTopOf="@+id/add_book_main_panel"
+            app:layout_constraintStart_toEndOf="@+id/add_book_date" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

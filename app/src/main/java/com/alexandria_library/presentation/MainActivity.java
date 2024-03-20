@@ -20,6 +20,7 @@ import android.widget.FrameLayout;
 
 import com.alexandria_library.R;
 import com.alexandria_library.data.IBookPersistent;
+import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.logic.BookListFilter;
 import com.alexandria_library.logic.IBookListFilter;
@@ -40,6 +41,8 @@ import com.alexandria_library.application.Service;
 import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -53,7 +56,7 @@ public class MainActivity extends AppCompatActivity{
     private AllTagsListAdapter tagsAdapter;
     private AllGenresListAdapter genresAdapter;
     private FilterBookAdapter filterBookAdapter;
-    private SideBarService sideBarService;
+    //private SideBarService sideBarService;
     private ISearchService searchService;
     private IBookListFilter bookListFilter;
     private IBookPersistent bookPersistent;
@@ -61,11 +64,11 @@ public class MainActivity extends AppCompatActivity{
     private Button logOut, categoryBtn, account;
     private Button filter;
     private Button searchIcon;
-    private Button librarianRecentBtn, librarianAddBtn, listTextButton;
+    private Button librarianAddBtn, listTextButton;
     private FrameLayout expandable;
     private ConstraintLayout addBookMenu;
-
-    private MaterialToolbar addBookTitleHeader;
+    private EditText addBookName, addBookAuthor, addBookTags, addBookGenres, addBookDate;
+    private Button addBookCreateBtn, addBookCancelBtn;
     private EditText searchInput;
     private RecyclerView recyclerView, filterBox;
     private View rootView, filterPage;
@@ -86,7 +89,7 @@ public class MainActivity extends AppCompatActivity{
         filterOpen = false;
         searchList = new Booklist();
         searchService = new SearchService();
-        sideBarService = LoginActivity.getSideBarService();
+        //sideBarService = LoginActivity.getSideBarService();
         bookListFilter = new BookListFilter();
         tagsClicked = new ArrayList<>();
         genresClicked = new ArrayList<>();
@@ -112,7 +115,6 @@ public class MainActivity extends AppCompatActivity{
         }
         else{
             librarianAddBtn.setVisibility(View.INVISIBLE);
-            librarianRecentBtn.setVisibility(View.INVISIBLE);
         }
         bookDistributor();
         tagsDisplay();
@@ -322,17 +324,26 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
+        /////////////////////LIBRARIAN MODE UI////////////////////////
+
         librarianAddBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-
+                addBookMenu.setVisibility(View.VISIBLE);
             }
         });
 
-        librarianRecentBtn.setOnClickListener(new View.OnClickListener() {
+        addBookCreateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                createBook();
+            }
+        });
 
+        addBookCancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closeAddBook();
             }
         });
     }
@@ -404,18 +415,30 @@ public class MainActivity extends AppCompatActivity{
         //Getting filter control bar
         filterPage = findViewById(R.id.filter_page);
 
-        //made the text a button so we can make it invisible
+        //made the text a button so we can make it invisible if needed
         listTextButton = findViewById(R.id.my_list_text);
+
+        /////////////////////LIBRARIAN MODE UI////////////////////////
 
         //Button to see all the books in the library only for librarian interface due to diffirent layout
         librarianAddBtn = findViewById(R.id.librarian_add_btn);
 
-        //Button for librarians to see newly added books to the library
-        librarianRecentBtn = findViewById(R.id.librarian_recently_added);
-
+        //add book frame, hidden by default
         addBookMenu = findViewById(R.id.add_book_layout);
+        addBookMenu.setVisibility(View.INVISIBLE);
 
-        addBookTitleHeader = findViewById(R.id.add_book_title_header);
+        //Add book text fields
+        addBookName = findViewById(R.id.add_book_name);
+        addBookAuthor = findViewById(R.id.add_book_author);
+        addBookTags = findViewById(R.id.add_book_tags);
+        addBookGenres = findViewById(R.id.add_book_genres);
+        addBookDate = findViewById(R.id.add_book_date);
+
+        //book submit button
+        addBookCreateBtn = findViewById(R.id.add_book_create_btn);
+
+        //button to close the add book menu
+        addBookCancelBtn = findViewById(R.id.add_book_cancel_btn);
     }
 
     private void SearchBar(){
@@ -635,4 +658,26 @@ public class MainActivity extends AppCompatActivity{
         });
 
     }
+
+    private void createBook(){
+        String name = addBookName.getText().toString();
+        String author = addBookAuthor.getText().toString();
+        List<String> tags = Arrays.asList(addBookTags.getText().toString().split(","));
+        List<String> genres = Arrays.asList(addBookGenres.getText().toString().split(","));
+        String date = addBookDate.getText().toString();
+        Book newBook = new Book(-1, name, author, date, tags, genres);
+        bookPersistent.update(newBook, null);
+        System.out.println(newBook.toString());
+    }
+
+    private void closeAddBook(){
+        addBookName.setText("");
+        addBookAuthor.setText("");
+        addBookTags.setText("");
+        addBookGenres.setText("");
+        addBookDate.setText("");
+        addBookMenu.setVisibility(View.INVISIBLE);
+    }
+
+
 }

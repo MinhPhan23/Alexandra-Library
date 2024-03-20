@@ -65,7 +65,7 @@
 
     <include
         layout="@layout/activity_add_book"
-        android:visibility="visible"/>
+        android:visibility="visible" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

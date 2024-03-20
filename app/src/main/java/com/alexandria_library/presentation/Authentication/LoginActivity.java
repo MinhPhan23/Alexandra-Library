@@ -135,7 +135,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void find(){
-        login = findViewById(R.id.create_book_btn);
+        login = findViewById(R.id.add_book_create_btn);
         register = findViewById(R.id.register_btn);
         userName = findViewById(R.id.login_userName_input);
         password = findViewById(R.id.login_password_input);
