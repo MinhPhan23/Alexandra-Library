@@ -2,6 +2,7 @@ package com.alexandria_library.data.stub;
 
 import com.alexandria_library.data.IUserPersistent;
 import com.alexandria_library.dso.Book;
+import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.dso.Reader;
 import com.alexandria_library.dso.User;
 
@@ -162,5 +163,40 @@ public class UserPersistentStub implements IUserPersistent {
             }
         }
         return found;
+    }
+
+    @Override
+    public List<User> getUserSequential() {
+        return null;
+    }
+
+    @Override
+    public void addBookToCustomList(Booklist list, User user) {
+
+    }
+
+    @Override
+    public void addBookToReadingList(Booklist list, User user) {
+
+    }
+
+    @Override
+    public void addBookToFinishedList(Booklist list, User user) {
+
+    }
+
+    @Override
+    public void deleteUserCustomListBook(Booklist list, User user) {
+
+    }
+
+    @Override
+    public void deleteReadingListBook(Booklist list, User user) {
+
+    }
+
+    @Override
+    public void deleteFinishedListBook(Booklist list, User user) {
+
     }
 }

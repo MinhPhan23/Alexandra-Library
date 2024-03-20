@@ -1,6 +1,6 @@
 package com.alexandria_library.data.hsqldb;
 
-import com.alexandria_library.data.IBookPersistentHSQLDB;
+import com.alexandria_library.data.IBookPersistent;
 import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.dso.User;
@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookPersistentHSQLDB implements IBookPersistentHSQLDB {
+public class BookPersistentHSQLDB implements IBookPersistent {
 
     private final String dbPath;
     private static int bookID = 1;

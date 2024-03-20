@@ -1,6 +1,6 @@
 package com.alexandria_library.data.stub;
 
-import com.alexandria_library.data.IBookPersistentStub;
+import com.alexandria_library.data.IBookPersistent;
 import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Librarian;
 import com.alexandria_library.dso.User;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class BookPersistentInterStub implements IBookPersistentStub {
+public class BookPersistentInterStub implements IBookPersistent {
 
     private final Booklist bookList = new Booklist();
 
@@ -270,12 +270,57 @@ public class BookPersistentInterStub implements IBookPersistentStub {
         return authrorized;
     }
 
-    public int upload(Book book, User user){
+    public boolean upload(Book book, User user){
         int status = checkBook(book);
         if(checkCredentials(user) == 0 && status == 0) {
             addBook(bookList, book);
         }
-        return status;
+        return status == 0;
+    }
+
+    @Override
+    public void deleteLibraryBook(Booklist list, User user) {
+
+    }
+
+    @Override
+    public ArrayList<String> searchTagByBook(Book book) {
+        return null;
+    }
+
+    @Override
+    public ArrayList<String> getAllTags() {
+        return null;
+    }
+
+    @Override
+    public ArrayList<String> getAllGenres() {
+        return null;
+    }
+
+    @Override
+    public Booklist searchTag(String tagName) {
+        return null;
+    }
+
+    @Override
+    public Booklist searchGenre(String genreName) {
+        return null;
+    }
+
+    @Override
+    public Booklist getUserCustomList(User user) {
+        return null;
+    }
+
+    @Override
+    public Booklist getUserInProgressList(User user) {
+        return null;
+    }
+
+    @Override
+    public Booklist getUserFinishedList(User user) {
+        return null;
     }
 
     public int update(Book book, User user){
