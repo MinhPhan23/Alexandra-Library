@@ -18,7 +18,7 @@ import java.util.List;
 public class UserPersistentHSQLDB implements IUserPersistent {
     private final String dbPath;
     private static int userID = 6; //start with 6 because group members are default users
-    private static int customListID = 1;
+    private static int allListID = 1;
     private static int readingListID = 1;
     private static int finishedListID = 1;
 
@@ -125,14 +125,14 @@ public class UserPersistentHSQLDB implements IUserPersistent {
  *******/
     //add book to custom list
     @Override
-    public void addBookToCustomList(Booklist list, User user){
+    public void addBookToAllList(Booklist list, User user){
         final String addToCustomListQuery =  "INSERT INTO CUSTOMLIST(BOOK_ID, USER_ID, CUSTOMLIST_PK) VALUES (?, ?, ?) ";
         try{
             for(int i = 0; i<list.size(); i++){
-                boolean checkEachAdd = addBookToUserList(addToCustomListQuery, list.get(i), user, customListID);
+                boolean checkEachAdd = addBookToUserList(addToCustomListQuery, list.get(i), user, allListID);
 
                 if(checkEachAdd)
-                    customListID++;
+                    allListID++;
             }
         }
         catch (final SQLException e){
@@ -198,7 +198,7 @@ public class UserPersistentHSQLDB implements IUserPersistent {
  */
     //delete book from user's custom list
     @Override
-    public void deleteUserCustomListBook(Booklist list, User user){
+    public void deleteUserAllListBook(Booklist list, User user){
         String query = "DELETE FROM CUSTOMLIST WHERE BOOK_ID = ? AND USER_ID = ?";
         try {
             if(user instanceof Reader){
