@@ -43,7 +43,7 @@ public interface IUserPersistent {
 
     /***********************************************************************************
      * ADD book to user's list */
-    public void addBookToCustomList(Booklist list, User user);
+    public void addBookToAllList(Booklist list, User user);
     public void addBookToReadingList(Booklist list, User user);
     public void addBookToFinishedList(Booklist list, User user);
     /*************************************************************************************/
@@ -51,7 +51,7 @@ public interface IUserPersistent {
 
     /***********************************************************************************
      * DELETE book from user's list */
-    public void deleteUserCustomListBook(Booklist list, User user);
+    public void deleteUserAllListBook(Booklist list, User user);
     public void deleteReadingListBook(Booklist list, User user);
     public void deleteFinishedListBook(Booklist list, User user);
     /*************************************************************************************/

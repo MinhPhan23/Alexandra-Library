@@ -171,7 +171,7 @@ public class UserPersistentStub implements IUserPersistent {
     }
 
     @Override
-    public void addBookToCustomList(Booklist list, User user) {
+    public void addBookToAllList(Booklist list, User user) {
 
     }
 
@@ -186,7 +186,7 @@ public class UserPersistentStub implements IUserPersistent {
     }
 
     @Override
-    public void deleteUserCustomListBook(Booklist list, User user) {
+    public void deleteUserAllListBook(Booklist list, User user) {
 
     }
 
