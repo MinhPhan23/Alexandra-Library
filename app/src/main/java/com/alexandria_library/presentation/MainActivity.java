@@ -579,9 +579,9 @@ public class MainActivity extends AppCompatActivity{
 
     private void filterBookDisplay(ArrayList<String> tags, ArrayList<String> genre){
         RecyclerView recyclerView = findViewById(R.id.filter_book);
-
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
         recyclerView.setLayoutManager(gridLayoutManager);
+        allLibraryBooks = bookPersistent.getBookList();
         filterBookAdapter = new FilterBookAdapter(this, bookListFilter, allLibraryBooks, tags, genre);
         recyclerView.setAdapter(filterBookAdapter);
         filterBookAdapter.setRecyclerItemClickListener(new FilterBookAdapter.OnRecyclerItemClickListener() {

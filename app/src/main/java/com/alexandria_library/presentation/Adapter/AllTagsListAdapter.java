@@ -56,7 +56,10 @@ public class AllTagsListAdapter extends RecyclerView.Adapter<AllTagsListAdapter.
 
     @Override
     public int getItemCount(){
-        return allTags.size();
+        if(allTags == null)
+            return 0;
+        else
+            return allTags.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
