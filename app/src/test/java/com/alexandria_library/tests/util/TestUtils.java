@@ -8,7 +8,7 @@ import java.nio.file.StandardCopyOption;
 import com.alexandria_library.application.Main;
 
 public class TestUtils {
-    private static final File DB_SRC = new File("src/main/assets/db/LibraryDB3.script");
+    private static final File DB_SRC = new File("src/main/assets/db/LibraryDatabase.script");
 
     public static File copyDB() throws IOException {
         final File target = File.createTempFile("temp-db", ".script");

@@ -1,36 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:ignore="MissingDefaultResource">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/add_book_layout"
         android:layout_width="616dp"
         android:layout_height="365dp"
-        android:layout_marginStart="332dp"
-        android:layout_marginTop="218dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/add_book_title_header"
-            android:layout_width="616dp"
-            android:layout_height="wrap_content"
+            android:layout_width="618dp"
+            android:layout_height="67dp"
+            android:layout_marginTop="4dp"
             android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/add_book_main_panel"
-            android:layout_width="616dp"
-            android:layout_height="300dp"
+            android:layout_width="622dp"
+            android:layout_height="306dp"
             android:background="@color/dark_purple"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/add_book_title_header" />
 
@@ -121,74 +127,90 @@
             android:id="@+id/add_book_cancel_btn"
             android:layout_width="64dp"
             android:layout_height="64dp"
+            android:layout_marginEnd="16dp"
             android:background="@color/dark_purple"
             android:drawableTop="@drawable/close"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/add_book_text"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/add_book_name_text"
             android:layout_width="128dp"
             android:layout_height="38dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="38dp"
+            android:layout_marginTop="36dp"
             android:text="Title"
             android:textColor="@color/white"
             android:textColorLink="#FFFFFF"
             app:autoSizeTextType="uniform"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/add_book_name"
             app:layout_constraintTop_toBottomOf="@+id/add_book_title_header" />
 
         <TextView
-            android:id="@+id/add_book_name_text"
+            android:id="@+id/add_book_author_text"
             android:layout_width="128dp"
             android:layout_height="38dp"
             android:layout_marginStart="8dp"
-            android:layout_marginBottom="107dp"
+            android:layout_marginTop="13dp"
+            android:layout_marginEnd="20dp"
             android:text="Author"
             android:textColor="@color/white"
             android:textColorLink="#FFFFFF"
             app:autoSizeTextType="uniform"
-            app:layout_constraintBottom_toTopOf="@+id/add_book_name_text"
-            app:layout_constraintStart_toEndOf="@+id/add_book_author" />
+            app:layout_constraintEnd_toStartOf="@+id/add_book_create_btn"
+            app:layout_constraintStart_toEndOf="@+id/add_book_genres"
+            app:layout_constraintTop_toBottomOf="@+id/add_book_tag_text" />
 
         <TextView
-            android:id="@+id/add_book_name_text"
+            android:id="@+id/add_book_tag_text"
             android:layout_width="128dp"
             android:layout_height="38dp"
             android:layout_marginStart="8dp"
-            android:layout_marginBottom="60dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
             android:text="Tags"
             android:textColor="@color/white"
             android:textColorLink="#FFFFFF"
             app:autoSizeTextType="uniform"
-            app:layout_constraintBottom_toTopOf="@+id/add_book_name_text"
-            app:layout_constraintStart_toEndOf="@+id/add_book_tags" />
+            app:layout_constraintEnd_toStartOf="@+id/add_book_create_btn"
+            app:layout_constraintStart_toEndOf="@+id/add_book_tags"
+            app:layout_constraintTop_toBottomOf="@+id/add_book_genres_text" />
 
         <TextView
-            android:id="@+id/add_book_name_text"
+            android:id="@+id/add_book_genres_text"
             android:layout_width="128dp"
             android:layout_height="38dp"
             android:layout_marginStart="8dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginTop="8dp"
             android:text="Genres"
             android:textColor="@color/white"
             android:textColorLink="#FFFFFF"
             app:autoSizeTextType="uniform"
-            app:layout_constraintBottom_toTopOf="@+id/add_book_name_text"
-            app:layout_constraintStart_toEndOf="@+id/add_book_genres" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/add_book_author"
+            app:layout_constraintTop_toBottomOf="@+id/add_book_name_text" />
 
         <TextView
-            android:id="@+id/add_book_name_text"
+            android:id="@+id/add_book_date_text"
             android:layout_width="128dp"
             android:layout_height="38dp"
             android:layout_marginStart="8dp"
-            android:layout_marginBottom="-270dp"
+            android:layout_marginTop="11dp"
             android:text="Date"
             android:textColor="@color/white"
             android:textColorLink="#FFFFFF"
             app:autoSizeTextType="uniform"
-            app:layout_constraintBottom_toTopOf="@+id/add_book_main_panel"
-            app:layout_constraintStart_toEndOf="@+id/add_book_date" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/add_book_date"
+            app:layout_constraintTop_toBottomOf="@+id/add_book_author_text"
+            app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
