@@ -20,7 +20,7 @@ public class BookModifier implements IBookModifier{
     }
 
     @Override
-    public void processImage(Context context, Uri imageUri){
+    public void sendImageToDB(Context context, Uri imageUri){
         try{
             byte[] imageData = getImageByte (context, imageUri);
             //using database's function to passing the imageData arrary

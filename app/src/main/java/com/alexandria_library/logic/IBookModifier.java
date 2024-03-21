@@ -5,5 +5,5 @@ import android.net.Uri;
 
 public interface IBookModifier {
 
-    public void processImage(Context context, Uri imageUri);
+    public void sendImageToDB(Context context, Uri imageUri);
 }
