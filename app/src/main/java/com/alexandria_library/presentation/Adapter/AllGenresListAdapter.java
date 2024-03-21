@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -54,7 +55,10 @@ public class AllGenresListAdapter extends RecyclerView.Adapter<AllGenresListAdap
 
     @Override
     public int getItemCount(){
-        return allGenres.size();
+        if(allGenres == null)
+            return 0;
+        else
+            return allGenres.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
@@ -63,21 +67,21 @@ public class AllGenresListAdapter extends RecyclerView.Adapter<AllGenresListAdap
             super(itemView);
             genreTitles = itemView.findViewById(R.id.checkBox);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+            genreTitles.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
-                public void onClick(View v) {
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if(myOnItemClickListener != null){
-                        myOnItemClickListener.onRecyclerItemClick(getAdapterPosition());
+                        myOnItemClickListener.onRecyclerItemClick(genreTitles, getAdapterPosition());
                     }
                 }
             });
         }
     }
 
-    public void setRecyclerItemClickListener(AllGenresListAdapter.OnRecyclerItemClickListener listener){
+    public void setRecyclerItemClickListener(OnRecyclerItemClickListener listener){
         myOnItemClickListener = listener;
     }
     public interface OnRecyclerItemClickListener {
-        void onRecyclerItemClick(int position);
+        void onRecyclerItemClick(CheckBox currentBox, int position);
     }
 }

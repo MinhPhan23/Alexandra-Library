@@ -81,7 +81,10 @@ public class FilterBookAdapter extends RecyclerView.Adapter<FilterBookAdapter.My
 
     @Override
     public int getItemCount(){
-        return filteredBooks.size();
+        if(filteredBooks == null)
+            return 0;
+        else
+            return filteredBooks.size();
     }
 
     private OnRecyclerItemClickListener myOnItemClickListener;

@@ -279,26 +279,25 @@ public class BookPersistentHSQLDB implements IBookPersistent {
         }
     }
 
-    private ArrayList<String > getAllBookName(){
-        String query = "SELECT * FROM BOOKS";
+    private ArrayList<String> getAllBookName() {
+        // Only select the distinct names of the books
+        String query = "SELECT DISTINCT BOOK_NAME FROM BOOKS";
         ArrayList<String> list = new ArrayList<>();
-        try(final Connection c = connection()){
-            PreparedStatement statement = c.prepareStatement(query);
-            ResultSet rs = statement.executeQuery();
+        // Use try-with-resources for better resource management
+        try (Connection c = connection();
+             PreparedStatement statement = c.prepareStatement(query);
+             ResultSet rs = statement.executeQuery()) {
 
-            while(rs.next()){
+            while (rs.next()) {
                 String getName = rs.getString("BOOK_NAME");
-                if(!list.contains(getName)){
-                    list.add(getName);
-                }
+                list.add(getName);
             }
-            rs.close();
-            statement.close();
             return list;
         } catch (SQLException e) {
             throw new PersistenceException(e);
         }
     }
+
 
     @Override
     public ArrayList<String> getAllGenres(){
