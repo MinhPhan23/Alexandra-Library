@@ -2,6 +2,7 @@ package com.alexandria_library.data.stub;
 
 import com.alexandria_library.data.IUserPersistent;
 import com.alexandria_library.dso.Book;
+import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.dso.Reader;
 import com.alexandria_library.dso.User;
 
@@ -192,6 +193,43 @@ public class UserPersistentStub implements IUserPersistent {
         return found;
     }
 
+<<<<<<< app/src/main/java/com/alexandria_library/data/stub/UserPersistentStub.java
+    
+=======
+    @Override
+    public List<User> getUserSequential() {
+        return null;
+    }
+
+    @Override
+    public void addBookToAllList(Booklist list, User user) {
+
+    }
+
+    @Override
+    public void addBookToReadingList(Booklist list, User user) {
+
+    }
+
+    @Override
+    public void addBookToFinishedList(Booklist list, User user) {
+
+    }
+
+    @Override
+    public void deleteUserAllListBook(Booklist list, User user) {
+
+    }
+
+    @Override
+    public void deleteReadingListBook(Booklist list, User user) {
+
+    }
+
+    @Override
+    public void deleteFinishedListBook(Booklist list, User user) {
+
+>>>>>>> app/src/main/java/com/alexandria_library/data/stub/UserPersistentStub.java
     public User findLibrarian(String userName) {
         User found = null;
         for(int i = 0; i<librarianList.size() && found == null; i++){

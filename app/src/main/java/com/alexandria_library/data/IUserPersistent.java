@@ -1,6 +1,9 @@
 package com.alexandria_library.data;
 
+import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.dso.User;
+
+import java.util.List;
 
 public interface IUserPersistent {
 
@@ -35,6 +38,35 @@ public interface IUserPersistent {
      */
     public User findUser(String userName);
 
+<<<<<<< app/src/main/java/com/alexandria_library/data/IUserPersistent.java
+    
+=======
+
+    /*****
+     * those functions we are not using, because we will use on iterations 3
+     */
+
+    /*****
+     * get all user in database
+     * @return : List<User>
+     */
+    public List<User> getUserSequential();
+
+    /***********************************************************************************
+     * ADD book to user's list */
+    public void addBookToAllList(Booklist list, User user);
+    public void addBookToReadingList(Booklist list, User user);
+    public void addBookToFinishedList(Booklist list, User user);
+    /*************************************************************************************/
+
+
+    /***********************************************************************************
+     * DELETE book from user's list */
+    public void deleteUserAllListBook(Booklist list, User user);
+    public void deleteReadingListBook(Booklist list, User user);
+    public void deleteFinishedListBook(Booklist list, User user);
+    /*************************************************************************************/
+>>>>>>> app/src/main/java/com/alexandria_library/data/IUserPersistent.java
     /*****
      * check if the librarian exists in the system by username only
      * @param userName a username to check

@@ -20,6 +20,10 @@ import android.widget.FrameLayout;
 
 import com.alexandria_library.R;
 import com.alexandria_library.data.IBookPersistent;
+<<<<<<< app/src/main/java/com/alexandria_library/presentation/MainActivity.java
+
+=======
+>>>>>>> app/src/main/java/com/alexandria_library/presentation/MainActivity.java
 import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.logic.BookListFilter;

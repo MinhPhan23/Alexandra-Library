@@ -2,7 +2,6 @@ package com.alexandria_library.logic;
 
 import com.alexandria_library.application.Service;
 import com.alexandria_library.data.IBookPersistent;
-import com.alexandria_library.data.IBookPersistentStub;
 import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.dso.User;
 
