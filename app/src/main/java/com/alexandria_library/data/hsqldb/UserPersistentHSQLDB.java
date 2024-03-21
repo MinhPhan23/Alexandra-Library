@@ -17,11 +17,6 @@ import java.util.List;
 
 public class UserPersistentHSQLDB implements IUserPersistent {
     private final String dbPath;
-<<<<<<< app/src/main/java/com/alexandria_library/data/hsqldb/UserPersistentHSQLDB.java
-    
-=======
-    
->>>>>>> app/src/main/java/com/alexandria_library/data/hsqldb/UserPersistentHSQLDB.java
     private static int userID = 6; //start with 6 because group members are default \
     private static int librarianID = 6; //start with 6 because group members are default users
     private static int allListID = 1;

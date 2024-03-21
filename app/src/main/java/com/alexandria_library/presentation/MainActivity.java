@@ -330,7 +330,7 @@ public class MainActivity extends AppCompatActivity{
         allListBtn = findViewById(R.id.all_btn);
 
         //Getting Finished button
-        finishedBtn = findViewById(R.id.finished);
+        finishedBtn = findViewById(R.id.recently_added);
 
         //Getting in progress button
         inProgressBtn = findViewById(R.id.in_progress_btn);

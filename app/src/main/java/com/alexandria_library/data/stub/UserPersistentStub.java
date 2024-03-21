@@ -193,9 +193,6 @@ public class UserPersistentStub implements IUserPersistent {
         return found;
     }
 
-<<<<<<< app/src/main/java/com/alexandria_library/data/stub/UserPersistentStub.java
-    
-=======
     @Override
     public List<User> getUserSequential() {
         return null;
@@ -228,8 +225,8 @@ public class UserPersistentStub implements IUserPersistent {
 
     @Override
     public void deleteFinishedListBook(Booklist list, User user) {
+    }
 
->>>>>>> app/src/main/java/com/alexandria_library/data/stub/UserPersistentStub.java
     public User findLibrarian(String userName) {
         User found = null;
         for(int i = 0; i<librarianList.size() && found == null; i++){
