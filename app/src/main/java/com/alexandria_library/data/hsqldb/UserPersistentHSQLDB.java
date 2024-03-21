@@ -17,7 +17,13 @@ import java.util.List;
 
 public class UserPersistentHSQLDB implements IUserPersistent {
     private final String dbPath;
-    private static int userID = 6; //start with 6 because group members are default users
+<<<<<<< app/src/main/java/com/alexandria_library/data/hsqldb/UserPersistentHSQLDB.java
+    
+=======
+    
+>>>>>>> app/src/main/java/com/alexandria_library/data/hsqldb/UserPersistentHSQLDB.java
+    private static int userID = 6; //start with 6 because group members are default \
+    private static int librarianID = 6; //start with 6 because group members are default users
     private static int allListID = 1;
     private static int readingListID = 1;
     private static int finishedListID = 1;
@@ -78,6 +84,27 @@ public class UserPersistentHSQLDB implements IUserPersistent {
     }
 
     @Override
+    public boolean addNewLibrarian(String userName, String password){
+        boolean result = false;
+        try(final Connection c = connection()){
+            final PreparedStatement statement = c.prepareStatement("INSERT INTO LIBRARIANS(USER_ID, USER_NAME, PASSWORD) VALUES (?, ?, ?)");
+            statement.setInt(1, librarianID);
+            statement.setString(2, userName);
+            statement.setString(3, password);
+            int affectedRow = statement.executeUpdate();
+
+            if(affectedRow > 0){
+                result = true;
+                librarianID++;
+            }
+            return result;
+        }
+        catch (final SQLException e){
+            throw new PersistenceException(e);
+        }
+    }
+
+    @Override
     public User findUser(String userName, String password){
         User found = null;
         try(final Connection c = connection()){
@@ -103,6 +130,26 @@ public class UserPersistentHSQLDB implements IUserPersistent {
         User found = null;
         try(final Connection c = connection()){
             final PreparedStatement statement = c.prepareStatement("SELECT * FROM USERS WHERE USER_NAME = ?");
+            statement.setString(1, userName);
+
+            final ResultSet rs =statement.executeQuery();
+            if(rs.next()){
+                found = fromResultSet(rs);
+            }
+            rs.close();
+            statement.close();
+            return found;
+        }
+        catch (final SQLException e){
+            throw new PersistenceException(e);
+        }
+    }
+
+    @Override
+    public User findLibrarian(String userName){
+        User found = null;
+        try(final Connection c = connection()){
+            final PreparedStatement statement = c.prepareStatement("SELECT * FROM LIBRARIANS WHERE USER_NAME = ?");
             statement.setString(1, userName);
 
             final ResultSet rs =statement.executeQuery();

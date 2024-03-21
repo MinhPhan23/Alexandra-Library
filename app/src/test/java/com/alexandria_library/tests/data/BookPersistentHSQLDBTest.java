@@ -33,7 +33,7 @@ public class BookPersistentHSQLDBTest {
     @Test
     public void dummyTest() throws SearchServiceException{
         System.out.println("Testing upload(Book, User)");
-        Booklist result = searchService.searchInput("Fantasy");
+        Booklist result = searchService.searchInput("The");
         for(int i = 0; i < result.size(); i++){
             System.out.println(result.get(i).getName());
         }

@@ -485,13 +485,14 @@ public class BookPersistentHSQLDB implements IBookPersistent {
             ResultSet rs = statement.executeQuery();
             while(rs.next()){
                 Book newBook = fromResultSet(rs);
-                if(newBook != null && isUniqueBook(books, newBook)){
+                if(newBook != null){
                         books.add(newBook);
                 }
             }
             rs.close();
             statement.close();
         }
+        books = collapseDuplicates(books);
         return books;
     }
 /**
@@ -572,15 +573,43 @@ public class BookPersistentHSQLDB implements IBookPersistent {
         return list;
     }
 
-    private boolean isUniqueBook(Booklist list, Book book){
-        boolean unique = true;
+    private int isUniqueBook(Booklist list, Book book){
+        int index = -1;
         for(int i = 0; i < list.size(); i++){
             if(list.get(i).getID() == book.getID()){
-                unique = false;
+                index = i;
                 break;
             }
         }
-        return unique;
+        return index;
+    }
+
+    private Booklist collapseDuplicates(Booklist list){
+        Booklist newList = null;
+        if(list.size() != 0) {
+            newList = new Booklist();
+            Book currBook = list.get(0);
+            int currID = list.get(0).getID();
+            ArrayList<String> tags = new ArrayList();
+            ArrayList<String> genres = new ArrayList();
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).getID() == currID) {
+                    if(!tags.contains(list.get(i).getTags().get(0)))
+                        tags.add(list.get(i).getTags().get(0));
+                    if(!genres.contains(list.get(i).getGenres().get(0)))
+                        genres.add(list.get(i).getGenres().get(0));
+                } else {
+                    currBook.setTags(tags);
+                    currBook.setGenres(genres);
+                    newList.add(currBook);
+                    currID = list.get(i).getID();
+                    currBook = list.get(i);
+                    tags = new ArrayList<>();
+                    genres = new ArrayList<>();
+                }
+            }
+        }
+        return newList;
     }
 
 /**
