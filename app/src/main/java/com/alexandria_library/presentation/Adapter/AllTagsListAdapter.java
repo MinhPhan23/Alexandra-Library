@@ -1,9 +1,11 @@
 package com.alexandria_library.presentation.Adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -57,27 +59,29 @@ public class AllTagsListAdapter extends RecyclerView.Adapter<AllTagsListAdapter.
         return allTags.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public class MyViewHolder extends RecyclerView.ViewHolder {
         private final CheckBox tagsTitle;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tagsTitle = itemView.findViewById(R.id.checkBox);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+            tagsTitle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
-                public void onClick(View v) {
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if(myOnItemClickListener != null){
-                        myOnItemClickListener.onRecyclerItemClick(getAdapterPosition());
+                        myOnItemClickListener.onRecyclerItemClick(tagsTitle, getAdapterPosition());
                     }
                 }
             });
         }
     }
 
+
     public void setRecyclerItemClickListener(OnRecyclerItemClickListener listener){
         myOnItemClickListener = listener;
     }
     public interface OnRecyclerItemClickListener {
-        void onRecyclerItemClick(int position);
+        void onRecyclerItemClick(CheckBox currentBox, int position);
     }
 }

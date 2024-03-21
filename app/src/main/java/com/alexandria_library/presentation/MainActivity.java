@@ -15,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 
@@ -541,10 +542,13 @@ public class MainActivity extends AppCompatActivity{
 
         tagsAdapter.setRecyclerItemClickListener(new AllTagsListAdapter.OnRecyclerItemClickListener() {
             @Override
-            public void onRecyclerItemClick(int position) {
+            public void onRecyclerItemClick(CheckBox currentBox, int position) {
                 String getTagName = tagsAdapter.getTagsName(position);
-                if(getTagName != null){
+                if(currentBox.isChecked()){
                     tagsClicked.add(getTagName);
+                }
+                else{
+                    tagsClicked.remove(getTagName);
                 }
             }
         });
@@ -565,6 +569,7 @@ public class MainActivity extends AppCompatActivity{
                 String getGenreName = genresAdapter.getGenreName(position);
                 if(getGenreName != null){
                     genresClicked.add(getGenreName);
+                    Log.e("xiang", getGenreName);
                 }
             }
         });
