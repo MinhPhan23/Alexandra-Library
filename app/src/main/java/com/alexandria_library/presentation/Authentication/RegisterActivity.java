@@ -20,22 +20,25 @@ import com.alexandria_library.logic.IAuthentication;
 public class RegisterActivity extends AppCompatActivity {
     private EditText userName, password, doubleCheckPW;
     private Button goRegister;
+    private IAuthentication authentication;
+
+    /////////////////////////LIBRARIAN MODE UI/////////////////////////
     private Button librarianModeBtn, userModeBtn;
     private boolean librarianMode;
-
-    private IAuthentication authentication;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
         Bundle crossActivityVariables = getIntent().getExtras();
-        if(crossActivityVariables != null){
+        if(crossActivityVariables != null){//accepts librarianMode state if passed, defaults to false
             librarianMode = crossActivityVariables.getBoolean("librarianMode");
         }
         else{
             librarianMode = false;
         }
+
         find();
         updateModeBtns();//updates the button state to communicate if in librarian mode
         authentication = new Authentication();
@@ -59,10 +62,12 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+        ///////////////////////////LIBRARIAN MODE////////////////////////////
+
         librarianModeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!librarianMode){
+                if(!librarianMode){//switches into librarian mode
                     librarianMode = true;
                     updateModeBtns();
                 }
@@ -72,24 +77,12 @@ public class RegisterActivity extends AppCompatActivity {
         userModeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(librarianMode){
+                if(librarianMode){//switches out of librarian mode
                     librarianMode = false;
                     updateModeBtns();
                 }
             }
         });
-    }
-
-    private void updateModeBtns() {
-        if(librarianMode){
-            librarianModeBtn.setTextColor(Color.parseColor("#FFFFFF"));
-            userModeBtn.setTextColor(Color.parseColor("#321450"));
-        }
-        else{
-            librarianModeBtn.setTextColor(Color.parseColor("#000000"));
-            userModeBtn.setTextColor(Color.parseColor("#FFFFFF"));
-        }
-        librarianModeBtn.invalidate();
     }
 
     void find(){
@@ -119,5 +112,23 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void setErrorMess(EditText layout, String message){
         layout.setError(message);
+    }
+
+    ///////////////////////////LIBRARIAN MODE////////////////////////
+
+    /******
+     * depending on the librarianMode state highlights the text of the buttons to communicate
+     * to the user which mode is selected
+     */
+    private void updateModeBtns() {
+        if(librarianMode){
+            librarianModeBtn.setTextColor(Color.parseColor("#FFFFFF"));
+            userModeBtn.setTextColor(Color.parseColor("#321450"));
+        }
+        else{
+            librarianModeBtn.setTextColor(Color.parseColor("#000000"));
+            userModeBtn.setTextColor(Color.parseColor("#FFFFFF"));
+        }
+        librarianModeBtn.invalidate();//redraws the buttons with the new text colours
     }
 }

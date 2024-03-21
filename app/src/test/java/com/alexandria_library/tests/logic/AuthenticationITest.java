@@ -311,8 +311,10 @@ public class AuthenticationITest {
         }
     }
 
+    ///////////////////////LIBRARIAN MODE TESTS////////////////////////////
+
     @Test
-    public void test01_existing_librarian(){
+    public void test19_existing_librarian(){
         System.out.println("test for librarian login");
         try{
             User librarian = authentication.login("Andrei", "123", true);
@@ -325,7 +327,7 @@ public class AuthenticationITest {
     }
 
     @Test
-    public void test02_not_registered_name_librarian(){
+    public void test20_not_registered_name_librarian(){
         System.out.println("test for librarian login");
         try{
             Exception exception = assertThrows(AuthenticationException.class, ()-> {
@@ -338,7 +340,7 @@ public class AuthenticationITest {
     }
 
     @Test
-    public void test03_not_correct_password_librarian(){
+    public void test21_not_correct_password_librarian(){
         System.out.println("test for librarian login");
         try{
             Exception exception = assertThrows(AuthenticationException.class, ()-> {
@@ -351,7 +353,7 @@ public class AuthenticationITest {
     }
 
     @Test
-    public void test04_register_librarian(){
+    public void test22_register_librarian(){
         System.out.println("test for librarian login");
         try{
             authentication.register(name1, pass1, pass1, true);
@@ -360,6 +362,21 @@ public class AuthenticationITest {
             assertEquals(pass1, librarian.getPassword());
         }
         catch (AuthenticationException e){
+            e.printStackTrace();
+            assert (false);
+        }
+    }
+
+    @Test
+    public void test23_register_duplicate_librarian(){
+        System.out.println("test for librarian login");
+        try{
+            authentication.register(name2, pass1, pass1, true);
+            Exception exception = assertThrows(AuthenticationException.class, ()->{
+                authentication.register(name2, pass1, pass1, true);
+            });
+        }
+        catch (Exception e){
             e.printStackTrace();
             assert (false);
         }

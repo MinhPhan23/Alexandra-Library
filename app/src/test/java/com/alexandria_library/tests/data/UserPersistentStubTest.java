@@ -20,6 +20,13 @@ public class UserPersistentStubTest {
     }
 
     @Test
+    public void testAddExistingUser() {
+        userStub.addNewUser("newUser", "newPassword");
+        boolean result = userStub.addNewUser("newUser", "newPassword");
+        assertFalse("User should not be added", result);
+    }
+
+    @Test
     public void testFindExistingUserByUserNameAndPassword() {
         String userName = "Xiang";
         String password = "123";
@@ -48,7 +55,14 @@ public class UserPersistentStubTest {
     @Test
     public void testAddNewLibrarian() {
         boolean result = userStub.addNewLibrarian("testLibrarian", "testPassword");
-        assertTrue("User should be added successfully", result);
+        assertTrue("Librarian should be added successfully", result);
+    }
+
+    @Test
+    public void testAddExistingLibrarian() {
+        userStub.addNewLibrarian("newLibrarian", "newPassword");
+        boolean result = userStub.addNewLibrarian("newLibrarian", "newPassword");
+        assertFalse("Librarian should not be added", result);
     }
 
     @Test

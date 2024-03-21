@@ -23,19 +23,22 @@ import com.alexandria_library.presentation.MainActivity;
 
 public class LoginActivity extends AppCompatActivity {
     private Button login, register;
-
-    private Button librarianModeBtn, userModeBtn;
-    private boolean librarianMode;
     private EditText userName, password;
     private IAuthentication authentication;
     private static SideBarService sideBarService;
+
+    /////////////////////////LIBRARIAN MODE UI/////////////////////////
+    private Button librarianModeBtn, userModeBtn;
+    private boolean librarianMode;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         copyDatabaseToDevice(); //copy database
-        Bundle crossActivityVariables = getIntent().getExtras();//brings over te state of the buttons from the registration screen
+
+        Bundle crossActivityVariables = getIntent().getExtras();
         if(crossActivityVariables != null){
             librarianMode = crossActivityVariables.getBoolean("librarianMode");
         }
@@ -77,10 +80,12 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        ///////////////////////////LIBRARIAN MODE////////////////////////////
+
         librarianModeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!librarianMode){
+                if(!librarianMode){//switches into librarian mode
                     librarianMode = true;
                     updateModeBtns();
                 }
@@ -90,24 +95,12 @@ public class LoginActivity extends AppCompatActivity {
         userModeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(librarianMode){
+                if(librarianMode){//switches out of librarian mode
                     librarianMode = false;
                     updateModeBtns();
                 }
             }
         });
-    }
-
-    private void updateModeBtns() {
-        if(librarianMode){
-            librarianModeBtn.setTextColor(Color.parseColor("#FFFFFF"));
-            userModeBtn.setTextColor(Color.parseColor("#321450"));
-        }
-        else{
-            librarianModeBtn.setTextColor(Color.parseColor("#000000"));
-            userModeBtn.setTextColor(Color.parseColor("#FFFFFF"));
-        }
-        librarianModeBtn.invalidate();
     }
 
     private void loginBtnClicked(View v){
@@ -117,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
             User user = authentication.login(name, pw, librarianMode);
             sideBarService = new SideBarService(user);
             Intent i = new Intent(LoginActivity.this, MainActivity.class);
-            i.putExtra("librarianMode", librarianMode);
+            i.putExtra("librarianMode", librarianMode);//passes librarianMode state
             startActivity(i);
         }
         catch (AuthenticationException e) {
@@ -126,7 +119,7 @@ public class LoginActivity extends AppCompatActivity {
     }
     private void registerBtnClicked(View v){
         Intent i = new Intent(LoginActivity.this, RegisterActivity.class);
-        i.putExtra("librarianMode", librarianMode);
+        i.putExtra("librarianMode", librarianMode);//passes librarianMode state
         startActivity(i);
     }
 
@@ -139,6 +132,8 @@ public class LoginActivity extends AppCompatActivity {
         register = findViewById(R.id.register_btn);
         userName = findViewById(R.id.login_userName_input);
         password = findViewById(R.id.login_password_input);
+
+        ////////////////LIBRARIAN MODE UI////////////////////
         librarianModeBtn = findViewById(R.id.librarian_mode_btn);
         userModeBtn = findViewById(R.id.user_mode_btn);
     }
@@ -149,5 +144,23 @@ public class LoginActivity extends AppCompatActivity {
 
     private void copyDatabaseToDevice() {
         HSQLDBHelper.copyDatabaseToDevice(this);
+    }
+
+    ///////////////////////////LIBRARIAN MODE////////////////////////
+
+    /******
+     * depending on the librarianMode state highlights the text of the buttons to communicate
+     * to the user which mode is selected
+     */
+    private void updateModeBtns() {
+        if(librarianMode){
+            librarianModeBtn.setTextColor(Color.parseColor("#FFFFFF"));
+            userModeBtn.setTextColor(Color.parseColor("#321450"));
+        }
+        else{
+            librarianModeBtn.setTextColor(Color.parseColor("#000000"));
+            userModeBtn.setTextColor(Color.parseColor("#FFFFFF"));
+        }
+        librarianModeBtn.invalidate();//redraws the buttons with the new text colours
     }
 }

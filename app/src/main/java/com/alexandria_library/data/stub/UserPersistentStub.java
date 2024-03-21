@@ -151,15 +151,23 @@ public class UserPersistentStub implements IUserPersistent {
 
 
     public boolean addNewUser(String userName, String password){
-        User newUser = new User(userName, password, userID);
-        userID++;
-        return userList.add(newUser);
+        boolean success = false;
+        if(findUser(userName) == null){
+            User newUser = new User(userName, password, userID);
+            userID++;
+            success = userList.add(newUser);
+        }
+        return success;
     }
 
     public boolean addNewLibrarian(String userName, String password){
-        User newUser = new User(userName, password, userID);
-        librarianID++;
-        return librarianList.add(newUser);
+        boolean success = false;
+        if(findLibrarian(userName) == null){
+            User newLibrarian = new User(userName, password, userID);
+            librarianID++;
+            success = librarianList.add(newLibrarian);
+        }
+        return success;
     }
 
     public User findUser(String userName, String password){
