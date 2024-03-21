@@ -565,11 +565,13 @@ public class MainActivity extends AppCompatActivity{
 
         genresAdapter.setRecyclerItemClickListener(new AllGenresListAdapter.OnRecyclerItemClickListener() {
             @Override
-            public void onRecyclerItemClick(int position) {
+            public void onRecyclerItemClick(CheckBox currentBox, int position) {
                 String getGenreName = genresAdapter.getGenreName(position);
-                if(getGenreName != null){
+                if(currentBox.isChecked()){
                     genresClicked.add(getGenreName);
-                    Log.e("xiang", getGenreName);
+                }
+                else{
+                    genresClicked.remove(getGenreName);
                 }
             }
         });
