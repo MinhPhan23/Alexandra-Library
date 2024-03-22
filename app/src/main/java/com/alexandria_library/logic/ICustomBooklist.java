@@ -6,13 +6,7 @@ import com.alexandria_library.dso.IReader;
 import com.alexandria_library.logic.Exception.BooklistException;
 
 public interface ICustomBooklist {
-    /**
-     * Adding a new book to a custom list
-     *
-     * @param book     the new book
-     * @param booklist the custom list
-     * @return
-     */
+
     public void addBookToCustom(IReader reader, Booklist newBook, Booklist booklist) throws BooklistException;
 
     public void addBooklist(IReader reader, String name) throws BooklistException;
