@@ -84,47 +84,23 @@ public class UserPersistentStub implements IUserPersistent {
          */
         DefaultBooklist defaultBooklist = new DefaultBooklist();
         try {
-            defaultBooklist.addBookToAll(user1, b1);
-            defaultBooklist.addBookToAll(user1, b2);
-            defaultBooklist.addBookToAll(user1, b3);
-            defaultBooklist.addBookToAll(user1, b4);
-            defaultBooklist.addBookToAll(user1, b5);
-            defaultBooklist.addBookToAll(user1, b6);
-            defaultBooklist.addBookToAll(user1, b7);
-            defaultBooklist.addBookToAll(user1, b8);
-            defaultBooklist.addBookToFinished(user1,b1);
-            defaultBooklist.addBookToFinished(user1,b2);
-            defaultBooklist.addBookToFinished(user1,b3);
-            defaultBooklist.addBookToFinished(user1,b4);
-            defaultBooklist.addBookToFinished(user1,b5);
-            defaultBooklist.addBookToFinished(user1,b6);
-            defaultBooklist.addBookToFinished(user1,b7);
-            defaultBooklist.addBookToInProgress(user1, b8);
-            defaultBooklist.addBookToInProgress(user1, b7);
-            defaultBooklist.addBookToInProgress(user1, b6);
-            defaultBooklist.addBookToInProgress(user1, b5);
-            defaultBooklist.addBookToInProgress(user1, b4);
-            defaultBooklist.addBookToInProgress(user1, b3);
-            defaultBooklist.addBookToInProgress(user1, b2);
+            Booklist booklist = new Booklist(Arrays.asList(b1, b2, b3, b4, b5, b6, b7, b8));
+            defaultBooklist.addBookToAll(user1, booklist);
 
-            defaultBooklist.addBookToAll(user2, b1);
-            defaultBooklist.addBookToAll(user2, b2);
-            defaultBooklist.addBookToAll(user2, b3);
-            defaultBooklist.addBookToAll(user2, b4);
-            defaultBooklist.addBookToAll(user2, b5);
-            defaultBooklist.addBookToAll(user2, b6);
-            defaultBooklist.addBookToAll(user2, b7);
-            defaultBooklist.addBookToAll(user2, b8);
-            defaultBooklist.addBookToFinished(user2, b3);
-            defaultBooklist.addBookToFinished(user2, b4);
-            defaultBooklist.addBookToFinished(user2, b5);
-            defaultBooklist.addBookToFinished(user2, b6);
-            defaultBooklist.addBookToFinished(user2, b7);
-            defaultBooklist.addBookToInProgress(user2, b6);
-            defaultBooklist.addBookToInProgress(user2, b5);
-            defaultBooklist.addBookToInProgress(user2, b4);
-            defaultBooklist.addBookToInProgress(user2, b3);
-            defaultBooklist.addBookToInProgress(user2, b2);
+            booklist = new Booklist(Arrays.asList(b1, b2, b3, b4, b5, b6, b7));
+            defaultBooklist.addBookToFinished(user1,booklist);
+
+            booklist = new Booklist(Arrays.asList(b8, b7, b6, b5, b4, b3, b2));
+            defaultBooklist.addBookToInProgress(user1,booklist);
+
+            booklist = new Booklist(Arrays.asList(b1, b2, b3, b4, b5, b6, b7, b8));
+            defaultBooklist.addBookToAll(user2, booklist);
+
+            booklist = new Booklist(Arrays.asList(b3, b4, b5, b6, b7));
+            defaultBooklist.addBookToFinished(user2,booklist);
+
+            booklist = new Booklist(Arrays.asList(b6, b5, b4, b3, b2));
+            defaultBooklist.addBookToInProgress(user2,booklist);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Something is wrong with creating stub data");
