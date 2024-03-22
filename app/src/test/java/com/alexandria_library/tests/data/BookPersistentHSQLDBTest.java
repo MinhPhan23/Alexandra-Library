@@ -1,5 +1,6 @@
 package com.alexandria_library.tests.data;
 
+import com.alexandria_library.data.IBookPersistent;
 import com.alexandria_library.data.hsqldb.BookPersistentHSQLDB;
 import com.alexandria_library.logic.SearchService;
 import com.alexandria_library.dso.Booklist;
@@ -16,11 +17,10 @@ public class BookPersistentHSQLDBTest {
 
     SearchService searchService;
 
-    private File tempDB;
 
     @Before
     public void setUp() throws IOException {
-        tempDB = TestUtils.copyDB();
+        File tempDB = TestUtils.copyDB();
         BookPersistentHSQLDB db = new BookPersistentHSQLDB(tempDB.getAbsolutePath().replace(".script", ""));
 
         searchService = new SearchService(db);
@@ -38,4 +38,6 @@ public class BookPersistentHSQLDBTest {
             System.out.println(result.get(i).getName());
         }
     }
+
+
 }
