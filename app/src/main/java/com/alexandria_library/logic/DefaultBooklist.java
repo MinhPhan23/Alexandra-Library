@@ -40,7 +40,7 @@ public class DefaultBooklist implements IDefaultBooklist {
         Booklist all = reader.getAllBooksList();
         checkDuplicate(all, newBook);
         all.addAll(newBook);
-        data.addBookToCustomList(newBook, (User) reader);
+        data.addBookToAllList(newBook, (User) reader);
     }
 
     @Override

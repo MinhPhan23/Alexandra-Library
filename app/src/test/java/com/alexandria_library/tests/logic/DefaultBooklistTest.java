@@ -31,7 +31,7 @@ public class DefaultBooklistTest {
     public void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        Mockito.doNothing().when(data).addBookToCustomList(Mockito.any(Booklist.class), Mockito.any(User.class));
+        Mockito.doNothing().when(data).addBookToAllList(Mockito.any(Booklist.class), Mockito.any(User.class));
         Mockito.doNothing().when(data).addBookToFinishedList(Mockito.any(Booklist.class), Mockito.any(User.class));
         Mockito.doNothing().when(data).addBookToReadingList(Mockito.any(Booklist.class), Mockito.any(User.class));
 
@@ -56,7 +56,7 @@ public class DefaultBooklistTest {
 
             defaultBooklist.addBookToAll(reader, newList);
 
-            Mockito.verify(data, Mockito.times(1)).addBookToCustomList(Mockito.any(Booklist.class), Mockito.any(User.class));
+            Mockito.verify(data, Mockito.times(1)).addBookToAllList(Mockito.any(Booklist.class), Mockito.any(User.class));
             Mockito.verify(reader).getAllBooksList();
             assertEquals(2, oldList.size());
         }
@@ -79,7 +79,7 @@ public class DefaultBooklistTest {
 
             defaultBooklist.addBookToAll(reader, newList);
 
-            Mockito.verify(data, Mockito.times(1)).addBookToCustomList(Mockito.any(Booklist.class), Mockito.any(User.class));
+            Mockito.verify(data, Mockito.times(1)).addBookToAllList(Mockito.any(Booklist.class), Mockito.any(User.class));
             Mockito.verify(reader).getAllBooksList();
             assertEquals(2, oldList.size());
         }
@@ -110,7 +110,7 @@ public class DefaultBooklistTest {
             assertNotNull(actualMessage);
             assertEquals(expectedMessage, actualMessage);
 
-            Mockito.verify(data, Mockito.times(0)).addBookToCustomList(Mockito.any(Booklist.class), Mockito.any(User.class));
+            Mockito.verify(data, Mockito.times(0)).addBookToAllList(Mockito.any(Booklist.class), Mockito.any(User.class));
             Mockito.verify(reader).getAllBooksList();
         }
         catch (Exception e) {
@@ -143,7 +143,7 @@ public class DefaultBooklistTest {
             assertNotNull(actualMessage);
             assertEquals(expectedMessage, actualMessage);
 
-            Mockito.verify(data, Mockito.times(0)).addBookToCustomList(Mockito.any(Booklist.class), Mockito.any(User.class));
+            Mockito.verify(data, Mockito.times(0)).addBookToAllList(Mockito.any(Booklist.class), Mockito.any(User.class));
             Mockito.verify(reader).getAllBooksList();
         }
         catch (Exception e) {
