@@ -18,6 +18,14 @@ public interface IUserPersistent {
     public boolean addNewUser(String userName, String password);
 
     /*****
+     * add a new librarian to librarian list
+     * @param userName new username
+     * @param password user's password
+     * @return true if added successfully
+     */
+    public boolean addNewLibrarian(String userName, String password);
+
+    /*****
      * check if the user exists in the system
      * @param userName a username to check
      * @param password a password to check
@@ -25,13 +33,13 @@ public interface IUserPersistent {
      */
     public User findUser(String userName, String password);
 
+
     /*****
      * check if the user exists in the system by username only
      * @param userName a username to check
      * @return An user object if found, null if not
      */
     public User findUser(String userName);
-
 
     /*****
      * those functions we are not using, because we will use on iterations 3
@@ -45,7 +53,7 @@ public interface IUserPersistent {
 
     /***********************************************************************************
      * ADD book to user's list */
-    public void addBookToCustomList(Booklist list, User user);
+    public void addBookToAllList(Booklist list, User user);
     public void addBookToReadingList(Booklist list, User user);
     public void addBookToFinishedList(Booklist list, User user);
     /*************************************************************************************/
@@ -53,8 +61,14 @@ public interface IUserPersistent {
 
     /***********************************************************************************
      * DELETE book from user's list */
-    public void deleteUserCustomListBook(Booklist list, User user);
+    public void deleteUserAllListBook(Booklist list, User user);
     public void deleteReadingListBook(Booklist list, User user);
     public void deleteFinishedListBook(Booklist list, User user);
     /*************************************************************************************/
+    /*****
+     * check if the librarian exists in the system by username only
+     * @param userName a username to check
+     * @return An user object if found, null if not
+     */
+    public User findLibrarian(String userName);
 }

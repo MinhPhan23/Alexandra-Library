@@ -1,6 +1,7 @@
 package com.alexandria_library.presentation;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,12 +15,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 
 import com.alexandria_library.R;
 import com.alexandria_library.application.Service;
 import com.alexandria_library.data.IBookPersistent;
+import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.logic.BookListFilter;
 import com.alexandria_library.logic.IBookListFilter;
@@ -36,8 +39,13 @@ import com.alexandria_library.presentation.Adapter.InProgressBookAdapter;
 import com.alexandria_library.presentation.Adapter.LibraryBookListAdapter;
 import com.alexandria_library.presentation.Adapter.SearchListAdapter;
 import com.alexandria_library.presentation.Authentication.LoginActivity;
+import com.alexandria_library.application.Service;
+import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity{
 
@@ -59,10 +67,19 @@ public class MainActivity extends AppCompatActivity{
     private Button logOut, categoryBtn, account;
     private Button filter;
     private Button searchIcon;
+    private Button librarianAddBtn, listTextButton;
     private FrameLayout expandable;
     private EditText searchInput;
     private RecyclerView recyclerView, filterBox;
     private View rootView, filterPage;
+
+    /////////////////////LIBRARIAN MODE UI////////////////////////
+    private boolean librarianMode;
+    private Button addBookCreateBtn, addBookCancelBtn;
+    private ConstraintLayout addBookMenu;
+    private EditText addBookName, addBookAuthor, addBookTags, addBookGenres, addBookDate;
+    /////////////////////////////////////////////////////////////
+
     private boolean library, all, inProgress,finish, filterOpen;
     private Booklist allLibraryBooks;
     private Booklist filterBooks;
@@ -87,12 +104,33 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initializer();
-        findByID();
+
+        Bundle crossActivityVariables = getIntent().getExtras();
+
+        if(crossActivityVariables != null){//transfers librarianMode state from other views
+            librarianMode = crossActivityVariables.getBoolean("librarianMode");
+        }
+        else{
+            librarianMode = false;
+        }
+
+        find();
+
+        if(librarianMode){//hides elements when in librarian or user mode
+            allListBtn.setVisibility(View.INVISIBLE);
+            inProgressBtn.setVisibility(View.INVISIBLE);
+            finishedBtn.setVisibility(View.INVISIBLE);
+            listTextButton.setVisibility(View.INVISIBLE);
+        }
+        else{
+            librarianAddBtn.setVisibility(View.INVISIBLE);
+        }
 
         bookDistributor();
         tagsDisplay();
         genresDisplay();
 
+        /////////////////READER MODE UI/////////////////
 
         /*****
          * get root view
@@ -181,8 +219,9 @@ public class MainActivity extends AppCompatActivity{
         logOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
+                Intent i = new Intent(MainActivity.this, LoginActivity.class);
+                i.putExtra("librarianMode", librarianMode);
+                startActivity(i);
                 toggleSearchResultGone();
             }
         });
@@ -295,6 +334,38 @@ public class MainActivity extends AppCompatActivity{
                 }
             }
         });
+
+        /////////////////////LIBRARIAN MODE UI////////////////////////
+
+        /*****
+         * opens the add book menu
+         */
+        librarianAddBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                addBookMenu.setVisibility(View.VISIBLE);
+            }
+        });
+
+        /*****
+         * sends the book info for creation
+         */
+        addBookCreateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createBook();
+            }
+        });
+
+        /*****
+         * closes the add book menu
+         */
+        addBookCancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closeAddBook();
+            }
+        });
     }
 
 
@@ -316,7 +387,7 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    private void findByID(){
+    private void find(){
         //Getting root view ID
         rootView = findViewById(android.R.id.content);
 
@@ -327,7 +398,7 @@ public class MainActivity extends AppCompatActivity{
         allListBtn = findViewById(R.id.all_btn);
 
         //Getting Finished button
-        finishedBtn = findViewById(R.id.finished);
+        finishedBtn = findViewById(R.id.recently_added);
 
         //Getting in progress button
         inProgressBtn = findViewById(R.id.in_progress_btn);
@@ -363,6 +434,32 @@ public class MainActivity extends AppCompatActivity{
 
         //Getting filter control bar
         filterPage = findViewById(R.id.filter_page);
+
+        //made the text a button so we can make it invisible if needed
+        listTextButton = findViewById(R.id.my_list_text);
+
+        /////////////////////LIBRARIAN MODE UI////////////////////////
+
+        //Button to see all the books in the library only for librarian interface due to diffirent layout
+        librarianAddBtn = findViewById(R.id.librarian_add_btn);
+
+        //add book frame, hidden by default
+        addBookMenu = findViewById(R.id.add_book_layout);
+        addBookMenu.setVisibility(View.INVISIBLE);
+
+        //Add book text fields
+        addBookName = findViewById(R.id.add_book_name);
+        addBookAuthor = findViewById(R.id.add_book_author);
+        addBookTags = findViewById(R.id.add_book_tags);
+        addBookGenres = findViewById(R.id.add_book_genres);
+        addBookDate = findViewById(R.id.add_book_date);
+
+        //book submit button
+        addBookCreateBtn = findViewById(R.id.add_book_create_btn);
+
+        //button to close the add book menu
+        addBookCancelBtn = findViewById(R.id.add_book_cancel_btn);
+
     }
 
     private void SearchBar(){
@@ -410,6 +507,7 @@ public class MainActivity extends AppCompatActivity{
 
 
     private void LibraryBookCategory(){
+        LibraryBookListAdapter libraryBookListAdapter;
         if(grid){
             //Setting Grid of book display
             RecyclerView recyclerView = findViewById(R.id.gridView);
@@ -439,6 +537,7 @@ public class MainActivity extends AppCompatActivity{
         });
     }
     private void AllBookCategory(){
+        AllBookListAdapter allBookAdapter;
         if(grid){
             //Setting Grid of book display
             RecyclerView recyclerView = findViewById(R.id.gridView);
@@ -469,6 +568,7 @@ public class MainActivity extends AppCompatActivity{
     }
     
     private void FinishedBookCategory(){
+        FinishedBookAdapter finishedBookAdapter;
         if(grid){
             //Setting Grid of book display
             RecyclerView recyclerView = findViewById(R.id.gridView);
@@ -499,6 +599,7 @@ public class MainActivity extends AppCompatActivity{
     }
     
     private void InProgressBookCategory(){
+        InProgressBookAdapter inProgressBookAdapter;
         if(grid){
             //Setting Grid of book display
             RecyclerView recyclerView = findViewById(R.id.gridView);
@@ -539,10 +640,13 @@ public class MainActivity extends AppCompatActivity{
 
         tagsAdapter.setRecyclerItemClickListener(new AllTagsListAdapter.OnRecyclerItemClickListener() {
             @Override
-            public void onRecyclerItemClick(int position) {
+            public void onRecyclerItemClick(CheckBox currentBox, int position) {
                 String getTagName = tagsAdapter.getTagsName(position);
-                if(getTagName != null){
+                if(currentBox.isChecked()){
                     tagsClicked.add(getTagName);
+                }
+                else{
+                    tagsClicked.remove(getTagName);
                 }
             }
         });
@@ -559,10 +663,13 @@ public class MainActivity extends AppCompatActivity{
 
         genresAdapter.setRecyclerItemClickListener(new AllGenresListAdapter.OnRecyclerItemClickListener() {
             @Override
-            public void onRecyclerItemClick(int position) {
+            public void onRecyclerItemClick(CheckBox currentBox, int position) {
                 String getGenreName = genresAdapter.getGenreName(position);
-                if(getGenreName != null){
+                if(currentBox.isChecked()){
                     genresClicked.add(getGenreName);
+                }
+                else{
+                    genresClicked.remove(getGenreName);
                 }
             }
         });
@@ -570,9 +677,9 @@ public class MainActivity extends AppCompatActivity{
 
     private void filterBookDisplay(ArrayList<String> tags, ArrayList<String> genre){
         RecyclerView recyclerView = findViewById(R.id.filter_book);
-
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
         recyclerView.setLayoutManager(gridLayoutManager);
+        allLibraryBooks = bookPersistent.getBookList();
         filterBookAdapter = new FilterBookAdapter(this, bookListFilter, allLibraryBooks, tags, genre);
         recyclerView.setAdapter(filterBookAdapter);
         filterBookAdapter.setRecyclerItemClickListener(new FilterBookAdapter.OnRecyclerItemClickListener() {
@@ -580,6 +687,25 @@ public class MainActivity extends AppCompatActivity{
             public void onRecyclerItemClick(int position) {
             }
         });
+    }
 
+    private void createBook(){
+        String name = addBookName.getText().toString();
+        String author = addBookAuthor.getText().toString();
+        List<String> tags = Arrays.asList(addBookTags.getText().toString().split(","));
+        List<String> genres = Arrays.asList(addBookGenres.getText().toString().split(","));
+        String date = addBookDate.getText().toString();
+        Book newBook = new Book(-1, name, author, date, tags, genres);
+        bookPersistent.update(newBook, null);
+        System.out.println(newBook.toString());
+    }
+
+    private void closeAddBook(){
+        addBookName.setText("");
+        addBookAuthor.setText("");
+        addBookTags.setText("");
+        addBookGenres.setText("");
+        addBookDate.setText("");
+        addBookMenu.setVisibility(View.INVISIBLE);
     }
 }

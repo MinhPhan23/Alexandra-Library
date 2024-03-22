@@ -16,20 +16,34 @@ public class Authentication implements IAuthentication{
         this.userData = userData;
     }
 
-    private boolean insertNewUser(String userName, String password){
-        return userData.addNewUser(userName, password);
+    private boolean insertNewUser(String userName, String password, boolean librarianMode){
+        boolean success;
+        if(librarianMode){
+            success = userData.addNewLibrarian(userName, password);
+        }
+        else{
+            success = userData.addNewUser(userName, password);
+        }
+        return success;
     }
 
-    private User checkExistingUser(String userName){
-        return userData.findUser(userName);
+    private User checkExistingUser(String userName, boolean librarianMode){
+        User user;
+        if(librarianMode){
+            user = userData.findLibrarian(userName);
+        }
+        else{
+            user = userData.findUser(userName);
+        }
+        return user;
     }
 
     @Override
-    public User login(String userName, String password) throws AuthenticationException {
+    public User login(String userName, String password, boolean librarianMode) throws AuthenticationException{
         if (userName==null || userName.equals("") || password==null || password.equals("")) {
             throw new AuthenticationException("Username and Password cannot be empty");
         }
-        User user = checkExistingUser(userName);
+        User user = checkExistingUser(userName, librarianMode);
         if (user == null) {
             throw new AuthenticationException("Username does not exist");
         }
@@ -40,18 +54,22 @@ public class Authentication implements IAuthentication{
     }
 
     @Override
-    public void register(String userName, String password, String doublePassword) throws AuthenticationException {
+    public void register(String userName, String password, String doublePassword, boolean librarianMode) throws AuthenticationException {
         if(userName == null || password == null || doublePassword == null || userName.equals("") || password.equals("") || doublePassword.equals("")){
             throw new AuthenticationException("Username and Password cannot be empty");
         }
         if (!password.equals(doublePassword)) {
             throw new AuthenticationException("Double password does not match");
         }
-        User user = checkExistingUser(userName);
+
+        User user = checkExistingUser(userName, librarianMode);
+
         if (user != null) {
             throw new AuthenticationException("Username already exist");
         }
-        boolean success = insertNewUser(userName, password);
+
+        boolean success = insertNewUser(userName, password, librarianMode);
+
         if (!success) {
             throw new AuthenticationException("Cannot add reason due to some failures, please try again");
         }

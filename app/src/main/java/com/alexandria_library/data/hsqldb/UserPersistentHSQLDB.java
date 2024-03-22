@@ -17,8 +17,9 @@ import java.util.List;
 
 public class UserPersistentHSQLDB implements IUserPersistent {
     private final String dbPath;
-    private static int userID = 6; //start with 6 because group members are default users
-    private static int customListID = 1;
+    private static int userID = 6; //start with 6 because group members are default \
+    private static int librarianID = 6; //start with 6 because group members are default users
+    private static int allListID = 1;
     private static int readingListID = 1;
     private static int finishedListID = 1;
 
@@ -78,6 +79,27 @@ public class UserPersistentHSQLDB implements IUserPersistent {
     }
 
     @Override
+    public boolean addNewLibrarian(String userName, String password){
+        boolean result = false;
+        try(final Connection c = connection()){
+            final PreparedStatement statement = c.prepareStatement("INSERT INTO LIBRARIANS(USER_ID, USER_NAME, PASSWORD) VALUES (?, ?, ?)");
+            statement.setInt(1, librarianID);
+            statement.setString(2, userName);
+            statement.setString(3, password);
+            int affectedRow = statement.executeUpdate();
+
+            if(affectedRow > 0){
+                result = true;
+                librarianID++;
+            }
+            return result;
+        }
+        catch (final SQLException e){
+            throw new PersistenceException(e);
+        }
+    }
+
+    @Override
     public User findUser(String userName, String password){
         User found = null;
         try(final Connection c = connection()){
@@ -107,6 +129,26 @@ public class UserPersistentHSQLDB implements IUserPersistent {
 
             final ResultSet rs =statement.executeQuery();
             if(rs.next()){
+                found = fromResultSet(rs);
+            }
+            rs.close();
+            statement.close();
+            return found;
+        }
+        catch (final SQLException e){
+            throw new PersistenceException(e);
+        }
+    }
+
+    @Override
+    public User findLibrarian(String userName){
+        User found = null;
+        try(final Connection c = connection()){
+            final PreparedStatement statement = c.prepareStatement("SELECT * FROM LIBRARIANS WHERE USER_NAME = ?");
+            statement.setString(1, userName);
+
+            final ResultSet rs =statement.executeQuery();
+            if(rs.next()){
                 found =fromResultSet(rs);
             }
             rs.close();
@@ -125,14 +167,14 @@ public class UserPersistentHSQLDB implements IUserPersistent {
  *******/
     //add book to custom list
     @Override
-    public void addBookToCustomList(Booklist list, User user){
+    public void addBookToAllList(Booklist list, User user){
         final String addToCustomListQuery =  "INSERT INTO CUSTOMLIST(BOOK_ID, USER_ID, CUSTOMLIST_PK) VALUES (?, ?, ?) ";
         try{
             for(int i = 0; i<list.size(); i++){
-                boolean checkEachAdd = addBookToUserList(addToCustomListQuery, list.get(i), user, customListID);
+                boolean checkEachAdd = addBookToUserList(addToCustomListQuery, list.get(i), user, allListID);
 
                 if(checkEachAdd)
-                    customListID++;
+                    allListID++;
             }
         }
         catch (final SQLException e){
@@ -198,7 +240,7 @@ public class UserPersistentHSQLDB implements IUserPersistent {
  */
     //delete book from user's custom list
     @Override
-    public void deleteUserCustomListBook(Booklist list, User user){
+    public void deleteUserAllListBook(Booklist list, User user){
         String query = "DELETE FROM CUSTOMLIST WHERE BOOK_ID = ? AND USER_ID = ?";
         try {
             if(user instanceof Reader){

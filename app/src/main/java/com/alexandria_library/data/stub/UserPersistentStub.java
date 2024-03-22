@@ -12,9 +12,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class UserPersistentStub implements IUserPersistent {
-    private static int id = 1;
+    private static int userID = 1;
+    private static int librarianID = 1;
 
     private ArrayList<User> userList;
+    private ArrayList<User> librarianList;
     public UserPersistentStub(){
         userList = new ArrayList<>();
 
@@ -26,7 +28,19 @@ public class UserPersistentStub implements IUserPersistent {
         Reader user3 = new Reader("Minh", "123456", 3);
         Reader user4 = new Reader("Carlo", "123456", 4);
         Reader user5 = new Reader("alina", "123456", 5);
-        id = 6;
+        userID = 6;
+
+        librarianList = new ArrayList<>();
+
+        /*****
+         * create 5 users
+         */
+        Reader libr1 = new Reader("Xiang", "123", 1);
+        Reader libr2 = new Reader("Andrei", "123456", 2);
+        Reader libr3 = new Reader("Minh", "123456", 3);
+        Reader libr4 = new Reader("Carlo", "123456", 4);
+        Reader libr5 = new Reader("alina", "123456", 5);
+        librarianID = 6;
 
         /****
          * add temperature books to some users
@@ -35,7 +49,7 @@ public class UserPersistentStub implements IUserPersistent {
         String[] genres1Array = new String[]{"Romance", "Contemporary", "Historical Fiction"};
         List<String> tags1 = new ArrayList<>(Arrays.asList(tags1Array));
         List<String>genres1 = new ArrayList<>(Arrays.asList(genres1Array));
-        Book b1 = new Book(1 , "The Seven Husbands of Evalyn Hugo", "Taylor Jenkins Reid", "June 13, 2017", tags1, genres1);
+        Book b1 = new Book(1 , "The Seven Husbands of Evalyn Hugo", "Taylor Jenkins ReuserID", "June 13, 2017", tags1, genres1);
 
         String[] tags2Array = new String[]{"High School", "Literature"};
         String[] genres2Array = new String[]{"Classics", "Fiction", "Historical Fiction", "Young Adult"};
@@ -77,7 +91,7 @@ public class UserPersistentStub implements IUserPersistent {
         String[] genres8Array = new String[]{"Fiction", "Fantasy", "Contemporary", "Science Fiction"};
         List<String>tags8 = new ArrayList<>(Arrays.asList(tags8Array));
         List<String>genres8 = new ArrayList<>(Arrays.asList(genres8Array));
-        Book b8 = new Book(8 , "The Midnight Library", "Matt Haig", "August 13, 2020", tags8, genres8);
+        Book b8 = new Book(8 , "The MuserIDnight Library", "Matt Haig", "August 13, 2020", tags8, genres8);
 
         /****
          * add all books to user1's all book list
@@ -118,9 +132,23 @@ public class UserPersistentStub implements IUserPersistent {
 
 
     public boolean addNewUser(String userName, String password){
-        User newUser = new User(userName, password, id);
-        id++;
-        return userList.add(newUser);
+        boolean success = false;
+        if(findUser(userName) == null){
+            User newUser = new User(userName, password, userID);
+            userID++;
+            success = userList.add(newUser);
+        }
+        return success;
+    }
+
+    public boolean addNewLibrarian(String userName, String password){
+        boolean success = false;
+        if(findLibrarian(userName) == null){
+            User newLibrarian = new User(userName, password, userID);
+            librarianID++;
+            success = librarianList.add(newLibrarian);
+        }
+        return success;
     }
 
     public User findUser(String userName, String password){
@@ -151,7 +179,7 @@ public class UserPersistentStub implements IUserPersistent {
     }
 
     @Override
-    public void addBookToCustomList(Booklist list, User user) {
+    public void addBookToAllList(Booklist list, User user) {
 
     }
 
@@ -166,7 +194,7 @@ public class UserPersistentStub implements IUserPersistent {
     }
 
     @Override
-    public void deleteUserCustomListBook(Booklist list, User user) {
+    public void deleteUserAllListBook(Booklist list, User user) {
 
     }
 
@@ -177,6 +205,16 @@ public class UserPersistentStub implements IUserPersistent {
 
     @Override
     public void deleteFinishedListBook(Booklist list, User user) {
+    }
 
+    public User findLibrarian(String userName) {
+        User found = null;
+        for(int i = 0; i<librarianList.size() && found == null; i++){
+            User current = librarianList.get(i);
+            if(current.getUserName().equals(userName)){
+                found = current;
+            }
+        }
+        return found;
     }
 }

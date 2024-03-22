@@ -88,18 +88,14 @@ public class BookListFilter implements IBookListFilter {
 
     private static boolean containsAll(List<String> bookTags, String[] filterTags) {
         for (String filterTag : filterTags) {
-            boolean containsString = false;
+
             for (String bookTag : bookTags) {
                 if (filterTag.equals(bookTag)) {
-                    containsString = true;
-                    break;
+                    return true;
                 }
             }
-            if (!containsString) {
-                return false;
-            }
         }
-        return true;
+        return false;
     }
 
     @Override
