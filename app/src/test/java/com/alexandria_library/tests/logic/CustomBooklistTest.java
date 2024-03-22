@@ -23,6 +23,8 @@ public class CustomBooklistTest {
     private Booklist newList1, newList2;
     @Before
     public void setUp() {
+        reader = new Reader("testReader", "testPass", 1);
+
         customBooklist = new CustomBooklist();
 
         String[] tagsArray = new String[]{"Young Adult", "Twilight 1", "Vampires"};
@@ -60,8 +62,6 @@ public class CustomBooklistTest {
     @Test
     public void testAddNewBooklistByName() {
         try {
-            reader = new Reader("testReader", "testPass", 1);
-
             String listName1 = "list1";
             customBooklist.addBooklist(reader, listName1);
             ArrayList<Booklist> list = reader.getAllCustomList();
@@ -81,8 +81,6 @@ public class CustomBooklistTest {
     @Test
     public void testAddNewBooklistByBooklist() {
         try {
-            reader = new Reader("testReader", "testPass", 1);
-
             Booklist list1 = new Booklist();
             list1.setName("list1");
             customBooklist.addBooklist(reader, list1);
@@ -103,8 +101,6 @@ public class CustomBooklistTest {
 
     @Test
     public void testAddDuplicateListByName() {
-        reader = new Reader("testReader", "testPass", 1);
-
         String listName = "list1";
         Exception exception = assertThrows(BooklistException.class, () -> {
             customBooklist.addBooklist(reader, listName);
@@ -120,8 +116,6 @@ public class CustomBooklistTest {
 
     @Test
     public void testAddDuplicateListByBooklist() {
-        reader = new Reader("testReader", "testPass", 1);
-
         Booklist list1 = new Booklist();
         list1.setName("list1");
         Exception exception = assertThrows(BooklistException.class, () -> {
@@ -138,7 +132,6 @@ public class CustomBooklistTest {
 
     @Test
     public void testAddBookToExistingList() {
-        reader = new Reader("testReader", "testPass", 1);
         Booklist list1 = new Booklist();
         list1.setName("list1");
         Booklist list2 = new Booklist();
@@ -161,7 +154,6 @@ public class CustomBooklistTest {
 
     @Test
     public void testAddBookToNotExistingList() {
-        reader = new Reader("testReader", "testPass", 1);
         Booklist list1 = new Booklist();
         list1.setName("list1");
 
@@ -176,7 +168,6 @@ public class CustomBooklistTest {
 
     @Test
     public void testAddDuplicateBook() {
-        reader = new Reader("testReader", "testPass", 1);
         Booklist list1 = new Booklist();
         list1.setName("list1");
 
