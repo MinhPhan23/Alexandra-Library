@@ -2,6 +2,8 @@ package com.alexandria_library.dso;
 
 import androidx.annotation.NonNull;
 
+import com.alexandria_library.dso.Book;
+
 import java.util.List;
 
 public interface IBook {

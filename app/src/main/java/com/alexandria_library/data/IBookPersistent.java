@@ -13,6 +13,7 @@ public interface IBookPersistent {
     public Booklist searchName(String bookName);
     public Booklist getBookList();
 
+    public Book getEachBooks(String require);
     /*****
      * those functions we are not using, because we will use on iterations 3
      */

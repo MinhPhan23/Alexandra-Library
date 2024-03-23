@@ -5,6 +5,7 @@ import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.dso.Reader;
 import com.alexandria_library.dso.User;
+import com.alexandria_library.logic.DefaultBooklist;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -95,50 +96,29 @@ public class UserPersistentStub implements IUserPersistent {
         /****
          * add all books to user1's all book list
          */
-        user1.addBookToAll(b1);
-        user1.addBookToAll(b2);
-        user1.addBookToAll(b3);
-        user1.addBookToAll(b4);
-        user1.addBookToAll(b5);
-        user1.addBookToAll(b6);
-        user1.addBookToAll(b7);
-        user1.addBookToAll(b8);
-        user1.addBookToFinished(b1);
-        user1.addBookToFinished(b2);
-        user1.addBookToFinished(b3);
-        user1.addBookToFinished(b4);
-        user1.addBookToFinished(b5);
-        user1.addBookToFinished(b6);
-        user1.addBookToFinished(b7);
-        user1.addBookToInProgress(b8);
-        user1.addBookToInProgress(b7);
-        user1.addBookToInProgress(b6);
-        user1.addBookToInProgress(b5);
-        user1.addBookToInProgress(b4);
-        user1.addBookToInProgress(b3);
-        user1.addBookToInProgress(b2);
+        DefaultBooklist defaultBooklist = new DefaultBooklist();
+        try {
+            Booklist booklist = new Booklist(Arrays.asList(b1, b2, b3, b4, b5, b6, b7, b8));
+            defaultBooklist.addBookToAll(user1, booklist);
 
+            booklist = new Booklist(Arrays.asList(b1, b2, b3, b4, b5, b6, b7));
+            defaultBooklist.addBookToFinished(user1,booklist);
 
+            booklist = new Booklist(Arrays.asList(b8, b7, b6, b5, b4, b3, b2));
+            defaultBooklist.addBookToInProgress(user1,booklist);
 
-        user2.addBookToAll(b1);
-        user2.addBookToAll(b2);
-        user2.addBookToAll(b3);
-        user2.addBookToAll(b4);
-        user2.addBookToAll(b5);
-        user2.addBookToAll(b6);
-        user2.addBookToAll(b7);
-        user2.addBookToAll(b8);
-        user2.addBookToFinished(b3);
-        user2.addBookToFinished(b4);
-        user2.addBookToFinished(b5);
-        user2.addBookToFinished(b6);
-        user2.addBookToFinished(b7);
-        user2.addBookToInProgress(b6);
-        user2.addBookToInProgress(b5);
-        user2.addBookToInProgress(b4);
-        user2.addBookToInProgress(b3);
-        user2.addBookToInProgress(b2);
+            booklist = new Booklist(Arrays.asList(b1, b2, b3, b4, b5, b6, b7, b8));
+            defaultBooklist.addBookToAll(user2, booklist);
 
+            booklist = new Booklist(Arrays.asList(b3, b4, b5, b6, b7));
+            defaultBooklist.addBookToFinished(user2,booklist);
+
+            booklist = new Booklist(Arrays.asList(b6, b5, b4, b3, b2));
+            defaultBooklist.addBookToInProgress(user2,booklist);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Something is wrong with creating stub data");
+        }
 
         /***
          * add users to user persistent

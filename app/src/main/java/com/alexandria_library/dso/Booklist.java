@@ -33,8 +33,8 @@ public class Booklist extends ArrayList<Book> implements IBooklist {
         }
     }
 
-    public void setDesc(String desc){
-        if(desc != null){
+    public void setDesc(String desc) {
+        if (desc != null) {
             this.desc = desc;
         }
     }

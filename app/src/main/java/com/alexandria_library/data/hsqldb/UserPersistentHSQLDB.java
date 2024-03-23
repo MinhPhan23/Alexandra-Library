@@ -1,8 +1,11 @@
 package com.alexandria_library.data.hsqldb;
 
+import com.alexandria_library.application.Service;
+import com.alexandria_library.data.IBookPersistent;
 import com.alexandria_library.data.IUserPersistent;
 import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
+import com.alexandria_library.dso.Librarian;
 import com.alexandria_library.dso.Reader;
 import com.alexandria_library.dso.User;
 
@@ -17,6 +20,8 @@ import java.util.List;
 
 public class UserPersistentHSQLDB implements IUserPersistent {
     private final String dbPath;
+
+    private static final IBookPersistent bookData = Service.getBookPersistent();
     private static int userID = 6; //start with 6 because group members are default \
     private static int librarianID = 6; //start with 6 because group members are default users
     private static int allListID = 1;
@@ -31,12 +36,98 @@ public class UserPersistentHSQLDB implements IUserPersistent {
         return DriverManager.getConnection("jdbc:hsqldb:file:" + dbPath + ";shutdown=true", "SA", "123");
     }
 
-    private User fromResultSet(final ResultSet rs) throws SQLException{
+    /**
+     * Create a new User DSO from the database result
+     * @param rs ResultSet object
+     * @param type type of user, 0 is Reader, 1 is Librarian
+     * @return user object
+     * @throws SQLException in case database error
+     */
+    private User fromResultSet(final ResultSet rs, String type) throws SQLException{
         final String userName = rs.getString("USER_NAME");
         final String password = rs.getString("PASSWORD");
         final int userID = rs.getInt("USER_ID");
 
-        return new User(userName, password, userID);
+        User user = null;
+        if (type.equalsIgnoreCase("reader")) {
+            user = new Reader(userName, password, userID);
+            getAllList((Reader) user);
+            getFinishedList((Reader) user);
+            getReadingList((Reader) user);
+        }
+        else if (type.equalsIgnoreCase("librarian")) {
+            user = new Librarian(userName, password, userID);
+        }
+        return user;
+    }
+
+    private void getAllList(Reader user) {
+        try(final Connection c = connection()){
+            String sql = "SELECT B.BOOK_NAME FROM BOOKS B " +
+                    "JOIN CUSTOMLIST CL ON B.BOOK_ID = CL.BOOK_ID " +
+                    "WHERE CL.USER_ID = ?";
+            PreparedStatement statement = c.prepareStatement(sql);
+            statement.setInt(1, user.getId());
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()){
+                String bookName = rs.getString("BOOK_NAME");
+                Book book = bookData.getEachBooks(bookName);
+                if (book!=null) {
+                    user.getAllBooksList().add(book);
+                }
+            }
+            rs.close();
+            statement.close();
+        }
+        catch (final SQLException e){
+            throw new PersistenceException(e);
+        }
+    }
+
+    private void getReadingList(Reader user) {
+        try(final Connection c = connection()){
+            String sql = "SELECT B.BOOK_NAME FROM BOOKS B " +
+                    "JOIN READINGLIST RD ON B.BOOK_ID = RD.BOOK_ID " +
+                    "WHERE RD.USER_ID = ?";
+            PreparedStatement statement = c.prepareStatement(sql);
+            statement.setInt(1, user.getId());
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()){
+                String bookName = rs.getString("BOOK_NAME");
+                Book book = bookData.getEachBooks(bookName);
+                if (book!=null) {
+                    user.getInProgressList().add(book);
+                }
+            }
+            rs.close();
+            statement.close();
+        }
+        catch (final SQLException e){
+            throw new PersistenceException(e);
+        }
+    }
+
+    private void getFinishedList(Reader user) {
+        try(final Connection c = connection()){
+            String sql = "SELECT B.BOOK_NAME FROM BOOKS B " +
+                    "JOIN FINISHEDLIST CL ON B.BOOK_ID = CL.BOOK_ID " +
+                    "WHERE CL.USER_ID = ?";
+            PreparedStatement statement = c.prepareStatement(sql);
+            statement.setInt(1, user.getId());
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()){
+                String bookName = rs.getString("BOOK_NAME");
+                Book book = bookData.getEachBooks(bookName);
+                if (book!=null) {
+                    user.getFinishedList().add(book);
+                }
+            }
+            rs.close();
+            statement.close();
+        }
+        catch (final SQLException e){
+            throw new PersistenceException(e);
+        }
     }
 
     public List<User> getUserSequential(){
@@ -45,7 +136,7 @@ public class UserPersistentHSQLDB implements IUserPersistent {
             final Statement statement = c.createStatement();
             final ResultSet rs = statement.executeQuery("SELECT * FROM USERS");
             while(rs.next()){
-                final User currentUser = fromResultSet(rs);
+                final User currentUser = fromResultSet(rs, "reader");
                 users.add(currentUser);
             }
             rs.close();
@@ -109,7 +200,7 @@ public class UserPersistentHSQLDB implements IUserPersistent {
 
             final ResultSet rs =statement.executeQuery();
             if(rs.next()){
-                found =fromResultSet(rs);
+                found =fromResultSet(rs, "reader");
             }
             rs.close();
             statement.close();
@@ -129,7 +220,7 @@ public class UserPersistentHSQLDB implements IUserPersistent {
 
             final ResultSet rs =statement.executeQuery();
             if(rs.next()){
-                found = fromResultSet(rs);
+                found = fromResultSet(rs, "reader");
             }
             rs.close();
             statement.close();
@@ -149,7 +240,7 @@ public class UserPersistentHSQLDB implements IUserPersistent {
 
             final ResultSet rs =statement.executeQuery();
             if(rs.next()){
-                found =fromResultSet(rs);
+                found =fromResultSet(rs, "librarian");
             }
             rs.close();
             statement.close();

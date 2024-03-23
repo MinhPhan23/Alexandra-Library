@@ -11,7 +11,7 @@ import com.alexandria_library.data.hsqldb.PersistenceException;
 import com.alexandria_library.data.hsqldb.UserPersistentHSQLDB;
 import com.alexandria_library.dso.User;
 import com.alexandria_library.logic.Authentication;
-import com.alexandria_library.logic.AuthenticationException;
+import com.alexandria_library.logic.Exception.AuthenticationException;
 import com.alexandria_library.tests.util.TestUtils;
 
 import org.junit.After;

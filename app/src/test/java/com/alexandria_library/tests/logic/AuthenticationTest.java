@@ -9,7 +9,7 @@ import com.alexandria_library.data.IUserPersistent;
 import com.alexandria_library.data.stub.UserPersistentStub;
 import com.alexandria_library.dso.User;
 import com.alexandria_library.logic.Authentication;
-import com.alexandria_library.logic.AuthenticationException;
+import com.alexandria_library.logic.Exception.AuthenticationException;
 
 import org.junit.Before;
 import org.junit.Test;

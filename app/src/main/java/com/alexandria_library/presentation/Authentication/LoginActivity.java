@@ -16,7 +16,7 @@ import com.alexandria_library.R;
 import com.alexandria_library.data.utils.HSQLDBHelper;
 import com.alexandria_library.dso.User;
 import com.alexandria_library.logic.Authentication;
-import com.alexandria_library.logic.AuthenticationException;
+import com.alexandria_library.logic.Exception.AuthenticationException;
 import com.alexandria_library.logic.IAuthentication;
 import com.alexandria_library.logic.SideBarService;
 import com.alexandria_library.presentation.MainActivity;

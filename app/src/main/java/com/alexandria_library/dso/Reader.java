@@ -1,17 +1,19 @@
 package com.alexandria_library.dso;
 
-import com.alexandria_library.dso.Booklist;
+import java.util.ArrayList;
 
-public class Reader extends User implements IReader{
+public class Reader extends User implements IReader {
     private Booklist allBooksList;
     private Booklist inProgressList;
     private Booklist finishedList;
+    private ArrayList<Booklist> customList;
 
     public Reader(String userName, String password, int id){
         super(userName, password, id);
         allBooksList = new Booklist();
         inProgressList = new Booklist();
         finishedList = new Booklist();
+        customList = new ArrayList<Booklist>();
     }
 
     /**
@@ -38,32 +40,7 @@ public class Reader extends User implements IReader{
         return finishedList;
     }
 
-
-    /**
-     * Adding a new book to the "All Books" list
-     * @param newBook a book to add to the list
-     * @return true if added
-     */
-    public boolean addBookToAll(Book newBook){
-        return allBooksList.add(newBook);
+    public ArrayList<Booklist> getAllCustomList() {
+        return customList;
     }
-
-    /**
-     * Adding a new book to the "In Progress" list
-     * @param newBook a book to add to the list
-     * @return true if added
-     */
-    public boolean addBookToInProgress(Book newBook){
-        return inProgressList.add(newBook);
-    }
-
-    /**
-     * Adding a new book to the "Finished" list
-     * @param newBook a book to add to the list
-     * @return true if added
-     */
-    public boolean addBookToFinished(Book newBook){
-        return finishedList.add(newBook);
-    }
-
 }

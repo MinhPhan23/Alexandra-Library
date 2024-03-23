@@ -1,6 +1,6 @@
 package com.alexandria_library.dso;
 
-public class User implements IUser{
+public class User implements IUser {
     private String userName;
     private String password;
     private int id;
@@ -31,6 +31,8 @@ public class User implements IUser{
      * Getter method for the user's id
      * @return id
      */
-    public int getId(){return id;}
+    public int getId(){
+        return id;
+    }
 
 }

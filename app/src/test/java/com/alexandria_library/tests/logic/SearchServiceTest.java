@@ -10,7 +10,7 @@ import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.logic.ISearchService;
 import com.alexandria_library.logic.SearchService;
-import com.alexandria_library.logic.SearchServiceException;
+import com.alexandria_library.logic.Exception.SearchServiceException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,9 +29,7 @@ public class SearchServiceTest {
     @Test
     public void testEmptySearch() {
         System.out.println("Test empty keywords String");
-        Exception exception = assertThrows(SearchServiceException.class, () -> {
-            searchService.searchInput("");
-        });
+        Exception exception = assertThrows(SearchServiceException.class, () -> searchService.searchInput(""));
 
         String expectedMessage = "Could not search for empty text";
         String actualMessage = exception.getMessage();
@@ -42,9 +40,7 @@ public class SearchServiceTest {
     @Test
     public void testNullSearch() {
         System.out.println("Test null String object");
-        Exception exception = assertThrows(SearchServiceException.class, () -> {
-            searchService.searchInput(null);
-        });
+        Exception exception = assertThrows(SearchServiceException.class, () -> searchService.searchInput(null));
         String expectedMessage = "Could not search for empty text";
         String actualMessage = exception.getMessage();
 

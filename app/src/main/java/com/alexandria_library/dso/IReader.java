@@ -1,8 +1,8 @@
 package com.alexandria_library.dso;
 
-import com.alexandria_library.dso.Booklist;
+import java.util.ArrayList;
 
-public interface IReader {
+public interface IReader extends IUser{
 
     /**
      * Getter method for the list of all reader's books
@@ -20,24 +20,9 @@ public interface IReader {
      */
     public Booklist getFinishedList();
 
-
     /**
-     * Adding a new book to the "All Books" list
-     * @param newBook a book to add to the list
-     * @return true if added
+     * Getter method for all custom lists
+     * @return All "custom" book list
      */
-    public boolean addBookToAll(Book newBook);
-    /**
-     * Adding a new book to the "In Progress" list
-     * @param newBook a book to add to the list
-     * @return true if added
-     */
-    public boolean addBookToInProgress(Book newBook);
-    /**
-     * Adding a new book to the "Finished" list
-     * @param newBook a book to add to the list
-     * @return true if added
-     */
-    public boolean addBookToFinished(Book newBook);
-
+    public ArrayList<Booklist> getAllCustomList();
 }

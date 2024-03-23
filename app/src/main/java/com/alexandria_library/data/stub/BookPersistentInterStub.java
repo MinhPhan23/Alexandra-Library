@@ -500,4 +500,9 @@ public class BookPersistentInterStub implements IBookPersistent {
     public Booklist getBookList(){
         return bookList;
     }
+
+    @Override
+    public Book getEachBooks(String require) {
+        return null;
+    }
 }
