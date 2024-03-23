@@ -26,8 +26,8 @@ public class BookListFilterTest {
     Book book5 = new Book(5, "The Hobbit", "J.R.R. Tolkien", "1937-09-21",
             Arrays.asList("fantasy", "adventure", "epic"), Arrays.asList("fiction", "fantasy"));
 
-    Book book6 = new Book(5, "The Hobbit", "J.R.R. Tolkien", "1937-09-21",
-            Arrays.asList("fantasy", "adventure", "epic"), Arrays.asList("funny", "haha"));
+    Book book6 = new Book(6, "bbaa", "fake", "1937-09-21",
+            Arrays.asList("classic","niu"), Arrays.asList("funny", "haha"));
 
 
     private BookListFilter bookListFilter;
@@ -87,8 +87,12 @@ public class BookListFilterTest {
     @Test
     public void testFilterByTag() {
         String[] tagsToFilter = {"romance", "classic"};
+        Booklist expectedList = new Booklist();
+        expectedList.add(book1);
+        expectedList.add(book4);
+        expectedList.add(book6);
         Booklist filteredList = bookListFilter.filterByTag(sampleBookList, tagsToFilter);
-        Booklist expectedList = new Booklist(Arrays.asList(book1, book4));
+        assertTrue(filteredList.size() == 3);
         assertEquals(expectedList, filteredList);
     }
 
