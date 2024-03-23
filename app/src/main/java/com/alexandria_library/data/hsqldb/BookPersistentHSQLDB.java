@@ -584,31 +584,40 @@ public class BookPersistentHSQLDB implements IBookPersistent {
     }
 
     private Booklist collapseDuplicates(Booklist list){
-        Booklist newList = null;
-        if(list.size() != 0) {
-            newList = new Booklist();
-            Book currBook = list.get(0);
-            newList.add(currBook);
-            int currID = list.get(0).getID();
-            ArrayList<String> tags = new ArrayList();
-            ArrayList<String> genres = new ArrayList();
-            for (int i = 0; i < list.size(); i++) {
-                if (list.get(i).getID() == currID) {
-                    if(!tags.contains(list.get(i).getTags().get(0)))
-                        tags.add(list.get(i).getTags().get(0));
-                    if(!genres.contains(list.get(i).getGenres().get(0)))
-                        genres.add(list.get(i).getGenres().get(0));
-                } else {
-                    currBook.setTags(tags);
-                    currBook.setGenres(genres);
-                    newList.add(currBook);
-                    currID = list.get(i).getID();
-                    currBook = list.get(i);
-                    tags = new ArrayList<>();
-                    genres = new ArrayList<>();
+        Booklist newList = new Booklist();
+        if(list.size() == 0) {
+            return newList;
+        }
+        Book currBook = list.get(0).clone();
+        int currID = currBook.getID();
+        ArrayList<String> tags = new ArrayList<>(currBook.getTags());
+        ArrayList<String> genres = new ArrayList<>(currBook.getGenres());
+        for (int i = 1; i < list.size(); i++) {
+            Book book = list.get(i);
+            if (book.getID() == currID) {
+                for(String tag : book.getTags()) {
+                    if(!tags.contains(tag)) tags.add(tag);
                 }
+                for(String genre : book.getGenres()) {
+                    if(!genres.contains(genre)) genres.add(genre);
+                }
+
+            } else {
+                currBook.setTags(new ArrayList<>(tags));
+                currBook.setGenres(new ArrayList<>(genres));
+                newList.add(currBook);
+
+                currBook = book.clone();
+                currID = book.getID();
+                tags = new ArrayList<>(book.getTags());
+                genres = new ArrayList<>(book.getGenres());
             }
         }
+
+        currBook.setTags(new ArrayList<>(tags));
+        currBook.setGenres(new ArrayList<>(genres));
+        newList.add(currBook);
+
         return newList;
     }
 
