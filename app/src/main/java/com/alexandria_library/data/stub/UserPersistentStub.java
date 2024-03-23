@@ -41,6 +41,11 @@ public class UserPersistentStub implements IUserPersistent {
         Reader libr4 = new Reader("Carlo", "123456", 4);
         Reader libr5 = new Reader("alina", "123456", 5);
         librarianID = 6;
+        librarianList.add(libr1);
+        librarianList.add(libr2);
+        librarianList.add(libr3);
+        librarianList.add(libr4);
+        librarianList.add(libr5);
 
         /****
          * add temperature books to some users

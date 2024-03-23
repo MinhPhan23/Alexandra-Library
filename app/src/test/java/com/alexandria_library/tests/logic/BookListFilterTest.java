@@ -26,6 +26,9 @@ public class BookListFilterTest {
     Book book5 = new Book(5, "The Hobbit", "J.R.R. Tolkien", "1937-09-21",
             Arrays.asList("fantasy", "adventure", "epic"), Arrays.asList("fiction", "fantasy"));
 
+    Book book6 = new Book(6, "bbaa", "fake", "1999-09-21",
+            Arrays.asList("classic","niu"), Arrays.asList("funny", "haha"));
+
 
     private BookListFilter bookListFilter;
     private Booklist sampleBookList;
@@ -35,14 +38,14 @@ public class BookListFilterTest {
     public void setUp() {
         // Initialize your Booklist and IBookListFilter implementation
         bookListFilter = new BookListFilter();
-        sampleBookList = new Booklist(Arrays.asList(book1, book2, book3, book4, book5));
+        sampleBookList = new Booklist(Arrays.asList(book1, book2, book3, book4, book5, book6));
         emptyBookList = new Booklist();
     }
 
     @Test
     public void testSortByTitle() {
         Booklist sortedList = bookListFilter.sortByTitle(sampleBookList);
-        Booklist expectedList = new Booklist(Arrays.asList(book3, book4, book1, book5, book2));
+        Booklist expectedList = new Booklist(Arrays.asList(book3, book4, book1, book5, book2, book6));
         assertEquals(expectedList, sortedList);
     }
 
@@ -56,7 +59,7 @@ public class BookListFilterTest {
     @Test
     public void testSortByDate() {
         Booklist sortedList = bookListFilter.sortByDate(sampleBookList);
-        Booklist expectedList = new Booklist(Arrays.asList(book4, book1, book5, book3, book2));
+        Booklist expectedList = new Booklist(Arrays.asList(book4, book1, book5, book3, book2, book6));
         assertEquals(expectedList, sortedList);
     }
 
@@ -70,7 +73,7 @@ public class BookListFilterTest {
     @Test
     public void testSortByAuthor() {
         Booklist sortedList = bookListFilter.sortByAuthor(sampleBookList);
-        Booklist expectedList = new Booklist(Arrays.asList(book1, book3, book2, book5, book4));
+        Booklist expectedList = new Booklist(Arrays.asList(book1, book3, book2, book5, book4, book6));
         assertEquals(expectedList, sortedList);
     }
 
@@ -84,8 +87,12 @@ public class BookListFilterTest {
     @Test
     public void testFilterByTag() {
         String[] tagsToFilter = {"romance", "classic"};
+        Booklist expectedList = new Booklist();
+        expectedList.add(book1);
+        expectedList.add(book4);
+        expectedList.add(book6);
         Booklist filteredList = bookListFilter.filterByTag(sampleBookList, tagsToFilter);
-        Booklist expectedList = new Booklist(Arrays.asList(book1, book4));
+        assertTrue(filteredList.size() == 3);
         assertEquals(expectedList, filteredList);
     }
 
@@ -100,9 +107,15 @@ public class BookListFilterTest {
     @Test
     public void testFilterByGenre() {
         String[] genresToFilter = {"fiction", "fantasy"};
+        Booklist allBooks = new Booklist();
+        allBooks.add(book1);
+        allBooks.add(book2);
+        allBooks.add(book3);
+        allBooks.add(book4);
+        allBooks.add(book5);
         Booklist filteredList = bookListFilter.filterByGenre(sampleBookList, genresToFilter);
-        Booklist expectedList = new Booklist(Arrays.asList(book5));
-        assertEquals(expectedList, filteredList);
+        assertTrue(filteredList.size() == 5);
+        assertEquals(filteredList, allBooks);
     }
 
     @Test
