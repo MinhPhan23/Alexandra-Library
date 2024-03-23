@@ -189,6 +189,24 @@ public class MainActivity extends AppCompatActivity{
                     toggleFilterGone();
                 }
             });
+
+            listTextButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(allListBtn.getVisibility() == View.GONE
+                            && finishedBtn.getVisibility() == View.GONE
+                            && inProgressBtn.getVisibility() == View.GONE) {
+                        allListBtn.setVisibility(View.VISIBLE);
+                        finishedBtn.setVisibility(View.VISIBLE);
+                        inProgressBtn.setVisibility(View.VISIBLE);
+                    }
+                    else{
+                        allListBtn.setVisibility(View.GONE);
+                        finishedBtn.setVisibility(View.GONE);
+                        inProgressBtn.setVisibility(View.GONE);
+                    }
+                }
+            });
         }
 
         bookDistributor();
