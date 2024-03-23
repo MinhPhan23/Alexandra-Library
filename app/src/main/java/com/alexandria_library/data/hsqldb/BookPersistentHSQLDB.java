@@ -588,6 +588,7 @@ public class BookPersistentHSQLDB implements IBookPersistent {
         if(list.size() != 0) {
             newList = new Booklist();
             Book currBook = list.get(0);
+            newList.add(currBook);
             int currID = list.get(0).getID();
             ArrayList<String> tags = new ArrayList();
             ArrayList<String> genres = new ArrayList();
