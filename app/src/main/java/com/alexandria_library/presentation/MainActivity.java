@@ -51,15 +51,10 @@ public class MainActivity extends AppCompatActivity{
 
     private Booklist searchList;
     private boolean grid = true;
-    private AllBookListAdapter allBookAdapter;
-    private FinishedBookAdapter finishedBookAdapter;
-    private InProgressBookAdapter inProgressBookAdapter;
-    private LibraryBookListAdapter libraryBookListAdapter;
     private SearchListAdapter searchListAdapter;
     private AllTagsListAdapter tagsAdapter;
     private AllGenresListAdapter genresAdapter;
     private FilterBookAdapter filterBookAdapter;
-    private SideBarService sideBarService;
     private ISearchService searchService;
     private IBookListFilter bookListFilter;
     private IBookPersistent bookPersistent;
@@ -82,19 +77,15 @@ public class MainActivity extends AppCompatActivity{
 
     private boolean library, all, inProgress,finish, filterOpen;
     private Booklist allLibraryBooks;
-    private Booklist filterBooks;
     private ArrayList<String> tagsClicked;
     private ArrayList<String> genresClicked;
 
     private void initializer(){
         bookPersistent = Service.getBookPersistent();
         allLibraryBooks = bookPersistent.getBookList();
-        filterBooks = new Booklist();
         library = true; all = false; inProgress = false; finish = false; filterOpen = false;
         searchList = new Booklist();
         searchService = new SearchService();
-
-        sideBarService = LoginActivity.getSideBarService();
         bookListFilter = new BookListFilter();
         tagsClicked = new ArrayList<>();
         genresClicked = new ArrayList<>();
@@ -116,14 +107,88 @@ public class MainActivity extends AppCompatActivity{
 
         find();
 
-        if(librarianMode){//hides elements when in librarian or user mode
+        if (librarianMode) {//hides elements when in librarian or user mode
+
             allListBtn.setVisibility(View.INVISIBLE);
             inProgressBtn.setVisibility(View.INVISIBLE);
             finishedBtn.setVisibility(View.INVISIBLE);
             listTextButton.setVisibility(View.INVISIBLE);
+
+            /////////////////////LIBRARIAN MODE UI////////////////////////
+
+            /*****
+             * sends the book info for creation
+             */
+            addBookCreateBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    createBook();
+                }
+            });
+
+            /*****
+             * closes the add book menu
+             */
+            addBookCancelBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    closeAddBook();
+                }
+            });
         }
-        else{
+
+        //For reader's UI
+        else {
             librarianAddBtn.setVisibility(View.INVISIBLE);
+
+            /////////////////////READER MODE UI////////////////////////
+            /*****
+             * allListBtn on click
+             */
+            allListBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    library = false;
+                    all = true;
+                    inProgress = false;
+                    finish = false;
+                    bookDistributor();
+                    toggleSearchResultGone();
+                    toggleFilterGone();
+                }
+            });
+
+            /*****
+             * inProgressBtn on click
+             */
+            inProgressBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    library = false;
+                    all = false;
+                    inProgress = true;
+                    finish = false;
+                    bookDistributor();
+                    toggleSearchResultGone();
+                    toggleFilterGone();
+                }
+            });
+
+            /*****
+             * finishedBtn on click
+             */
+            finishedBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    library = false;
+                    all = false;
+                    inProgress = false;
+                    finish = true;
+                    bookDistributor();
+                    toggleSearchResultGone();
+                    toggleFilterGone();
+                }
+            });
         }
 
         bookDistributor();
@@ -138,52 +203,13 @@ public class MainActivity extends AppCompatActivity{
         rootView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     //check where is the touch position
-                    if(!isViewInBounds(recyclerView, (int)event.getRawX(), (int)event.getRawY())){
+                    if (!isViewInBounds(recyclerView, (int) event.getRawX(), (int) event.getRawY())) {
                         toggleSearchResultGone();
                     }
                 }
                 return false;
-            }
-        });
-
-        /*****
-         * allListBtn on click
-         */
-        allListBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                library = false; all = true; inProgress = false; finish = false;
-                bookDistributor();
-                toggleSearchResultGone();
-                toggleFilterGone();
-            }
-        });
-
-        /*****
-         * inProgressBtn on click
-         */
-        inProgressBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                library = false; all = false; inProgress = true; finish = false;
-                bookDistributor();
-                toggleSearchResultGone();
-                toggleFilterGone();
-            }
-        });
-
-        /*****
-         * finishedBtn on click
-         */
-        finishedBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                library = false; all = false; inProgress = false; finish = true;
-                bookDistributor();
-                toggleSearchResultGone();
-                toggleFilterGone();
             }
         });
 
@@ -193,7 +219,10 @@ public class MainActivity extends AppCompatActivity{
         libraryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                library = true; all = false; inProgress = false; finish = false;
+                library = true;
+                all = false;
+                inProgress = false;
+                finish = false;
                 bookDistributor();
                 toggleSearchResultGone();
                 toggleFilterGone();
@@ -234,11 +263,10 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View v) {
 
                 TransitionManager.beginDelayedTransition((ViewGroup) expandable.getParent());
-                if(expandable.getVisibility() == View.GONE){
+                if (expandable.getVisibility() == View.GONE) {
                     //from gone to visibility
                     expandable.setVisibility(View.VISIBLE);
-                }
-                else{
+                } else {
                     //from visibility to gone
                     expandable.setVisibility(View.GONE);
                 }
@@ -262,19 +290,18 @@ public class MainActivity extends AppCompatActivity{
 
             @Override
             public void afterTextChanged(Editable s) {
-                try{
+                try {
                     //get search bar input when search bar changed
                     String input = s.toString();
                     searchList = searchService.searchInput(input);
-                    if(searchList.size() == 0){
+                    if (searchList.size() == 0) {
                         toggleSearchResultGone();
-                    }
-                    else{
+                    } else {
                         toggleSearchResultVisible();
                         SearchBar();
                     }
 
-                }catch(SearchServiceException searchException){
+                } catch (SearchServiceException searchException) {
                     searchException.printStackTrace();
                 }
             }
@@ -286,10 +313,9 @@ public class MainActivity extends AppCompatActivity{
         searchInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus && searchList.size() > 0){
+                if (hasFocus && searchList.size() > 0) {
                     toggleSearchResultVisible();
-                }
-                else{
+                } else {
                     toggleSearchResultGone();
                 }
                 toggleFilterGone();
@@ -328,42 +354,19 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View v) {
                 if (filterOpen) {
                     toggleFilterGone();
-                }
-                else{
+                } else {
                     toggleFilterVisible();
                 }
             }
         });
-
-        /////////////////////LIBRARIAN MODE UI////////////////////////
 
         /*****
          * opens the add book menu
          */
         librarianAddBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 addBookMenu.setVisibility(View.VISIBLE);
-            }
-        });
-
-        /*****
-         * sends the book info for creation
-         */
-        addBookCreateBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createBook();
-            }
-        });
-
-        /*****
-         * closes the add book menu
-         */
-        addBookCancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                closeAddBook();
             }
         });
     }
@@ -386,6 +389,7 @@ public class MainActivity extends AppCompatActivity{
             LibraryBookCategory();
         }
     }
+
 
     private void find(){
         //Getting root view ID
@@ -411,7 +415,7 @@ public class MainActivity extends AppCompatActivity{
 
         //go to Authentication page
         account = findViewById(R.id.account);
-        
+
         expandable = findViewById(R.id.frameLayout);
 
         //Getting Search Bar input immediately
@@ -459,7 +463,6 @@ public class MainActivity extends AppCompatActivity{
 
         //button to close the add book menu
         addBookCancelBtn = findViewById(R.id.add_book_cancel_btn);
-
     }
 
     private void SearchBar(){

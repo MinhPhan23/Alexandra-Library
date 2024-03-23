@@ -365,7 +365,8 @@ public class BookPersistentHSQLDB implements IBookPersistent {
         }
         catch (final SQLException e){
             throw new PersistenceException(e);
-        }}
+        }
+    }
 
     @Override
     public Booklist getBookList(){
