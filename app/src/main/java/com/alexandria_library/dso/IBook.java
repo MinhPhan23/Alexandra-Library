@@ -37,4 +37,5 @@ public interface IBook {
     @NonNull
     public String toString();
 
+    public Book clone();
 }

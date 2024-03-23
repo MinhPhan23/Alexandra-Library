@@ -25,6 +25,10 @@ public class Book implements IBook {
         genres = bookGenres;
     }
 
+    @Override
+    public Book clone(){
+        return new Book(this.id, this.name, this.author, this.date, this.tags, this.genres);
+    }
     public int getID() {
         return id;
     }
@@ -82,6 +86,8 @@ public class Book implements IBook {
                 Objects.equals(this.tags, book.getTags()) &&
                 Objects.equals(this.genres, book.getGenres());
     }
+
+
 
     @NonNull
     @Override
