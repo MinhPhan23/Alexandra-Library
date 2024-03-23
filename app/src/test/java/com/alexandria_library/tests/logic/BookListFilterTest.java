@@ -26,7 +26,7 @@ public class BookListFilterTest {
     Book book5 = new Book(5, "The Hobbit", "J.R.R. Tolkien", "1937-09-21",
             Arrays.asList("fantasy", "adventure", "epic"), Arrays.asList("fiction", "fantasy"));
 
-    Book book6 = new Book(6, "bbaa", "fake", "1937-09-21",
+    Book book6 = new Book(6, "bbaa", "fake", "1999-09-21",
             Arrays.asList("classic","niu"), Arrays.asList("funny", "haha"));
 
 
