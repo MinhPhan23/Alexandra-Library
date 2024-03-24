@@ -59,8 +59,7 @@ public class BookPersistentHSQLDB implements IBookPersistent {
         return book;
     }
 
-    @Override
-    public int checkCredentials(User user){
+    private int checkCredentials(User user){
         return 0;
     }
 

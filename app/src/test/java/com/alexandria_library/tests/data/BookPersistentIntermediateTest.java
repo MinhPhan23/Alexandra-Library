@@ -298,18 +298,6 @@ public class BookPersistentIntermediateTest {
         book4 = book;
         book4.setID(4);
     }
-
-    @Test
-    public void checkCredentialsTest1(){
-        System.out.println("Testing checkCredentials(User)");
-        assertEquals(1, database.checkCredentials(null));
-    }
-
-    @Test
-    public void checkCredentialsTest2(){
-        System.out.println("Testing checkCredentials(User)");
-        assertEquals(0, database.checkCredentials(librarian));
-    }
     @Test
     public void uploadTest(){
         System.out.println("Testing upload(Book, User)");
