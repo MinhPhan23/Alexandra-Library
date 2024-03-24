@@ -308,21 +308,6 @@ public class BookPersistentInterStub implements IBookPersistent {
         return null;
     }
 
-    @Override
-    public Booklist getUserCustomList(User user) {
-        return null;
-    }
-
-    @Override
-    public Booklist getUserInProgressList(User user) {
-        return null;
-    }
-
-    @Override
-    public Booklist getUserFinishedList(User user) {
-        return null;
-    }
-
     public int update(Book book, User user){
         int status = 1;
         if(checkBook(book) == 0) {
