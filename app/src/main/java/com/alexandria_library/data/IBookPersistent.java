@@ -26,9 +26,4 @@ public interface IBookPersistent {
     //START searching book
     public Booklist searchTag(String tagName);
     public Booklist searchGenre (String genreName);
-
-    //START finding book
-    public Booklist getUserCustomList(User user);
-    public Booklist getUserInProgressList(User user);
-    public Booklist getUserFinishedList(User user);
 }
