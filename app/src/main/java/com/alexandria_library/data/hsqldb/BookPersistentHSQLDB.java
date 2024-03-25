@@ -84,7 +84,7 @@ public class BookPersistentHSQLDB implements IBookPersistent {
         try(final Connection c = connection()){
             PreparedStatement statement = c.prepareStatement(insert);
 
-            statement.setInt(1, bookID);
+            statement.setInt(1, newBook.getID());
             statement.setString(2, newBook.getName());
             statement.setString(3, newBook.getAuthor());
             statement.setString(4, newBook.getDate());
@@ -100,10 +100,10 @@ public class BookPersistentHSQLDB implements IBookPersistent {
                 int findTagID = duplicateTag(currentTag);
                 if(findTagID < 0){
                     int newTagID = addTag(currentTag);
-                    addBookTagRelation(bookID, newTagID);
+                    addBookTagRelation(newBook.getID(), newTagID);
                 }
                 else{
-                    addBookTagRelation(bookID, findTagID);
+                    addBookTagRelation(newBook.getID(), findTagID);
                 }
             }
             // adding new genre or make new relation with genre and book
@@ -112,13 +112,12 @@ public class BookPersistentHSQLDB implements IBookPersistent {
                 int findGenreID = duplicateGenre(currentGenre);
                 if(findGenreID < 0){
                     int newGenreID = addGenre(currentGenre);
-                    addBookGenreRelation(bookID, newGenreID);
+                    addBookGenreRelation(newBook.getID(), newGenreID);
                 }
                 else{
-                    addBookGenreRelation(bookID, findGenreID);
+                    addBookGenreRelation(newBook.getID(), findGenreID);
                 }
             }
-            bookID++;
             statement.close();
         }
     }

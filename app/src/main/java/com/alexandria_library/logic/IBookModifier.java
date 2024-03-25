@@ -11,6 +11,6 @@ import java.util.ArrayList;
 public interface IBookModifier {
 
     public void sendImageToDB(Context context, Uri imageUri);
-    public boolean uploadBook(IUser user, String bookName, String author, String date,
+    public boolean uploadBook(IUser user, int id, String bookName, String author, String date,
                               ArrayList<String> tags, ArrayList<String> genres);
 }

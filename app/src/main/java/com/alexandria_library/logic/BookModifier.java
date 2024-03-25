@@ -55,14 +55,14 @@ public class BookModifier implements IBookModifier{
 
 
     @Override
-    public boolean uploadBook(IUser user, String bookName, String author, String date,
+    public boolean uploadBook(IUser user, int id, String bookName, String author, String date,
                               ArrayList<String> tags, ArrayList<String> genres){
 
         boolean succeed = false;
         Book newBook = null;
         if(bookName != null && author != null && date != null){
             if(!tags.isEmpty() && !genres.isEmpty()){
-                newBook = new Book(0, bookName, author, date, tags, genres);
+                newBook = new Book(id, bookName, author, date, tags, genres);
                 succeed = bookPersistent.upload(newBook, user);
             }
         }

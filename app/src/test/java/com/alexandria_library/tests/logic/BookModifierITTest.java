@@ -25,10 +25,11 @@ public class BookModifierITTest {
     private IUser librarian;
     private File tempDB;
 
+    private IBookPersistent persistent;
     @Before
     public void setUp() throws IOException {
         this.tempDB = TestUtils.copyDB();
-        final IBookPersistent persistent = new BookPersistentHSQLDB(this.tempDB.getAbsolutePath().replace(".script", ""));
+        persistent = new BookPersistentHSQLDB(this.tempDB.getAbsolutePath().replace(".script", "")) ;
         libraryBooks = persistent.getBookList();
         this.bookModifier = new BookModifier();
         this.librarian = new Librarian("xxxx", "123", 20);
@@ -46,7 +47,15 @@ public class BookModifierITTest {
         newGenres.add("newGenre1");
         newGenres.add("newGenre2");
 
-        boolean shouldBeTrue = bookModifier.uploadBook(librarian, uniqueBookName, uniqueAuthorName, date, newTags, newGenres);
+        boolean shouldBeTrue = bookModifier.uploadBook(librarian, libraryBooks.size()+1, uniqueBookName, uniqueAuthorName, date, newTags, newGenres);
         assertTrue(shouldBeTrue);
+        libraryBooks = persistent.getBookList();
+        boolean checkExits = false;
+        for (int i = 0; i<libraryBooks.size(); i++){
+            if(libraryBooks.get(i).getName().equals(uniqueBookName)){
+                checkExits = true;
+            }
+        }
+        assertTrue(checkExits);
     }
 }

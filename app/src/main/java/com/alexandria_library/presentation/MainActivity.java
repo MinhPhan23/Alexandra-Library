@@ -726,13 +726,13 @@ public class MainActivity extends AppCompatActivity{
     private void createBook(){
         String name = addBookName.getText().toString();
         String author = addBookAuthor.getText().toString();
-        List<String> tags = Arrays.asList(addBookTags.getText().toString().split(","));
-        List<String> genres = Arrays.asList(addBookGenres.getText().toString().split(","));
+        ArrayList<String> tags = new ArrayList<>(Arrays.asList(addBookTags.getText().toString().split(",")));
+        ArrayList<String> genres = new ArrayList<>(Arrays.asList(addBookGenres.getText().toString().split(",")));
         String date = addBookDate.getText().toString();
         Log.e("xiang", name+" " + author +" "+ date + tags.toString() +" "+genres.toString());
         //Book newBook = new Book(-1, name, author, date, tags, genres);
-        boolean succeed = bookModifier.uploadBook(currentUser, name, author, date,
-                (ArrayList<String>) tags, (ArrayList<String>) genres);
+        boolean succeed = bookModifier.uploadBook(currentUser, allLibraryBooks.size()+1, name, author, date, tags,  genres);
+        allLibraryBooks = bookPersistent.getBookList();
 
     }
 
