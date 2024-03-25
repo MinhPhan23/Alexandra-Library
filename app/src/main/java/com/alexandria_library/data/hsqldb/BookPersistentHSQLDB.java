@@ -19,7 +19,7 @@ public class BookPersistentHSQLDB implements IBookPersistent {
     private final String dbPath;
     private static int bookID = 6;
     private static int tagID = 14;
-    private static int genreID = 10;
+    private static int genreID = 13;
     private static int bookTagID = 14;
     private static int bookGenreID = 20;
 
