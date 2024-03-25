@@ -31,7 +31,7 @@ public class BookModifierITTest {
         this.tempDB = TestUtils.copyDB();
         persistent = new BookPersistentHSQLDB(this.tempDB.getAbsolutePath().replace(".script", "")) ;
         libraryBooks = persistent.getBookList();
-        this.bookModifier = new BookModifier();
+        this.bookModifier = new BookModifier(persistent);
         this.librarian = new Librarian("xxxx", "123", 20);
     }
 

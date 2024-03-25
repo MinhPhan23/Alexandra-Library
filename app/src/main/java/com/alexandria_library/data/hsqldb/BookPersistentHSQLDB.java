@@ -118,6 +118,7 @@ public class BookPersistentHSQLDB implements IBookPersistent {
                     addBookGenreRelation(newBook.getID(), findGenreID);
                 }
             }
+            bookID++;
             statement.close();
         }
     }

@@ -23,7 +23,7 @@ public class BookModifier implements IBookModifier{
     public BookModifier(){
         bookPersistent = Service.getBookPersistent();
     }
-
+    public BookModifier(IBookPersistent persistent){this.bookPersistent = persistent;}
     @Override
     public void sendImageToDB(Context context, Uri imageUri){
         try{
