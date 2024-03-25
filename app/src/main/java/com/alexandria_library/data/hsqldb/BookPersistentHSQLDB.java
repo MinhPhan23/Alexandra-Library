@@ -16,11 +16,11 @@ import java.util.List;
 public class BookPersistentHSQLDB implements IBookPersistent {
 
     private final String dbPath;
-    private static int bookID = 1;
-    private static int tagID = 1;
-    private static int genreID = 1;
-    private static int bookTagID = 1;
-    private static int bookGenreID = 1;
+    private static int bookID = 6;
+    private static int tagID = 14;
+    private static int genreID = 10;
+    private static int bookTagID = 14;
+    private static int bookGenreID = 20;
 
     public BookPersistentHSQLDB(final String dbPath){this.dbPath = dbPath;}
 
