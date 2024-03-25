@@ -729,11 +729,8 @@ public class MainActivity extends AppCompatActivity{
         ArrayList<String> tags = new ArrayList<>(Arrays.asList(addBookTags.getText().toString().split(",")));
         ArrayList<String> genres = new ArrayList<>(Arrays.asList(addBookGenres.getText().toString().split(",")));
         String date = addBookDate.getText().toString();
-        Log.e("xiang", name+" " + author +" "+ date + tags.toString() +" "+genres.toString());
-        //Book newBook = new Book(-1, name, author, date, tags, genres);
         boolean succeed = bookModifier.uploadBook(currentUser, allLibraryBooks.size()+1, name, author, date, tags,  genres);
         allLibraryBooks = bookPersistent.getBookList();
-
     }
 
     private void closeAddBook(){

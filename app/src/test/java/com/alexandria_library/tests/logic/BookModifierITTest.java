@@ -15,11 +15,13 @@ import com.alexandria_library.logic.IBookModifier;
 import com.alexandria_library.tests.util.TestUtils;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class BookModifierITTest {
     private IBookModifier bookModifier;
@@ -73,6 +75,84 @@ public class BookModifierITTest {
         boolean shouldBeTrue = bookModifier.uploadBook(librarian, libraryBooks.size()+1, name, author, date, newTags, newGenres);
         assertTrue(shouldBeTrue);
         libraryBooks = persistent.getBookList();
+        boolean checkExits = false;
+        Book comparable = new Book(6, name, author, date, newTags, newGenres);
+        for (int i = 0; i<libraryBooks.size(); i++){
+            if(libraryBooks.get(i).noOrderEquals(comparable)){
+                checkExits = true;
+            }
+        }
+        assertTrue(checkExits);
+    }
+
+    @Test
+    public void TestAddNewBookWithExistingTag(){
+        String existingTag = "LGBT";
+        String name = "testing";
+        String author = "Andrei";
+        String date = "2024-06-26";
+        ArrayList<String> newTags = new ArrayList<>();
+        ArrayList<String> newGenres = new ArrayList<>();
+        newTags.add(existingTag);
+        newGenres.add("Genres2");
+        boolean shouldBeTrue = bookModifier.uploadBook(librarian, libraryBooks.size()+1, name, author, date, newTags, newGenres);
+        assertTrue(shouldBeTrue);
+        libraryBooks = persistent.getBookList();
+        ArrayList<String> getAllTags = persistent.getAllTags();
+        assertEquals(getAllTags.size(), 13);
+        boolean checkExits = false;
+        Book comparable = new Book(6, name, author, date, newTags, newGenres);
+        for (int i = 0; i<libraryBooks.size(); i++){
+            if(libraryBooks.get(i).noOrderEquals(comparable)){
+                checkExits = true;
+            }
+        }
+        assertTrue(checkExits);
+    }
+
+    @Test
+    public void TestAddNewBookWithExistingGenre(){
+        String existingGenre = "War";
+        String name = "existingGenre";
+        String author = "Andrei";
+        String date = "2024-06-26";
+        ArrayList<String> newTags = new ArrayList<>();
+        ArrayList<String> newGenres = new ArrayList<>();
+        newTags.add("XXXX");
+        newGenres.add(existingGenre);
+        boolean shouldBeTrue = bookModifier.uploadBook(librarian, libraryBooks.size()+1, name, author, date, newTags, newGenres);
+        assertTrue(shouldBeTrue);
+        libraryBooks = persistent.getBookList();
+        ArrayList<String> getAllGenre = persistent.getAllGenres();
+        assertEquals(getAllGenre.size(), 12);
+        boolean checkExits = false;
+        Book comparable = new Book(6, name, author, date, newTags, newGenres);
+        for (int i = 0; i<libraryBooks.size(); i++){
+            if(libraryBooks.get(i).noOrderEquals(comparable)){
+                checkExits = true;
+            }
+        }
+        assertTrue(checkExits);
+    }
+
+    @Test
+    public void TestAddNewBookWithExistingGenreAndTag(){
+        String existingGenre = "Action";
+        String existingTag = "Adult";
+        String name = "existingBothGenreAndTag";
+        String author = "Andrei";
+        String date = "2024-06-26";
+        ArrayList<String> newTags = new ArrayList<>();
+        ArrayList<String> newGenres = new ArrayList<>();
+        newTags.add(existingTag);
+        newGenres.add(existingGenre);
+        boolean shouldBeTrue = bookModifier.uploadBook(librarian, libraryBooks.size()+1, name, author, date, newTags, newGenres);
+        assertTrue(shouldBeTrue);
+        libraryBooks = persistent.getBookList();
+        ArrayList<String> getAllTag = persistent.getAllTags();
+        ArrayList<String> getAllGenre = persistent.getAllGenres();
+        assertEquals(getAllTag.size(), 13);
+        assertEquals(getAllGenre.size(), 12);
         boolean checkExits = false;
         Book comparable = new Book(6, name, author, date, newTags, newGenres);
         for (int i = 0; i<libraryBooks.size(); i++){

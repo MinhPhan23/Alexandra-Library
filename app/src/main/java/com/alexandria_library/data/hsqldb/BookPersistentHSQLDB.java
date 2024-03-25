@@ -129,12 +129,12 @@ public class BookPersistentHSQLDB implements IBookPersistent {
 
     private int addTag(String tagName) throws SQLException {
         String insertTag = "INSERT INTO TAGS (TAG_NAME, TAG_ID) VALUES (?, ?)";
-        int result = tagID;
+        int result = getAllTags().size()+1;
         try(final Connection c = connection()){
             PreparedStatement statement = c.prepareStatement(insertTag);
 
             statement.setString(1, tagName);
-            statement.setInt(2, tagID);
+            statement.setInt(2, result);
             int success = statement.executeUpdate();
             if(success == 0){
                 throw new SQLException ("@BookPersistenceHSQLDB.java addTag unsuccessful");
@@ -147,12 +147,12 @@ public class BookPersistentHSQLDB implements IBookPersistent {
 
     private int addGenre(String genreName) throws SQLException{
         String insertGenre = "INSERT INTO GENRES (GENRE_NAME, GENRE_ID) VALUES (?, ?)";
-        int result = genreID;
+        int result = getAllGenres().size()+1;
         try(final Connection c = connection()){
             PreparedStatement statement = c.prepareStatement(insertGenre);
 
             statement.setString(1, genreName);
-            statement.setInt(2, genreID);
+            statement.setInt(2, result);
             int success = statement.executeUpdate();
             if(success == 0){
                 throw new SQLException ("@BookPersistenceHSQLDB.java addGenre unsuccessful");
