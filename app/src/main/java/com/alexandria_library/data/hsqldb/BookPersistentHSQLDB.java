@@ -3,6 +3,7 @@ package com.alexandria_library.data.hsqldb;
 import com.alexandria_library.data.IBookPersistent;
 import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
+import com.alexandria_library.dso.IUser;
 import com.alexandria_library.dso.User;
 
 import java.sql.Connection;
@@ -16,11 +17,11 @@ import java.util.List;
 public class BookPersistentHSQLDB implements IBookPersistent {
 
     private final String dbPath;
-    private static int bookID = 1;
-    private static int tagID = 1;
-    private static int genreID = 1;
-    private static int bookTagID = 1;
-    private static int bookGenreID = 1;
+    private static int bookID = 6;
+    private static int tagID = 14;
+    private static int genreID = 13;
+    private static int bookTagID = 14;
+    private static int bookGenreID = 20;
 
     public BookPersistentHSQLDB(final String dbPath){this.dbPath = dbPath;}
 
@@ -28,43 +29,47 @@ public class BookPersistentHSQLDB implements IBookPersistent {
         return DriverManager.getConnection("jdbc:hsqldb:file:" + dbPath + ";shutdown=true", "SA", "123");
     }
 
-    private Book fromResultSet(final ResultSet rs) throws SQLException{
+    private Book fromResultSet(final ResultSet rs) throws SQLException {
         Book book = null;
         List<String> tags = new ArrayList<>();
         List<String> genres = new ArrayList<>();
+        boolean isFirstRow = true;
 
-            if(book == null){
-                //getting information
+        while (rs.next()) {
+            if (isFirstRow) {
                 final int bookID = rs.getInt("BOOK_ID");
                 final String bookName = rs.getString("BOOK_NAME");
                 final String bookAuthor = rs.getString("BOOK_AUTHOR");
                 final String bookDate = rs.getString("BOOK_DATE");
-                List<String> tempGenre = new ArrayList<>();
-                List<String> tempTag = new ArrayList<>();
-                book = new Book(bookID, bookName, bookAuthor, bookDate, tempTag, tempGenre);
+
+                book = new Book(bookID, bookName, bookAuthor, bookDate, new ArrayList<>(), new ArrayList<>());
+                isFirstRow = false;
             }
 
             String tag = rs.getString("TAG_NAME");
-            if(tag != null && !tags.contains(tag)){
+            if (tag != null && !tags.contains(tag)) {
                 tags.add(tag);
             }
             String genre = rs.getString("GENRE_NAME");
-            if(tag != null && !genres.contains(genre)){
+            if (genre != null && !genres.contains(genre)) {
                 genres.add(genre);
             }
-        if(book != null){
+        }
+        if (book != null) {
             book.setTags(tags);
             book.setGenres(genres);
         }
+
         return book;
     }
 
-    private int checkCredentials(User user){
+
+    private int checkCredentials(IUser user){
         return 0;
     }
 
     @Override
-    public boolean upload(Book book, User user) {
+    public boolean upload(Book book, IUser user) {
         boolean result = false;
         try{
             if(checkCredentials(user) == 0 && duplicateBook(book.getName())<0){
@@ -83,7 +88,7 @@ public class BookPersistentHSQLDB implements IBookPersistent {
         try(final Connection c = connection()){
             PreparedStatement statement = c.prepareStatement(insert);
 
-            statement.setInt(1, bookID);
+            statement.setInt(1, newBook.getID());
             statement.setString(2, newBook.getName());
             statement.setString(3, newBook.getAuthor());
             statement.setString(4, newBook.getDate());
@@ -99,10 +104,10 @@ public class BookPersistentHSQLDB implements IBookPersistent {
                 int findTagID = duplicateTag(currentTag);
                 if(findTagID < 0){
                     int newTagID = addTag(currentTag);
-                    addBookTagRelation(bookID, newTagID);
+                    addBookTagRelation(newBook.getID(), newTagID);
                 }
                 else{
-                    addBookTagRelation(bookID, findTagID);
+                    addBookTagRelation(newBook.getID(), findTagID);
                 }
             }
             // adding new genre or make new relation with genre and book
@@ -111,10 +116,10 @@ public class BookPersistentHSQLDB implements IBookPersistent {
                 int findGenreID = duplicateGenre(currentGenre);
                 if(findGenreID < 0){
                     int newGenreID = addGenre(currentGenre);
-                    addBookGenreRelation(bookID, newGenreID);
+                    addBookGenreRelation(newBook.getID(), newGenreID);
                 }
                 else{
-                    addBookGenreRelation(bookID, findGenreID);
+                    addBookGenreRelation(newBook.getID(), findGenreID);
                 }
             }
             bookID++;
@@ -124,12 +129,12 @@ public class BookPersistentHSQLDB implements IBookPersistent {
 
     private int addTag(String tagName) throws SQLException {
         String insertTag = "INSERT INTO TAGS (TAG_NAME, TAG_ID) VALUES (?, ?)";
-        int result = tagID;
+        int result = getAllTags().size()+1;
         try(final Connection c = connection()){
             PreparedStatement statement = c.prepareStatement(insertTag);
 
             statement.setString(1, tagName);
-            statement.setInt(2, tagID);
+            statement.setInt(2, result);
             int success = statement.executeUpdate();
             if(success == 0){
                 throw new SQLException ("@BookPersistenceHSQLDB.java addTag unsuccessful");
@@ -142,12 +147,12 @@ public class BookPersistentHSQLDB implements IBookPersistent {
 
     private int addGenre(String genreName) throws SQLException{
         String insertGenre = "INSERT INTO GENRES (GENRE_NAME, GENRE_ID) VALUES (?, ?)";
-        int result = genreID;
+        int result = getAllGenres().size()+1;
         try(final Connection c = connection()){
             PreparedStatement statement = c.prepareStatement(insertGenre);
 
             statement.setString(1, genreName);
-            statement.setInt(2, genreID);
+            statement.setInt(2, result);
             int success = statement.executeUpdate();
             if(success == 0){
                 throw new SQLException ("@BookPersistenceHSQLDB.java addGenre unsuccessful");
@@ -393,9 +398,9 @@ public class BookPersistentHSQLDB implements IBookPersistent {
             statement.setString(1, require);
             ResultSet rs = statement.executeQuery();
 
-            if(rs.next()){
-                result = fromResultSet(rs);
-            }
+
+            result = fromResultSet(rs);
+
             rs.close();
             return result;
         }

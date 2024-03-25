@@ -2,6 +2,7 @@ package com.alexandria_library.data.stub;
 
 import com.alexandria_library.data.IBookPersistent;
 import com.alexandria_library.dso.Book;
+import com.alexandria_library.dso.IUser;
 import com.alexandria_library.dso.Librarian;
 import com.alexandria_library.dso.User;
 import com.alexandria_library.dso.Booklist;
@@ -264,13 +265,13 @@ public class BookPersistentInterStub implements IBookPersistent {
     }
 
 
-    public int checkCredentials(User user){
+    public int checkCredentials(IUser user){
         int authrorized = 1;
         if(user != null && user instanceof Librarian) authrorized = 0;
         return authrorized;
     }
 
-    public boolean upload(Book book, User user){
+    public boolean upload(Book book, IUser user){
         int status = checkBook(book);
         if(checkCredentials(user) == 0 && status == 0) {
             addBook(bookList, book);

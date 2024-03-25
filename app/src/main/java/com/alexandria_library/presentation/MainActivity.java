@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.transition.TransitionManager;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,10 +25,14 @@ import com.alexandria_library.application.Service;
 import com.alexandria_library.data.IBookPersistent;
 import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
+import com.alexandria_library.dso.IUser;
+import com.alexandria_library.dso.User;
 import com.alexandria_library.logic.BookListFilter;
+import com.alexandria_library.logic.BookModifier;
 import com.alexandria_library.logic.IBookListFilter;
 import com.alexandria_library.logic.ISearchService;
 import com.alexandria_library.logic.SearchService;
+import com.alexandria_library.logic.IBookModifier;
 import com.alexandria_library.logic.Exception.SearchServiceException;
 import com.alexandria_library.logic.SideBarService;
 import com.alexandria_library.presentation.Adapter.AllBookListAdapter;
@@ -51,6 +56,8 @@ public class MainActivity extends AppCompatActivity{
 
     private Booklist searchList;
     private boolean grid = true;
+    private static SideBarService sideBarService;
+    private IUser currentUser;
     private SearchListAdapter searchListAdapter;
     private AllTagsListAdapter tagsAdapter;
     private AllGenresListAdapter genresAdapter;
@@ -58,6 +65,7 @@ public class MainActivity extends AppCompatActivity{
     private ISearchService searchService;
     private IBookListFilter bookListFilter;
     private IBookPersistent bookPersistent;
+    private IBookModifier bookModifier;
     private Button libraryBtn, allListBtn, finishedBtn, inProgressBtn, filterOpenBtn;
     private Button logOut, categoryBtn, account;
     private Button filter;
@@ -89,6 +97,11 @@ public class MainActivity extends AppCompatActivity{
         bookListFilter = new BookListFilter();
         tagsClicked = new ArrayList<>();
         genresClicked = new ArrayList<>();
+        bookModifier = new BookModifier();
+        sideBarService = LoginActivity.getSideBarService();
+        if(sideBarService != null){
+            currentUser = sideBarService.getUser();
+        }
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -713,12 +726,11 @@ public class MainActivity extends AppCompatActivity{
     private void createBook(){
         String name = addBookName.getText().toString();
         String author = addBookAuthor.getText().toString();
-        List<String> tags = Arrays.asList(addBookTags.getText().toString().split(","));
-        List<String> genres = Arrays.asList(addBookGenres.getText().toString().split(","));
+        ArrayList<String> tags = new ArrayList<>(Arrays.asList(addBookTags.getText().toString().split(",")));
+        ArrayList<String> genres = new ArrayList<>(Arrays.asList(addBookGenres.getText().toString().split(",")));
         String date = addBookDate.getText().toString();
-        Book newBook = new Book(-1, name, author, date, tags, genres);
-        bookPersistent.update(newBook, null);
-        System.out.println(newBook.toString());
+        boolean succeed = bookModifier.uploadBook(currentUser, allLibraryBooks.size()+1, name, author, date, tags,  genres);
+        allLibraryBooks = bookPersistent.getBookList();
     }
 
     private void closeAddBook(){
