@@ -3,6 +3,7 @@ package com.alexandria_library.data.hsqldb;
 import com.alexandria_library.data.IBookPersistent;
 import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
+import com.alexandria_library.dso.IUser;
 import com.alexandria_library.dso.User;
 
 import java.sql.Connection;
@@ -59,12 +60,12 @@ public class BookPersistentHSQLDB implements IBookPersistent {
         return book;
     }
 
-    private int checkCredentials(User user){
+    private int checkCredentials(IUser user){
         return 0;
     }
 
     @Override
-    public boolean upload(Book book, User user) {
+    public boolean upload(Book book, IUser user) {
         boolean result = false;
         try{
             if(checkCredentials(user) == 0 && duplicateBook(book.getName())<0){

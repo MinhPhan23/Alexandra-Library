@@ -6,6 +6,7 @@ import android.net.Uri;
 import com.alexandria_library.application.Service;
 import com.alexandria_library.data.IBookPersistent;
 import com.alexandria_library.dso.Book;
+import com.alexandria_library.dso.IUser;
 import com.alexandria_library.dso.User;
 
 import java.io.ByteArrayInputStream;
@@ -54,7 +55,7 @@ public class BookModifier implements IBookModifier{
 
 
     @Override
-    public boolean uploadBook(User user, String bookName, String author, String date,
+    public boolean uploadBook(IUser user, String bookName, String author, String date,
                               ArrayList<String> tags, ArrayList<String> genres){
 
         boolean succeed = false;
