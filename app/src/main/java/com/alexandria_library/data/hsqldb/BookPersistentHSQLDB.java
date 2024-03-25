@@ -29,36 +29,40 @@ public class BookPersistentHSQLDB implements IBookPersistent {
         return DriverManager.getConnection("jdbc:hsqldb:file:" + dbPath + ";shutdown=true", "SA", "123");
     }
 
-    private Book fromResultSet(final ResultSet rs) throws SQLException{
+    private Book fromResultSet(final ResultSet rs) throws SQLException {
         Book book = null;
         List<String> tags = new ArrayList<>();
         List<String> genres = new ArrayList<>();
+        boolean isFirstRow = true;
 
-            if(book == null){
-                //getting information
+        while (rs.next()) {
+            if (isFirstRow) {
                 final int bookID = rs.getInt("BOOK_ID");
                 final String bookName = rs.getString("BOOK_NAME");
                 final String bookAuthor = rs.getString("BOOK_AUTHOR");
                 final String bookDate = rs.getString("BOOK_DATE");
-                List<String> tempGenre = new ArrayList<>();
-                List<String> tempTag = new ArrayList<>();
-                book = new Book(bookID, bookName, bookAuthor, bookDate, tempTag, tempGenre);
+
+                book = new Book(bookID, bookName, bookAuthor, bookDate, new ArrayList<>(), new ArrayList<>());
+                isFirstRow = false;
             }
 
             String tag = rs.getString("TAG_NAME");
-            if(tag != null && !tags.contains(tag)){
+            if (tag != null && !tags.contains(tag)) {
                 tags.add(tag);
             }
             String genre = rs.getString("GENRE_NAME");
-            if(tag != null && !genres.contains(genre)){
+            if (genre != null && !genres.contains(genre)) {
                 genres.add(genre);
             }
-        if(book != null){
+        }
+        if (book != null) {
             book.setTags(tags);
             book.setGenres(genres);
         }
+
         return book;
     }
+
 
     private int checkCredentials(IUser user){
         return 0;
@@ -394,9 +398,9 @@ public class BookPersistentHSQLDB implements IBookPersistent {
             statement.setString(1, require);
             ResultSet rs = statement.executeQuery();
 
-            if(rs.next()){
-                result = fromResultSet(rs);
-            }
+
+            result = fromResultSet(rs);
+
             rs.close();
             return result;
         }

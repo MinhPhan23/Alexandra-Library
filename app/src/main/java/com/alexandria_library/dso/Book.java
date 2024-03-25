@@ -87,6 +87,32 @@ public class Book implements IBook {
                 Objects.equals(this.genres, book.getGenres());
     }
 
+    public boolean noOrderEquals(final Book book){
+        boolean equals = false;
+        if(book.getName().equals(this.name) && book.getAuthor().equals(this.author)){
+            if(book.getDate().equals(this.date)){
+                if(book.getTags().size() == this.tags.size()){
+                    if(book.getGenres().size() == this.genres.size()){
+                        equals = true;
+                        for(int i = 0; i<tags.size(); i++){
+                            if(!book.getTags().contains(tags.get(i))){
+                                equals = false;
+                                break;
+                            }
+                        }
+                        for(int j = 0; j<genres.size(); j++){
+                            if(!book.getGenres().contains(genres.get(j))){
+                                equals = false;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return equals;
+    }
+
 
 
     @NonNull
