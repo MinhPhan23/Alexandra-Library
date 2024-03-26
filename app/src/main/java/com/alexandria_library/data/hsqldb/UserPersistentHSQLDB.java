@@ -130,24 +130,6 @@ public class UserPersistentHSQLDB implements IUserPersistent {
         }
     }
 
-    public List<User> getUserSequential(){
-        final List<User> users = new ArrayList<>();
-        try(final Connection c = connection()){
-            final Statement statement = c.createStatement();
-            final ResultSet rs = statement.executeQuery("SELECT * FROM USERS");
-            while(rs.next()){
-                final User currentUser = fromResultSet(rs, "reader");
-                users.add(currentUser);
-            }
-            rs.close();
-            statement.close();
-            return users;
-        }
-        catch (final SQLException e){
-            throw new PersistenceException(e);
-        }
-    }
-
     @Override
     public boolean addNewUser(String userName, String password){
         boolean result = false;

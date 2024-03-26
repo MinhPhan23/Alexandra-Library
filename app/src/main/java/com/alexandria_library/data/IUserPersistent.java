@@ -32,12 +32,6 @@ public interface IUserPersistent {
      */
     public User findUser(String userName);
 
-    /*****
-     * get all user in database
-     * @return : List<User>
-     */
-    public List<User> getUserSequential();
-
     /***********************************************************************************
      * ADD book to user's list */
     public void addBookToAllList(Booklist list, User user);
