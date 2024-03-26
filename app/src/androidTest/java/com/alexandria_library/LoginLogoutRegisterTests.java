@@ -1,11 +1,14 @@
-package com.alexandria_library.tests.system;
+package com.alexandria_library;
+
+import static androidx.test.espresso.Espresso.onView;
 
 import androidx.test.espresso.intent.Intents;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-public class LogInLogOutRegisterTests {
+
+public class LoginLogoutRegisterTests {
 
 
     @Before
@@ -16,10 +19,5 @@ public class LogInLogOutRegisterTests {
     @After
     public void tearDown(){
 
-    }
-
-    @Test
-    public void test(){
-        onView().perform();
     }
 }
