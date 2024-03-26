@@ -53,18 +53,18 @@ public class LoginLogoutRegisterTests {
             onView(withId(R.id.user_mode_btn)).perform(click());
             onView(withId(R.id.register_btn)).perform(click());
             onView(withId(R.id.register_username_input)).perform(typeText(username1));
-            pressBack();
+
             onView(withId(R.id.register_password_input)).perform(typeText(password1));
-            pressBack();
+
             onView(withId(R.id.register_confirm_password_input)).perform(typeText(password1));
-            pressBack();
+
             onView(withId(R.id.Create_register_btn)).perform(click());
 
             //Log In
             onView(withId(R.id.login_userName_input)).perform(typeText(username1));
-            pressBack();
+
             onView(withId(R.id.login_password_input)).perform(typeText(password1));
-            pressBack();
+
             onView(withId(R.id.login_btn)).perform(click());
 
             //Show Empty List
@@ -76,9 +76,9 @@ public class LoginLogoutRegisterTests {
 
             //Log Into diffirent account
             onView(withId(R.id.login_userName_input)).perform(typeText(username2));
-            pressBack();
+
             onView(withId(R.id.login_password_input)).perform(typeText(password2));
-            pressBack();
+
             onView(withId(R.id.login_btn)).perform(click());
 
             //Show Non-Empty List
@@ -90,9 +90,9 @@ public class LoginLogoutRegisterTests {
 
             //Log In
             onView(withId(R.id.login_userName_input)).perform(typeText(username1));
-            pressBack();
+
             onView(withId(R.id.login_password_input)).perform(typeText(password1));
-            pressBack();
+
             onView(withId(R.id.login_btn)).perform(click());
 
             //Show Empty List
