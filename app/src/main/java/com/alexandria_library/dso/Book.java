@@ -1,7 +1,5 @@
 package com.alexandria_library.dso;
 
-import androidx.annotation.NonNull;
-
 import java.util.List;
 import java.util.Objects;
 
@@ -113,9 +111,6 @@ public class Book implements IBook {
         return equals;
     }
 
-
-
-    @NonNull
     @Override
     public String toString() {
         return "Book{" +

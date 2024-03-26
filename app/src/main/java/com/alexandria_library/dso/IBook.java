@@ -1,7 +1,5 @@
 package com.alexandria_library.dso;
 
-import androidx.annotation.NonNull;
-
 import com.alexandria_library.dso.Book;
 
 import java.util.List;
@@ -34,7 +32,6 @@ public interface IBook {
 
     public boolean equals(final Book book);
 
-    @NonNull
     public String toString();
 
     public Book clone();
