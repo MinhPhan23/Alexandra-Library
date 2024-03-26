@@ -62,9 +62,7 @@ public class AllBookListAdapter extends RecyclerView.Adapter<AllBookListAdapter.
         if(allBooksList == null){
             return 0;
         }
-        else {
-            return allBooksList.size();
-        }
+        return allBooksList.size();
     }
 
 

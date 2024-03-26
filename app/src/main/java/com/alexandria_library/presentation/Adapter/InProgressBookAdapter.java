@@ -61,9 +61,7 @@ public class InProgressBookAdapter extends RecyclerView.Adapter<InProgressBookAd
         if(inProgressList == null){
             return 0;
         }
-        else {
-            return inProgressList.size();
-        }
+        return inProgressList.size();
     }
 
 

@@ -61,9 +61,7 @@ public class FinishedBookAdapter extends RecyclerView.Adapter<FinishedBookAdapte
         if(finishedList == null){
             return 0;
         }
-        else {
-            return finishedList.size();
-        }
+        return finishedList.size();
     }
 
 

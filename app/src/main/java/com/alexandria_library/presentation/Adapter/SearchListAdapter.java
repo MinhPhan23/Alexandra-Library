@@ -42,12 +42,10 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.My
 
     @Override
     public int getItemCount() {
-        if(BookList == null){
+        if (BookList == null){
             return 0;
         }
-        else {
-            return BookList.size();
-        }
+        return BookList.size();
     }
 
 

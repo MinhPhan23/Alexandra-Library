@@ -57,9 +57,7 @@ public class LibraryBookListAdapter extends RecyclerView.Adapter<LibraryBookList
         if(libraryBookList == null){
             return 0;
         }
-        else {
-            return libraryBookList.size();
-        }
+        return libraryBookList.size();
     }
 
 
