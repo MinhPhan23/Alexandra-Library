@@ -365,8 +365,8 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 filterBookDisplay(tagsClicked, genresClicked);
-                tagsClicked.clear();
-                genresClicked.clear();
+//                tagsClicked.clear();
+//                genresClicked.clear();
 
             }
         });
