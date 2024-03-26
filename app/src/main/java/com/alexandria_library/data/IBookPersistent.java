@@ -19,7 +19,6 @@ public interface IBookPersistent {
      */
     public boolean upload(Book book, IUser user);
     public void deleteLibraryBook(Booklist list, User user);
-    public ArrayList<String> searchTagByBook (Book book);
     public ArrayList<String> getAllTags ();
     public ArrayList<String> getAllGenres();
 

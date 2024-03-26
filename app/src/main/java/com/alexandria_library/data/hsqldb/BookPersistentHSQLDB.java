@@ -348,31 +348,6 @@ public class BookPersistentHSQLDB implements IBookPersistent {
     }
 
     @Override
-    public ArrayList<String> searchTagByBook (Book book){
-        ArrayList<String> result = new ArrayList<>();
-        String query = "SELECT TG.TAG_NAME FROM TAGS TG "+
-                        "JOIN BOOKTAGS BT ON TG.TAG_ID = BT.TAG_ID "+
-                        "JOIN BOOKS B ON BT.BOOK_ID = B.BOOK_ID " +
-                        "WHERE B.BOOK_NAME = ?";
-        try(Connection c = connection()){
-            PreparedStatement statement = c.prepareStatement(query);
-            statement.setString(1, book.getName());
-            ResultSet rs = statement.executeQuery();
-
-            while (rs.next()){
-                String tagName = rs.getString("TAG_NAME");
-                result.add(tagName);
-            }
-            rs.close();
-
-            return result;
-        }
-        catch (final SQLException e){
-            throw new PersistenceException(e);
-        }
-    }
-
-    @Override
     public Booklist getBookList(){
         Booklist books = new Booklist();
         ArrayList<String> nameList = getAllBookName();
@@ -502,18 +477,6 @@ public class BookPersistentHSQLDB implements IBookPersistent {
 /**
  * === SEARCH book by mulitple requests END ===
  *************************************************************************************************/
-
-    private int isUniqueBook(Booklist list, Book book){
-        int index = -1;
-        for(int i = 0; i < list.size(); i++){
-            if(list.get(i).getID() == book.getID()){
-                index = i;
-                break;
-            }
-        }
-        return index;
-    }
-
     private Booklist collapseDuplicates(Booklist list){
         Booklist newList = new Booklist();
         if(list.size() == 0) {
