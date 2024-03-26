@@ -24,9 +24,9 @@ public class UserPersistentHSQLDB implements IUserPersistent {
     private static final IBookPersistent bookData = Service.getBookPersistent();
     private static int userID = 6; //start with 6 because group members are default \
     private static int librarianID = 6; //start with 6 because group members are default users
-    private static int allListID = 1;
-    private static int readingListID = 1;
-    private static int finishedListID = 1;
+    private static int allListID = 19; //start with 19 because group members already have booklist setup
+    private static int readingListID = 18; //start with 18 because group members already have booklist setup
+    private static int finishedListID = 18; //start with 18 because group members already have booklist setup
 
     public UserPersistentHSQLDB(final String dbPath) {
         this.dbPath = dbPath;
@@ -184,27 +184,6 @@ public class UserPersistentHSQLDB implements IUserPersistent {
                 librarianID++;
             }
             return result;
-        }
-        catch (final SQLException e){
-            throw new PersistenceException(e);
-        }
-    }
-
-    @Override
-    public User findUser(String userName, String password){
-        User found = null;
-        try(final Connection c = connection()){
-            final PreparedStatement statement = c.prepareStatement("SELECT * FROM USERS WHERE USER_NAME = ? AND PASSWORD = ?");
-            statement.setString(1, userName);
-            statement.setString(2, password);
-
-            final ResultSet rs =statement.executeQuery();
-            if(rs.next()){
-                found =fromResultSet(rs, "reader");
-            }
-            rs.close();
-            statement.close();
-            return found;
         }
         catch (final SQLException e){
             throw new PersistenceException(e);
