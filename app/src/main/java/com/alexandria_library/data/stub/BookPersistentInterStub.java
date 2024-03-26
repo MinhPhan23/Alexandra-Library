@@ -285,11 +285,6 @@ public class BookPersistentInterStub implements IBookPersistent {
     }
 
     @Override
-    public ArrayList<String> searchTagByBook(Book book) {
-        return null;
-    }
-
-    @Override
     public ArrayList<String> getAllTags() {
         return null;
     }
