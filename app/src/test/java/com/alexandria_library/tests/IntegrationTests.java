@@ -3,6 +3,7 @@ package com.alexandria_library.tests;
 import com.alexandria_library.tests.logic.BookListFilterITTest;
 import com.alexandria_library.tests.logic.AuthenticationITest;
 import com.alexandria_library.tests.logic.BookModifierITTest;
+import com.alexandria_library.tests.logic.DefaultBooklistITest;
 import com.alexandria_library.tests.logic.SearchServiceITest;
 
 import org.junit.runner.RunWith;
@@ -13,7 +14,8 @@ import org.junit.runners.Suite;
         BookListFilterITTest.class,
         SearchServiceITest.class,
         AuthenticationITest.class,
-        BookModifierITTest.class
+        BookModifierITTest.class,
+        DefaultBooklistITest.class
 })
 public class IntegrationTests {
 }
