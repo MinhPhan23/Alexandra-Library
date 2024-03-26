@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.transition.TransitionManager;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +22,8 @@ import android.widget.FrameLayout;
 import com.alexandria_library.R;
 import com.alexandria_library.application.Service;
 import com.alexandria_library.data.IBookPersistent;
-import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.dso.IUser;
-import com.alexandria_library.dso.User;
 import com.alexandria_library.logic.BookListFilter;
 import com.alexandria_library.logic.BookModifier;
 import com.alexandria_library.logic.IBookListFilter;
@@ -44,12 +41,9 @@ import com.alexandria_library.presentation.Adapter.InProgressBookAdapter;
 import com.alexandria_library.presentation.Adapter.LibraryBookListAdapter;
 import com.alexandria_library.presentation.Adapter.SearchListAdapter;
 import com.alexandria_library.presentation.Authentication.LoginActivity;
-import com.alexandria_library.application.Service;
-import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity{
@@ -445,7 +439,7 @@ public class MainActivity extends AppCompatActivity{
         categoryBtn = findViewById(R.id.book_display_category_button);
 
         //go to Authentication page
-        account = findViewById(R.id.account);
+        account = findViewById(R.id.account_btn);
 
         expandable = findViewById(R.id.frameLayout);
 
