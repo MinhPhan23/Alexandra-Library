@@ -168,11 +168,6 @@ public class UserPersistentStub implements IUserPersistent {
     }
 
     @Override
-    public List<User> getUserSequential() {
-        return null;
-    }
-
-    @Override
     public void addBookToAllList(Booklist list, User user) {
 
     }
