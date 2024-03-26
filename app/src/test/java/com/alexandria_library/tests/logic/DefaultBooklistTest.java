@@ -18,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+/** @noinspection CodeBlock2Expr*/
 public class DefaultBooklistTest {
     @Mock
     private Reader reader;
@@ -312,7 +313,7 @@ public class DefaultBooklistTest {
         try {
             Mockito.when(book1.getName()).thenReturn("Twilight");
 
-            oldList.setName("all");
+            oldList.setName("finished");
             newList.add(book1);
             oldList.add(book1);
 
@@ -322,7 +323,7 @@ public class DefaultBooklistTest {
                 defaultBooklist.addBookToFinished(reader, newList);
             });
 
-            String expectedMessage = "The book(s) Twilight is already in list all";
+            String expectedMessage = "The book(s) Twilight is already in list finished";
             String actualMessage = exception.getMessage();
 
             assertNotNull(actualMessage);
@@ -343,7 +344,7 @@ public class DefaultBooklistTest {
             Mockito.when(book1.getName()).thenReturn("Twilight");
             Mockito.when(book2.getName()).thenReturn("Jedi");
 
-            oldList.setName("all");
+            oldList.setName("finished");
             newList.add(book1);
             newList.add(book2);
             oldList.add(book1);
@@ -355,7 +356,338 @@ public class DefaultBooklistTest {
                 defaultBooklist.addBookToFinished(reader, newList);
             });
 
-            String expectedMessage = "The book(s) Twilight, Jedi is already in list all";
+            String expectedMessage = "The book(s) Twilight, Jedi is already in list finished";
+            String actualMessage = exception.getMessage();
+
+            assertNotNull(actualMessage);
+            assertEquals(expectedMessage, actualMessage);
+
+            Mockito.verify(data, Mockito.times(0)).addBookToFinishedList(Mockito.any(Booklist.class), Mockito.any(User.class));
+            Mockito.verify(reader).getFinishedList();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            assert(false);
+        }
+    }
+    @Test
+    public void testRemoveBookFromAll() {
+        try {
+            Mockito.when(book1.getName()).thenReturn("Twilight");
+            Mockito.when(book2.getName()).thenReturn("Jedi");
+
+            oldList.add(book1);
+            oldList.add(book2);
+            newList.add(book1);
+
+            Mockito.when(reader.getAllBooksList()).thenReturn(oldList);
+
+            defaultBooklist.removeBookFromAll(reader, newList);
+
+            Mockito.verify(data, Mockito.times(1)).deleteUserAllListBook(Mockito.any(Booklist.class), Mockito.any(User.class));
+            Mockito.verify(reader).getAllBooksList();
+            assertEquals(1, oldList.size());
+            assertEquals(oldList.get(0).getName(), "Jedi");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            assert(false);
+        }
+    }
+
+    @Test
+    public void testRemoveBooklistFromAll() {
+        try {
+            Mockito.when(book1.getName()).thenReturn("Twilight");
+            Mockito.when(book2.getName()).thenReturn("Jedi");
+
+            oldList.add(book1);
+            oldList.add(book2);
+            newList.add(book1);
+            newList.add(book2);
+
+            Mockito.when(reader.getAllBooksList()).thenReturn(oldList);
+
+            defaultBooklist.removeBookFromAll(reader, newList);
+
+            Mockito.verify(data, Mockito.times(1)).deleteUserAllListBook(Mockito.any(Booklist.class), Mockito.any(User.class));
+            Mockito.verify(reader).getAllBooksList();
+            assertEquals(0, oldList.size());
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            assert(false);
+        }
+    }
+    @Test
+    public void testRemovedNonExistingBookFromAll() {
+        try {
+            Mockito.when(book1.getName()).thenReturn("Twilight");
+            Mockito.when(book2.getName()).thenReturn("Jedi");
+
+            oldList.setName("all");
+            newList.add(book1);
+            oldList.add(book2);
+
+            Mockito.when(reader.getAllBooksList()).thenReturn(oldList);
+
+            Exception exception = assertThrows(BooklistException.class, () -> {
+                defaultBooklist.removeBookFromAll(reader, newList);
+            });
+
+            String expectedMessage = "The book(s) Twilight is not in list all";
+            String actualMessage = exception.getMessage();
+
+            assertNotNull(actualMessage);
+            assertEquals(expectedMessage, actualMessage);
+
+            Mockito.verify(data, Mockito.times(0)).addBookToAllList(Mockito.any(Booklist.class), Mockito.any(User.class));
+            Mockito.verify(reader).getAllBooksList();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            assert (false);
+        }
+    }
+
+    @Test
+    public void testRemovedNonExistingBooklistFromAll() {
+        try {
+            Mockito.when(book1.getName()).thenReturn("Twilight");
+            Mockito.when(book2.getName()).thenReturn("Jedi");
+
+            oldList.setName("all");
+            newList.add(book1);
+            newList.add(book2);
+
+            Mockito.when(reader.getAllBooksList()).thenReturn(oldList);
+
+            Exception exception = assertThrows(BooklistException.class, () -> {
+                defaultBooklist.removeBookFromAll(reader, newList);
+            });
+
+            String expectedMessage = "The book(s) Twilight, Jedi is not in list all";
+            String actualMessage = exception.getMessage();
+
+            assertNotNull(actualMessage);
+            assertEquals(expectedMessage, actualMessage);
+
+            Mockito.verify(data, Mockito.times(0)).addBookToAllList(Mockito.any(Booklist.class), Mockito.any(User.class));
+            Mockito.verify(reader).getAllBooksList();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            assert(false);
+        }
+    }
+
+    @Test
+    public void testRemoveBookFromInProgress() {
+        try {
+            Mockito.when(book1.getName()).thenReturn("Twilight");
+            Mockito.when(book2.getName()).thenReturn("Jedi");
+
+            oldList.add(book1);
+            oldList.add(book2);
+            newList.add(book1);
+
+            Mockito.when(reader.getInProgressList()).thenReturn(oldList);
+
+            defaultBooklist.removeBookFromInProgress(reader, newList);
+
+            Mockito.verify(data, Mockito.times(1)).deleteReadingListBook(Mockito.any(Booklist.class), Mockito.any(User.class));
+            Mockito.verify(reader).getInProgressList();
+            assertEquals(1, oldList.size());
+            assertEquals(oldList.get(0).getName(), "Jedi");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            assert(false);
+        }
+    }
+
+    @Test
+    public void testRemoveBooklistFromInProgress() {
+        try {
+            Mockito.when(book1.getName()).thenReturn("Twilight");
+            Mockito.when(book2.getName()).thenReturn("Jedi");
+
+            oldList.add(book1);
+            oldList.add(book2);
+            newList.add(book1);
+            newList.add(book2);
+
+            Mockito.when(reader.getInProgressList()).thenReturn(oldList);
+
+            defaultBooklist.removeBookFromInProgress(reader, newList);
+
+            Mockito.verify(data, Mockito.times(1)).deleteReadingListBook(Mockito.any(Booklist.class), Mockito.any(User.class));
+            Mockito.verify(reader).getInProgressList();
+            assertEquals(0, oldList.size());
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            assert(false);
+        }
+    }
+    @Test
+    public void testRemovedNonExistingBookFromInProgress() {
+        try {
+            Mockito.when(book1.getName()).thenReturn("Twilight");
+            Mockito.when(book2.getName()).thenReturn("Jedi");
+
+            oldList.setName("In Progress");
+            newList.add(book1);
+            oldList.add(book2);
+
+            Mockito.when(reader.getInProgressList()).thenReturn(oldList);
+
+            Exception exception = assertThrows(BooklistException.class, () -> {
+                defaultBooklist.removeBookFromInProgress(reader, newList);
+            });
+
+            String expectedMessage = "The book(s) Twilight is not in list In Progress";
+            String actualMessage = exception.getMessage();
+
+            assertNotNull(actualMessage);
+            assertEquals(expectedMessage, actualMessage);
+
+            Mockito.verify(data, Mockito.times(0)).addBookToReadingList(Mockito.any(Booklist.class), Mockito.any(User.class));
+            Mockito.verify(reader).getInProgressList();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            assert(false);
+        }
+    }
+
+    @Test
+    public void testRemovedNonExistingBooklistFromInProgress() {
+        try {
+            Mockito.when(book1.getName()).thenReturn("Twilight");
+            Mockito.when(book2.getName()).thenReturn("Jedi");
+
+            oldList.setName("In Progress");
+            newList.add(book1);
+            newList.add(book2);
+
+            Mockito.when(reader.getInProgressList()).thenReturn(oldList);
+
+            Exception exception = assertThrows(BooklistException.class, () -> {
+                defaultBooklist.removeBookFromInProgress(reader, newList);
+            });
+
+            String expectedMessage = "The book(s) Twilight, Jedi is not in list In Progress";
+            String actualMessage = exception.getMessage();
+
+            assertNotNull(actualMessage);
+            assertEquals(expectedMessage, actualMessage);
+
+            Mockito.verify(data, Mockito.times(0)).addBookToReadingList(Mockito.any(Booklist.class), Mockito.any(User.class));
+            Mockito.verify(reader).getInProgressList();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            assert(false);
+        }
+    }
+    @Test
+    public void testRemoveBookFromFinished() {
+        try {
+            Mockito.when(book1.getName()).thenReturn("Twilight");
+            Mockito.when(book2.getName()).thenReturn("Jedi");
+
+            oldList.add(book1);
+            oldList.add(book2);
+            newList.add(book1);
+
+            Mockito.when(reader.getFinishedList()).thenReturn(oldList);
+
+            defaultBooklist.removeBookFromFinished(reader, newList);
+
+            Mockito.verify(data, Mockito.times(1)).deleteFinishedListBook(Mockito.any(Booklist.class), Mockito.any(User.class));
+            Mockito.verify(reader).getFinishedList();
+            assertEquals(1, oldList.size());
+            assertEquals(oldList.get(0).getName(), "Jedi");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            assert(false);
+        }
+    }
+
+    @Test
+    public void testRemoveBooklistFromFinished() {
+        try {
+            Mockito.when(book1.getName()).thenReturn("Twilight");
+            Mockito.when(book2.getName()).thenReturn("Jedi");
+
+            oldList.add(book1);
+            oldList.add(book2);
+            newList.add(book1);
+            newList.add(book2);
+
+            Mockito.when(reader.getFinishedList()).thenReturn(oldList);
+
+            defaultBooklist.removeBookFromFinished(reader, newList);
+
+            Mockito.verify(data, Mockito.times(1)).deleteFinishedListBook(Mockito.any(Booklist.class), Mockito.any(User.class));
+            Mockito.verify(reader).getFinishedList();
+            assertEquals(0, oldList.size());
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            assert(false);
+        }
+    }
+    @Test
+    public void testRemovedNonExistingBookFromFinished() {
+        try {
+            Mockito.when(book1.getName()).thenReturn("Twilight");
+            Mockito.when(book2.getName()).thenReturn("Jedi");
+
+            oldList.setName("Finished");
+            newList.add(book1);
+            oldList.add(book2);
+
+            Mockito.when(reader.getFinishedList()).thenReturn(oldList);
+
+            Exception exception = assertThrows(BooklistException.class, () -> {
+                defaultBooklist.removeBookFromFinished(reader, newList);
+            });
+
+            String expectedMessage = "The book(s) Twilight is not in list Finished";
+            String actualMessage = exception.getMessage();
+
+            assertNotNull(actualMessage);
+            assertEquals(expectedMessage, actualMessage);
+
+            Mockito.verify(data, Mockito.times(0)).addBookToFinishedList(Mockito.any(Booklist.class), Mockito.any(User.class));
+            Mockito.verify(reader).getFinishedList();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            assert(false);
+        }
+    }
+
+    @Test
+    public void testRemovedNonExistingBooklistFromFinished() {
+        try {
+            Mockito.when(book1.getName()).thenReturn("Twilight");
+            Mockito.when(book2.getName()).thenReturn("Jedi");
+
+            oldList.setName("Finished");
+            newList.add(book1);
+            newList.add(book2);
+
+            Mockito.when(reader.getFinishedList()).thenReturn(oldList);
+
+            Exception exception = assertThrows(BooklistException.class, () -> {
+                defaultBooklist.removeBookFromFinished(reader, newList);
+            });
+
+            String expectedMessage = "The book(s) Twilight, Jedi is not in list Finished";
             String actualMessage = exception.getMessage();
 
             assertNotNull(actualMessage);
