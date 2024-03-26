@@ -13,6 +13,7 @@ import com.alexandria_library.tests.dso.ReaderTest;
 import com.alexandria_library.tests.logic.AuthenticationTest;
 import com.alexandria_library.tests.logic.BookListFilterTest;
 import com.alexandria_library.tests.logic.BookListRankerTest;
+import com.alexandria_library.tests.logic.BookModifierTest;
 import com.alexandria_library.tests.logic.CustomBooklistTest;
 import com.alexandria_library.tests.logic.DefaultBooklistTest;
 import com.alexandria_library.tests.logic.SearchServiceTest;
@@ -31,7 +32,8 @@ import com.alexandria_library.tests.logic.SideBarServiceTest;
         BookPersistentIntermediateTest.class,
         UserPersistentStubTest.class,
         DefaultBooklistTest.class,
-        CustomBooklistTest.class
+        CustomBooklistTest.class,
+        BookModifierTest.class
 })
 
 public class AllUnitTests {

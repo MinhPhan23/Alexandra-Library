@@ -11,8 +11,11 @@ public class Reader extends User implements IReader {
     public Reader(String userName, String password, int id){
         super(userName, password, id);
         allBooksList = new Booklist();
+        allBooksList.setName("All");
         inProgressList = new Booklist();
+        inProgressList.setName("In Progress");
         finishedList = new Booklist();
+        finishedList.setName("Finished");
         customList = new ArrayList<Booklist>();
     }
 

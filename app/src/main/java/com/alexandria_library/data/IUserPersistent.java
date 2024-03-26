@@ -26,24 +26,11 @@ public interface IUserPersistent {
     public boolean addNewLibrarian(String userName, String password);
 
     /*****
-     * check if the user exists in the system
-     * @param userName a username to check
-     * @param password a password to check
-     * @return An user object if found, null if not
-     */
-    public User findUser(String userName, String password);
-
-
-    /*****
      * check if the user exists in the system by username only
      * @param userName a username to check
      * @return An user object if found, null if not
      */
     public User findUser(String userName);
-
-    /*****
-     * those functions we are not using, because we will use on iterations 3
-     */
 
     /*****
      * get all user in database
@@ -58,13 +45,13 @@ public interface IUserPersistent {
     public void addBookToFinishedList(Booklist list, User user);
     /*************************************************************************************/
 
-
     /***********************************************************************************
      * DELETE book from user's list */
     public void deleteUserAllListBook(Booklist list, User user);
     public void deleteReadingListBook(Booklist list, User user);
     public void deleteFinishedListBook(Booklist list, User user);
     /*************************************************************************************/
+
     /*****
      * check if the librarian exists in the system by username only
      * @param userName a username to check

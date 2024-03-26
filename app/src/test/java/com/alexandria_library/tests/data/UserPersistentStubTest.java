@@ -27,15 +27,6 @@ public class UserPersistentStubTest {
     }
 
     @Test
-    public void testFindExistingUserByUserNameAndPassword() {
-        String userName = "Xiang";
-        String password = "123";
-        User user = userStub.findUser(userName, password);
-        assertNotNull("User should be found", user);
-        assertEquals("User name should match", userName, user.getUserName());
-    }
-
-    @Test
     public void testFindExistingUserByUserName() {
         String userName = "Andrei";
         User user = userStub.findUser(userName);
