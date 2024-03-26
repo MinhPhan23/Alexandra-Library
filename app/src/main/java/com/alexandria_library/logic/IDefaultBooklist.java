@@ -6,18 +6,46 @@ import com.alexandria_library.logic.Exception.BooklistException;
 
 public interface IDefaultBooklist {
     /**
-     * Adding a new book to the "All Books" list
-     * @param newBook a book to add to the list
+     * Add books to the "All" list
+     * @param reader the current Reader DSO
+     * @param newBook the list of books to remove
+     * @throws BooklistException if one of the book is not in the list
      */
     public void addBookToAll(IReader reader, Booklist newBook) throws BooklistException;
     /**
-     * Adding a new book to the "In Progress" list
-     * @param newBook a book to add to the list
+     * Add books to the "In Progress" list
+     * @param reader the current Reader DSO
+     * @param newBook the list of books to remove
+     * @throws BooklistException if one of the book is not in the list
      */
     public void addBookToInProgress(IReader reader, Booklist newBook) throws BooklistException;
     /**
-     * Adding a new book to the "Finished" list
-     * @param newBook a book to add to the list
+     * Add books to the "Finished" list
+     * @param reader the current Reader DSO
+     * @param newBook the list of books to remove
+     * @throws BooklistException if one of the book is not in the list
      */
     public void addBookToFinished(IReader reader, Booklist newBook) throws BooklistException;
+
+    /**
+     * Remove books to the "All" list
+     * @param reader the current Reader DSO
+     * @param books the list of books to remove
+     * @throws BooklistException if one of the book is not in the list
+     */
+    public void removeBookFromAll(IReader reader, Booklist books) throws BooklistException;
+    /**
+     * Remove books to the "In Progress" list
+     * @param reader the current Reader DSO
+     * @param books the list of books to remove
+     * @throws BooklistException if one of the book is not in the list
+     */
+    public void removeBookFromInProgress(IReader reader, Booklist books) throws BooklistException;
+    /**
+     * Remove books to the "Finished" list
+     * @param reader the current Reader DSO
+     * @param books the list of books to remove
+     * @throws BooklistException if one of the book is not in the list
+     */
+    public void removeBookFromFinished(IReader reader, Booklist books) throws BooklistException;
 }
