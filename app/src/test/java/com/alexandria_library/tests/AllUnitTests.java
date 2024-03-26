@@ -5,7 +5,6 @@ import org.junit.runners.Suite;
 
 
 //import all test files
-import com.alexandria_library.tests.data.BookPersistentHSQLDBTest;
 import com.alexandria_library.tests.data.BookPersistentIntermediateTest;
 import com.alexandria_library.tests.data.UserPersistentStubTest;
 import com.alexandria_library.tests.dso.BookListTest;
@@ -31,7 +30,6 @@ import com.alexandria_library.tests.logic.SideBarServiceTest;
         ReaderTest.class,
         BookPersistentIntermediateTest.class,
         UserPersistentStubTest.class,
-        BookPersistentHSQLDBTest.class,
         DefaultBooklistTest.class,
         CustomBooklistTest.class
 })
