@@ -18,10 +18,12 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.alexandria_library.R;
 import com.alexandria_library.application.Service;
 import com.alexandria_library.data.IBookPersistent;
+import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.dso.IUser;
 import com.alexandria_library.logic.BookListFilter;
@@ -67,9 +69,11 @@ public class MainActivity extends AppCompatActivity{
     private Button librarianAddBtn, listTextButton;
     private FrameLayout expandable;
     private EditText searchInput;
-    private RecyclerView recyclerView, filterBox;
+    private RecyclerView searchBarReview, filterBox, bookDisplay;
     private View rootView, filterPage;
     private FrameLayout detailBookInfo;
+    private Button detailBookDisplayBtn;
+    private TextView titleView, authorView, dateView, tagsView, genresView;
 
     /////////////////////LIBRARIAN MODE UI////////////////////////
     private boolean librarianMode;
@@ -231,7 +235,7 @@ public class MainActivity extends AppCompatActivity{
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     //check where is the touch position
-                    if (!isViewInBounds(recyclerView, (int) event.getRawX(), (int) event.getRawY())) {
+                    if (!isViewInBounds(searchBarReview, (int) event.getRawX(), (int) event.getRawY())) {
                         toggleSearchResultGone();
                     }
                 }
@@ -395,6 +399,20 @@ public class MainActivity extends AppCompatActivity{
                 addBookMenu.setVisibility(View.VISIBLE);
             }
         });
+
+
+        /****
+         * close book detail display window
+         */
+        detailBookDisplayBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(detailBookInfo.getVisibility() == View.VISIBLE){
+                    detailBookInfo.setVisibility(View.GONE);
+                    bookDisplay.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 
 
@@ -448,7 +466,7 @@ public class MainActivity extends AppCompatActivity{
         searchInput = findViewById(R.id.searchInput);
 
         //Getting Search bar Output recycler view
-        recyclerView = findViewById(R.id.search_bar_recycle);
+        searchBarReview = findViewById(R.id.search_bar_recycle);
 
         //Getting search result
         searchIcon = findViewById(R.id.search_icon);
@@ -470,6 +488,15 @@ public class MainActivity extends AppCompatActivity{
 
         //find out detail book information window
         detailBookInfo = findViewById(R.id.book_detail_window);
+
+        //find out close book detail display window
+        detailBookDisplayBtn = findViewById(R.id.detail_book_close_btn);
+
+        titleView = findViewById(R.id.detail_book_title );
+        authorView = findViewById(R.id.detail_book_author);
+        dateView = findViewById(R.id.detail_book_date);
+        tagsView = findViewById(R.id.detail_book_tags);
+        genresView = findViewById(R.id.detail_book_genres);
 
         /////////////////////LIBRARIAN MODE UI////////////////////////
 
@@ -496,10 +523,10 @@ public class MainActivity extends AppCompatActivity{
 
     private void SearchBar(){
         LinearLayoutManager linearManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(linearManager);
+        searchBarReview.setLayoutManager(linearManager);
 
         searchListAdapter = new SearchListAdapter(searchList, this, searchService);
-        recyclerView.setAdapter(searchListAdapter);
+        searchBarReview.setAdapter(searchListAdapter);
 
         searchListAdapter.setRecyclerItemClickListener(new SearchListAdapter.OnRecyclerItemClickListener() {
             @Override
@@ -509,10 +536,10 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void toggleSearchResultGone(){
-        recyclerView.setVisibility(View.GONE);
+        searchBarReview.setVisibility(View.GONE);
     }
     public void toggleSearchResultVisible(){
-        recyclerView.setVisibility(View.VISIBLE);
+        searchBarReview.setVisibility(View.VISIBLE);
     }
     public void toggleFilterVisible(){
         filterPage.setVisibility(View.VISIBLE);
@@ -537,138 +564,145 @@ public class MainActivity extends AppCompatActivity{
         return(x>viewX && x < (viewWidth+viewX)) && (y>viewY && y<(viewHeight+viewY));
     }
 
+    private void setInformationToDetail(Book book){
+        titleView.setText(book.getName());
+        authorView.setText(book.getAuthor());
+        dateView.setText(book.getDate());
+        tagsView.setText(book.getTags().toString());
+        genresView.setText(book.getGenres().toString());
+    }
 
     private void LibraryBookCategory(){
         LibraryBookListAdapter libraryBookListAdapter;
-        RecyclerView recyclerView;
         if(grid){
             //Setting Grid of book display
-            recyclerView = findViewById(R.id.gridView);
+            bookDisplay = findViewById(R.id.gridView);
 
             GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
-            recyclerView.setLayoutManager(gridLayoutManager);
+            bookDisplay.setLayoutManager(gridLayoutManager);
 
             libraryBookListAdapter = new LibraryBookListAdapter(this);
-            recyclerView.setAdapter(libraryBookListAdapter);
+            bookDisplay.setAdapter(libraryBookListAdapter);
         }
         else{
             //Setting list of book display
-            recyclerView = findViewById(R.id.gridView);
+            bookDisplay = findViewById(R.id.gridView);
 
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-            recyclerView.setLayoutManager(linearLayoutManager);
+            bookDisplay.setLayoutManager(linearLayoutManager);
 
             libraryBookListAdapter = new LibraryBookListAdapter(this);
-            recyclerView.setAdapter(libraryBookListAdapter);
+            bookDisplay.setAdapter(libraryBookListAdapter);
         }
 
         libraryBookListAdapter.setRecyclerItemClickListener(new LibraryBookListAdapter.OnRecyclerItemClickListener() {
             @Override
-            public void onRecyclerItemClick(int position) {
+            public void onRecyclerItemClick(int position, Book book) {
                 toggleSearchResultGone();
+                setInformationToDetail(book);
                 detailBookInfo.setVisibility(View.VISIBLE);
-                recyclerView.setVisibility(View.GONE);
+                bookDisplay.setVisibility(View.GONE);
             }
         });
     }
     private void AllBookCategory(){
         AllBookListAdapter allBookAdapter;
-        RecyclerView recyclerView;
         if(grid){
             //Setting Grid of book display
-            recyclerView = findViewById(R.id.gridView);
+            bookDisplay = findViewById(R.id.gridView);
 
             GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
-            recyclerView.setLayoutManager(gridLayoutManager);
+            bookDisplay.setLayoutManager(gridLayoutManager);
 
             allBookAdapter = new AllBookListAdapter(this);
-            recyclerView.setAdapter(allBookAdapter);
+            bookDisplay.setAdapter(allBookAdapter);
         }
         else{
             //Setting list of book display
-            recyclerView = findViewById(R.id.gridView);
+            bookDisplay = findViewById(R.id.gridView);
 
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-            recyclerView.setLayoutManager(linearLayoutManager);
+            bookDisplay.setLayoutManager(linearLayoutManager);
 
             allBookAdapter = new AllBookListAdapter(this);
-            recyclerView.setAdapter(allBookAdapter);
+            bookDisplay.setAdapter(allBookAdapter);
         }
 
         allBookAdapter.setRecyclerItemClickListener(new AllBookListAdapter.OnRecyclerItemClickListener() {
             @Override
-            public void onRecyclerItemClick(int position) {
+            public void onRecyclerItemClick(int position, Book book) {
                 toggleSearchResultGone();
+                setInformationToDetail(book);
                 detailBookInfo.setVisibility(View.VISIBLE);
-                recyclerView.setVisibility(View.GONE);
+                bookDisplay.setVisibility(View.GONE);
             }
         });
     }
     
     private void FinishedBookCategory(){
         FinishedBookAdapter finishedBookAdapter;
-        RecyclerView recyclerView;
         if(grid){
             //Setting Grid of book display
-            recyclerView = findViewById(R.id.gridView);
+            bookDisplay = findViewById(R.id.gridView);
 
             GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
-            recyclerView.setLayoutManager(gridLayoutManager);
+            bookDisplay.setLayoutManager(gridLayoutManager);
 
             finishedBookAdapter = new FinishedBookAdapter(this);
-            recyclerView.setAdapter(finishedBookAdapter);
+            bookDisplay.setAdapter(finishedBookAdapter);
         }
         else{
             //Setting list of book display
-            recyclerView = findViewById(R.id.gridView);
+            bookDisplay = findViewById(R.id.gridView);
 
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-            recyclerView.setLayoutManager(linearLayoutManager);
+            bookDisplay.setLayoutManager(linearLayoutManager);
 
             finishedBookAdapter = new FinishedBookAdapter(this);
-            recyclerView.setAdapter(finishedBookAdapter);
+            bookDisplay.setAdapter(finishedBookAdapter);
         }
 
         finishedBookAdapter.setRecyclerItemClickListener(new FinishedBookAdapter.OnRecyclerItemClickListener() {
             @Override
-            public void onRecyclerItemClick(int position) {
+            public void onRecyclerItemClick(int position, Book book) {
                 toggleSearchResultGone();
+                setInformationToDetail(book);
                 detailBookInfo.setVisibility(View.VISIBLE);
-                recyclerView.setVisibility(View.GONE);
+                bookDisplay.setVisibility(View.GONE);
             }
         });
     }
     
     private void InProgressBookCategory(){
         InProgressBookAdapter inProgressBookAdapter;
-        RecyclerView recyclerView;
         if(grid){
             //Setting Grid of book display
-            recyclerView = findViewById(R.id.gridView);
+            bookDisplay = findViewById(R.id.gridView);
 
             GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
-            recyclerView.setLayoutManager(gridLayoutManager);
+            bookDisplay.setLayoutManager(gridLayoutManager);
 
             inProgressBookAdapter = new InProgressBookAdapter(this);
-            recyclerView.setAdapter(inProgressBookAdapter);
+            bookDisplay.setAdapter(inProgressBookAdapter);
         }
         else{
             //Setting list of book display
-            recyclerView = findViewById(R.id.gridView);
+            bookDisplay = findViewById(R.id.gridView);
 
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-            recyclerView.setLayoutManager(linearLayoutManager);
+            bookDisplay.setLayoutManager(linearLayoutManager);
 
             inProgressBookAdapter = new InProgressBookAdapter(this);
-            recyclerView.setAdapter(inProgressBookAdapter);
+            bookDisplay.setAdapter(inProgressBookAdapter);
         }
 
         inProgressBookAdapter.setRecyclerItemClickListener(new InProgressBookAdapter.OnRecyclerItemClickListener() {
             @Override
-            public void onRecyclerItemClick(int position) {
+            public void onRecyclerItemClick(int position, Book book) {
                 toggleSearchResultGone();
+                setInformationToDetail(book);
                 detailBookInfo.setVisibility(View.VISIBLE);
-                recyclerView.setVisibility(View.GONE);
+                bookDisplay.setVisibility(View.GONE);
             }
         });
     }

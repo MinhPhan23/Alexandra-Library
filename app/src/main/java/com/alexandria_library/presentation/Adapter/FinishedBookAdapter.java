@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.alexandria_library.R;
+import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.dso.Reader;
 import com.alexandria_library.logic.SideBarService;
@@ -82,7 +83,7 @@ public class FinishedBookAdapter extends RecyclerView.Adapter<FinishedBookAdapte
                 @Override
                 public void onClick(View v) {
                     if(myOnItemClickListener != null){
-                        myOnItemClickListener.onRecyclerItemClick(getAdapterPosition());
+                        myOnItemClickListener.onRecyclerItemClick(getAdapterPosition(), finishedList.get(getAdapterPosition()));
                     }
                 }
             });
@@ -96,6 +97,6 @@ public class FinishedBookAdapter extends RecyclerView.Adapter<FinishedBookAdapte
     }
 
     public interface OnRecyclerItemClickListener {
-        void onRecyclerItemClick(int position);
+        void onRecyclerItemClick(int position, Book book);
     }
 }
