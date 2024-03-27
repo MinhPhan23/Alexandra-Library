@@ -2,10 +2,13 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="Run Alexandria">
+      <entry key="LoginLogoutRegisterTest()">
         <State />
       </entry>
-      <entry key="test()">
+      <entry key="LookUpBookTest()">
+        <State />
+      </entry>
+      <entry key="Run Alexandria">
         <State />
       </entry>
     </value>

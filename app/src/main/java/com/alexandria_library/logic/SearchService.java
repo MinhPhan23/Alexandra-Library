@@ -34,32 +34,28 @@ public class SearchService implements ISearchService{
     }
 
     private Booklist queryDatabase(String keywords) throws SearchServiceException{
-        List<String> keywordList = Arrays.asList(keywords.split(" "));
         Booklist result = new Booklist();
         Booklist bookByName = data.searchName(keywords);
         Booklist bookByAuthor = data.searchAuthor(keywords);
-        Booklist bookByGenre = new Booklist();
-        Booklist bookByTag = new Booklist();
+        Booklist bookByGenre = data.searchGenre(keywords);
+        Booklist bookByTag = data.searchTag(keywords);
 
-        if(data instanceof BookPersistentHSQLDB){
-            bookByGenre = ((BookPersistentHSQLDB) data).searchGenre(keywords);
-            bookByTag = ((BookPersistentHSQLDB) data).searchTag(keywords);
-        }
-        else if(data instanceof BookPersistentInterStub){
-            bookByGenre = ((BookPersistentInterStub) data).searchGenre(keywordList);
-            bookByTag = ((BookPersistentInterStub) data).searchTag(keywordList);
-        }
-
-        try {
-            result.addAll(bookByName);
-            result.addAll(bookByAuthor);
-            result.addAll(bookByGenre);
-            result.addAll(bookByTag);
-        }
-        catch (NullPointerException e) {
-            e.printStackTrace();
+        if(bookByName == null && bookByAuthor == null && bookByGenre == null && bookByTag == null) {
             throw new SearchServiceException("Could not search for the result, please try again");
         }
+        else {
+            result = addToList(result, bookByName);
+            result = addToList(result, bookByAuthor);
+            result = addToList(result, bookByGenre);
+            result = addToList(result, bookByTag);
+        }
         return result;
+    }
+
+    private Booklist addToList(Booklist mainList, Booklist addition){
+        if(addition != null){
+            mainList.addAll(addition);
+        }
+        return mainList;
     }
 }
