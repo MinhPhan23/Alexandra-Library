@@ -383,7 +383,9 @@ public class AuthenticationITest {
     }
 
     @After
-    public void tearDown(){
-        this.tempDB.delete();
+    public void tearDown() throws IOException {
+        if (tempDB != null && tempDB.exists()) {
+            tempDB.delete();
+        }
     }
 }
