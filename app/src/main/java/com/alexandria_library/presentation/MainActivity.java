@@ -1,11 +1,13 @@
 package com.alexandria_library.presentation;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -19,16 +21,22 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alexandria_library.R;
 import com.alexandria_library.application.Service;
 import com.alexandria_library.data.IBookPersistent;
 import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
+import com.alexandria_library.dso.IReader;
 import com.alexandria_library.dso.IUser;
+import com.alexandria_library.dso.Reader;
 import com.alexandria_library.logic.BookListFilter;
 import com.alexandria_library.logic.BookModifier;
+import com.alexandria_library.logic.DefaultBooklist;
+import com.alexandria_library.logic.Exception.BooklistException;
 import com.alexandria_library.logic.IBookListFilter;
+import com.alexandria_library.logic.IDefaultBooklist;
 import com.alexandria_library.logic.ISearchService;
 import com.alexandria_library.logic.SearchService;
 import com.alexandria_library.logic.IBookModifier;
@@ -62,6 +70,7 @@ public class MainActivity extends AppCompatActivity{
     private IBookListFilter bookListFilter;
     private IBookPersistent bookPersistent;
     private IBookModifier bookModifier;
+    private IDefaultBooklist defaultBooklist;
     private Button libraryBtn, allListBtn, finishedBtn, inProgressBtn, filterOpenBtn;
     private Button logOut, categoryBtn, account;
     private Button filter;
@@ -75,6 +84,7 @@ public class MainActivity extends AppCompatActivity{
     private Button detailBookDisplayBtn;
     private Button addToListBtn, toAllListBtn, toFinishedBtn, toInprogressBtn;
     private TextView titleView, authorView, dateView, tagsView, genresView;
+    private Book currentViewing;
 
     /////////////////////LIBRARIAN MODE UI////////////////////////
     private boolean librarianMode;
@@ -99,6 +109,7 @@ public class MainActivity extends AppCompatActivity{
         genresClicked = new ArrayList<>();
         bookModifier = new BookModifier();
         sideBarService = LoginActivity.getSideBarService();
+        defaultBooklist = new DefaultBooklist();
         if(sideBarService != null){
             currentUser = sideBarService.getUser();
         }
@@ -424,8 +435,102 @@ public class MainActivity extends AppCompatActivity{
                     toggleListGone();
             }
         });
+
+        toAllListBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)  {
+                if(currentViewing != null){
+                    if(currentUser instanceof IReader){
+                        Booklist list = new Booklist();
+                        list.add(currentViewing);
+                        try{
+                            defaultBooklist.addBookToAll((IReader) currentUser, list);
+                            dialogForSuccess("All");
+
+                        }
+                        catch (BooklistException e){
+                            System.out.println("Cannot adding in the book: " +currentViewing.getName()+ " to all list");
+                        }
+                    }
+                    else {
+                        dialogForFailed();
+                    }
+
+                }
+            }
+        });
+
+        toInprogressBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(currentViewing != null){
+                    if(currentUser instanceof IReader){
+                        Booklist list = new Booklist();
+                        list.add(currentViewing);
+                        try{
+                            defaultBooklist.addBookToInProgress((IReader) currentUser, list);
+                            dialogForSuccess("In Progress");
+                        }
+                        catch (BooklistException e){
+                            System.out.println("Cannot adding in the book: " +currentViewing.getName()+ " to InProgress list");
+                        }
+                    }
+                    else {
+                        dialogForFailed();
+                    }
+
+                }
+            }
+        });
+
+        toFinishedBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(currentViewing != null){
+                    if(currentUser instanceof IReader){
+                        Booklist list = new Booklist();
+                        list.add(currentViewing);
+                        try{
+                            defaultBooklist.addBookToFinished((IReader) currentUser, list);
+                            dialogForSuccess("Finished");
+                        }
+                        catch (BooklistException e){
+                            System.out.println("Cannot adding in the book: " +currentViewing.getName()+ " to Finished list");
+                        }
+                    }
+                    else {
+                        dialogForFailed();
+                    }
+                }
+            }
+        });
     }
 
+    private void dialogForSuccess(String message){
+        AlertDialog show = new AlertDialog.Builder(MainActivity.this)
+                .setTitle("SUCCESSFUL!!")
+                .setMessage(currentViewing.getName() + "Successfully added to " + message +" List!")
+                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getApplicationContext(), "confirmed pressed", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .show();
+
+    }
+    private void dialogForFailed(){
+        AlertDialog show = new AlertDialog.Builder(MainActivity.this)
+                .setTitle("Failed!!")
+                .setMessage("Librarian doesn't have any Lists")
+                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getApplicationContext(), "confirmed pressed", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .show();
+    }
 
     /*****
      * book distributor is work for distribute which book list showing
@@ -626,6 +731,8 @@ public class MainActivity extends AppCompatActivity{
             public void onRecyclerItemClick(int position, Book book) {
                 toggleSearchResultGone();
                 setInformationToDetail(book);
+                currentViewing = book;
+                toggleListGone();
                 detailBookInfo.setVisibility(View.VISIBLE);
                 libraryBookDisplay.setVisibility(View.GONE);
             }
@@ -660,6 +767,8 @@ public class MainActivity extends AppCompatActivity{
             public void onRecyclerItemClick(int position, Book book) {
                 toggleSearchResultGone();
                 setInformationToDetail(book);
+                currentViewing = book;
+                toggleListGone();
                 detailBookInfo.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.GONE);
             }
@@ -695,6 +804,8 @@ public class MainActivity extends AppCompatActivity{
             public void onRecyclerItemClick(int position, Book book) {
                 toggleSearchResultGone();
                 setInformationToDetail(book);
+                currentViewing = book;
+                toggleListGone();
                 detailBookInfo.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.GONE);
             }
@@ -730,6 +841,8 @@ public class MainActivity extends AppCompatActivity{
             public void onRecyclerItemClick(int position, Book book) {
                 toggleSearchResultGone();
                 setInformationToDetail(book);
+                currentViewing = book;
+                toggleListGone();
                 detailBookInfo.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.GONE);
             }
