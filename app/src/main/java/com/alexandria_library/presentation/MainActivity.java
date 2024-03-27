@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity{
     private EditText searchInput;
     private RecyclerView recyclerView, filterBox;
     private View rootView, filterPage;
+    private FrameLayout detailBookInfo;
 
     /////////////////////LIBRARIAN MODE UI////////////////////////
     private boolean librarianMode;
@@ -467,6 +468,9 @@ public class MainActivity extends AppCompatActivity{
         //made the text a button so we can make it invisible if needed
         listTextButton = findViewById(R.id.my_list_text);
 
+        //find out detail book information window
+        detailBookInfo = findViewById(R.id.book_detail_window);
+
         /////////////////////LIBRARIAN MODE UI////////////////////////
 
         //Button to see all the books in the library only for librarian interface due to diffirent layout
@@ -536,9 +540,10 @@ public class MainActivity extends AppCompatActivity{
 
     private void LibraryBookCategory(){
         LibraryBookListAdapter libraryBookListAdapter;
+        RecyclerView recyclerView;
         if(grid){
             //Setting Grid of book display
-            RecyclerView recyclerView = findViewById(R.id.gridView);
+            recyclerView = findViewById(R.id.gridView);
 
             GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
             recyclerView.setLayoutManager(gridLayoutManager);
@@ -548,7 +553,7 @@ public class MainActivity extends AppCompatActivity{
         }
         else{
             //Setting list of book display
-            RecyclerView recyclerView = findViewById(R.id.gridView);
+            recyclerView = findViewById(R.id.gridView);
 
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
             recyclerView.setLayoutManager(linearLayoutManager);
@@ -561,14 +566,17 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onRecyclerItemClick(int position) {
                 toggleSearchResultGone();
+                detailBookInfo.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
             }
         });
     }
     private void AllBookCategory(){
         AllBookListAdapter allBookAdapter;
+        RecyclerView recyclerView;
         if(grid){
             //Setting Grid of book display
-            RecyclerView recyclerView = findViewById(R.id.gridView);
+            recyclerView = findViewById(R.id.gridView);
 
             GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
             recyclerView.setLayoutManager(gridLayoutManager);
@@ -578,7 +586,7 @@ public class MainActivity extends AppCompatActivity{
         }
         else{
             //Setting list of book display
-            RecyclerView recyclerView = findViewById(R.id.gridView);
+            recyclerView = findViewById(R.id.gridView);
 
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
             recyclerView.setLayoutManager(linearLayoutManager);
@@ -591,15 +599,18 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onRecyclerItemClick(int position) {
                 toggleSearchResultGone();
+                detailBookInfo.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
             }
         });
     }
     
     private void FinishedBookCategory(){
         FinishedBookAdapter finishedBookAdapter;
+        RecyclerView recyclerView;
         if(grid){
             //Setting Grid of book display
-            RecyclerView recyclerView = findViewById(R.id.gridView);
+            recyclerView = findViewById(R.id.gridView);
 
             GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
             recyclerView.setLayoutManager(gridLayoutManager);
@@ -609,7 +620,7 @@ public class MainActivity extends AppCompatActivity{
         }
         else{
             //Setting list of book display
-            RecyclerView recyclerView = findViewById(R.id.gridView);
+            recyclerView = findViewById(R.id.gridView);
 
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
             recyclerView.setLayoutManager(linearLayoutManager);
@@ -622,15 +633,18 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onRecyclerItemClick(int position) {
                 toggleSearchResultGone();
+                detailBookInfo.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
             }
         });
     }
     
     private void InProgressBookCategory(){
         InProgressBookAdapter inProgressBookAdapter;
+        RecyclerView recyclerView;
         if(grid){
             //Setting Grid of book display
-            RecyclerView recyclerView = findViewById(R.id.gridView);
+            recyclerView = findViewById(R.id.gridView);
 
             GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
             recyclerView.setLayoutManager(gridLayoutManager);
@@ -640,7 +654,7 @@ public class MainActivity extends AppCompatActivity{
         }
         else{
             //Setting list of book display
-            RecyclerView recyclerView = findViewById(R.id.gridView);
+            recyclerView = findViewById(R.id.gridView);
 
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
             recyclerView.setLayoutManager(linearLayoutManager);
@@ -653,6 +667,8 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onRecyclerItemClick(int position) {
                 toggleSearchResultGone();
+                detailBookInfo.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
             }
         });
     }

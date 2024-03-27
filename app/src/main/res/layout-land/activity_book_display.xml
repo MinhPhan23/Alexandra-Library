@@ -26,6 +26,7 @@
         app:layout_constraintHorizontal_bias="0.906"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:visibility="visible"
         tools:ignore="MissingConstraints">
 
         <FrameLayout
@@ -39,6 +40,22 @@
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:text="Add To List"
+                android:textSize="15sp" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@color/white"
+            android:layout_marginLeft="850dp"
+            >
+            <Button
+                android:id="@+id/detail_book_close_btn"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/baseline_cancel_presentation_24"
                 android:textSize="15sp" />
 
         </FrameLayout>
