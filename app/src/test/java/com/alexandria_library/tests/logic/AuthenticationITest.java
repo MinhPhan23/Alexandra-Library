@@ -384,6 +384,6 @@ public class AuthenticationITest {
 
     @After
     public void tearDown(){
-        this.tempDB.delete();
+        //this.tempDB.delete();
     }
 }
