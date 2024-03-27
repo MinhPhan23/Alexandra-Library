@@ -1,4 +1,4 @@
-package com.alexandria_library;
+package com.alexandria_library.acceptanceTest;
 
 import static androidx.test.espresso.Espresso.closeSoftKeyboard;
 import static androidx.test.espresso.Espresso.onView;
@@ -13,8 +13,10 @@ import static org.junit.Assert.assertThrows;
 import androidx.test.espresso.AmbiguousViewMatcherException;
 import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.espresso.intent.Intents;
+import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.rule.ActivityTestRule;
 
+import com.alexandria_library.R;
 import com.alexandria_library.presentation.Authentication.LoginActivity;
 
 import org.junit.After;
@@ -49,7 +51,7 @@ public class LoginLogoutRegisterTests {
             String password2 = "123";
 
             //Account Registration
-            onView(withId(R.id.user_mode_btn)).perform(click());
+            onView(ViewMatchers.withId(R.id.user_mode_btn)).perform(click());
             onView(withId(R.id.register_btn)).perform(click());
             onView(withId(R.id.register_username_input)).perform(typeText(username1));
             closeSoftKeyboard();

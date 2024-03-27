@@ -47,7 +47,7 @@ public class LookUpBookTests {
         String password = "test";
 
         String bookName = "The Book Thief";
-        String fakeBook = "Hello, wake up";
+        String fakeBook = "NOT MY BOOK";
 
         //Account Registration
         onView(withId(R.id.user_mode_btn)).perform(click());
