@@ -31,7 +31,7 @@ public class InProgressBookAdapter extends RecyclerView.Adapter<InProgressBookAd
         if(sideBarService != null){
             if (sideBarService.getUser() instanceof Reader) {
                 Reader reader = (Reader) sideBarService.getUser();
-                inProgressList = reader.getFinishedList();
+                inProgressList = reader.getInProgressList();
             }
         }
     }
