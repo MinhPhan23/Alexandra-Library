@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.alexandria_library.R;
+import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.dso.Reader;
 import com.alexandria_library.logic.SideBarService;
@@ -30,7 +31,7 @@ public class InProgressBookAdapter extends RecyclerView.Adapter<InProgressBookAd
         if(sideBarService != null){
             if (sideBarService.getUser() instanceof Reader) {
                 Reader reader = (Reader) sideBarService.getUser();
-                inProgressList = reader.getFinishedList();
+                inProgressList = reader.getInProgressList();
             }
         }
     }
@@ -82,7 +83,7 @@ public class InProgressBookAdapter extends RecyclerView.Adapter<InProgressBookAd
                 @Override
                 public void onClick(View v) {
                     if(myOnItemClickListener != null){
-                        myOnItemClickListener.onRecyclerItemClick(getAdapterPosition());
+                        myOnItemClickListener.onRecyclerItemClick(getAdapterPosition(), inProgressList.get(getAdapterPosition()));
                     }
                 }
             });
@@ -96,6 +97,6 @@ public class InProgressBookAdapter extends RecyclerView.Adapter<InProgressBookAd
     }
 
     public interface OnRecyclerItemClickListener {
-        void onRecyclerItemClick(int position);
+        void onRecyclerItemClick(int position, Book book);
     }
 }

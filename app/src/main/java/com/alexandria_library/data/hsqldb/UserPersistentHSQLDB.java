@@ -5,6 +5,7 @@ import com.alexandria_library.data.IBookPersistent;
 import com.alexandria_library.data.IUserPersistent;
 import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
+import com.alexandria_library.dso.IReader;
 import com.alexandria_library.dso.Librarian;
 import com.alexandria_library.dso.Reader;
 import com.alexandria_library.dso.User;

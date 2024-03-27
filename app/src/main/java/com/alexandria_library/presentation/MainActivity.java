@@ -1,11 +1,13 @@
 package com.alexandria_library.presentation;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -18,15 +20,23 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alexandria_library.R;
 import com.alexandria_library.application.Service;
 import com.alexandria_library.data.IBookPersistent;
+import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
+import com.alexandria_library.dso.IReader;
 import com.alexandria_library.dso.IUser;
+import com.alexandria_library.dso.Reader;
 import com.alexandria_library.logic.BookListFilter;
 import com.alexandria_library.logic.BookModifier;
+import com.alexandria_library.logic.DefaultBooklist;
+import com.alexandria_library.logic.Exception.BooklistException;
 import com.alexandria_library.logic.IBookListFilter;
+import com.alexandria_library.logic.IDefaultBooklist;
 import com.alexandria_library.logic.ISearchService;
 import com.alexandria_library.logic.SearchService;
 import com.alexandria_library.logic.IBookModifier;
@@ -60,6 +70,7 @@ public class MainActivity extends AppCompatActivity{
     private IBookListFilter bookListFilter;
     private IBookPersistent bookPersistent;
     private IBookModifier bookModifier;
+    private IDefaultBooklist defaultBooklist;
     private Button libraryBtn, allListBtn, finishedBtn, inProgressBtn, filterOpenBtn;
     private Button logOut, categoryBtn, account;
     private Button filter;
@@ -67,8 +78,13 @@ public class MainActivity extends AppCompatActivity{
     private Button librarianAddBtn, listTextButton;
     private FrameLayout expandable;
     private EditText searchInput;
-    private RecyclerView recyclerView, filterBox;
+    private RecyclerView searchBarReview, filterBox, libraryBookDisplay;
     private View rootView, filterPage;
+    private FrameLayout detailBookInfo, chooseListToAddWindow;
+    private Button detailBookDisplayBtn;
+    private Button addToListBtn, toAllListBtn, toFinishedBtn, toInprogressBtn;
+    private TextView titleView, authorView, dateView, tagsView, genresView;
+    private Book currentViewing;
 
     /////////////////////LIBRARIAN MODE UI////////////////////////
     private boolean librarianMode;
@@ -93,6 +109,7 @@ public class MainActivity extends AppCompatActivity{
         genresClicked = new ArrayList<>();
         bookModifier = new BookModifier();
         sideBarService = LoginActivity.getSideBarService();
+        defaultBooklist = new DefaultBooklist();
         if(sideBarService != null){
             currentUser = sideBarService.getUser();
         }
@@ -230,7 +247,7 @@ public class MainActivity extends AppCompatActivity{
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     //check where is the touch position
-                    if (!isViewInBounds(recyclerView, (int) event.getRawX(), (int) event.getRawY())) {
+                    if (!isViewInBounds(searchBarReview, (int) event.getRawX(), (int) event.getRawY())) {
                         toggleSearchResultGone();
                     }
                 }
@@ -394,8 +411,126 @@ public class MainActivity extends AppCompatActivity{
                 addBookMenu.setVisibility(View.VISIBLE);
             }
         });
+
+
+        /****
+         * close book detail display window
+         */
+        detailBookDisplayBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(detailBookInfo.getVisibility() == View.VISIBLE){
+                    detailBookInfo.setVisibility(View.GONE);
+                    libraryBookDisplay.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        addToListBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(chooseListToAddWindow.getVisibility() == View.GONE)
+                    toggleListVisible();
+                else
+                    toggleListGone();
+            }
+        });
+
+        toAllListBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)  {
+                if(currentViewing != null){
+                    if(currentUser instanceof IReader){
+                        Booklist list = new Booklist();
+                        list.add(currentViewing);
+                        try{
+                            defaultBooklist.addBookToAll((IReader) currentUser, list);
+                            dialogForSuccess("All");
+
+                        }
+                        catch (BooklistException e){
+                            System.out.println("Cannot adding in the book: " +currentViewing.getName()+ " to all list");
+                        }
+                    }
+                    else {
+                        dialogForFailed();
+                    }
+
+                }
+            }
+        });
+
+        toInprogressBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(currentViewing != null){
+                    if(currentUser instanceof IReader){
+                        Booklist list = new Booklist();
+                        list.add(currentViewing);
+                        try{
+                            defaultBooklist.addBookToInProgress((IReader) currentUser, list);
+                            dialogForSuccess("In Progress");
+                        }
+                        catch (BooklistException e){
+                            System.out.println("Cannot adding in the book: " +currentViewing.getName()+ " to InProgress list");
+                        }
+                    }
+                    else {
+                        dialogForFailed();
+                    }
+
+                }
+            }
+        });
+
+        toFinishedBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(currentViewing != null){
+                    if(currentUser instanceof IReader){
+                        Booklist list = new Booklist();
+                        list.add(currentViewing);
+                        try{
+                            defaultBooklist.addBookToFinished((IReader) currentUser, list);
+                            dialogForSuccess("Finished");
+                        }
+                        catch (BooklistException e){
+                            System.out.println("Cannot adding in the book: " +currentViewing.getName()+ " to Finished list");
+                        }
+                    }
+                    else {
+                        dialogForFailed();
+                    }
+                }
+            }
+        });
     }
 
+    private void dialogForSuccess(String message){
+        AlertDialog show = new AlertDialog.Builder(MainActivity.this)
+                .setTitle("SUCCESSFUL!!")
+                .setMessage(currentViewing.getName() + "Successfully added to " + message +" List!")
+                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getApplicationContext(), "confirmed pressed", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .show();
+
+    }
+    private void dialogForFailed(){
+        AlertDialog show = new AlertDialog.Builder(MainActivity.this)
+                .setTitle("Failed!!")
+                .setMessage("Librarian doesn't have any Lists")
+                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getApplicationContext(), "confirmed pressed", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .show();
+    }
 
     /*****
      * book distributor is work for distribute which book list showing
@@ -447,7 +582,7 @@ public class MainActivity extends AppCompatActivity{
         searchInput = findViewById(R.id.searchInput);
 
         //Getting Search bar Output recycler view
-        recyclerView = findViewById(R.id.search_bar_recycle);
+        searchBarReview = findViewById(R.id.search_bar_recycle);
 
         //Getting search result
         searchIcon = findViewById(R.id.search_icon);
@@ -466,6 +601,25 @@ public class MainActivity extends AppCompatActivity{
 
         //made the text a button so we can make it invisible if needed
         listTextButton = findViewById(R.id.my_list_text);
+
+        //find out detail book information window
+        detailBookInfo = findViewById(R.id.book_detail_window);
+
+        chooseListToAddWindow = findViewById(R.id.add_extented_window);
+
+        //find out close book detail display window
+        detailBookDisplayBtn = findViewById(R.id.detail_book_close_btn);
+
+        titleView = findViewById(R.id.detail_book_title );
+        authorView = findViewById(R.id.detail_book_author);
+        dateView = findViewById(R.id.detail_book_date);
+        tagsView = findViewById(R.id.detail_book_tags);
+        genresView = findViewById(R.id.detail_book_genres);
+
+        addToListBtn = findViewById(R.id.add_book_to_list_btn);
+        toAllListBtn = findViewById(R.id.add_to_all_list);
+        toInprogressBtn = findViewById(R.id.add_to_inprogress_list);
+        toFinishedBtn = findViewById(R.id.add_to_finish_list);
 
         /////////////////////LIBRARIAN MODE UI////////////////////////
 
@@ -492,10 +646,10 @@ public class MainActivity extends AppCompatActivity{
 
     private void SearchBar(){
         LinearLayoutManager linearManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(linearManager);
+        searchBarReview.setLayoutManager(linearManager);
 
         searchListAdapter = new SearchListAdapter(searchList, this, searchService);
-        recyclerView.setAdapter(searchListAdapter);
+        searchBarReview.setAdapter(searchListAdapter);
 
         searchListAdapter.setRecyclerItemClickListener(new SearchListAdapter.OnRecyclerItemClickListener() {
             @Override
@@ -505,11 +659,19 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void toggleSearchResultGone(){
-        recyclerView.setVisibility(View.GONE);
+        searchBarReview.setVisibility(View.GONE);
     }
     public void toggleSearchResultVisible(){
-        recyclerView.setVisibility(View.VISIBLE);
+        searchBarReview.setVisibility(View.VISIBLE);
     }
+
+    public void toggleListGone(){
+        chooseListToAddWindow.setVisibility(View.GONE);
+    }
+    public void toggleListVisible(){
+        chooseListToAddWindow.setVisibility(View.VISIBLE);
+    }
+
     public void toggleFilterVisible(){
         filterPage.setVisibility(View.VISIBLE);
         filterBox.setVisibility(View.VISIBLE);
@@ -533,42 +695,55 @@ public class MainActivity extends AppCompatActivity{
         return(x>viewX && x < (viewWidth+viewX)) && (y>viewY && y<(viewHeight+viewY));
     }
 
+    private void setInformationToDetail(Book book){
+        titleView.setText(book.getName());
+        authorView.setText(book.getAuthor());
+        dateView.setText(book.getDate());
+        tagsView.setText("Tag:  "+book.getTags().toString());
+        genresView.setText("Genre:  "+book.getGenres().toString());
+    }
 
     private void LibraryBookCategory(){
         LibraryBookListAdapter libraryBookListAdapter;
         if(grid){
             //Setting Grid of book display
-            RecyclerView recyclerView = findViewById(R.id.gridView);
+            libraryBookDisplay = findViewById(R.id.gridView);
 
             GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
-            recyclerView.setLayoutManager(gridLayoutManager);
+            libraryBookDisplay.setLayoutManager(gridLayoutManager);
 
             libraryBookListAdapter = new LibraryBookListAdapter(this);
-            recyclerView.setAdapter(libraryBookListAdapter);
+            libraryBookDisplay.setAdapter(libraryBookListAdapter);
         }
         else{
             //Setting list of book display
-            RecyclerView recyclerView = findViewById(R.id.gridView);
+            libraryBookDisplay = findViewById(R.id.gridView);
 
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-            recyclerView.setLayoutManager(linearLayoutManager);
+            libraryBookDisplay.setLayoutManager(linearLayoutManager);
 
             libraryBookListAdapter = new LibraryBookListAdapter(this);
-            recyclerView.setAdapter(libraryBookListAdapter);
+            libraryBookDisplay.setAdapter(libraryBookListAdapter);
         }
 
         libraryBookListAdapter.setRecyclerItemClickListener(new LibraryBookListAdapter.OnRecyclerItemClickListener() {
             @Override
-            public void onRecyclerItemClick(int position) {
+            public void onRecyclerItemClick(int position, Book book) {
                 toggleSearchResultGone();
+                setInformationToDetail(book);
+                currentViewing = book;
+                toggleListGone();
+                detailBookInfo.setVisibility(View.VISIBLE);
+                libraryBookDisplay.setVisibility(View.GONE);
             }
         });
     }
     private void AllBookCategory(){
         AllBookListAdapter allBookAdapter;
+        RecyclerView recyclerView;
         if(grid){
             //Setting Grid of book display
-            RecyclerView recyclerView = findViewById(R.id.gridView);
+            recyclerView = findViewById(R.id.gridView);
 
             GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
             recyclerView.setLayoutManager(gridLayoutManager);
@@ -578,7 +753,7 @@ public class MainActivity extends AppCompatActivity{
         }
         else{
             //Setting list of book display
-            RecyclerView recyclerView = findViewById(R.id.gridView);
+            recyclerView = findViewById(R.id.gridView);
 
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
             recyclerView.setLayoutManager(linearLayoutManager);
@@ -589,17 +764,23 @@ public class MainActivity extends AppCompatActivity{
 
         allBookAdapter.setRecyclerItemClickListener(new AllBookListAdapter.OnRecyclerItemClickListener() {
             @Override
-            public void onRecyclerItemClick(int position) {
+            public void onRecyclerItemClick(int position, Book book) {
                 toggleSearchResultGone();
+                setInformationToDetail(book);
+                currentViewing = book;
+                toggleListGone();
+                detailBookInfo.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
             }
         });
     }
     
     private void FinishedBookCategory(){
         FinishedBookAdapter finishedBookAdapter;
+        RecyclerView recyclerView;
         if(grid){
             //Setting Grid of book display
-            RecyclerView recyclerView = findViewById(R.id.gridView);
+            recyclerView = findViewById(R.id.gridView);
 
             GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
             recyclerView.setLayoutManager(gridLayoutManager);
@@ -609,7 +790,7 @@ public class MainActivity extends AppCompatActivity{
         }
         else{
             //Setting list of book display
-            RecyclerView recyclerView = findViewById(R.id.gridView);
+            recyclerView = findViewById(R.id.gridView);
 
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
             recyclerView.setLayoutManager(linearLayoutManager);
@@ -620,17 +801,23 @@ public class MainActivity extends AppCompatActivity{
 
         finishedBookAdapter.setRecyclerItemClickListener(new FinishedBookAdapter.OnRecyclerItemClickListener() {
             @Override
-            public void onRecyclerItemClick(int position) {
+            public void onRecyclerItemClick(int position, Book book) {
                 toggleSearchResultGone();
+                setInformationToDetail(book);
+                currentViewing = book;
+                toggleListGone();
+                detailBookInfo.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
             }
         });
     }
     
     private void InProgressBookCategory(){
         InProgressBookAdapter inProgressBookAdapter;
+        RecyclerView recyclerView;
         if(grid){
             //Setting Grid of book display
-            RecyclerView recyclerView = findViewById(R.id.gridView);
+            recyclerView = findViewById(R.id.gridView);
 
             GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
             recyclerView.setLayoutManager(gridLayoutManager);
@@ -640,7 +827,7 @@ public class MainActivity extends AppCompatActivity{
         }
         else{
             //Setting list of book display
-            RecyclerView recyclerView = findViewById(R.id.gridView);
+            recyclerView = findViewById(R.id.gridView);
 
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
             recyclerView.setLayoutManager(linearLayoutManager);
@@ -651,8 +838,13 @@ public class MainActivity extends AppCompatActivity{
 
         inProgressBookAdapter.setRecyclerItemClickListener(new InProgressBookAdapter.OnRecyclerItemClickListener() {
             @Override
-            public void onRecyclerItemClick(int position) {
+            public void onRecyclerItemClick(int position, Book book) {
                 toggleSearchResultGone();
+                setInformationToDetail(book);
+                currentViewing = book;
+                toggleListGone();
+                detailBookInfo.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
             }
         });
     }
