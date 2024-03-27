@@ -13,9 +13,9 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
         BookListFilterITTest.class,
         SearchServiceITest.class,
-        AuthenticationITest.class,
         BookModifierITTest.class,
-        DefaultBooklistITest.class
+        DefaultBooklistITest.class,
+        AuthenticationITest.class,
 })
 public class IntegrationTests {
 }

@@ -62,6 +62,42 @@ public class UserPersistentHSQLDB implements IUserPersistent {
         return user;
     }
 
+    private ArrayList<User> getAllUser(){
+        ArrayList<User> userList = new ArrayList<>();
+        try(final Connection c = connection()){
+            String sql = "SELECT* FROM USERS";
+            PreparedStatement statement = c.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+
+            while(rs.next()){
+                User user = fromResultSet(rs, "reader");
+                userList.add(user);
+            }
+            return userList;
+        }
+        catch (final SQLException e){
+            throw new PersistenceException(e);
+        }
+    }
+
+    private ArrayList<User> getAllLibrarian(){
+        ArrayList<User> userArrayList = new ArrayList<>();
+        try(final Connection c = connection()){
+            String sql = "SELECT* FROM LIBRARIANS";
+            PreparedStatement statement = c.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+
+            while(rs.next()){
+                User user = fromResultSet(rs, "librarian");
+                userArrayList.add(user);
+            }
+            return userArrayList;
+        }
+        catch (final SQLException e){
+            throw new PersistenceException(e);
+        }
+    }
+
     private void getAllList(Reader user) {
         try(final Connection c = connection()){
             String sql = "SELECT B.BOOK_NAME FROM BOOKS B " +
@@ -134,6 +170,7 @@ public class UserPersistentHSQLDB implements IUserPersistent {
     @Override
     public boolean addNewUser(String userName, String password){
         boolean result = false;
+        userID = getAllUser().size()+1;
         try(final Connection c = connection()){
             final PreparedStatement statement = c.prepareStatement("INSERT INTO USERS(USER_ID, USER_NAME, PASSWORD) VALUES (?, ?, ?)");
             statement.setInt(1, userID);
@@ -143,7 +180,6 @@ public class UserPersistentHSQLDB implements IUserPersistent {
 
             if(affectedRow > 0){
                 result = true;
-                userID++;
             }
             return result;
         }
@@ -155,6 +191,7 @@ public class UserPersistentHSQLDB implements IUserPersistent {
     @Override
     public boolean addNewLibrarian(String userName, String password){
         boolean result = false;
+        librarianID = getAllLibrarian().size()+1;
         try(final Connection c = connection()){
             final PreparedStatement statement = c.prepareStatement("INSERT INTO LIBRARIANS(USER_ID, USER_NAME, PASSWORD) VALUES (?, ?, ?)");
             statement.setInt(1, librarianID);
@@ -164,7 +201,6 @@ public class UserPersistentHSQLDB implements IUserPersistent {
 
             if(affectedRow > 0){
                 result = true;
-                librarianID++;
             }
             return result;
         }
