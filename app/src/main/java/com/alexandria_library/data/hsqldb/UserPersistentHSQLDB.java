@@ -31,6 +31,7 @@ public class UserPersistentHSQLDB implements IUserPersistent {
 
     public UserPersistentHSQLDB(final String dbPath) {
         this.dbPath = dbPath;
+        userID = getAllUser().size()+1;
     }
 
     private Connection connection() throws SQLException {
@@ -60,6 +61,24 @@ public class UserPersistentHSQLDB implements IUserPersistent {
             user = new Librarian(userName, password, userID);
         }
         return user;
+    }
+
+    private ArrayList<User> getAllUser(){
+        ArrayList<User> userList = new ArrayList<>();
+        try(final Connection c = connection()){
+            String sql = "SELECT* FROM USERS";
+            PreparedStatement statement = c.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+
+            while(rs.next()){
+                User user = fromResultSet(rs, "reader");
+                userList.add(user);
+            }
+            return userList;
+        }
+        catch (final SQLException e){
+            throw new PersistenceException(e);
+        }
     }
 
     private void getAllList(Reader user) {
