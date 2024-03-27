@@ -9,7 +9,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/gridView"
         android:layout_width="939dp"
-        android:layout_height="724dp"
+        android:layout_height="700dp"
         android:layout_marginTop="72dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.906"
@@ -27,6 +27,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:visibility="gone"
+        android:padding="40dp"
         tools:ignore="MissingConstraints">
 
         <FrameLayout
@@ -45,10 +46,10 @@
         </FrameLayout>
 
         <FrameLayout
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:background="@color/white"
-            android:layout_marginLeft="850dp"
+            android:layout_marginLeft="800dp"
             >
             <Button
                 android:id="@+id/detail_book_close_btn"
@@ -67,7 +68,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="60dp"
             android:text="TextView"
-            android:textSize="70sp"
+            android:textSize="50sp"
             android:textStyle="bold" />
 
         <TextView
@@ -77,7 +78,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="200dp"
             android:text="Author"
-            android:textSize="40sp"
+            android:textSize="25sp"
             android:textStyle="italic" />
 
         <TextView
@@ -87,7 +88,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="300dp"
             android:text="date"
-            android:textSize="30sp"
+            android:textSize="20sp"
             android:textStyle="normal" />
 
 
@@ -98,16 +99,16 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="440dp"
             android:text="tags"
-            android:textSize="30sp" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/detail_book_genres"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="550dp"
+            android:layout_marginTop="530dp"
             android:text="genres"
-            android:textSize="30sp" />
+            android:textSize="20dp" />
 
     </FrameLayout>
 
