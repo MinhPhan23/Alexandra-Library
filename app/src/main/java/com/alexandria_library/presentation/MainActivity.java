@@ -71,8 +71,9 @@ public class MainActivity extends AppCompatActivity{
     private EditText searchInput;
     private RecyclerView searchBarReview, filterBox, libraryBookDisplay;
     private View rootView, filterPage;
-    private FrameLayout detailBookInfo;
+    private FrameLayout detailBookInfo, chooseListToAddWindow;
     private Button detailBookDisplayBtn;
+    private Button addToListBtn, toAllListBtn, toFinishedBtn, toInprogressBtn;
     private TextView titleView, authorView, dateView, tagsView, genresView;
 
     /////////////////////LIBRARIAN MODE UI////////////////////////
@@ -413,6 +414,16 @@ public class MainActivity extends AppCompatActivity{
                 }
             }
         });
+
+        addToListBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(chooseListToAddWindow.getVisibility() == View.GONE)
+                    toggleListVisible();
+                else
+                    toggleListGone();
+            }
+        });
     }
 
 
@@ -489,6 +500,8 @@ public class MainActivity extends AppCompatActivity{
         //find out detail book information window
         detailBookInfo = findViewById(R.id.book_detail_window);
 
+        chooseListToAddWindow = findViewById(R.id.add_extented_window);
+
         //find out close book detail display window
         detailBookDisplayBtn = findViewById(R.id.detail_book_close_btn);
 
@@ -497,6 +510,11 @@ public class MainActivity extends AppCompatActivity{
         dateView = findViewById(R.id.detail_book_date);
         tagsView = findViewById(R.id.detail_book_tags);
         genresView = findViewById(R.id.detail_book_genres);
+
+        addToListBtn = findViewById(R.id.add_book_to_list_btn);
+        toAllListBtn = findViewById(R.id.add_to_all_list);
+        toInprogressBtn = findViewById(R.id.add_to_inprogress_list);
+        toFinishedBtn = findViewById(R.id.add_to_finish_list);
 
         /////////////////////LIBRARIAN MODE UI////////////////////////
 
@@ -541,6 +559,14 @@ public class MainActivity extends AppCompatActivity{
     public void toggleSearchResultVisible(){
         searchBarReview.setVisibility(View.VISIBLE);
     }
+
+    public void toggleListGone(){
+        chooseListToAddWindow.setVisibility(View.GONE);
+    }
+    public void toggleListVisible(){
+        chooseListToAddWindow.setVisibility(View.VISIBLE);
+    }
+
     public void toggleFilterVisible(){
         filterPage.setVisibility(View.VISIBLE);
         filterBox.setVisibility(View.VISIBLE);
