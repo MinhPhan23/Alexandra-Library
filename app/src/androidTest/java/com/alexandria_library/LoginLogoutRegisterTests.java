@@ -1,20 +1,20 @@
 package com.alexandria_library;
 
-import static androidx.test.espresso.Espresso.*;
+import static androidx.test.espresso.Espresso.closeSoftKeyboard;
+import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.typeText;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-
-import static net.bytebuddy.matcher.ElementMatchers.is;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.hasEntry;
-import static org.hamcrest.Matchers.instanceOf;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.junit.Assert.assertThrows;
 
 import androidx.test.espresso.AmbiguousViewMatcherException;
+import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.rule.ActivityTestRule;
 
-import com.alexandria_library.dso.Book;
 import com.alexandria_library.presentation.Authentication.LoginActivity;
 
 import org.junit.After;
@@ -38,9 +38,8 @@ public class LoginLogoutRegisterTests {
     }
 
     @Test
-    public void test() {
+    public void LoginLogoutRegisterTest() {
         try{
-            //onView(withId(R.id.)).perform();
 
             //Credentials
             String username1 = "Tester";
