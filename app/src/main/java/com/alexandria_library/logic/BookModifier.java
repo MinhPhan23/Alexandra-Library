@@ -24,35 +24,6 @@ public class BookModifier implements IBookModifier{
         bookPersistent = Service.getBookPersistent();
     }
     public BookModifier(IBookPersistent persistent){this.bookPersistent = persistent;}
-    @Override
-    public void sendImageToDB(Context context, Uri imageUri){
-        try{
-            byte[] imageData = getImageByte (context, imageUri);
-            //using database's function to passing the imageData arrary
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    private byte[] getImageByte(Context context, Uri imageUri) throws IOException{
-        byte[] byteResult;
-        InputStream stream = context.getContentResolver().openInputStream(imageUri);
-        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
-        int bufferSize = 1024;
-        byte[] buffer = new byte[bufferSize];
-        int length;
-        while(true){
-            assert stream != null;
-            if ((length = stream.read(buffer)) == -1)
-                break;
-            else
-                byteBuffer.write(buffer, 0, length);
-        }
-        byteResult = byteBuffer.toByteArray();
-        return byteResult;
-    }
-
 
     @Override
     public boolean uploadBook(IUser user, int id, String bookName, String author, String date,

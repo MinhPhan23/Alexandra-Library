@@ -553,6 +553,8 @@ public class MainActivity extends AppCompatActivity{
                                 break;
                         }
                     }
+
+                    //librarian can delete library's book
                     else{
 
                     }
