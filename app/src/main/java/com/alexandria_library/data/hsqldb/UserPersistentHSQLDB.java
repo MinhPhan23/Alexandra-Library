@@ -1,5 +1,7 @@
 package com.alexandria_library.data.hsqldb;
 
+import androidx.annotation.RequiresPermission;
+
 import com.alexandria_library.application.Service;
 import com.alexandria_library.data.IBookPersistent;
 import com.alexandria_library.data.IUserPersistent;
@@ -254,16 +256,50 @@ public class UserPersistentHSQLDB implements IUserPersistent {
  * === Adding book to specific user' list Implement Start ===
  * Part for adding book to specific user's list (reading list, finished list, customer list)
  *******/
+
+    private int totalListCount (String type){
+        int total = 0;
+        ArrayList<User> userList = getAllUser();
+        User current = null;
+
+        if(type.equals("all")){
+            for(int i = 0; i<userList.size(); i++){
+                current = userList.get(i);
+                if(current instanceof Reader){
+                    total += ((Reader) current).getAllBooksList().size();
+                }
+            }
+        }
+        else if(type.equals("reading")){
+            for(int i = 0; i<userList.size(); i++){
+                current = userList.get(i);
+                if(current instanceof Reader){
+                    total += ((Reader) current).getInProgressList().size();
+                }
+            }
+        }
+        else if(type.equals("finished")){
+            for(int i = 0; i<userList.size(); i++){
+                current = userList.get(i);
+                if(current instanceof Reader){
+                    total += ((Reader) current).getFinishedList().size();
+                }
+            }
+        }
+        return total;
+    }
+
     //add book to custom list
     @Override
     public void addBookToAllList(Booklist list, User user){
         final String addToCustomListQuery =  "INSERT INTO CUSTOMLIST(BOOK_ID, USER_ID, CUSTOMLIST_PK) VALUES (?, ?, ?) ";
+        int listCount = totalListCount("all")+1;
         try{
             for(int i = 0; i<list.size(); i++){
-                boolean checkEachAdd = addBookToUserList(addToCustomListQuery, list.get(i), user, allListID);
+                boolean checkEachAdd = addBookToUserList(addToCustomListQuery, list.get(i), user, listCount);
 
                 if(checkEachAdd)
-                    allListID++;
+                    listCount++;
             }
         }
         catch (final SQLException e){
@@ -274,12 +310,13 @@ public class UserPersistentHSQLDB implements IUserPersistent {
     @Override
     public void addBookToReadingList(Booklist list, User user){
         final String addToReadingQuery = "INSERT INTO READINGLIST(BOOK_ID, USER_ID, READINGLIST_PK) VALUES(?, ?, ?)";
+        int listCount = totalListCount("reading")+1;
         try {
             for(int i = 0; i<list.size(); i++){
-                boolean checkEachAdd = addBookToUserList(addToReadingQuery, list.get(i), user, readingListID);
+                boolean checkEachAdd = addBookToUserList(addToReadingQuery, list.get(i), user, listCount);
 
                 if(checkEachAdd)
-                    readingListID++;
+                    listCount++;
             }
         }
         catch (final SQLException e){
@@ -290,12 +327,13 @@ public class UserPersistentHSQLDB implements IUserPersistent {
     @Override
     public void addBookToFinishedList(Booklist list, User user){
         final String addToFinishedQuery = "INSERT INTO FINISHEDLIST(BOOK_ID, USER_ID, FINISHEDLIST_PK) VALUES (?, ?, ?)";
+        int listCount = totalListCount("finished")+1;
         try {
             for (int i = 0; i<list.size(); i++){
-                boolean checkEachAdd = addBookToUserList(addToFinishedQuery, list.get(i), user, finishedListID);
+                boolean checkEachAdd = addBookToUserList(addToFinishedQuery, list.get(i), user, listCount);
 
                 if(checkEachAdd)
-                    finishedListID++;
+                    listCount++;
             }
         }
         catch (final SQLException e){

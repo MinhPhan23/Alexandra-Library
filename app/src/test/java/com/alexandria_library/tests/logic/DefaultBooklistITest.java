@@ -61,9 +61,7 @@ public class DefaultBooklistITest {
             Reader cloneReader = (Reader) userData.findUser("testUser");
             Booklist cloneAllList = cloneReader.getAllBooksList();
             for (int i = 0; i < allList.size(); i++) {
-                Book b1 = allList.get(i);
-                Book b2 = cloneAllList.get(i);
-                assertTrue(b1.equals(b2));
+                assertTrue(cloneAllList.get(i).equals(allList.get(i)));
             }
         } catch (Exception e) {
             e.printStackTrace();
