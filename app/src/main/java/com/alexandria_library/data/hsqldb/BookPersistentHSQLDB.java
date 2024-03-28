@@ -17,11 +17,11 @@ import java.util.List;
 public class BookPersistentHSQLDB implements IBookPersistent {
 
     private final String dbPath;
-    private static int bookID = 6;
-    private static int tagID = 14;
-    private static int genreID = 13;
-    private static int bookTagID = 14;
-    private static int bookGenreID = 20;
+    private static int bookID = 5;
+    private static int tagID = 13;
+    private static int genreID = 12;
+    private static int bookTagID = 13;
+    private static int bookGenreID = 19;
 
     public BookPersistentHSQLDB(final String dbPath){this.dbPath = dbPath;}
 
@@ -73,6 +73,17 @@ public class BookPersistentHSQLDB implements IBookPersistent {
         boolean result = false;
         try{
             if(checkCredentials(user) == 0 && duplicateBook(book.getName())<0){
+
+                ArrayList<Integer> list = new ArrayList<>();
+                Booklist bookList = getBookList();
+                for(int i = 0; i<bookList.size(); i++){
+                    list.add(bookList.get(i).getID());
+                }
+                while(list.contains(bookID)){
+                    bookID++;
+                }
+
+                book.setID(bookID);
                 addBook(book);
                 result = true;
             }
@@ -129,16 +140,21 @@ public class BookPersistentHSQLDB implements IBookPersistent {
 
     private int addTag(String tagName) throws SQLException {
         String insertTag = "INSERT INTO TAGS (TAG_NAME, TAG_ID) VALUES (?, ?)";
-        int result = getAllTags().size()+1;
+        ArrayList<Integer> allTagID = getAllTagID();
+        while(allTagID.contains(tagID)){
+            tagID++;
+        }
+        int result = tagID;
         try(final Connection c = connection()){
             PreparedStatement statement = c.prepareStatement(insertTag);
 
             statement.setString(1, tagName);
-            statement.setInt(2, result);
+            statement.setInt(2, tagID);
             int success = statement.executeUpdate();
             if(success == 0){
                 throw new SQLException ("@BookPersistenceHSQLDB.java addTag unsuccessful");
             }
+
             tagID++;
             statement.close();
         }
@@ -147,16 +163,23 @@ public class BookPersistentHSQLDB implements IBookPersistent {
 
     private int addGenre(String genreName) throws SQLException{
         String insertGenre = "INSERT INTO GENRES (GENRE_NAME, GENRE_ID) VALUES (?, ?)";
-        int result = getAllGenres().size()+1;
+
+        ArrayList<Integer> allGenreID = getAllGenreID();
+        while(allGenreID.contains(genreID)){
+            genreID++;
+        }
+        int result = genreID;
+
         try(final Connection c = connection()){
             PreparedStatement statement = c.prepareStatement(insertGenre);
 
             statement.setString(1, genreName);
-            statement.setInt(2, result);
+            statement.setInt(2, genreID);
             int success = statement.executeUpdate();
             if(success == 0){
                 throw new SQLException ("@BookPersistenceHSQLDB.java addGenre unsuccessful");
             }
+
             genreID++;
             statement.close();
         }
@@ -165,7 +188,13 @@ public class BookPersistentHSQLDB implements IBookPersistent {
 
     private int addBookTagRelation(int bookID, int tagID) throws SQLException{
         String insertBookTag = "INSERT INTO BOOKTAGS(BOOK_ID, TAG_ID, BOOKTAGS_PK) VALUES (?, ?, ?)";
+
+        ArrayList<Integer> allbookTagID = bookTagsCount();
+        while(allbookTagID.contains(bookTagID)){
+            bookTagID++;
+        }
         int result = bookTagID;
+
         try(final Connection c = connection()){
             PreparedStatement statement = c.prepareStatement(insertBookTag);
 
@@ -184,7 +213,13 @@ public class BookPersistentHSQLDB implements IBookPersistent {
 
     private int addBookGenreRelation(int bookID, int genreID) throws SQLException{
         String insertBookGenre = "INSERT INTO BOOKGENRES(BOOK_ID, GENRE_ID, BOOKGENRES_PK) VALUES (?, ?, ?)";
+
+        ArrayList<Integer> allBookGenreID = bookGenresCount();
+        while(allBookGenreID.contains(bookGenreID)){
+            bookGenreID++;
+        }
         int result = bookGenreID;
+
         try(final Connection c = connection()){
             PreparedStatement statement = c.prepareStatement(insertBookGenre);
 
@@ -195,7 +230,9 @@ public class BookPersistentHSQLDB implements IBookPersistent {
             if(success == 0){
                 throw new SQLException ("@BookPersistenceHSQLDB.java addBookGenreRelation unsuccessful");
             }
+
             bookGenreID++;
+            statement.close();
         }
         return result;
     }
@@ -282,6 +319,45 @@ public class BookPersistentHSQLDB implements IBookPersistent {
             throw new PersistenceException(e);
         }
     }
+    private ArrayList<Integer> getAllTagID(){
+        String query = "SELECT TAG_ID FROM TAGS";
+        ArrayList<Integer> list = new ArrayList<>();
+        try(final Connection c = connection()){
+            PreparedStatement statement = c.prepareStatement(query);
+            ResultSet rs = statement.executeQuery();
+
+            while(rs.next()){
+                int getTags = rs.getInt("TAG_ID");
+                list.add(getTags);
+            }
+            rs.close();
+            statement.close();
+            return list;
+        }
+        catch (SQLException e){
+            throw new PersistenceException(e);
+        }
+    }
+
+    private ArrayList<Integer> getAllGenreID(){
+        String query = "SELECT GENRE_ID FROM GENRES";
+        ArrayList<Integer> list = new ArrayList<>();
+        try(final Connection c = connection()){
+            PreparedStatement statement = c.prepareStatement(query);
+            ResultSet rs = statement.executeQuery();
+
+            while(rs.next()){
+                int getGenres = rs.getInt("GENRE_ID");
+                list.add(getGenres);
+            }
+            rs.close();
+            statement.close();
+            return list;
+        }
+        catch (SQLException e){
+            throw new PersistenceException(e);
+        }
+    }
 
     private ArrayList<String> getAllBookName() {
         // Only select the distinct names of the books
@@ -341,9 +417,12 @@ public class BookPersistentHSQLDB implements IBookPersistent {
         try(Connection c = connection()){
             PreparedStatement statement = c.prepareStatement(query);
             statement.setInt(1, bookID);
-            ResultSet rs = statement.executeQuery();
+            int success = statement.executeUpdate();
+
+            if(success == 0){
+                throw new SQLException ("@BookPersistenceHSQLDB.java delete book unsuccessful");
+            }
             statement.close();
-            rs.close();
         }
     }
 
@@ -396,7 +475,46 @@ public class BookPersistentHSQLDB implements IBookPersistent {
         }
     }
 
+    public ArrayList<Integer> bookTagsCount(){
+        ArrayList<Integer> list = new ArrayList<>();
+        String query = "SELECT BOOKTAGS_PK FROM BOOKTAGS ";
+        try(Connection c = connection()){
+            PreparedStatement statement = c.prepareStatement(query);
+            ResultSet rs = statement.executeQuery();
 
+            while(rs.next()){
+                int id = rs.getInt("BOOKTAGS_PK");
+                list.add(id);
+            }
+            rs.close();
+            statement.close();
+            return list;
+        }
+        catch (final SQLException e){
+            throw new PersistenceException(e);
+        }
+    }
+
+    public ArrayList<Integer> bookGenresCount(){
+        ArrayList<Integer> list = new ArrayList<>();
+        String query = "SELECT BOOKGENRES_PK FROM BOOKGENRES ";
+
+        try(Connection c = connection()){
+            PreparedStatement statement = c.prepareStatement(query);
+            ResultSet rs = statement.executeQuery();
+
+            while(rs.next()){
+                int id = rs.getInt("BOOKGENRES_PK");
+                list.add(id);
+            }
+            rs.close();
+            statement.close();
+            return list;
+        }
+        catch (final SQLException e){
+            throw new PersistenceException(e);
+        }
+    }
 /*************************************************************************************************
  * === SEARCH book by multiple requests START ===
  */
