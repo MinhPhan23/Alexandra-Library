@@ -9,16 +9,14 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
-import static org.junit.Assert.assertThrows;
-
-import android.text.Layout;
-
 import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.espresso.intent.Intents;
-import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.alexandria_library.presentation.Authentication.LoginActivity;
+
+import static org.hamcrest.core.AllOf.allOf;
+import static org.junit.Assert.assertThrows;
 
 import org.junit.After;
 import org.junit.Before;
@@ -81,7 +79,7 @@ public class LibrarianTest {
     }
 
     @Test
-    public void addBookTest() {
+    public void addAndRemoveBookTest() {
         //Credentials
         String username = "Minh";
         String password = "123";
@@ -111,11 +109,13 @@ public class LibrarianTest {
         onView(withId(R.id.add_book_date)).perform(typeText(date));
         closeSoftKeyboard();
         onView(withId(R.id.add_book_create_btn)).perform(click());
-        onView(withId(R.id.add_book_cancel_btn)).perform(click());
+
+        //Close the confirm panel
+        onView(withText("Confirm")).perform(click());
 
         //Find the book
         onView(withId(R.id.library_btn)).perform(click());
-        onView(withText("Hamlet")).check(matches(isDisplayed()));
+        onView(withText(name)).check(matches(isDisplayed()));
 
         //Log Out
         onView(withId(R.id.account_btn)).perform(click());
@@ -129,7 +129,7 @@ public class LibrarianTest {
 
         //Find the book
         onView(withId(R.id.library_btn)).perform(click());
-        onView(withText("Hamlet")).check(matches(isDisplayed()));
+        onView(withText(name)).check(matches(isDisplayed()));
 
         //Log Out
         onView(withId(R.id.account_btn)).perform(click());
@@ -144,6 +144,45 @@ public class LibrarianTest {
 
         //Find the book
         onView(withId(R.id.library_btn)).perform(click());
-        onView(withText("Hamlet")).check(matches(isDisplayed()));
+        onView(withText(name)).check(matches(isDisplayed()));
+
+        //Log Out
+        onView(withId(R.id.account_btn)).perform(click());
+        onView(withId(R.id.log_out_btn)).perform(click());
+
+        //Switch to Librarian mode
+        onView(withId(R.id.librarian_mode_btn)).perform(click());
+
+        //Log In
+        onView(withId(R.id.login_userName_input)).perform(typeText(username));
+        onView(withId(R.id.login_password_input)).perform(typeText(password));
+        closeSoftKeyboard();
+        onView(withId(R.id.login_btn)).perform(click());
+
+        //Find the book
+        onView(withId(R.id.library_btn)).perform(click());
+        onView(allOf(withId(R.id.book_title), withText(name))).perform(click());
+        onView(withId(R.id.add_book_to_list_btn)).perform(click());
+        onView(withId(R.id.delete_book_from_list_btn)).perform(click());
+
+        //Close the confirm panel
+        onView(withText("Confirm")).perform(click());
+
+        //Log Out
+        onView(withId(R.id.account_btn)).perform(click());
+        onView(withId(R.id.log_out_btn)).perform(click());
+
+        //Log In as Reader
+        onView(withId(R.id.user_mode_btn)).perform(click());
+        onView(withId(R.id.login_userName_input)).perform(typeText("xiang"));
+        onView(withId(R.id.login_password_input)).perform(typeText("123"));
+        closeSoftKeyboard();
+        onView(withId(R.id.login_btn)).perform(click());
+
+        //Find the book fail
+        onView(withId(R.id.library_btn)).perform(click());
+        Exception exception2 = assertThrows(NoMatchingViewException.class, ()-> {
+            onView(withText(name)).check(matches(isDisplayed()));
+        });
     }
 }
