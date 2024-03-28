@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:ignore="MissingDefaultResource">
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/gridView"
         android:layout_width="939dp"
@@ -15,7 +16,6 @@
         app:layout_constraintHorizontal_bias="0.906"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <FrameLayout
         android:id="@+id/book_detail_window"
@@ -38,49 +38,11 @@
             <Button
                 android:id="@+id/add_book_to_list_btn"
                 style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="140dp"
-                android:layout_height="wrap_content"
-                android:text="Add To List"
+                android:background="@drawable/baseline_add_circle_outline_24"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:textSize="15sp" />
 
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/add_extented_window"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:visibility="gone"
-            android:background="@color/white">
-
-            <Button
-                android:id="@+id/add_to_all_list"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="140dp"
-                android:layout_height="wrap_content"
-                android:text="All List"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
-
-            <Button
-                android:id="@+id/add_to_inprogress_list"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="140dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:text="InProgress List"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
-
-            <Button
-                android:id="@+id/add_to_finish_list"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="140dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="110dp"
-                android:text="Finished List"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
         </FrameLayout>
 
         <FrameLayout
@@ -147,6 +109,56 @@
             android:layout_marginTop="530dp"
             android:text="genres"
             android:textSize="20dp" />
+
+        <FrameLayout
+            android:id="@+id/add_extented_window"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:visibility="gone"
+            android:background="@android:color/white">
+
+            <Button
+                android:layout_marginTop="5dp"
+                android:id="@+id/add_to_all_list"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:text="ADD to All"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/add_to_inprogress_list"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="60dp"
+                android:text="ADD to InProgress"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/add_to_finish_list"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="125dp"
+                android:text="Add to Finished"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/delete_book_from_list_btn"
+                android:layout_width="140dp"
+                android:layout_marginTop="210dp"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red"
+                android:text="DELETE"
+                android:textAlignment="center"
+                android:textSize="15sp" />
+        </FrameLayout>
 
     </FrameLayout>
 

@@ -6,7 +6,9 @@ import android.net.Uri;
 import com.alexandria_library.application.Service;
 import com.alexandria_library.data.IBookPersistent;
 import com.alexandria_library.dso.Book;
+import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.dso.IUser;
+import com.alexandria_library.dso.Librarian;
 import com.alexandria_library.dso.User;
 
 import java.io.ByteArrayInputStream;
@@ -24,35 +26,6 @@ public class BookModifier implements IBookModifier{
         bookPersistent = Service.getBookPersistent();
     }
     public BookModifier(IBookPersistent persistent){this.bookPersistent = persistent;}
-    @Override
-    public void sendImageToDB(Context context, Uri imageUri){
-        try{
-            byte[] imageData = getImageByte (context, imageUri);
-            //using database's function to passing the imageData arrary
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    private byte[] getImageByte(Context context, Uri imageUri) throws IOException{
-        byte[] byteResult;
-        InputStream stream = context.getContentResolver().openInputStream(imageUri);
-        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
-        int bufferSize = 1024;
-        byte[] buffer = new byte[bufferSize];
-        int length;
-        while(true){
-            assert stream != null;
-            if ((length = stream.read(buffer)) == -1)
-                break;
-            else
-                byteBuffer.write(buffer, 0, length);
-        }
-        byteResult = byteBuffer.toByteArray();
-        return byteResult;
-    }
-
 
     @Override
     public boolean uploadBook(IUser user, int id, String bookName, String author, String date,
@@ -67,5 +40,17 @@ public class BookModifier implements IBookModifier{
             }
         }
         return succeed;
+    }
+
+    @Override
+    public boolean deleteLibraryBook(Book book, Librarian librarian){
+        boolean result = false;
+        if(librarian != null && book != null){
+            Booklist list = new Booklist();
+            list.add(book);
+            bookPersistent.deleteLibraryBook(list, librarian);
+            result = true;
+        }
+        return result;
     }
 }
