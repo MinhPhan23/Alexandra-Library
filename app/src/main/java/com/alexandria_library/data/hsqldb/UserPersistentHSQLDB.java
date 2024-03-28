@@ -294,12 +294,17 @@ public class UserPersistentHSQLDB implements IUserPersistent {
     public void addBookToAllList(Booklist list, User user){
         final String addToCustomListQuery =  "INSERT INTO CUSTOMLIST(BOOK_ID, USER_ID, CUSTOMLIST_PK) VALUES (?, ?, ?) ";
         int listCount = totalListCount("all")+1;
+        if(allListID < listCount)
+            allListID = listCount;
+        else
+            allListID++;
+
         try{
             for(int i = 0; i<list.size(); i++){
-                boolean checkEachAdd = addBookToUserList(addToCustomListQuery, list.get(i), user, listCount);
+                boolean checkEachAdd = addBookToUserList(addToCustomListQuery, list.get(i), user, allListID);
 
                 if(checkEachAdd)
-                    listCount++;
+                    allListID++;
             }
         }
         catch (final SQLException e){
@@ -311,12 +316,17 @@ public class UserPersistentHSQLDB implements IUserPersistent {
     public void addBookToReadingList(Booklist list, User user){
         final String addToReadingQuery = "INSERT INTO READINGLIST(BOOK_ID, USER_ID, READINGLIST_PK) VALUES(?, ?, ?)";
         int listCount = totalListCount("reading")+1;
+        if(readingListID < listCount)
+            readingListID = listCount;
+        else
+            readingListID++;
+
         try {
             for(int i = 0; i<list.size(); i++){
-                boolean checkEachAdd = addBookToUserList(addToReadingQuery, list.get(i), user, listCount);
+                boolean checkEachAdd = addBookToUserList(addToReadingQuery, list.get(i), user, readingListID);
 
                 if(checkEachAdd)
-                    listCount++;
+                    readingListID++;
             }
         }
         catch (final SQLException e){
@@ -328,12 +338,16 @@ public class UserPersistentHSQLDB implements IUserPersistent {
     public void addBookToFinishedList(Booklist list, User user){
         final String addToFinishedQuery = "INSERT INTO FINISHEDLIST(BOOK_ID, USER_ID, FINISHEDLIST_PK) VALUES (?, ?, ?)";
         int listCount = totalListCount("finished")+1;
+        if(finishedListID < listCount)
+            finishedListID = listCount;
+        else
+            finishedListID++;
         try {
             for (int i = 0; i<list.size(); i++){
-                boolean checkEachAdd = addBookToUserList(addToFinishedQuery, list.get(i), user, listCount);
+                boolean checkEachAdd = addBookToUserList(addToFinishedQuery, list.get(i), user, finishedListID);
 
                 if(checkEachAdd)
-                    listCount++;
+                    finishedListID++;
             }
         }
         catch (final SQLException e){
