@@ -35,4 +35,5 @@ public interface IBook {
     public String toString();
 
     public Book clone();
+    public boolean noOrderEquals(final Book book);
 }

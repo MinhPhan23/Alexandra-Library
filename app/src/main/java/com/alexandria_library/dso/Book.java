@@ -85,6 +85,7 @@ public class Book implements IBook {
                 Objects.equals(this.genres, book.getGenres());
     }
 
+    @Override
     public boolean noOrderEquals(final Book book){
         boolean equals = false;
         if(book.getName().equals(this.name) && book.getAuthor().equals(this.author)){
