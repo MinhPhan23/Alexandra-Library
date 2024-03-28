@@ -1,13 +1,20 @@
 package com.alexandria_library.tests.logic;
 
+import com.alexandria_library.data.IBookPersistent;
+import com.alexandria_library.data.hsqldb.BookPersistentHSQLDB;
 import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
+import com.alexandria_library.dso.IUser;
+import com.alexandria_library.dso.User;
 import com.alexandria_library.logic.BookListFilter;
 
 import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class BookListFilterTest {
@@ -33,6 +40,7 @@ public class BookListFilterTest {
     private BookListFilter bookListFilter;
     private Booklist sampleBookList;
     private Booklist emptyBookList;
+    private IBookPersistent bookPersistent;
 
     @Before
     public void setUp() {
@@ -40,6 +48,7 @@ public class BookListFilterTest {
         bookListFilter = new BookListFilter();
         sampleBookList = new Booklist(Arrays.asList(book1, book2, book3, book4, book5, book6));
         emptyBookList = new Booklist();
+        bookPersistent = mock(BookPersistentHSQLDB.class);
     }
 
     @Test
@@ -92,7 +101,7 @@ public class BookListFilterTest {
         expectedList.add(book4);
         expectedList.add(book6);
         Booklist filteredList = bookListFilter.filterByTag(sampleBookList, tagsToFilter);
-        assertTrue(filteredList.size() == 3);
+        assertEquals(3, filteredList.size());
         assertEquals(expectedList, filteredList);
     }
 
@@ -114,7 +123,7 @@ public class BookListFilterTest {
         allBooks.add(book4);
         allBooks.add(book5);
         Booklist filteredList = bookListFilter.filterByGenre(sampleBookList, genresToFilter);
-        assertTrue(filteredList.size() == 5);
+        assertEquals(5, filteredList.size());
         assertEquals(filteredList, allBooks);
     }
 
@@ -140,5 +149,22 @@ public class BookListFilterTest {
         Booklist filteredList = bookListFilter.filterByAuthor(emptyBookList, authorsToFilter);
         Booklist expectedList = new Booklist(Arrays.asList());
         assertEquals(expectedList, filteredList);
+    }
+
+    @Test
+    public void testGetAllTags(){
+        ArrayList<String> tags = new ArrayList<>(Arrays.asList("classic", "romance", "mystery",
+                                                    "drama", "social justice", "coming-of-age"));
+        when(bookPersistent.getAllTags()).thenReturn(tags);
+
+        assertEquals(bookPersistent.getAllTags(), tags);
+    }
+
+    @Test
+    public void testGetAllGenres(){
+        ArrayList<String> genres = new ArrayList<>(Arrays.asList("fiction", "drama", "historical"));
+        when(bookPersistent.getAllGenres()).thenReturn(genres);
+
+        assertEquals(bookPersistent.getAllGenres(), genres);
     }
 }
