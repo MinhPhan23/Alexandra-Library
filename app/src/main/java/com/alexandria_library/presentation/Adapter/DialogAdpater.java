@@ -30,6 +30,7 @@ public class DialogAdpater {
                 .show();
 
     }
+
     public void dialogRemoveBookSuccess(Book currentViewing){
         AlertDialog show = new AlertDialog.Builder(context)
                 .setTitle("SUCCESSFUL!!")

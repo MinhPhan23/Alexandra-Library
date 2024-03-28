@@ -155,6 +155,12 @@ public class MainActivity extends AppCompatActivity{
                 @Override
                 public void onClick(View v) {
                     createBook();
+                    closeAddBook();
+                    library = true;
+                    all = false;
+                    inProgress = false;
+                    finish = false;
+                    bookDistributor();
                 }
             });
 
@@ -973,6 +979,7 @@ public class MainActivity extends AppCompatActivity{
         String date = addBookDate.getText().toString();
         boolean succeed = bookModifier.uploadBook(currentUser, allLibraryBooks.size()+1, name, author, date, tags,  genres);
         allLibraryBooks = bookPersistent.getBookList();
+        dialogAdpater.dialogForSuccess("Library", new Book(0, name,author, date, tags, genres));
     }
 
     private void closeAddBook(){
