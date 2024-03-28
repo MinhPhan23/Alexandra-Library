@@ -39,6 +39,9 @@ public class BookListFilter implements IBookListFilter {
 
     @Override
     public Booklist filterByTag(Booklist bookList, String[] tags) {
+        if(tags.length == 0)
+            return bookList;
+
         Booklist filteredBooks = new Booklist();
 
         for (Book book : bookList) {
@@ -46,24 +49,21 @@ public class BookListFilter implements IBookListFilter {
                 filteredBooks.add(book);
             }
         }
-        if (filteredBooks.isEmpty()){
-            filteredBooks = new Booklist(bookList);
-        }
 
         return filteredBooks;
     }
 
     @Override
     public Booklist filterByGenre(Booklist bookList, String[] genres) {
+        if(genres.length == 0)
+            return bookList;
+
         Booklist filteredBooks = new Booklist();
 
         for (Book book : bookList) {
             if (containsAll(book.getGenres(), genres)) {
                 filteredBooks.add(book);
             }
-        }
-        if (filteredBooks.isEmpty()){
-            filteredBooks = new Booklist(bookList);
         }
 
         return filteredBooks;
