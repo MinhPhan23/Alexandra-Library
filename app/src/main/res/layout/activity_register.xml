@@ -6,33 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".presentation.Authentication.RegisterActivity">
 
-    <Button
-        android:id="@+id/librarian_mode_btn"
-        android:layout_width="150dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:background="@color/dark_purple"
-        android:text="Librarian"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/user_mode_btn"
-        android:layout_width="150dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="20dp"
-        android:background="@color/dark_purple"
-        android:text="User"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/librarian_mode_btn" />
 
     <EditText
         android:id="@+id/register_password_input"
         android:layout_width="498dp"
         android:layout_height="69dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="32dp"
         android:ems="10"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,6 +25,7 @@
         android:layout_height="41dp"
         android:layout_marginTop="180dp"
         android:text="User Name"
+        android:gravity="center"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.273"
@@ -56,21 +36,27 @@
         android:id="@+id/confirmPasswordText"
         android:layout_width="282dp"
         android:layout_height="41dp"
+        android:gravity="center"
         android:text="Confirm Password"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/register_username_input"
+        app:layout_constraintEnd_toStartOf="@+id/register_confirm_password_input"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/register_username_title"
-        app:layout_constraintVertical_bias="0.269" />
+        app:layout_constraintVertical_bias="0.295" />
 
     <TextView
         android:id="@+id/register_password_title"
         android:layout_width="154dp"
         android:layout_height="57dp"
         android:layout_marginStart="20dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="center"
         android:text="Password"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/register_password_input"
         app:layout_constraintStart_toStartOf="@+id/register_username_title"
         app:layout_constraintTop_toBottomOf="@+id/register_username_title"
         app:layout_constraintVertical_bias="0.096" />
@@ -79,23 +65,31 @@
         android:id="@+id/register_username_input"
         android:layout_width="498dp"
         android:layout_height="69dp"
-        android:layout_marginTop="156dp"
+        android:layout_marginTop="168dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.621"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/Create_register_btn"
-        android:layout_width="226dp"
-        android:layout_height="85dp"
-        android:layout_marginEnd="524dp"
-        android:background="@color/dark_purple"
-        android:drawableTop="@drawable/baseline_arrow_forward_24"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <FrameLayout
+        android:layout_width="200dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="73dp"
+        android:background="@drawable/button_background"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.727" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/register_confirm_password_input">
+
+        <Button
+            android:id="@+id/Create_register_btn"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="200dp"
+            android:layout_height="80dp"
+            android:layout_marginEnd="552dp"
+            android:padding="0dp"
+            android:text="SIGN UP"
+            android:textSize="25sp" />
+    </FrameLayout>
 
     <TextView
         android:id="@+id/register_title"
@@ -118,7 +112,50 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.623"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.467" />
+        app:layout_constraintTop_toBottomOf="@+id/register_password_input"
+        app:layout_constraintVertical_bias="0.071" />
+
+    <FrameLayout
+        android:id="@+id/register_librarian_mode_window"
+        android:layout_width="150dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="44dp"
+        android:background="@drawable/login_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/librarian_mode_btn"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="150dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:text="Librarian"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/register_user_mode_btn_window"
+        android:layout_width="150dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/login_button"
+        app:layout_constraintEnd_toEndOf="@+id/register_librarian_mode_window"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/register_librarian_mode_window"
+        app:layout_constraintTop_toBottomOf="@+id/register_librarian_mode_window">
+
+        <Button
+            android:id="@+id/user_mode_btn"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="150dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:text="Reader"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

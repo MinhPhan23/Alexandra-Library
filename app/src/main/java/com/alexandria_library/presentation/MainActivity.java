@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity{
     private Button addBookCreateBtn, addBookCancelBtn;
     private ConstraintLayout addBookMenu;
     private EditText addBookName, addBookAuthor, addBookTags, addBookGenres, addBookDate;
+
     /////////////////////////////////////////////////////////////
 
     private boolean library, all, inProgress,finish, filterOpen;
@@ -703,6 +704,7 @@ public class MainActivity extends AppCompatActivity{
 
         //button to close the add book menu
         addBookCancelBtn = findViewById(R.id.add_book_cancel_btn);
+
     }
 
     private void SearchBar(){

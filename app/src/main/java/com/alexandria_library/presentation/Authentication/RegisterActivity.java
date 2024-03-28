@@ -1,6 +1,7 @@
 package com.alexandria_library.presentation.Authentication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.alexandria_library.R;
@@ -25,6 +27,7 @@ public class RegisterActivity extends AppCompatActivity {
     /////////////////////////LIBRARIAN MODE UI/////////////////////////
     private Button librarianModeBtn, userModeBtn;
     private boolean librarianMode;
+    private FrameLayout library_mode_windows, reader_mode_windows;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +95,8 @@ public class RegisterActivity extends AppCompatActivity {
         goRegister = findViewById(R.id.Create_register_btn);
         librarianModeBtn = findViewById(R.id.librarian_mode_btn);
         userModeBtn = findViewById(R.id.user_mode_btn);
+        library_mode_windows = findViewById(R.id.register_librarian_mode_window);
+        reader_mode_windows = findViewById(R.id.register_user_mode_btn_window);
     }
 
     private void registerBtnClicked(View v){
@@ -121,14 +126,15 @@ public class RegisterActivity extends AppCompatActivity {
      * to the user which mode is selected
      */
     private void updateModeBtns() {
-        if(librarianMode){
-            librarianModeBtn.setTextColor(Color.parseColor("#FFFFFF"));
-            userModeBtn.setTextColor(Color.parseColor("#321450"));
+        if (librarianMode) {
+            library_mode_windows.setBackground(ContextCompat.getDrawable(this, R.drawable.clicked_btn_bacc));
+            reader_mode_windows.setBackground(ContextCompat.getDrawable(this, R.drawable.login_button));
+        } else {
+            library_mode_windows.setBackground(ContextCompat.getDrawable(this, R.drawable.login_button));
+            reader_mode_windows.setBackground(ContextCompat.getDrawable(this, R.drawable.clicked_btn_bacc));
         }
-        else{
-            librarianModeBtn.setTextColor(Color.parseColor("#000000"));
-            userModeBtn.setTextColor(Color.parseColor("#FFFFFF"));
-        }
-        librarianModeBtn.invalidate();//redraws the buttons with the new text colours
+        // Assuming library_mode_windows and reader_mode_windows need to be invalidated to reflect changes.
+        library_mode_windows.invalidate();
+        reader_mode_windows.invalidate();
     }
 }
