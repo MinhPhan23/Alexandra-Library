@@ -27,10 +27,10 @@ when they write it and discourage postponed debugging.
 - How to evaluate: Evaluate if the amount of time spending recoding/debugging the last merge meeting before the deadline of the current iteration is decreased compared to the
 amount of such work of the previous iteration.
 
-# Velocity
+# Velocity Chart
 
 ![(Velocity)](Velocity.png)
 
 - In Iteration 1 we totally underestimated the time it took to set up and get things rolling. Moreover we did not use the tracking tools to its full extent, making the data looks weird.
-- In Iteration 2 we used the tools on GitLab better, but due to underestimating the time it would take to contruct a database, and the time just fixing bugs after merging, the actual time spent is still a lot more than estimate.
+- In Iteration 2 we used the tools on GitLab better, but due to underestimating the time it would take to contruct a database, and the time just fixing bugs after merging, the actual time spent is still more than estimate, which left us in a very bad spot toward the end.
 - In Iteration 3, this is the closest to what we have, estimate time spend on tasks and actual times are pretty close, we no longer overestimate our ability to get a task done and have less bugs and merge conflicts.
