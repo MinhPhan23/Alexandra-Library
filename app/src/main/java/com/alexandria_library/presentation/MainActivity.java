@@ -449,11 +449,11 @@ public class MainActivity extends AppCompatActivity{
 
                         }
                         catch (BooklistException e){
-                            System.out.println("Cannot adding in the book: " +currentViewing.getName()+ " to all list");
+                            diaglofForFailedAdd(e.getMessage());
                         }
                     }
                     else {
-                        dialogForFailed();
+                        dialogForFailedLibrarian();
                     }
 
                 }
@@ -472,11 +472,11 @@ public class MainActivity extends AppCompatActivity{
                             dialogForSuccess("In Progress");
                         }
                         catch (BooklistException e){
-                            System.out.println("Cannot adding in the book: " +currentViewing.getName()+ " to InProgress list");
+                            diaglofForFailedAdd(e.getMessage());
                         }
                     }
                     else {
-                        dialogForFailed();
+                        dialogForFailedLibrarian();
                     }
 
                 }
@@ -495,11 +495,11 @@ public class MainActivity extends AppCompatActivity{
                             dialogForSuccess("Finished");
                         }
                         catch (BooklistException e){
-                            System.out.println("Cannot adding in the book: " +currentViewing.getName()+ " to Finished list");
+                            diaglofForFailedAdd(e.getMessage());
                         }
                     }
                     else {
-                        dialogForFailed();
+                        dialogForFailedLibrarian();
                     }
                 }
             }
@@ -519,10 +519,23 @@ public class MainActivity extends AppCompatActivity{
                 .show();
 
     }
-    private void dialogForFailed(){
+    private void dialogForFailedLibrarian(){
         AlertDialog show = new AlertDialog.Builder(MainActivity.this)
-                .setTitle("Failed!!")
+                .setTitle("Not success")
                 .setMessage("Librarian doesn't have any Lists")
+                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getApplicationContext(), "confirmed pressed", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .show();
+    }
+
+    private void diaglofForFailedAdd(String message) {
+        AlertDialog show = new AlertDialog.Builder(MainActivity.this)
+                .setTitle("Not success")
+                .setMessage(message)
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
