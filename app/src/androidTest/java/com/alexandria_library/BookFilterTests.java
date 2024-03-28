@@ -1,4 +1,4 @@
-package com.alexandria_library.acceptanceTest;
+package com.alexandria_library;
 
 import static androidx.test.espresso.Espresso.closeSoftKeyboard;
 import static androidx.test.espresso.Espresso.onView;
