@@ -1,6 +1,5 @@
 package com.alexandria_library.tests.logic;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
