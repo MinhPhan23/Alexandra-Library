@@ -46,6 +46,9 @@ public class BookListFilter implements IBookListFilter {
                 filteredBooks.add(book);
             }
         }
+        if (filteredBooks.isEmpty()){
+            filteredBooks = new Booklist(bookList);
+        }
 
         return filteredBooks;
     }
@@ -58,6 +61,9 @@ public class BookListFilter implements IBookListFilter {
             if (containsAll(book.getGenres(), genres)) {
                 filteredBooks.add(book);
             }
+        }
+        if (filteredBooks.isEmpty()){
+            filteredBooks = new Booklist(bookList);
         }
 
         return filteredBooks;
@@ -79,11 +85,7 @@ public class BookListFilter implements IBookListFilter {
     @Override
     public Booklist getFilteredList(Booklist books, String[] tags, String[] genres){
         Booklist tagFiltered = filterByTag(books, tags);
-        if(!tagFiltered.isEmpty()){
-            //filter genre by using what we get from tag's filtered
-            return filterByGenre(tagFiltered, genres);
-        }
-        return null;
+        return filterByGenre(tagFiltered, genres);
     }
 
     private static boolean containsAll(List<String> bookTags, String[] filterTags) {
