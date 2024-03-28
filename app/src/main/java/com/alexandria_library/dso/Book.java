@@ -76,13 +76,19 @@ public class Book implements IBook {
         genres = bookGenres;
     }
 
-    public boolean equals(final Book book) {
-        return Objects.equals(this.id, book.getID()) &&
-                Objects.equals(this.name, book.getName()) &&
-                Objects.equals(this.author, book.getAuthor()) &&
-                Objects.equals(this.date, book.getDate()) &&
-                Objects.equals(this.tags, book.getTags()) &&
-                Objects.equals(this.genres, book.getGenres());
+    @Override
+    public boolean equals(Object book) {
+        if (!(book instanceof Book)) {
+            return false;
+        }
+        else {
+            return Objects.equals(this.id, ((Book) book).getID()) &&
+                    Objects.equals(this.name, ((Book) book).getName()) &&
+                    Objects.equals(this.author, ((Book) book).getAuthor()) &&
+                    Objects.equals(this.date, ((Book) book).getDate()) &&
+                    Objects.equals(this.tags, ((Book) book).getTags()) &&
+                    Objects.equals(this.genres, ((Book) book).getGenres());
+        }
     }
 
     @Override

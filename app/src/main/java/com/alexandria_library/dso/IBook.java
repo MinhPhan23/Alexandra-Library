@@ -30,7 +30,7 @@ public interface IBook {
 
     public String getDate();
 
-    public boolean equals(final Book book);
+    public boolean equals(Object book);
 
     public String toString();
 
