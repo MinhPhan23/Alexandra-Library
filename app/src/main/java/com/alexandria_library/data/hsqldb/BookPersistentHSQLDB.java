@@ -429,15 +429,12 @@ public class BookPersistentHSQLDB implements IBookPersistent {
 
     @Override
     public Booklist getBookList(){
-        Book curr;
         Booklist books = new Booklist();
         ArrayList<String> nameList = getAllBookName();
         for(int i = 0; i < nameList.size(); i++){
             Book getBook = getEachBooks(nameList.get(i));
             books.add(getBook);
         }
-
-        Collections.sort(books, (a , b) -> Book.compare(a, b));
 
         return books;
     }
