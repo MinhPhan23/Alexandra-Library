@@ -396,7 +396,7 @@ public class BookPersistentHSQLDB implements IBookPersistent {
     }
 
     @Override
-    public void deleteLibraryBook(Booklist list, User user) {
+    public void deleteLibraryBook(Booklist list, IUser user) {
         try {
             for(int i = 0; i<list.size(); i++){
                 deleteFromLibrary(list.get(i));

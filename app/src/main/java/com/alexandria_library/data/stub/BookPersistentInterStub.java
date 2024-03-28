@@ -280,7 +280,7 @@ public class BookPersistentInterStub implements IBookPersistent {
     }
 
     @Override
-    public void deleteLibraryBook(Booklist list, User user) {
+    public void deleteLibraryBook(Booklist list, IUser user) {
 
     }
 
