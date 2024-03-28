@@ -2,6 +2,7 @@ package com.alexandria_library.tests.logic;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import com.alexandria_library.data.IBookPersistent;
@@ -10,13 +11,12 @@ import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.dso.IUser;
 import com.alexandria_library.dso.Librarian;
-import com.alexandria_library.logic.BookListFilter;
 import com.alexandria_library.logic.BookModifier;
 import com.alexandria_library.logic.IBookModifier;
 import com.alexandria_library.tests.util.TestUtils;
 
+import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.File;
@@ -38,6 +38,12 @@ public class BookModifierITTest {
         libraryBooks = persistent.getBookList();
         this.bookModifier = new BookModifier(persistent);
         this.librarian = new Librarian("xxxx", "123", 20);
+    }
+    @Test
+    public void TestDefaultConstructor(){
+        bookModifier = null;
+        bookModifier = new BookModifier();
+        assertNotNull(bookModifier);
     }
 
     @Test
@@ -85,6 +91,7 @@ public class BookModifierITTest {
             }
         }
         assertTrue(checkExits);
+
     }
 
     @Test
@@ -181,6 +188,13 @@ public class BookModifierITTest {
         assertEquals(libraryBooks.size(), 4);
         for(int i = 0; i<libraryBooks.size(); i++){
             assertFalse(libraryBooks.get(i).equals(existingBook));
+        }
+    }
+
+    @After
+    public void tearDown() throws IOException {
+        if (tempDB != null && tempDB.exists()) {
+            tempDB.delete();
         }
     }
 }

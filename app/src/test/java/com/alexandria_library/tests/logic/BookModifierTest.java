@@ -6,12 +6,11 @@ import static org.junit.Assert.assertTrue;
 
 import com.alexandria_library.data.IBookPersistent;
 import com.alexandria_library.data.stub.BookPersistentInterStub;
-import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.dso.IUser;
 import com.alexandria_library.dso.Librarian;
 import com.alexandria_library.dso.User;
-import com.alexandria_library.logic.BookListFilter;
+import com.alexandria_library.dso.Book;
 import com.alexandria_library.logic.BookModifier;
 import com.alexandria_library.logic.IBookModifier;
 

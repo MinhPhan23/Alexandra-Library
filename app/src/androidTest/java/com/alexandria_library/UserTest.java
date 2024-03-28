@@ -13,6 +13,7 @@ import static org.junit.Assert.assertThrows;
 import androidx.test.espresso.AmbiguousViewMatcherException;
 import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.espresso.intent.Intents;
+import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.alexandria_library.presentation.Authentication.LoginActivity;
@@ -42,14 +43,14 @@ public class UserTest {
         try{
 
             //Credentials
-            String username1 = "Tester";
+            String username1 = "Reader1";
             String password1 = "test";
 
             String username2 = "Andrei";
             String password2 = "123";
 
             //Account Registration
-            onView(withId(R.id.user_mode_btn)).perform(click());
+            onView(ViewMatchers.withId(R.id.user_mode_btn)).perform(click());
             onView(withId(R.id.register_btn)).perform(click());
             onView(withId(R.id.register_username_input)).perform(typeText(username1));
             closeSoftKeyboard();

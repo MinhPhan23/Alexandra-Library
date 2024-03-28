@@ -63,16 +63,11 @@ public class BookPersistentHSQLDB implements IBookPersistent {
         return book;
     }
 
-
-    private int checkCredentials(IUser user){
-        return 0;
-    }
-
     @Override
     public boolean upload(Book book, IUser user) {
         boolean result = false;
         try{
-            if(checkCredentials(user) == 0 && duplicateBook(book.getName())<0){
+            if(duplicateBook(book.getName())<0){
 
                 ArrayList<Integer> list = new ArrayList<>();
                 Booklist bookList = getBookList();
@@ -428,25 +423,14 @@ public class BookPersistentHSQLDB implements IBookPersistent {
 
     @Override
     public Booklist getBookList(){
-        Book curr;
         Booklist books = new Booklist();
-        Booklist sorted = new Booklist();
         ArrayList<String> nameList = getAllBookName();
         for(int i = 0; i < nameList.size(); i++){
             Book getBook = getEachBooks(nameList.get(i));
             books.add(getBook);
         }
-        //sorts the books by id
-        for(int i = 1; i <= books.size(); i++){
-            for(int j = 0; j < books.size(); j++){
-                curr = books.get(j);
-                if(curr.getID() == i){
-                    sorted.add(curr);
-                    break;
-                }
-            }
-        }
-        return sorted;
+
+        return books;
     }
 
     public Book getEachBooks(String require){

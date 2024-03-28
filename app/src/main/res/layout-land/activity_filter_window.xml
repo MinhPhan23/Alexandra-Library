@@ -73,12 +73,18 @@
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:layout_marginBottom="31dp"
-            android:background="@color/side_bar_background"
+            android:padding="1dp"
+            android:background="@color/white"
             app:layout_constraintBottom_toTopOf="@+id/tags_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.962"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/side_bar_background"/>
 
             <Button
                 android:id="@+id/filter_button"

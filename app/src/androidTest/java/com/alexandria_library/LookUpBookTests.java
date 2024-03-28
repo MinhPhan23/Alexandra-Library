@@ -9,16 +9,10 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
-import static org.junit.Assert.assertThrows;
-
-import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.rule.ActivityTestRule;
 
-import com.alexandria_library.R;
 import com.alexandria_library.presentation.Authentication.LoginActivity;
-
-import junit.framework.AssertionFailedError;
 
 import org.junit.After;
 import org.junit.Before;
@@ -43,7 +37,7 @@ public class LookUpBookTests {
     @Test
     public void LookUpBookTest() {
         //Credentials
-        String username = "Tester";
+        String username = "Reader";
         String password = "test";
 
         String bookName = "The Book Thief";
