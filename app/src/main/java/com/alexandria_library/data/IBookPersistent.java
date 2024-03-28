@@ -18,7 +18,7 @@ public interface IBookPersistent {
      * those functions we are not using, because we will use on iterations 3
      */
     public boolean upload(Book book, IUser user);
-    public void deleteLibraryBook(Booklist list, User user);
+    public void deleteLibraryBook(Booklist list, IUser user);
     public ArrayList<String> getAllTags ();
     public ArrayList<String> getAllGenres();
 

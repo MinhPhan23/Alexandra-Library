@@ -43,9 +43,9 @@ public class BookModifier implements IBookModifier{
     }
 
     @Override
-    public boolean deleteLibraryBook(Book book, Librarian librarian){
+    public boolean deleteLibraryBook(Book book, IUser librarian){
         boolean result = false;
-        if(librarian != null && book != null){
+        if(librarian instanceof Librarian && book != null){
             Booklist list = new Booklist();
             list.add(book);
             bookPersistent.deleteLibraryBook(list, librarian);

@@ -13,5 +13,5 @@ import java.util.ArrayList;
 public interface IBookModifier {
     public boolean uploadBook(IUser user, int id, String bookName, String author, String date,
                               ArrayList<String> tags, ArrayList<String> genres);
-    public boolean deleteLibraryBook(Book book, Librarian librarian);
+    public boolean deleteLibraryBook(Book book, IUser librarian);
 }
