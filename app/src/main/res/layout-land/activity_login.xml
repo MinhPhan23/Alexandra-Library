@@ -20,40 +20,24 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <Button
-        android:id="@+id/login_btn"
-        android:layout_width="82dp"
-        android:layout_height="82dp"
-        android:layout_marginEnd="208dp"
-        android:background="@color/dark_purple"
-        android:drawableTop="@drawable/baseline_arrow_forward_24"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <FrameLayout
+        android:layout_width="199dp"
+        android:layout_height="72dp"
+        android:layout_marginTop="48dp"
+        android:background="@drawable/button_background"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.448" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="489dp"
-        android:layout_height="90dp"
-        app:helperTextEnabled="true"
-        app:helperTextTextColor="@color/red"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.479"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.545">
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/login_password_input"
-            android:layout_width="486dp"
-            android:layout_height="78dp"
-            android:layout_marginBottom="284dp"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:singleLine="true"
-            android:textSize="25sp" />
-    </com.google.android.material.textfield.TextInputLayout>
+        <Button
+            android:id="@+id/login_btn"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="199dp"
+            android:layout_height="72dp"
+            android:layout_marginEnd="628dp"
+            android:text="LOGIN"
+            android:textSize="20sp" />
+    </FrameLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout2"
@@ -63,10 +47,10 @@
         app:helperTextTextColor="@color/red"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.479"
+        app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.38">
+        app:layout_constraintVertical_bias="0.371">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/login_userName_input"
@@ -83,18 +67,62 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/register_btn"
-        style="@style/Widget.AppCompat.Button"
-        android:layout_width="238dp"
-        android:layout_height="69dp"
-        android:layout_marginBottom="84dp"
-        android:text="Create Account"
-        android:textSize="20sp"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout"
+        android:layout_width="489dp"
+        android:layout_height="90dp"
+        app:helperTextEnabled="true"
+        app:helperTextTextColor="@color/red"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.482"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.489"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.536">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/login_password_input"
+            android:layout_width="486dp"
+            android:layout_height="78dp"
+            android:layout_marginBottom="284dp"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:singleLine="true"
+            android:textSize="25sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/register_btn"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="118dp"
+        android:layout_height="42dp"
+        android:layout_marginEnd="496dp"
+        android:gravity="left"
+        android:paddingStart="6dp"
+        android:text="Register"
+        android:textColor="#E77D22"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.887" />
+
+    <TextView
+        android:layout_width="175dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="460dp"
+        android:layout_marginTop="196dp"
+        android:layout_marginEnd="2dp"
+        android:gravity="center"
+        android:text="Don't have account? "
+        android:textAlignment="center"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/register_btn"
+        app:layout_constraintHorizontal_bias="0.885"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
+        app:layout_constraintVertical_bias="0.065" />
 
     <Button
         android:id="@+id/librarian_mode_btn"
