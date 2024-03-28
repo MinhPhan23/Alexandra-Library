@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class BookPersistentHSQLDB implements IBookPersistent {
@@ -430,23 +431,15 @@ public class BookPersistentHSQLDB implements IBookPersistent {
     public Booklist getBookList(){
         Book curr;
         Booklist books = new Booklist();
-        Booklist sorted = new Booklist();
         ArrayList<String> nameList = getAllBookName();
         for(int i = 0; i < nameList.size(); i++){
             Book getBook = getEachBooks(nameList.get(i));
             books.add(getBook);
         }
-        //sorts the books by id
-        for(int i = 1; i <= books.size(); i++){
-            for(int j = 0; j < books.size(); j++){
-                curr = books.get(j);
-                if(curr.getID() == i){
-                    sorted.add(curr);
-                    break;
-                }
-            }
-        }
-        return sorted;
+
+        Collections.sort(books, (a , b) -> Book.compare(a, b));
+
+        return books;
     }
 
     public Book getEachBooks(String require){

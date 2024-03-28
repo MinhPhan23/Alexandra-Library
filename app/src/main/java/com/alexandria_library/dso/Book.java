@@ -76,6 +76,10 @@ public class Book implements IBook {
         genres = bookGenres;
     }
 
+    public static int compare(Book book1, Book book2) {
+        return Integer.compare(book1.getID(), book2.getID());
+    }
+
     @Override
     public boolean equals(Object book) {
         if (!(book instanceof Book)) {
