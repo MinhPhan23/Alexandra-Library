@@ -46,6 +46,7 @@ import com.alexandria_library.logic.SideBarService;
 import com.alexandria_library.presentation.Adapter.AllBookListAdapter;
 import com.alexandria_library.presentation.Adapter.AllGenresListAdapter;
 import com.alexandria_library.presentation.Adapter.AllTagsListAdapter;
+import com.alexandria_library.presentation.Adapter.DialogAdpater;
 import com.alexandria_library.presentation.Adapter.FilterBookAdapter;
 import com.alexandria_library.presentation.Adapter.FinishedBookAdapter;
 import com.alexandria_library.presentation.Adapter.InProgressBookAdapter;
@@ -88,6 +89,7 @@ public class MainActivity extends AppCompatActivity{
     private TextView titleView, authorView, dateView, tagsView, genresView;
     private Book currentViewing;
     private String currentList;
+    private DialogAdpater dialogAdpater;
 
     /////////////////////LIBRARIAN MODE UI////////////////////////
     private boolean librarianMode;
@@ -118,6 +120,7 @@ public class MainActivity extends AppCompatActivity{
             currentUser = sideBarService.getUser();
         }
         currentList = "library";
+        dialogAdpater = new DialogAdpater(MainActivity.this);
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -450,15 +453,14 @@ public class MainActivity extends AppCompatActivity{
                         list.add(currentViewing);
                         try{
                             defaultBooklist.addBookToAll((IReader) currentUser, list);
-                            dialogForSuccess("All");
-
+                            dialogAdpater.dialogForSuccess("All", currentViewing);
                         }
                         catch (BooklistException e){
-                            diaglofForFailedAdd(e.getMessage());
+                            dialogAdpater.diaglofForFailedAdd(e.getMessage());
                         }
                     }
                     else {
-                        dialogForFailedLibrarian();
+                        dialogAdpater.dialogForFailedLibrarian();
                     }
 
                 }
@@ -474,14 +476,14 @@ public class MainActivity extends AppCompatActivity{
                         list.add(currentViewing);
                         try{
                             defaultBooklist.addBookToInProgress((IReader) currentUser, list);
-                            dialogForSuccess("In Progress");
+                            dialogAdpater.dialogForSuccess("In Progress", currentViewing);
                         }
                         catch (BooklistException e){
-                            diaglofForFailedAdd(e.getMessage());
+                            dialogAdpater.diaglofForFailedAdd(e.getMessage());
                         }
                     }
                     else {
-                        dialogForFailedLibrarian();
+                        dialogAdpater.dialogForFailedLibrarian();
                     }
 
                 }
@@ -497,14 +499,14 @@ public class MainActivity extends AppCompatActivity{
                         list.add(currentViewing);
                         try{
                             defaultBooklist.addBookToFinished((IReader) currentUser, list);
-                            dialogForSuccess("Finished");
+                            dialogAdpater.dialogForSuccess("Finished", currentViewing);
                         }
                         catch (BooklistException e){
-                            diaglofForFailedAdd(e.getMessage());
+                            dialogAdpater.diaglofForFailedAdd(e.getMessage());
                         }
                     }
                     else {
-                        dialogForFailedLibrarian();
+                        dialogAdpater.dialogForFailedLibrarian();
                     }
                 }
             }
@@ -522,11 +524,11 @@ public class MainActivity extends AppCompatActivity{
                         switch (currentList){
                             case "library":
                                 //dislog for reader cannot modify library list
-                                dialogForReaderCannotChangeLibrary();
+                                dialogAdpater.dialogForReaderCannotChangeLibrary();
                                 break;
                             case "all":
                                 defaultBooklist.removeBookFromAll(reader, list);
-                                dialogForSuccessRemove("ALL");
+                                dialogAdpater.dialogForSuccessRemove("ALL", currentViewing);
                                 library = false;
                                 all = true;
                                 inProgress = false;
@@ -535,7 +537,7 @@ public class MainActivity extends AppCompatActivity{
                                 break;
                             case "reading":
                                 defaultBooklist.removeBookFromInProgress(reader, list);
-                                dialogForSuccessRemove("InProgress");
+                                dialogAdpater.dialogForSuccessRemove("InProgress", currentViewing);
                                 library = false;
                                 all = false;
                                 inProgress = true;
@@ -544,7 +546,7 @@ public class MainActivity extends AppCompatActivity{
                                 break;
                             case "finished":
                                 defaultBooklist.removeBookFromFinished(reader, list);
-                                dialogForSuccessRemove("FINISHED");
+                                dialogAdpater.dialogForSuccessRemove("FINISHED", currentViewing);
                                 library = false;
                                 all = false;
                                 inProgress = false;
@@ -561,10 +563,10 @@ public class MainActivity extends AppCompatActivity{
                         if(currentUser instanceof Librarian){
                             boolean result = bookModifier.deleteLibraryBook(currentViewing, (Librarian) currentUser);
                             if(result){
-                                dialogRemoveBookSuccess();
+                                dialogAdpater.dialogRemoveBookSuccess(currentViewing);
                             }
                             else{
-                                dialogRemoveBookFailered();
+                                dialogAdpater.dialogRemoveBookFailered(currentViewing);
                             }
                             library = true;
                             all = false;
@@ -576,111 +578,13 @@ public class MainActivity extends AppCompatActivity{
                 }
                 catch (BooklistException e){
                     //dialog for failling
-                    dialogForFailedRemove();
+                    dialogAdpater.dialogForFailedRemove();
                 }
             }
         });
     }
 
-    private void dialogForSuccess(String message){
-        AlertDialog show = new AlertDialog.Builder(MainActivity.this)
-                .setTitle("SUCCESSFUL!!")
-                .setMessage("\"" + currentViewing.getName() + "\" Successfully added to " + message +" List!")
-                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(), "confirmed pressed", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .show();
 
-    }
-    private void dialogRemoveBookSuccess(){
-        AlertDialog show = new AlertDialog.Builder(MainActivity.this)
-                .setTitle("SUCCESSFUL!!")
-                .setMessage("\"" + currentViewing.getName() + "\" Successfully removed from Library List!")
-                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(), "confirmed pressed", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .show();
-
-    }
-    private void dialogRemoveBookFailered(){
-        AlertDialog show = new AlertDialog.Builder(MainActivity.this)
-                .setTitle("Failed!!")
-                .setMessage("\"" + currentViewing.getName() + "\" Cannot removed from Library List!")
-                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(), "confirmed pressed", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .show();
-
-    }
-    private void dialogForFailedLibrarian(){
-        AlertDialog show = new AlertDialog.Builder(MainActivity.this)
-                .setTitle("Not success")
-                .setMessage("Librarian doesn't have any Lists")
-                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(), "confirmed pressed", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .show();
-    }
-    private void diaglofForFailedAdd(String message) {
-        AlertDialog show = new AlertDialog.Builder(MainActivity.this)
-                .setTitle("Not success")
-                .setMessage(message)
-                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(), "confirmed pressed", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .show();
-    }
-    private void dialogForSuccessRemove(String message) {
-        AlertDialog show = new AlertDialog.Builder(MainActivity.this)
-                .setTitle("Successfully")
-                .setMessage("Successful removed \""+currentViewing.getName() + "\" from "+message +" list")
-                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(), "confirmed pressed", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .show();
-    }
-    private void dialogForReaderCannotChangeLibrary(){
-        AlertDialog show = new AlertDialog.Builder(MainActivity.this)
-                .setTitle("FAILED!!")
-                .setMessage("Readers CANNOT modify library book list!!")
-                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(), "confirmed pressed", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .show();
-    }
-    private void dialogForFailedRemove(){
-        AlertDialog show = new AlertDialog.Builder(MainActivity.this)
-                .setTitle("FAILED!!")
-                .setMessage("Deleting book from "+currentList +" is failed")
-                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(), "confirmed pressed", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .show();
-    }
 
     /*****
      * book distributor is work for distribute which book list showing
