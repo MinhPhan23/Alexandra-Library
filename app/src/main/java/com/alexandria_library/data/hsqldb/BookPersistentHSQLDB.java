@@ -140,12 +140,6 @@ public class BookPersistentHSQLDB implements IBookPersistent {
 
     private int addTag(String tagName) throws SQLException {
         String insertTag = "INSERT INTO TAGS (TAG_NAME, TAG_ID) VALUES (?, ?)";
-//        int result = getAllTags().size()+1;
-//
-//        if(tagID < result)
-//            tagID = result;
-//        else
-//            tagID++;
         ArrayList<Integer> allTagID = getAllTagID();
         while(allTagID.contains(tagID)){
             tagID++;
@@ -169,12 +163,6 @@ public class BookPersistentHSQLDB implements IBookPersistent {
 
     private int addGenre(String genreName) throws SQLException{
         String insertGenre = "INSERT INTO GENRES (GENRE_NAME, GENRE_ID) VALUES (?, ?)";
-//        int result = getAllGenres().size()+1;
-//
-//        if(genreID < result)
-//            genreID = result;
-//        else
-//            genreID++;
 
         ArrayList<Integer> allGenreID = getAllGenreID();
         while(allGenreID.contains(genreID)){
@@ -200,11 +188,6 @@ public class BookPersistentHSQLDB implements IBookPersistent {
 
     private int addBookTagRelation(int bookID, int tagID) throws SQLException{
         String insertBookTag = "INSERT INTO BOOKTAGS(BOOK_ID, TAG_ID, BOOKTAGS_PK) VALUES (?, ?, ?)";
-//        int result = getTagsCount()+1;
-//        if(bookTagID < result)
-//            bookTagID = result;
-//        else
-//            bookTagID++;
 
         ArrayList<Integer> allbookTagID = bookTagsCount();
         while(allbookTagID.contains(bookTagID)){
@@ -230,11 +213,6 @@ public class BookPersistentHSQLDB implements IBookPersistent {
 
     private int addBookGenreRelation(int bookID, int genreID) throws SQLException{
         String insertBookGenre = "INSERT INTO BOOKGENRES(BOOK_ID, GENRE_ID, BOOKGENRES_PK) VALUES (?, ?, ?)";
-//        int result = getGenresCount()+1;
-//        if(bookGenreID < result)
-//            bookGenreID = result;
-//        else
-//            bookGenreID++;
 
         ArrayList<Integer> allBookGenreID = bookGenresCount();
         while(allBookGenreID.contains(bookGenreID)){
@@ -341,7 +319,6 @@ public class BookPersistentHSQLDB implements IBookPersistent {
             throw new PersistenceException(e);
         }
     }
-
     private ArrayList<Integer> getAllTagID(){
         String query = "SELECT TAG_ID FROM TAGS";
         ArrayList<Integer> list = new ArrayList<>();
@@ -485,24 +462,6 @@ public class BookPersistentHSQLDB implements IBookPersistent {
             throw new PersistenceException(e);
         }
     }
-
-//    private int getTagsCount(){
-//        int count = 0;
-//        ArrayList<String> list = getAllTags();
-//        for(int i = 0; i<list.size(); i++){
-//            count+= bookTagsCount(list.get(i));
-//        }
-//        return count;
-//    }
-//
-//    private int getGenresCount(){
-//        int count = 0;
-//        ArrayList<String> list = getAllGenres();
-//        for(int i = 0; i<list.size(); i++){
-//            count+= bookGenresCount(list.get(i));
-//        }
-//        return count;
-//    }
 
     public ArrayList<Integer> bookTagsCount(){
         ArrayList<Integer> list = new ArrayList<>();
