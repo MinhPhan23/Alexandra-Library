@@ -37,7 +37,7 @@ public class LookUpBookTests {
     @Test
     public void LookUpBookTest() {
         //Credentials
-        String username = "Tester";
+        String username = "Reader";
         String password = "test";
 
         String bookName = "The Book Thief";
