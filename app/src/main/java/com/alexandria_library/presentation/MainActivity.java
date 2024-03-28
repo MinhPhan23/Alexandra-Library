@@ -83,8 +83,10 @@ public class MainActivity extends AppCompatActivity{
     private FrameLayout detailBookInfo, chooseListToAddWindow;
     private Button detailBookDisplayBtn;
     private Button addToListBtn, toAllListBtn, toFinishedBtn, toInprogressBtn;
+    private Button deleteBookFromList;
     private TextView titleView, authorView, dateView, tagsView, genresView;
     private Book currentViewing;
+    private String currentList;
 
     /////////////////////LIBRARIAN MODE UI////////////////////////
     private boolean librarianMode;
@@ -113,6 +115,7 @@ public class MainActivity extends AppCompatActivity{
         if(sideBarService != null){
             currentUser = sideBarService.getUser();
         }
+        currentList = "library";
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,6 +182,7 @@ public class MainActivity extends AppCompatActivity{
                     bookDistributor();
                     toggleSearchResultGone();
                     toggleFilterGone();
+                    currentList = "all";
                 }
             });
 
@@ -195,6 +199,7 @@ public class MainActivity extends AppCompatActivity{
                     bookDistributor();
                     toggleSearchResultGone();
                     toggleFilterGone();
+                    currentList = "reading";
                 }
             });
 
@@ -211,6 +216,7 @@ public class MainActivity extends AppCompatActivity{
                     bookDistributor();
                     toggleSearchResultGone();
                     toggleFilterGone();
+                    currentList = "finished";
                 }
             });
 
@@ -382,9 +388,6 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 filterBookDisplay(tagsClicked, genresClicked);
-//                tagsClicked.clear();
-//                genresClicked.clear();
-
             }
         });
 
@@ -504,12 +507,68 @@ public class MainActivity extends AppCompatActivity{
                 }
             }
         });
+
+        deleteBookFromList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try{
+                    if(!librarianMode){
+                        Reader reader = (Reader) currentUser;
+                        Booklist list = new Booklist();
+                        list.add(currentViewing);
+
+                        switch (currentList){
+                            case "library":
+                                //dislog for reader cannot modify library list
+                                dialogForReaderCannotChangeLibrary();
+                                break;
+                            case "all":
+                                defaultBooklist.removeBookFromAll(reader, list);
+                                dialogForSuccessRemove("ALL");
+                                library = false;
+                                all = true;
+                                inProgress = false;
+                                finish = false;
+                                bookDistributor();
+                                break;
+                            case "reading":
+                                defaultBooklist.removeBookFromInProgress(reader, list);
+                                dialogForSuccessRemove("InProgress");
+                                library = false;
+                                all = false;
+                                inProgress = true;
+                                finish = false;
+                                bookDistributor();
+                                break;
+                            case "finished":
+                                defaultBooklist.removeBookFromFinished(reader, list);
+                                dialogForSuccessRemove("FINISHED");
+                                library = false;
+                                all = false;
+                                inProgress = false;
+                                finish = true;
+                                bookDistributor();
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    else{
+
+                    }
+                }
+                catch (BooklistException e){
+                    //dialog for failling
+                    dialogForFailedRemove();
+                }
+            }
+        });
     }
 
     private void dialogForSuccess(String message){
         AlertDialog show = new AlertDialog.Builder(MainActivity.this)
                 .setTitle("SUCCESSFUL!!")
-                .setMessage(currentViewing.getName() + "Successfully added to " + message +" List!")
+                .setMessage("\"" + currentViewing.getName() + "\" Successfully added to " + message +" List!")
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -531,11 +590,46 @@ public class MainActivity extends AppCompatActivity{
                 })
                 .show();
     }
-
     private void diaglofForFailedAdd(String message) {
         AlertDialog show = new AlertDialog.Builder(MainActivity.this)
                 .setTitle("Not success")
                 .setMessage(message)
+                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getApplicationContext(), "confirmed pressed", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .show();
+    }
+    private void dialogForSuccessRemove(String message) {
+        AlertDialog show = new AlertDialog.Builder(MainActivity.this)
+                .setTitle("Successfully")
+                .setMessage("Successful removed \""+currentViewing.getName() + "\" from "+message +" list")
+                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getApplicationContext(), "confirmed pressed", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .show();
+    }
+    private void dialogForReaderCannotChangeLibrary(){
+        AlertDialog show = new AlertDialog.Builder(MainActivity.this)
+                .setTitle("FAILED!!")
+                .setMessage("Readers CANNOT modify library book list!!")
+                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getApplicationContext(), "confirmed pressed", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .show();
+    }
+    private void dialogForFailedRemove(){
+        AlertDialog show = new AlertDialog.Builder(MainActivity.this)
+                .setTitle("FAILED!!")
+                .setMessage("Deleting book from "+currentList +" is failed")
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -633,6 +727,8 @@ public class MainActivity extends AppCompatActivity{
         toAllListBtn = findViewById(R.id.add_to_all_list);
         toInprogressBtn = findViewById(R.id.add_to_inprogress_list);
         toFinishedBtn = findViewById(R.id.add_to_finish_list);
+
+        deleteBookFromList = findViewById(R.id.delete_book_from_list_btn);
 
         /////////////////////LIBRARIAN MODE UI////////////////////////
 
