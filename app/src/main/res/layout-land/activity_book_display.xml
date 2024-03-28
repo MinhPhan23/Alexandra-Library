@@ -6,16 +6,16 @@
     android:layout_height="match_parent"
     tools:ignore="MissingDefaultResource">
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/gridView"
         android:layout_width="939dp"
         android:layout_height="700dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="84dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.906"
+        app:layout_constraintHorizontal_bias="0.695"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <FrameLayout
         android:id="@+id/book_detail_window"
