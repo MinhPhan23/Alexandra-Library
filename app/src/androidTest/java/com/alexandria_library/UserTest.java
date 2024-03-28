@@ -13,7 +13,7 @@ import static org.junit.Assert.assertThrows;
 import androidx.test.espresso.AmbiguousViewMatcherException;
 import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.espresso.intent.Intents;
-import androidx.test.rule.ActivityTestRule;
+import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.alexandria_library.presentation.Authentication.LoginActivity;
 
@@ -22,10 +22,10 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-public class LoginLogoutRegisterTests {
+public class UserTest {
 
     @Rule
-    public ActivityTestRule<LoginActivity> testActivity = new ActivityTestRule<>(LoginActivity.class);
+    public ActivityScenarioRule<LoginActivity> testActivity = new ActivityScenarioRule<>(LoginActivity.class);
 
     @Before
     public void setUp(){
