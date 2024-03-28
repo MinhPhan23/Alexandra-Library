@@ -11,9 +11,9 @@
         android:id="@+id/gridView"
         android:layout_width="939dp"
         android:layout_height="700dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="72dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.895"
+        app:layout_constraintHorizontal_bias="0.906"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
