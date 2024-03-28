@@ -1,6 +1,7 @@
 package com.alexandria_library.tests.logic;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import com.alexandria_library.data.IBookPersistent;
@@ -22,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class BookModifierITTest {
     private IBookModifier bookModifier;
@@ -161,5 +163,24 @@ public class BookModifierITTest {
             }
         }
         assertTrue(checkExits);
+    }
+
+
+    @Test
+    public void TestRemoveExistingBookFromLibrary(){
+        String[] tags1Array = new String[]{"LGBT", "Adult"};
+        String[] genres1Array = new String[]{"Romance", "Contemporary", "Historical Fiction"};
+        List<String> tags1 = new ArrayList<>(Arrays.asList(tags1Array));
+        List<String>genres1 = new ArrayList<>(Arrays.asList(genres1Array));
+        Book existingBook = new Book(1 , "The Seven Husbands of Evalyn Hugo", "Taylor Jenkins Reid", "June 13, 2017", tags1, genres1);
+
+        boolean result = bookModifier.deleteLibraryBook(existingBook, (Librarian)librarian);
+        assertTrue(result);
+
+        libraryBooks = persistent.getBookList();
+        assertEquals(libraryBooks.size(), 4);
+        for(int i = 0; i<libraryBooks.size(); i++){
+            assertFalse(libraryBooks.get(i).equals(existingBook));
+        }
     }
 }
