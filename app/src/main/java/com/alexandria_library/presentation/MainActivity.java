@@ -57,7 +57,6 @@ import com.alexandria_library.presentation.Authentication.LoginActivity;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-
 public class MainActivity extends AppCompatActivity{
 
     private Booklist searchList;
@@ -767,26 +766,19 @@ public class MainActivity extends AppCompatActivity{
 
     private void LibraryBookCategory(){
         LibraryBookListAdapter libraryBookListAdapter;
+        //Setting list of book display
+        libraryBookDisplay = findViewById(R.id.gridView);
         if(grid){
-            //Setting Grid of book display
-            libraryBookDisplay = findViewById(R.id.gridView);
-
             GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
             libraryBookDisplay.setLayoutManager(gridLayoutManager);
-
-            libraryBookListAdapter = new LibraryBookListAdapter(this);
-            libraryBookDisplay.setAdapter(libraryBookListAdapter);
         }
         else{
-            //Setting list of book display
-            libraryBookDisplay = findViewById(R.id.gridView);
-
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
             libraryBookDisplay.setLayoutManager(linearLayoutManager);
-
-            libraryBookListAdapter = new LibraryBookListAdapter(this);
-            libraryBookDisplay.setAdapter(libraryBookListAdapter);
         }
+
+        libraryBookListAdapter = new LibraryBookListAdapter(this);
+        libraryBookDisplay.setAdapter(libraryBookListAdapter);
 
         libraryBookListAdapter.setRecyclerItemClickListener(new LibraryBookListAdapter.OnRecyclerItemClickListener() {
             @Override
