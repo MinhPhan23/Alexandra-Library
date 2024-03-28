@@ -7,9 +7,9 @@ Our team also encountered several challenges with code readability and a general
 
 Many last-minute issues such as old non-functional code remain in the project due to the hurried fixes left a disproportionate workload for the last days before the deadline. Careful individual workload management with more frequent check-ins can help our team avoid an increased influx of pending tasks last minute.
 
-# Main disastisfactions
+# Main dissatisfactions
 
-## Paying dept more that developing
+## Paying dept more than developing
 - What to improve: Team spends more time fixing existing issues than developing new features
 because there is no/insufficient high-level vision among team members.
 - How to improve: Brief each other on the overall progress every meeting, restate overall goals,
