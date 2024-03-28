@@ -6,7 +6,9 @@ import android.net.Uri;
 import com.alexandria_library.application.Service;
 import com.alexandria_library.data.IBookPersistent;
 import com.alexandria_library.dso.Book;
+import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.dso.IUser;
+import com.alexandria_library.dso.Librarian;
 import com.alexandria_library.dso.User;
 
 import java.io.ByteArrayInputStream;
@@ -38,5 +40,17 @@ public class BookModifier implements IBookModifier{
             }
         }
         return succeed;
+    }
+
+    @Override
+    public boolean deleteLibraryBook(Book book, Librarian librarian){
+        boolean result = false;
+        if(librarian != null && book != null){
+            Booklist list = new Booklist();
+            list.add(book);
+            bookPersistent.deleteLibraryBook(list, librarian);
+            result = true;
+        }
+        return result;
     }
 }

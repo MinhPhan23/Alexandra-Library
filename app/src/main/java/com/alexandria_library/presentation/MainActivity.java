@@ -30,6 +30,7 @@ import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.dso.IReader;
 import com.alexandria_library.dso.IUser;
+import com.alexandria_library.dso.Librarian;
 import com.alexandria_library.dso.Reader;
 import com.alexandria_library.logic.BookListFilter;
 import com.alexandria_library.logic.BookModifier;
@@ -97,6 +98,7 @@ public class MainActivity extends AppCompatActivity{
 
     private boolean library, all, inProgress,finish, filterOpen;
     private Booklist allLibraryBooks;
+    private static int booksCount = 5;
     private ArrayList<String> tagsClicked;
     private ArrayList<String> genresClicked;
 
@@ -556,7 +558,20 @@ public class MainActivity extends AppCompatActivity{
 
                     //librarian can delete library's book
                     else{
-
+                        if(currentUser instanceof Librarian){
+                            boolean result = bookModifier.deleteLibraryBook(currentViewing, (Librarian) currentUser);
+                            if(result){
+                                dialogRemoveBookSuccess();
+                            }
+                            else{
+                                dialogRemoveBookFailered();
+                            }
+                            library = true;
+                            all = false;
+                            inProgress = false;
+                            finish = false;
+                            bookDistributor();
+                        }
                     }
                 }
                 catch (BooklistException e){
@@ -571,6 +586,32 @@ public class MainActivity extends AppCompatActivity{
         AlertDialog show = new AlertDialog.Builder(MainActivity.this)
                 .setTitle("SUCCESSFUL!!")
                 .setMessage("\"" + currentViewing.getName() + "\" Successfully added to " + message +" List!")
+                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getApplicationContext(), "confirmed pressed", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .show();
+
+    }
+    private void dialogRemoveBookSuccess(){
+        AlertDialog show = new AlertDialog.Builder(MainActivity.this)
+                .setTitle("SUCCESSFUL!!")
+                .setMessage("\"" + currentViewing.getName() + "\" Successfully removed from Library List!")
+                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getApplicationContext(), "confirmed pressed", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .show();
+
+    }
+    private void dialogRemoveBookFailered(){
+        AlertDialog show = new AlertDialog.Builder(MainActivity.this)
+                .setTitle("Failed!!")
+                .setMessage("\"" + currentViewing.getName() + "\" Cannot removed from Library List!")
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
