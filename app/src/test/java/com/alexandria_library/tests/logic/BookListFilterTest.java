@@ -4,8 +4,6 @@ import com.alexandria_library.data.IBookPersistent;
 import com.alexandria_library.data.hsqldb.BookPersistentHSQLDB;
 import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
-import com.alexandria_library.dso.IUser;
-import com.alexandria_library.dso.User;
 import com.alexandria_library.logic.BookListFilter;
 
 import org.junit.Test;
@@ -38,6 +36,7 @@ public class BookListFilterTest {
 
 
     private BookListFilter bookListFilter;
+    private BookListFilter mockBookListFilter;
     private Booklist sampleBookList;
     private Booklist emptyBookList;
     private IBookPersistent bookPersistent;
@@ -49,6 +48,7 @@ public class BookListFilterTest {
         sampleBookList = new Booklist(Arrays.asList(book1, book2, book3, book4, book5, book6));
         emptyBookList = new Booklist();
         bookPersistent = mock(BookPersistentHSQLDB.class);
+        mockBookListFilter = mock(BookListFilter.class);
     }
 
     @Test
@@ -149,6 +149,18 @@ public class BookListFilterTest {
         Booklist filteredList = bookListFilter.filterByAuthor(emptyBookList, authorsToFilter);
         Booklist expectedList = new Booklist(Arrays.asList());
         assertEquals(expectedList, filteredList);
+    }
+
+    @Test
+    public void testGetFilteredList(){
+        String[] tags = new String[]{"classic", "romance", "mystery",
+                "drama", "social justice", "coming-of-age"};
+        String[] genres = new String[]{"fiction", "drama", "historical"};
+        Booklist booklist = new Booklist(Arrays.asList(book1, book2));
+
+        when(mockBookListFilter.getFilteredList(sampleBookList, tags, genres)).thenReturn(booklist);
+
+        assertEquals(mockBookListFilter.getFilteredList(sampleBookList, tags, genres), booklist);
     }
 
     @Test
