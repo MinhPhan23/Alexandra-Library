@@ -386,9 +386,4 @@ public class AuthenticationITest {
             assert (false);
         }
     }
-
-    @After
-    public void tearDown(){
-        //this.tempDB.delete();
-    }
 }

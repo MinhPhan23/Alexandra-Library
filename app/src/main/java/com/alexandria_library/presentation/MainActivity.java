@@ -527,9 +527,10 @@ public class MainActivity extends AppCompatActivity{
 
                         switch (currentList){
                             case "library":
-                                //dislog for reader cannot modify library list
+                                //dialog for reader cannot modify library list
                                 dialogAdpater.dialogForReaderCannotChangeLibrary();
                                 break;
+
                             case "all":
                                 defaultBooklist.removeBookFromAll(reader, list);
                                 dialogAdpater.dialogForSuccessRemove("ALL", currentViewing);
@@ -539,6 +540,7 @@ public class MainActivity extends AppCompatActivity{
                                 finish = false;
                                 bookDistributor();
                                 break;
+
                             case "reading":
                                 defaultBooklist.removeBookFromInProgress(reader, list);
                                 dialogAdpater.dialogForSuccessRemove("InProgress", currentViewing);
@@ -548,6 +550,7 @@ public class MainActivity extends AppCompatActivity{
                                 finish = false;
                                 bookDistributor();
                                 break;
+
                             case "finished":
                                 defaultBooklist.removeBookFromFinished(reader, list);
                                 dialogAdpater.dialogForSuccessRemove("FINISHED", currentViewing);
@@ -557,6 +560,7 @@ public class MainActivity extends AppCompatActivity{
                                 finish = true;
                                 bookDistributor();
                                 break;
+
                             default:
                                 break;
                         }
@@ -581,14 +585,12 @@ public class MainActivity extends AppCompatActivity{
                     }
                 }
                 catch (BooklistException e){
-                    //dialog for failling
+                    //dialog for failing
                     dialogAdpater.dialogForFailedRemove();
                 }
             }
         });
     }
-
-
 
     /*****
      * book distributor is work for distribute which book list showing
@@ -607,7 +609,6 @@ public class MainActivity extends AppCompatActivity{
             LibraryBookCategory();
         }
     }
-
 
     private void find(){
         //Getting root view ID

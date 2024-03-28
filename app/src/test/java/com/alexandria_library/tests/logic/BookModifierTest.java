@@ -1,6 +1,7 @@
 package com.alexandria_library.tests.logic;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import com.alexandria_library.data.IBookPersistent;
@@ -41,6 +42,13 @@ public class BookModifierTest {
 
         this.librarian = mock(Librarian.class);
         this.fakeLibrarian = mock(User.class);
+    }
+
+    @Test
+    public void TestDefaultConstructor(){
+        bookModifier = null;
+        bookModifier = new BookModifier();
+        assertNotNull(bookModifier);
     }
 
     @Test

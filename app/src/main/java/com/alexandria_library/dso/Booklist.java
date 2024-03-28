@@ -4,10 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Booklist extends ArrayList<Book> implements IBooklist {
-
     private String name;
-
     private String desc;
+
     public Booklist(){
         this.name = "";
         this.desc = "";
