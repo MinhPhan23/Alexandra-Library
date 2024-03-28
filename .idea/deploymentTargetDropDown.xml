@@ -2,7 +2,10 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="LibrarianRegisterLoginLogoutTest">
+      <entry key="LoginLogoutRegisterTest()">
+        <State />
+      </entry>
+      <entry key="LoginLogoutRegisterTests">
         <State />
       </entry>
       <entry key="app">
