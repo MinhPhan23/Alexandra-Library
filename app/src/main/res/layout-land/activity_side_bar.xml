@@ -99,7 +99,7 @@
         app:layout_constraintVertical_bias="0.952" />
 
     <Button
-        android:id="@+id/recently_added"
+        android:id="@+id/finished_btn"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="284dp"
         android:layout_height="50dp"
@@ -121,7 +121,7 @@
         android:drawableLeft="@drawable/in_progress"
         android:text="In Progress"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/recently_added"
+        app:layout_constraintBottom_toTopOf="@+id/finished_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.001"
         app:layout_constraintStart_toStartOf="@+id/view" />
