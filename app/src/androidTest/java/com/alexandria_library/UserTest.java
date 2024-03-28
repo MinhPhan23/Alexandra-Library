@@ -43,7 +43,7 @@ public class UserTest {
         try{
 
             //Credentials
-            String username1 = "Tester";
+            String username1 = "Reader1";
             String password1 = "test";
 
             String username2 = "Andrei";

@@ -5,6 +5,7 @@ import com.alexandria_library.tests.logic.AuthenticationITest;
 import com.alexandria_library.tests.logic.BookModifierITTest;
 import com.alexandria_library.tests.logic.DefaultBooklistITest;
 import com.alexandria_library.tests.logic.SearchServiceITest;
+import com.alexandria_library.tests.logic.SideBarServiceITest;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -16,6 +17,7 @@ import org.junit.runners.Suite;
         BookModifierITTest.class,
         DefaultBooklistITest.class,
         AuthenticationITest.class,
+        SideBarServiceITest.class
 })
 
 public class IntegrationTests {
