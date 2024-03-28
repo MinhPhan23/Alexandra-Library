@@ -14,6 +14,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class BookListFilterTest {
     Book book1 = new Book(1, "The Great Gatsby", "F. Scott Fitzgerald", "1925-04-10",
@@ -153,14 +154,19 @@ public class BookListFilterTest {
 
     @Test
     public void testGetFilteredList(){
-        String[] tags = new String[]{"classic", "romance", "mystery",
-                "drama", "social justice", "coming-of-age"};
-        String[] genres = new String[]{"fiction", "drama", "historical"};
+        String[] tags = new String[]{"romance"};
+        String[] genres = new String[]{"fiction"};
         Booklist booklist = new Booklist(Arrays.asList(book1, book2));
 
-        when(mockBookListFilter.getFilteredList(sampleBookList, tags, genres)).thenReturn(booklist);
-
-        assertEquals(mockBookListFilter.getFilteredList(sampleBookList, tags, genres), booklist);
+        Booklist filtered = bookListFilter.getFilteredList(booklist, tags, genres);
+        assertFalse(filtered.isEmpty());
+        for(int i = 0; i<filtered.size(); i++){
+            Book currentBook = filtered.get(i);
+            List<String> returnedTags = currentBook.getTags();
+            List<String> returnedGenres = currentBook.getGenres();
+            assertTrue(returnedTags.contains("romance"));
+            assertTrue(returnedGenres.contains("fiction"));
+        }
     }
 
     @Test
@@ -169,7 +175,7 @@ public class BookListFilterTest {
                                                     "drama", "social justice", "coming-of-age"));
         when(bookPersistent.getAllTags()).thenReturn(tags);
 
-        assertEquals(bookPersistent.getAllTags(), tags);
+        assertEquals(bookListFilter.getAllTags(bookPersistent), tags);
     }
 
     @Test
@@ -177,6 +183,6 @@ public class BookListFilterTest {
         ArrayList<String> genres = new ArrayList<>(Arrays.asList("fiction", "drama", "historical"));
         when(bookPersistent.getAllGenres()).thenReturn(genres);
 
-        assertEquals(bookPersistent.getAllGenres(), genres);
+        assertEquals(bookListFilter.getAllGenre(bookPersistent), genres);
     }
 }
