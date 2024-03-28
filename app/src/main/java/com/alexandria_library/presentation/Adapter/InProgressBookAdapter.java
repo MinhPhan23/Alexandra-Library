@@ -9,12 +9,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.alexandria_library.R;
+import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.dso.Reader;
 import com.alexandria_library.logic.SideBarService;
 import com.alexandria_library.presentation.Authentication.LoginActivity;
-
-import java.util.ArrayList;
 
 public class InProgressBookAdapter extends RecyclerView.Adapter<InProgressBookAdapter.MyViewHolder> {
     private static SideBarService sideBarService;
@@ -30,7 +29,7 @@ public class InProgressBookAdapter extends RecyclerView.Adapter<InProgressBookAd
         if(sideBarService != null){
             if (sideBarService.getUser() instanceof Reader) {
                 Reader reader = (Reader) sideBarService.getUser();
-                inProgressList = reader.getFinishedList();
+                inProgressList = reader.getInProgressList();
             }
         }
     }
@@ -61,9 +60,7 @@ public class InProgressBookAdapter extends RecyclerView.Adapter<InProgressBookAd
         if(inProgressList == null){
             return 0;
         }
-        else {
-            return inProgressList.size();
-        }
+        return inProgressList.size();
     }
 
 
@@ -84,7 +81,7 @@ public class InProgressBookAdapter extends RecyclerView.Adapter<InProgressBookAd
                 @Override
                 public void onClick(View v) {
                     if(myOnItemClickListener != null){
-                        myOnItemClickListener.onRecyclerItemClick(getAdapterPosition());
+                        myOnItemClickListener.onRecyclerItemClick(getAdapterPosition(), inProgressList.get(getAdapterPosition()));
                     }
                 }
             });
@@ -98,6 +95,6 @@ public class InProgressBookAdapter extends RecyclerView.Adapter<InProgressBookAd
     }
 
     public interface OnRecyclerItemClickListener {
-        void onRecyclerItemClick(int position);
+        void onRecyclerItemClick(int position, Book book);
     }
 }

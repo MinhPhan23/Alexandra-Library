@@ -20,12 +20,10 @@ public class UserPersistentStubTest {
     }
 
     @Test
-    public void testFindExistingUserByUserNameAndPassword() {
-        String userName = "Xiang";
-        String password = "123";
-        User user = userStub.findUser(userName, password);
-        assertNotNull("User should be found", user);
-        assertEquals("User name should match", userName, user.getUserName());
+    public void testAddExistingUser() {
+        userStub.addNewUser("newUser", "newPassword");
+        boolean result = userStub.addNewUser("newUser", "newPassword");
+        assertFalse("User should not be added", result);
     }
 
     @Test
@@ -40,6 +38,36 @@ public class UserPersistentStubTest {
     public void testUserNotFound() {
         String userName = "NonExistentUser";
         User user = userStub.findUser(userName);
+        assertNull("User should not be found", user);
+    }
+
+    ///////////////////////LIBRARIANS/////////////////////////
+
+    @Test
+    public void testAddNewLibrarian() {
+        boolean result = userStub.addNewLibrarian("testLibrarian", "testPassword");
+        assertTrue("Librarian should be added successfully", result);
+    }
+
+    @Test
+    public void testAddExistingLibrarian() {
+        userStub.addNewLibrarian("newLibrarian", "newPassword");
+        boolean result = userStub.addNewLibrarian("newLibrarian", "newPassword");
+        assertFalse("Librarian should not be added", result);
+    }
+
+    @Test
+    public void testFindExistingLibrarianByUserName() {
+        String userName = "Andrei";
+        User user = userStub.findLibrarian(userName);
+        assertNotNull("User should be found", user);
+        assertEquals("User name should match", userName, user.getUserName());
+    }
+
+    @Test
+    public void testLibrarianNotFound() {
+        String userName = "NonExistentUser";
+        User user = userStub.findLibrarian(userName);
         assertNull("User should not be found", user);
     }
 }

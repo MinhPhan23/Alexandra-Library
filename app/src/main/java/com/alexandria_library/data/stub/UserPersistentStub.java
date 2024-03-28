@@ -2,17 +2,21 @@ package com.alexandria_library.data.stub;
 
 import com.alexandria_library.data.IUserPersistent;
 import com.alexandria_library.dso.Book;
+import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.dso.Reader;
 import com.alexandria_library.dso.User;
+import com.alexandria_library.logic.DefaultBooklist;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class UserPersistentStub implements IUserPersistent {
-    private static int id = 1;
+    private static int userID = 1;
+    private static int librarianID = 1;
 
     private ArrayList<User> userList;
+    private ArrayList<User> librarianList;
     public UserPersistentStub(){
         userList = new ArrayList<>();
 
@@ -24,7 +28,24 @@ public class UserPersistentStub implements IUserPersistent {
         Reader user3 = new Reader("Minh", "123456", 3);
         Reader user4 = new Reader("Carlo", "123456", 4);
         Reader user5 = new Reader("alina", "123456", 5);
-        id = 6;
+        userID = 6;
+
+        librarianList = new ArrayList<>();
+
+        /*****
+         * create 5 users
+         */
+        Reader libr1 = new Reader("Xiang", "123", 1);
+        Reader libr2 = new Reader("Andrei", "123456", 2);
+        Reader libr3 = new Reader("Minh", "123456", 3);
+        Reader libr4 = new Reader("Carlo", "123456", 4);
+        Reader libr5 = new Reader("alina", "123456", 5);
+        librarianID = 6;
+        librarianList.add(libr1);
+        librarianList.add(libr2);
+        librarianList.add(libr3);
+        librarianList.add(libr4);
+        librarianList.add(libr5);
 
         /****
          * add temperature books to some users
@@ -33,7 +54,7 @@ public class UserPersistentStub implements IUserPersistent {
         String[] genres1Array = new String[]{"Romance", "Contemporary", "Historical Fiction"};
         List<String> tags1 = new ArrayList<>(Arrays.asList(tags1Array));
         List<String>genres1 = new ArrayList<>(Arrays.asList(genres1Array));
-        Book b1 = new Book(1 , "The Seven Husbands of Evalyn Hugo", "Taylor Jenkins Reid", "June 13, 2017", tags1, genres1);
+        Book b1 = new Book(1 , "The Seven Husbands of Evalyn Hugo", "Taylor Jenkins ReuserID", "June 13, 2017", tags1, genres1);
 
         String[] tags2Array = new String[]{"High School", "Literature"};
         String[] genres2Array = new String[]{"Classics", "Fiction", "Historical Fiction", "Young Adult"};
@@ -75,55 +96,34 @@ public class UserPersistentStub implements IUserPersistent {
         String[] genres8Array = new String[]{"Fiction", "Fantasy", "Contemporary", "Science Fiction"};
         List<String>tags8 = new ArrayList<>(Arrays.asList(tags8Array));
         List<String>genres8 = new ArrayList<>(Arrays.asList(genres8Array));
-        Book b8 = new Book(8 , "The Midnight Library", "Matt Haig", "August 13, 2020", tags8, genres8);
+        Book b8 = new Book(8 , "The MuserIDnight Library", "Matt Haig", "August 13, 2020", tags8, genres8);
 
         /****
          * add all books to user1's all book list
          */
-        user1.addBookToAll(b1);
-        user1.addBookToAll(b2);
-        user1.addBookToAll(b3);
-        user1.addBookToAll(b4);
-        user1.addBookToAll(b5);
-        user1.addBookToAll(b6);
-        user1.addBookToAll(b7);
-        user1.addBookToAll(b8);
-        user1.addBookToFinished(b1);
-        user1.addBookToFinished(b2);
-        user1.addBookToFinished(b3);
-        user1.addBookToFinished(b4);
-        user1.addBookToFinished(b5);
-        user1.addBookToFinished(b6);
-        user1.addBookToFinished(b7);
-        user1.addBookToInProgress(b8);
-        user1.addBookToInProgress(b7);
-        user1.addBookToInProgress(b6);
-        user1.addBookToInProgress(b5);
-        user1.addBookToInProgress(b4);
-        user1.addBookToInProgress(b3);
-        user1.addBookToInProgress(b2);
+        DefaultBooklist defaultBooklist = new DefaultBooklist();
+        try {
+            Booklist booklist = new Booklist(Arrays.asList(b1, b2, b3, b4, b5, b6, b7, b8));
+            defaultBooklist.addBookToAll(user1, booklist);
 
+            booklist = new Booklist(Arrays.asList(b1, b2, b3, b4, b5, b6, b7));
+            defaultBooklist.addBookToFinished(user1,booklist);
 
+            booklist = new Booklist(Arrays.asList(b8, b7, b6, b5, b4, b3, b2));
+            defaultBooklist.addBookToInProgress(user1,booklist);
 
-        user2.addBookToAll(b1);
-        user2.addBookToAll(b2);
-        user2.addBookToAll(b3);
-        user2.addBookToAll(b4);
-        user2.addBookToAll(b5);
-        user2.addBookToAll(b6);
-        user2.addBookToAll(b7);
-        user2.addBookToAll(b8);
-        user2.addBookToFinished(b3);
-        user2.addBookToFinished(b4);
-        user2.addBookToFinished(b5);
-        user2.addBookToFinished(b6);
-        user2.addBookToFinished(b7);
-        user2.addBookToInProgress(b6);
-        user2.addBookToInProgress(b5);
-        user2.addBookToInProgress(b4);
-        user2.addBookToInProgress(b3);
-        user2.addBookToInProgress(b2);
+            booklist = new Booklist(Arrays.asList(b1, b2, b3, b4, b5, b6, b7, b8));
+            defaultBooklist.addBookToAll(user2, booklist);
 
+            booklist = new Booklist(Arrays.asList(b3, b4, b5, b6, b7));
+            defaultBooklist.addBookToFinished(user2,booklist);
+
+            booklist = new Booklist(Arrays.asList(b6, b5, b4, b3, b2));
+            defaultBooklist.addBookToInProgress(user2,booklist);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Something is wrong with creating stub data");
+        }
 
         /***
          * add users to user persistent
@@ -137,12 +137,26 @@ public class UserPersistentStub implements IUserPersistent {
 
 
     public boolean addNewUser(String userName, String password){
-        User newUser = new User(userName, password, id);
-        id++;
-        return userList.add(newUser);
+        boolean success = false;
+        if(findUser(userName) == null){
+            User newUser = new User(userName, password, userID);
+            userID++;
+            success = userList.add(newUser);
+        }
+        return success;
     }
 
-    public User findUser(String userName, String password){
+    public boolean addNewLibrarian(String userName, String password){
+        boolean success = false;
+        if(findLibrarian(userName) == null){
+            User newLibrarian = new User(userName, password, userID);
+            librarianID++;
+            success = librarianList.add(newLibrarian);
+        }
+        return success;
+    }
+
+    public User findUser(String userName) {
         User found = null;
         for(int i = 0; i<userList.size() && found == null; i++){
             User current = userList.get(i);
@@ -153,10 +167,39 @@ public class UserPersistentStub implements IUserPersistent {
         return found;
     }
 
-    public User findUser(String userName) {
+    @Override
+    public void addBookToAllList(Booklist list, User user) {
+
+    }
+
+    @Override
+    public void addBookToReadingList(Booklist list, User user) {
+
+    }
+
+    @Override
+    public void addBookToFinishedList(Booklist list, User user) {
+
+    }
+
+    @Override
+    public void deleteUserAllListBook(Booklist list, User user) {
+
+    }
+
+    @Override
+    public void deleteReadingListBook(Booklist list, User user) {
+
+    }
+
+    @Override
+    public void deleteFinishedListBook(Booklist list, User user) {
+    }
+
+    public User findLibrarian(String userName) {
         User found = null;
-        for(int i = 0; i<userList.size() && found == null; i++){
-            User current = userList.get(i);
+        for(int i = 0; i<librarianList.size() && found == null; i++){
+            User current = librarianList.get(i);
             if(current.getUserName().equals(userName)){
                 found = current;
             }

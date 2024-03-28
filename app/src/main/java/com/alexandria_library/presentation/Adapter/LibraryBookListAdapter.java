@@ -9,11 +9,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.alexandria_library.R;
+import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.logic.SideBarService;
 import com.alexandria_library.presentation.Authentication.LoginActivity;
-
-import java.util.ArrayList;
 
 public class LibraryBookListAdapter extends RecyclerView.Adapter<LibraryBookListAdapter.MyViewHolder> {
     private static SideBarService sideBarService;
@@ -57,9 +56,7 @@ public class LibraryBookListAdapter extends RecyclerView.Adapter<LibraryBookList
         if(libraryBookList == null){
             return 0;
         }
-        else {
-            return libraryBookList.size();
-        }
+        return libraryBookList.size();
     }
 
 
@@ -80,7 +77,7 @@ public class LibraryBookListAdapter extends RecyclerView.Adapter<LibraryBookList
                 @Override
                 public void onClick(View v) {
                     if(myOnItemClickListener != null){
-                        myOnItemClickListener.onRecyclerItemClick(getAdapterPosition());
+                        myOnItemClickListener.onRecyclerItemClick(getAdapterPosition(), libraryBookList.get(getAdapterPosition()));
                     }
                 }
             });
@@ -94,6 +91,6 @@ public class LibraryBookListAdapter extends RecyclerView.Adapter<LibraryBookList
     }
 
     public interface OnRecyclerItemClickListener {
-        void onRecyclerItemClick(int position);
+        void onRecyclerItemClick(int position, Book book);
     }
 }

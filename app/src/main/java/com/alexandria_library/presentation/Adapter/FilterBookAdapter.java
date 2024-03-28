@@ -1,22 +1,18 @@
 package com.alexandria_library.presentation.Adapter;
 
 import android.content.Context;
-import android.view.GestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.ConcatAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.alexandria_library.R;
 import com.alexandria_library.dso.Booklist;
-import com.alexandria_library.logic.BookListFilter;
 import com.alexandria_library.logic.IBookListFilter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class FilterBookAdapter extends RecyclerView.Adapter<FilterBookAdapter.MyViewHolder> {
     private static IBookListFilter filter;
@@ -81,7 +77,10 @@ public class FilterBookAdapter extends RecyclerView.Adapter<FilterBookAdapter.My
 
     @Override
     public int getItemCount(){
-        return filteredBooks.size();
+        if(filteredBooks == null)
+            return 0;
+        else
+            return filteredBooks.size();
     }
 
     private OnRecyclerItemClickListener myOnItemClickListener;

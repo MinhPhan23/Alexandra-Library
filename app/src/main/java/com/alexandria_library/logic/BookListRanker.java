@@ -83,7 +83,7 @@ public class BookListRanker implements IBookListRanker {
         return sortedBooks;
     }
 
-    public static int[] calculateMatchingScore(String str1, String str2) {
+    private static int[] calculateMatchingScore(String str1, String str2) {
         int minLength = Math.min(str1.length(), str2.length());
         int matchCount = 0;
 

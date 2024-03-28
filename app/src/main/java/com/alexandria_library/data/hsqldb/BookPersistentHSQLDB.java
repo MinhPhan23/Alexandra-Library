@@ -1,8 +1,9 @@
 package com.alexandria_library.data.hsqldb;
 
-import com.alexandria_library.data.IBookPersistentHSQLDB;
+import com.alexandria_library.data.IBookPersistent;
 import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
+import com.alexandria_library.dso.IUser;
 import com.alexandria_library.dso.User;
 
 import java.sql.Connection;
@@ -13,14 +14,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookPersistentHSQLDB implements IBookPersistentHSQLDB {
+public class BookPersistentHSQLDB implements IBookPersistent {
 
     private final String dbPath;
-    private static int bookID = 1;
-    private static int tagID = 1;
-    private static int genreID = 1;
-    private static int bookTagID = 1;
-    private static int bookGenreID = 1;
+    private static int bookID = 5;
+    private static int tagID = 13;
+    private static int genreID = 12;
+    private static int bookTagID = 13;
+    private static int bookGenreID = 19;
 
     public BookPersistentHSQLDB(final String dbPath){this.dbPath = dbPath;}
 
@@ -28,47 +29,56 @@ public class BookPersistentHSQLDB implements IBookPersistentHSQLDB {
         return DriverManager.getConnection("jdbc:hsqldb:file:" + dbPath + ";shutdown=true", "SA", "123");
     }
 
-    private Book fromResultSet(final ResultSet rs) throws SQLException{
+    private Book fromResultSet(final ResultSet rs) throws SQLException {
         Book book = null;
         List<String> tags = new ArrayList<>();
         List<String> genres = new ArrayList<>();
+        boolean isFirstRow = true;
 
-            if(book == null){
-                //getting information
+        while (rs.next()) {
+            if (isFirstRow) {
                 final int bookID = rs.getInt("BOOK_ID");
                 final String bookName = rs.getString("BOOK_NAME");
                 final String bookAuthor = rs.getString("BOOK_AUTHOR");
                 final String bookDate = rs.getString("BOOK_DATE");
-                List<String> tempGenre = new ArrayList<>();
-                List<String> tempTag = new ArrayList<>();
-                book = new Book(bookID, bookName, bookAuthor, bookDate, tempTag, tempGenre);
+
+                book = new Book(bookID, bookName, bookAuthor, bookDate, new ArrayList<>(), new ArrayList<>());
+                isFirstRow = false;
             }
 
             String tag = rs.getString("TAG_NAME");
-            if(tag != null && !tags.contains(tag)){
+            if (tag != null && !tags.contains(tag)) {
                 tags.add(tag);
             }
             String genre = rs.getString("GENRE_NAME");
-            if(tag != null && !genres.contains(genre)){
+            if (genre != null && !genres.contains(genre)) {
                 genres.add(genre);
             }
-        if(book != null){
+        }
+        if (book != null) {
             book.setTags(tags);
             book.setGenres(genres);
         }
+
         return book;
     }
 
     @Override
-    public int checkCredentials(User user){
-        return 0;
-    }
-
-    @Override
-    public boolean upload(Book book, User user) {
+    public boolean upload(Book book, IUser user) {
         boolean result = false;
         try{
-            if(checkCredentials(user) == 0 && duplicateBook(book.getName())<0){
+            if(duplicateBook(book.getName())<0){
+
+                ArrayList<Integer> list = new ArrayList<>();
+                Booklist bookList = getBookList();
+                for(int i = 0; i<bookList.size(); i++){
+                    list.add(bookList.get(i).getID());
+                }
+                while(list.contains(bookID)){
+                    bookID++;
+                }
+
+                book.setID(bookID);
                 addBook(book);
                 result = true;
             }
@@ -84,7 +94,7 @@ public class BookPersistentHSQLDB implements IBookPersistentHSQLDB {
         try(final Connection c = connection()){
             PreparedStatement statement = c.prepareStatement(insert);
 
-            statement.setInt(1, bookID);
+            statement.setInt(1, newBook.getID());
             statement.setString(2, newBook.getName());
             statement.setString(3, newBook.getAuthor());
             statement.setString(4, newBook.getDate());
@@ -100,10 +110,10 @@ public class BookPersistentHSQLDB implements IBookPersistentHSQLDB {
                 int findTagID = duplicateTag(currentTag);
                 if(findTagID < 0){
                     int newTagID = addTag(currentTag);
-                    addBookTagRelation(bookID, newTagID);
+                    addBookTagRelation(newBook.getID(), newTagID);
                 }
                 else{
-                    addBookTagRelation(bookID, findTagID);
+                    addBookTagRelation(newBook.getID(), findTagID);
                 }
             }
             // adding new genre or make new relation with genre and book
@@ -112,10 +122,10 @@ public class BookPersistentHSQLDB implements IBookPersistentHSQLDB {
                 int findGenreID = duplicateGenre(currentGenre);
                 if(findGenreID < 0){
                     int newGenreID = addGenre(currentGenre);
-                    addBookGenreRelation(bookID, newGenreID);
+                    addBookGenreRelation(newBook.getID(), newGenreID);
                 }
                 else{
-                    addBookGenreRelation(bookID, findGenreID);
+                    addBookGenreRelation(newBook.getID(), findGenreID);
                 }
             }
             bookID++;
@@ -125,6 +135,10 @@ public class BookPersistentHSQLDB implements IBookPersistentHSQLDB {
 
     private int addTag(String tagName) throws SQLException {
         String insertTag = "INSERT INTO TAGS (TAG_NAME, TAG_ID) VALUES (?, ?)";
+        ArrayList<Integer> allTagID = getAllTagID();
+        while(allTagID.contains(tagID)){
+            tagID++;
+        }
         int result = tagID;
         try(final Connection c = connection()){
             PreparedStatement statement = c.prepareStatement(insertTag);
@@ -135,6 +149,7 @@ public class BookPersistentHSQLDB implements IBookPersistentHSQLDB {
             if(success == 0){
                 throw new SQLException ("@BookPersistenceHSQLDB.java addTag unsuccessful");
             }
+
             tagID++;
             statement.close();
         }
@@ -143,7 +158,13 @@ public class BookPersistentHSQLDB implements IBookPersistentHSQLDB {
 
     private int addGenre(String genreName) throws SQLException{
         String insertGenre = "INSERT INTO GENRES (GENRE_NAME, GENRE_ID) VALUES (?, ?)";
+
+        ArrayList<Integer> allGenreID = getAllGenreID();
+        while(allGenreID.contains(genreID)){
+            genreID++;
+        }
         int result = genreID;
+
         try(final Connection c = connection()){
             PreparedStatement statement = c.prepareStatement(insertGenre);
 
@@ -153,6 +174,7 @@ public class BookPersistentHSQLDB implements IBookPersistentHSQLDB {
             if(success == 0){
                 throw new SQLException ("@BookPersistenceHSQLDB.java addGenre unsuccessful");
             }
+
             genreID++;
             statement.close();
         }
@@ -161,7 +183,13 @@ public class BookPersistentHSQLDB implements IBookPersistentHSQLDB {
 
     private int addBookTagRelation(int bookID, int tagID) throws SQLException{
         String insertBookTag = "INSERT INTO BOOKTAGS(BOOK_ID, TAG_ID, BOOKTAGS_PK) VALUES (?, ?, ?)";
+
+        ArrayList<Integer> allbookTagID = bookTagsCount();
+        while(allbookTagID.contains(bookTagID)){
+            bookTagID++;
+        }
         int result = bookTagID;
+
         try(final Connection c = connection()){
             PreparedStatement statement = c.prepareStatement(insertBookTag);
 
@@ -180,7 +208,13 @@ public class BookPersistentHSQLDB implements IBookPersistentHSQLDB {
 
     private int addBookGenreRelation(int bookID, int genreID) throws SQLException{
         String insertBookGenre = "INSERT INTO BOOKGENRES(BOOK_ID, GENRE_ID, BOOKGENRES_PK) VALUES (?, ?, ?)";
+
+        ArrayList<Integer> allBookGenreID = bookGenresCount();
+        while(allBookGenreID.contains(bookGenreID)){
+            bookGenreID++;
+        }
         int result = bookGenreID;
+
         try(final Connection c = connection()){
             PreparedStatement statement = c.prepareStatement(insertBookGenre);
 
@@ -191,7 +225,9 @@ public class BookPersistentHSQLDB implements IBookPersistentHSQLDB {
             if(success == 0){
                 throw new SQLException ("@BookPersistenceHSQLDB.java addBookGenreRelation unsuccessful");
             }
+
             bookGenreID++;
+            statement.close();
         }
         return result;
     }
@@ -278,27 +314,65 @@ public class BookPersistentHSQLDB implements IBookPersistentHSQLDB {
             throw new PersistenceException(e);
         }
     }
-
-    private ArrayList<String > getAllBookName(){
-        String query = "SELECT * FROM BOOKS";
-        ArrayList<String> list = new ArrayList<>();
+    private ArrayList<Integer> getAllTagID(){
+        String query = "SELECT TAG_ID FROM TAGS";
+        ArrayList<Integer> list = new ArrayList<>();
         try(final Connection c = connection()){
             PreparedStatement statement = c.prepareStatement(query);
             ResultSet rs = statement.executeQuery();
 
             while(rs.next()){
-                String getName = rs.getString("BOOK_NAME");
-                if(!list.contains(getName)){
-                    list.add(getName);
-                }
+                int getTags = rs.getInt("TAG_ID");
+                list.add(getTags);
             }
             rs.close();
             statement.close();
+            return list;
+        }
+        catch (SQLException e){
+            throw new PersistenceException(e);
+        }
+    }
+
+    private ArrayList<Integer> getAllGenreID(){
+        String query = "SELECT GENRE_ID FROM GENRES";
+        ArrayList<Integer> list = new ArrayList<>();
+        try(final Connection c = connection()){
+            PreparedStatement statement = c.prepareStatement(query);
+            ResultSet rs = statement.executeQuery();
+
+            while(rs.next()){
+                int getGenres = rs.getInt("GENRE_ID");
+                list.add(getGenres);
+            }
+            rs.close();
+            statement.close();
+            return list;
+        }
+        catch (SQLException e){
+            throw new PersistenceException(e);
+        }
+    }
+
+    private ArrayList<String> getAllBookName() {
+        // Only select the distinct names of the books
+        String query = "SELECT DISTINCT BOOK_NAME FROM BOOKS";
+        ArrayList<String> list = new ArrayList<>();
+        // Use try-with-resources for better resource management
+        try (Connection c = connection();
+             PreparedStatement statement = c.prepareStatement(query);
+             ResultSet rs = statement.executeQuery()) {
+
+            while (rs.next()) {
+                String getName = rs.getString("BOOK_NAME");
+                list.add(getName);
+            }
             return list;
         } catch (SQLException e) {
             throw new PersistenceException(e);
         }
     }
+
 
     @Override
     public ArrayList<String> getAllGenres(){
@@ -322,7 +396,7 @@ public class BookPersistentHSQLDB implements IBookPersistentHSQLDB {
     }
 
     @Override
-    public void deleteLibraryBook(Booklist list, User user) {
+    public void deleteLibraryBook(Booklist list, IUser user) {
         try {
             for(int i = 0; i<list.size(); i++){
                 deleteFromLibrary(list.get(i));
@@ -338,35 +412,14 @@ public class BookPersistentHSQLDB implements IBookPersistentHSQLDB {
         try(Connection c = connection()){
             PreparedStatement statement = c.prepareStatement(query);
             statement.setInt(1, bookID);
-            ResultSet rs = statement.executeQuery();
+            int success = statement.executeUpdate();
+
+            if(success == 0){
+                throw new SQLException ("@BookPersistenceHSQLDB.java delete book unsuccessful");
+            }
             statement.close();
-            rs.close();
         }
     }
-
-    @Override
-    public ArrayList<String> searchTagByBook (Book book){
-        ArrayList<String> result = new ArrayList<>();
-        String query = "SELECT TG.TAG_NAME FROM TAGS TG "+
-                        "JOIN BOOKTAGS BT ON TG.TAG_ID = BT.TAG_ID "+
-                        "JOIN BOOKS B ON BT.BOOK_ID = B.BOOK_ID " +
-                        "WHERE B.BOOK_NAME = ?";
-        try(Connection c = connection()){
-            PreparedStatement statement = c.prepareStatement(query);
-            statement.setString(1, book.getName());
-            ResultSet rs = statement.executeQuery();
-
-            while (rs.next()){
-                String tagName = rs.getString("TAG_NAME");
-                result.add(tagName);
-            }
-            rs.close();
-
-            return result;
-        }
-        catch (final SQLException e){
-            throw new PersistenceException(e);
-        }}
 
     @Override
     public Booklist getBookList(){
@@ -376,6 +429,7 @@ public class BookPersistentHSQLDB implements IBookPersistentHSQLDB {
             Book getBook = getEachBooks(nameList.get(i));
             books.add(getBook);
         }
+
         return books;
     }
 
@@ -394,9 +448,9 @@ public class BookPersistentHSQLDB implements IBookPersistentHSQLDB {
             statement.setString(1, require);
             ResultSet rs = statement.executeQuery();
 
-            if(rs.next()){
-                result = fromResultSet(rs);
-            }
+
+            result = fromResultSet(rs);
+
             rs.close();
             return result;
         }
@@ -405,7 +459,46 @@ public class BookPersistentHSQLDB implements IBookPersistentHSQLDB {
         }
     }
 
+    public ArrayList<Integer> bookTagsCount(){
+        ArrayList<Integer> list = new ArrayList<>();
+        String query = "SELECT BOOKTAGS_PK FROM BOOKTAGS ";
+        try(Connection c = connection()){
+            PreparedStatement statement = c.prepareStatement(query);
+            ResultSet rs = statement.executeQuery();
 
+            while(rs.next()){
+                int id = rs.getInt("BOOKTAGS_PK");
+                list.add(id);
+            }
+            rs.close();
+            statement.close();
+            return list;
+        }
+        catch (final SQLException e){
+            throw new PersistenceException(e);
+        }
+    }
+
+    public ArrayList<Integer> bookGenresCount(){
+        ArrayList<Integer> list = new ArrayList<>();
+        String query = "SELECT BOOKGENRES_PK FROM BOOKGENRES ";
+
+        try(Connection c = connection()){
+            PreparedStatement statement = c.prepareStatement(query);
+            ResultSet rs = statement.executeQuery();
+
+            while(rs.next()){
+                int id = rs.getInt("BOOKGENRES_PK");
+                list.add(id);
+            }
+            rs.close();
+            statement.close();
+            return list;
+        }
+        catch (final SQLException e){
+            throw new PersistenceException(e);
+        }
+    }
 /*************************************************************************************************
  * === SEARCH book by multiple requests START ===
  */
@@ -485,102 +578,55 @@ public class BookPersistentHSQLDB implements IBookPersistentHSQLDB {
             ResultSet rs = statement.executeQuery();
             while(rs.next()){
                 Book newBook = fromResultSet(rs);
-                if(newBook != null && isUniqueBook(books, newBook)){
+                if(newBook != null){
                         books.add(newBook);
                 }
             }
             rs.close();
             statement.close();
         }
+        books = collapseDuplicates(books);
         return books;
     }
 /**
  * === SEARCH book by mulitple requests END ===
  *************************************************************************************************/
-
-
-
-/*************************************************************************************************
- * === GET user's list START ===
- */
-    @Override
-    public Booklist getUserCustomList(User user){
-        String user_custom_list_query = "SELECT * FROM BOOKS B "+
-                "JOIN CUSTOMLIST CL ON B.BOOK_ID = CL.BOOK_ID "+
-                "JOIN USERS US ON CL.USER_ID = US.USER_ID "+
-                "WHERE USER_ID = ? ";
-        try {
-            return getUserBookList(user_custom_list_query, user);
+    private Booklist collapseDuplicates(Booklist list){
+        Booklist newList = new Booklist();
+        if(list.size() == 0) {
+            return newList;
         }
-        catch (final SQLException e){
-            throw new PersistenceException(e);
-        }
-    }
+        Book currBook = list.get(0).clone();
+        int currID = currBook.getID();
+        ArrayList<String> tags = new ArrayList<>(currBook.getTags());
+        ArrayList<String> genres = new ArrayList<>(currBook.getGenres());
+        for (int i = 1; i < list.size(); i++) {
+            Book book = list.get(i);
+            if (book.getID() == currID) {
+                for(String tag : book.getTags()) {
+                    if(!tags.contains(tag)) tags.add(tag);
+                }
+                for(String genre : book.getGenres()) {
+                    if(!genres.contains(genre)) genres.add(genre);
+                }
 
-    @Override
-    public Booklist getUserInProgressList(User user) {
-        String user_inprogress_list_query = "SELECT * FROM BOOKS B "+
-                "JOIN READINGLIST RL ON B.BOOK_ID = RL.BOOK_ID "+
-                "JOIN USERS US ON RL.USER_ID = US.USER_ID "+
-                "WHERE USER_ID = ?";
+            } else {
+                currBook.setTags(new ArrayList<>(tags));
+                currBook.setGenres(new ArrayList<>(genres));
+                newList.add(currBook);
 
-        try {
-            return getUserBookList(user_inprogress_list_query, user);
-        }
-        catch (final SQLException e){
-            throw new PersistenceException(e);
-        }
-    }
-
-    @Override
-    public Booklist getUserFinishedList(User user){
-        String user_finished_list_query = "SELECT * FROM BOOKS B "+
-                "JOIN FINISHEDLIST FL ON B.BOOK_ID = FL.BOOK_ID "+
-                "JOIN USERS US ON FL.USER_ID = US.USER_ID "+
-                "WHERE USER_ID = ? ";
-
-        try {
-            return getUserBookList(user_finished_list_query, user);
-        }
-        catch (final SQLException e){
-            throw new PersistenceException(e);
-        }
-    }
-
-    /******
-     * Father function for get user's list
-     * three child are get CustomList, get FinishedList, get InProgressList
-     * @param query
-     * @param user
-     * @return
-     * @throws SQLException
-     */
-    private Booklist getUserBookList(String query, User user) throws SQLException{
-        Booklist list = new Booklist();
-        try(final Connection c = connection()){
-            final PreparedStatement st = c.prepareStatement(query);
-            st.setInt(1, user.getId());
-
-            final ResultSet rs = st.executeQuery();
-            while(rs.next()){
-                final Book currrentBook= fromResultSet(rs);
-                list.add(currrentBook);
-            }
-            rs.close();
-            st.close();
-        }
-        return list;
-    }
-
-    private boolean isUniqueBook(Booklist list, Book book){
-        boolean unique = true;
-        for(int i = 0; i < list.size(); i++){
-            if(list.get(i).getID() == book.getID()){
-                unique = false;
-                break;
+                currBook = book.clone();
+                currID = book.getID();
+                tags = new ArrayList<>(book.getTags());
+                genres = new ArrayList<>(book.getGenres());
             }
         }
-        return unique;
+
+        currBook.setTags(new ArrayList<>(tags));
+        currBook.setGenres(new ArrayList<>(genres));
+        newList.add(currBook);
+
+        return newList;
     }
 
 /**

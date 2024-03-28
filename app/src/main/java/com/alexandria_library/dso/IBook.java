@@ -1,7 +1,5 @@
 package com.alexandria_library.dso;
 
-import androidx.annotation.NonNull;
-
 import java.util.List;
 
 public interface IBook {
@@ -30,9 +28,10 @@ public interface IBook {
 
     public String getDate();
 
-    public boolean equals(final Book book);
+    public boolean equals(Object book);
 
-    @NonNull
     public String toString();
 
+    public Book clone();
+    public boolean noOrderEquals(final Book book);
 }

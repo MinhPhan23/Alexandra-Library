@@ -1,10 +1,7 @@
 package com.alexandria_library.logic;
 
-import androidx.activity.SystemBarStyle;
-
 import com.alexandria_library.application.Service;
 import com.alexandria_library.data.IBookPersistent;
-import com.alexandria_library.data.hsqldb.BookPersistentHSQLDB;
 import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
 
@@ -41,6 +38,9 @@ public class BookListFilter implements IBookListFilter {
 
     @Override
     public Booklist filterByTag(Booklist bookList, String[] tags) {
+        if(tags.length == 0)
+            return bookList;
+
         Booklist filteredBooks = new Booklist();
 
         for (Book book : bookList) {
@@ -54,6 +54,9 @@ public class BookListFilter implements IBookListFilter {
 
     @Override
     public Booklist filterByGenre(Booklist bookList, String[] genres) {
+        if(genres.length == 0)
+            return bookList;
+
         Booklist filteredBooks = new Booklist();
 
         for (Book book : bookList) {
@@ -81,44 +84,32 @@ public class BookListFilter implements IBookListFilter {
     @Override
     public Booklist getFilteredList(Booklist books, String[] tags, String[] genres){
         Booklist tagFiltered = filterByTag(books, tags);
-        if(!tagFiltered.isEmpty()){
-            //filter genre by using what we get from tag's filtered
-            return filterByGenre(tagFiltered, genres);
-        }
-        return null;
+        return filterByGenre(tagFiltered, genres);
     }
 
     private static boolean containsAll(List<String> bookTags, String[] filterTags) {
         for (String filterTag : filterTags) {
-            boolean containsString = false;
+
             for (String bookTag : bookTags) {
                 if (filterTag.equals(bookTag)) {
-                    containsString = true;
-                    break;
+                    return true;
                 }
             }
-            if (!containsString) {
-                return false;
-            }
         }
-        return true;
+        return false;
     }
 
     @Override
     public ArrayList<String> getAllTags(IBookPersistent bookPersistent){
-        ArrayList<String> allTags = new ArrayList<>();
-        if(bookPersistent instanceof BookPersistentHSQLDB){
-            allTags = ((BookPersistentHSQLDB)bookPersistent).getAllTags();
-        }
+        ArrayList<String> allTags;
+        allTags = bookPersistent.getAllTags();
         return allTags;
     }
 
     @Override
     public ArrayList<String > getAllGenre(IBookPersistent bookPersistent){
-        ArrayList<String> allGenres = new ArrayList<>();
-        if(bookPersistent instanceof BookPersistentHSQLDB){
-            allGenres = ((BookPersistentHSQLDB)bookPersistent).getAllGenres();
-        }
+        ArrayList<String> allGenres;
+        allGenres = bookPersistent.getAllGenres();
         return allGenres;
     }
 }

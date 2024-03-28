@@ -1,8 +1,11 @@
 package com.alexandria_library.data.hsqldb;
 
-import com.alexandria_library.data.IUserPersistentHSQLDB;
+import com.alexandria_library.application.Service;
+import com.alexandria_library.data.IBookPersistent;
+import com.alexandria_library.data.IUserPersistent;
 import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
+import com.alexandria_library.dso.Librarian;
 import com.alexandria_library.dso.Reader;
 import com.alexandria_library.dso.User;
 
@@ -11,16 +14,17 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
 
-public class UserPersistentHSQLDB implements IUserPersistentHSQLDB {
+public class UserPersistentHSQLDB implements IUserPersistent {
     private final String dbPath;
-    private static int userID = 6; //start with 6 because group members are default users
-    private static int customListID = 1;
-    private static int readingListID = 1;
-    private static int finishedListID = 1;
+
+    private static final IBookPersistent bookData = Service.getBookPersistent();
+    private static int userID = 6; //start with 6 because group members are default \
+    private static int librarianID = 6; //start with 6 because group members are default users
+    private static int allListID = 19; //start with 19 because group members already have booklist setup
+    private static int readingListID = 18; //start with 18 because group members already have booklist setup
+    private static int finishedListID = 18; //start with 18 because group members already have booklist setup
 
     public UserPersistentHSQLDB(final String dbPath) {
         this.dbPath = dbPath;
@@ -30,26 +34,130 @@ public class UserPersistentHSQLDB implements IUserPersistentHSQLDB {
         return DriverManager.getConnection("jdbc:hsqldb:file:" + dbPath + ";shutdown=true", "SA", "123");
     }
 
-    private User fromResultSet(final ResultSet rs) throws SQLException{
+    /**
+     * Create a new User DSO from the database result
+     * @param rs ResultSet object
+     * @param type type of user, 0 is Reader, 1 is Librarian
+     * @return user object
+     * @throws SQLException in case database error
+     */
+    private User fromResultSet(final ResultSet rs, String type) throws SQLException{
         final String userName = rs.getString("USER_NAME");
         final String password = rs.getString("PASSWORD");
         final int userID = rs.getInt("USER_ID");
 
-        return new User(userName, password, userID);
+        User user = null;
+        if (type.equalsIgnoreCase("reader")) {
+            user = new Reader(userName, password, userID);
+            getAllList((Reader) user);
+            getFinishedList((Reader) user);
+            getReadingList((Reader) user);
+        }
+        else if (type.equalsIgnoreCase("librarian")) {
+            user = new Librarian(userName, password, userID);
+        }
+        return user;
     }
 
-    public List<User> getUserSequential(){
-        final List<User> users = new ArrayList<>();
+    private ArrayList<User> getAllUser(){
+        ArrayList<User> userList = new ArrayList<>();
         try(final Connection c = connection()){
-            final Statement statement = c.createStatement();
-            final ResultSet rs = statement.executeQuery("SELECT * FROM USERS");
+            String sql = "SELECT* FROM USERS";
+            PreparedStatement statement = c.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+
             while(rs.next()){
-                final User currentUser = fromResultSet(rs);
-                users.add(currentUser);
+                User user = fromResultSet(rs, "reader");
+                userList.add(user);
+            }
+            return userList;
+        }
+        catch (final SQLException e){
+            throw new PersistenceException(e);
+        }
+    }
+
+    private ArrayList<User> getAllLibrarian(){
+        ArrayList<User> userArrayList = new ArrayList<>();
+        try(final Connection c = connection()){
+            String sql = "SELECT* FROM LIBRARIANS";
+            PreparedStatement statement = c.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+
+            while(rs.next()){
+                User user = fromResultSet(rs, "librarian");
+                userArrayList.add(user);
+            }
+            return userArrayList;
+        }
+        catch (final SQLException e){
+            throw new PersistenceException(e);
+        }
+    }
+
+    private void getAllList(Reader user) {
+        try(final Connection c = connection()){
+            String sql = "SELECT B.BOOK_NAME FROM BOOKS B " +
+                    "JOIN CUSTOMLIST CL ON B.BOOK_ID = CL.BOOK_ID " +
+                    "WHERE CL.USER_ID = ?";
+            PreparedStatement statement = c.prepareStatement(sql);
+            statement.setInt(1, user.getId());
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()){
+                String bookName = rs.getString("BOOK_NAME");
+                Book book = bookData.getEachBooks(bookName);
+                if (book!=null) {
+                    user.getAllBooksList().add(book);
+                }
             }
             rs.close();
             statement.close();
-            return users;
+        }
+        catch (final SQLException e){
+            throw new PersistenceException(e);
+        }
+    }
+
+    private void getReadingList(Reader user) {
+        try(final Connection c = connection()){
+            String sql = "SELECT B.BOOK_NAME FROM BOOKS B " +
+                    "JOIN READINGLIST RD ON B.BOOK_ID = RD.BOOK_ID " +
+                    "WHERE RD.USER_ID = ?";
+            PreparedStatement statement = c.prepareStatement(sql);
+            statement.setInt(1, user.getId());
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()){
+                String bookName = rs.getString("BOOK_NAME");
+                Book book = bookData.getEachBooks(bookName);
+                if (book!=null) {
+                    user.getInProgressList().add(book);
+                }
+            }
+            rs.close();
+            statement.close();
+        }
+        catch (final SQLException e){
+            throw new PersistenceException(e);
+        }
+    }
+
+    private void getFinishedList(Reader user) {
+        try(final Connection c = connection()){
+            String sql = "SELECT B.BOOK_NAME FROM BOOKS B " +
+                    "JOIN FINISHEDLIST CL ON B.BOOK_ID = CL.BOOK_ID " +
+                    "WHERE CL.USER_ID = ?";
+            PreparedStatement statement = c.prepareStatement(sql);
+            statement.setInt(1, user.getId());
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()){
+                String bookName = rs.getString("BOOK_NAME");
+                Book book = bookData.getEachBooks(bookName);
+                if (book!=null) {
+                    user.getFinishedList().add(book);
+                }
+            }
+            rs.close();
+            statement.close();
         }
         catch (final SQLException e){
             throw new PersistenceException(e);
@@ -59,6 +167,7 @@ public class UserPersistentHSQLDB implements IUserPersistentHSQLDB {
     @Override
     public boolean addNewUser(String userName, String password){
         boolean result = false;
+        userID = getAllUser().size()+1;
         try(final Connection c = connection()){
             final PreparedStatement statement = c.prepareStatement("INSERT INTO USERS(USER_ID, USER_NAME, PASSWORD) VALUES (?, ?, ?)");
             statement.setInt(1, userID);
@@ -68,7 +177,6 @@ public class UserPersistentHSQLDB implements IUserPersistentHSQLDB {
 
             if(affectedRow > 0){
                 result = true;
-                userID++;
             }
             return result;
         }
@@ -78,20 +186,20 @@ public class UserPersistentHSQLDB implements IUserPersistentHSQLDB {
     }
 
     @Override
-    public User findUser(String userName, String password){
-        User found = null;
+    public boolean addNewLibrarian(String userName, String password){
+        boolean result = false;
+        librarianID = getAllLibrarian().size()+1;
         try(final Connection c = connection()){
-            final PreparedStatement statement = c.prepareStatement("SELECT * FROM USERS WHERE USER_NAME = ? AND PASSWORD = ?");
-            statement.setString(1, userName);
-            statement.setString(2, password);
+            final PreparedStatement statement = c.prepareStatement("INSERT INTO LIBRARIANS(USER_ID, USER_NAME, PASSWORD) VALUES (?, ?, ?)");
+            statement.setInt(1, librarianID);
+            statement.setString(2, userName);
+            statement.setString(3, password);
+            int affectedRow = statement.executeUpdate();
 
-            final ResultSet rs =statement.executeQuery();
-            if(rs.next()){
-                found =fromResultSet(rs);
+            if(affectedRow > 0){
+                result = true;
             }
-            rs.close();
-            statement.close();
-            return found;
+            return result;
         }
         catch (final SQLException e){
             throw new PersistenceException(e);
@@ -107,7 +215,27 @@ public class UserPersistentHSQLDB implements IUserPersistentHSQLDB {
 
             final ResultSet rs =statement.executeQuery();
             if(rs.next()){
-                found =fromResultSet(rs);
+                found = fromResultSet(rs, "reader");
+            }
+            rs.close();
+            statement.close();
+            return found;
+        }
+        catch (final SQLException e){
+            throw new PersistenceException(e);
+        }
+    }
+
+    @Override
+    public User findLibrarian(String userName){
+        User found = null;
+        try(final Connection c = connection()){
+            final PreparedStatement statement = c.prepareStatement("SELECT * FROM LIBRARIANS WHERE USER_NAME = ?");
+            statement.setString(1, userName);
+
+            final ResultSet rs =statement.executeQuery();
+            if(rs.next()){
+                found =fromResultSet(rs, "librarian");
             }
             rs.close();
             statement.close();
@@ -123,16 +251,55 @@ public class UserPersistentHSQLDB implements IUserPersistentHSQLDB {
  * === Adding book to specific user' list Implement Start ===
  * Part for adding book to specific user's list (reading list, finished list, customer list)
  *******/
+
+    private int totalListCount (String type){
+        int total = 0;
+        ArrayList<User> userList = getAllUser();
+        User current = null;
+
+        if(type.equals("all")){
+            for(int i = 0; i<userList.size(); i++){
+                current = userList.get(i);
+                if(current instanceof Reader){
+                    total += ((Reader) current).getAllBooksList().size();
+                }
+            }
+        }
+        else if(type.equals("reading")){
+            for(int i = 0; i<userList.size(); i++){
+                current = userList.get(i);
+                if(current instanceof Reader){
+                    total += ((Reader) current).getInProgressList().size();
+                }
+            }
+        }
+        else if(type.equals("finished")){
+            for(int i = 0; i<userList.size(); i++){
+                current = userList.get(i);
+                if(current instanceof Reader){
+                    total += ((Reader) current).getFinishedList().size();
+                }
+            }
+        }
+        return total;
+    }
+
     //add book to custom list
     @Override
-    public void addBookToCustomList(Booklist list, User user){
+    public void addBookToAllList(Booklist list, User user){
         final String addToCustomListQuery =  "INSERT INTO CUSTOMLIST(BOOK_ID, USER_ID, CUSTOMLIST_PK) VALUES (?, ?, ?) ";
+        int listCount = totalListCount("all")+1;
+        if(allListID < listCount)
+            allListID = listCount;
+        else
+            allListID++;
+
         try{
             for(int i = 0; i<list.size(); i++){
-                boolean checkEachAdd = addBookToUserList(addToCustomListQuery, list.get(i), user, customListID);
+                boolean checkEachAdd = addBookToUserList(addToCustomListQuery, list.get(i), user, allListID);
 
                 if(checkEachAdd)
-                    customListID++;
+                    allListID++;
             }
         }
         catch (final SQLException e){
@@ -143,6 +310,12 @@ public class UserPersistentHSQLDB implements IUserPersistentHSQLDB {
     @Override
     public void addBookToReadingList(Booklist list, User user){
         final String addToReadingQuery = "INSERT INTO READINGLIST(BOOK_ID, USER_ID, READINGLIST_PK) VALUES(?, ?, ?)";
+        int listCount = totalListCount("reading")+1;
+        if(readingListID < listCount)
+            readingListID = listCount;
+        else
+            readingListID++;
+
         try {
             for(int i = 0; i<list.size(); i++){
                 boolean checkEachAdd = addBookToUserList(addToReadingQuery, list.get(i), user, readingListID);
@@ -159,6 +332,11 @@ public class UserPersistentHSQLDB implements IUserPersistentHSQLDB {
     @Override
     public void addBookToFinishedList(Booklist list, User user){
         final String addToFinishedQuery = "INSERT INTO FINISHEDLIST(BOOK_ID, USER_ID, FINISHEDLIST_PK) VALUES (?, ?, ?)";
+        int listCount = totalListCount("finished")+1;
+        if(finishedListID < listCount)
+            finishedListID = listCount;
+        else
+            finishedListID++;
         try {
             for (int i = 0; i<list.size(); i++){
                 boolean checkEachAdd = addBookToUserList(addToFinishedQuery, list.get(i), user, finishedListID);
@@ -198,7 +376,7 @@ public class UserPersistentHSQLDB implements IUserPersistentHSQLDB {
  */
     //delete book from user's custom list
     @Override
-    public void deleteUserCustomListBook(Booklist list, User user){
+    public void deleteUserAllListBook(Booklist list, User user){
         String query = "DELETE FROM CUSTOMLIST WHERE BOOK_ID = ? AND USER_ID = ?";
         try {
             if(user instanceof Reader){

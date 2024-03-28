@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.alexandria_library.R;
 import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.logic.ISearchService;
-import java.util.ArrayList;
 
 public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.MyViewHolder> {
     private static ISearchService searchService;
@@ -42,12 +41,10 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.My
 
     @Override
     public int getItemCount() {
-        if(BookList == null){
+        if (BookList == null){
             return 0;
         }
-        else {
-            return BookList.size();
-        }
+        return BookList.size();
     }
 
 

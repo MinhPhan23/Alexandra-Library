@@ -16,26 +16,28 @@ import java.util.Arrays;
 import java.util.List;
 
 public class BookTest {
+
+    Book book1;
     @Before
     public void setUp() {
         System.out.println("Starting unit tests for Book");
-    }
-
-    @Test
-    public void testCreateBook() {
-        System.out.println("\nTest creating book");
         String[] tagsArray = new String[]{"Young Adult", "Twilight 1", "Vampires"};
         String[] genreArray = new String[]{"Urban Fantasy", "Paranormal", "Romance"};
         List<String> tags = new ArrayList<>(Arrays.asList(tagsArray));
         List<String> genres = new ArrayList<>(Arrays.asList(genreArray));
-
-        Book book = new Book(1 ,
+        book1 = new Book(1 ,
                 "Twilight",
                 "Stephenie Meyer",
                 "October 5, 2005",
                 tags,
                 genres
-                );
+        );
+    }
+
+    @Test
+    public void testCreateBook() {
+        System.out.println("\nTest creating book");
+        Book book = book1;
 
         assertNotNull(book);
         assertEquals(1, book.getID());
@@ -50,20 +52,9 @@ public class BookTest {
     public void testSetBookID() {
         System.out.println("\nTest set book id");
 
-        String[] tagsArray = new String[]{"Young Adult", "Twilight 1", "Vampires"};
-        String[] genreArray = new String[]{"Urban Fantasy", "Paranormal", "Romance"};
-        List<String> tags = new ArrayList<>(Arrays.asList(tagsArray));
-        List<String> genres = new ArrayList<>(Arrays.asList(genreArray));
+        Book book = book1;
 
         int updatedID = 2;
-
-        Book book = new Book(1 ,
-                "Twilight",
-                "Stephenie Meyer",
-                "October 5, 2005",
-                tags,
-                genres
-                );
 
         int originalID = book.getID();
         book.setID(updatedID);
@@ -76,19 +67,9 @@ public class BookTest {
     public void testSetBookName() {
         System.out.println("\nTest set book name");
 
-        String[] tagsArray = new String[]{"Young Adult", "Twilight 1", "Vampires"};
-        String[] genreArray = new String[]{"Urban Fantasy", "Paranormal", "Romance"};
-        List<String> tags = new ArrayList<>(Arrays.asList(tagsArray));
-        List<String> genres = new ArrayList<>(Arrays.asList(genreArray));
+        Book book = book1;
 
         String updatedName = "I have been changed!";
-
-        Book book = new Book(1 ,
-                "Twilight",
-                "Stephenie Meyer",
-                "October 5, 2005",
-                tags,
-                genres);
 
         String originalName = book.getName();
         book.setName(updatedName);
@@ -101,19 +82,9 @@ public class BookTest {
     public void testSetBookAuthor() {
         System.out.println("\nTest set book author");
 
-        String[] tagsArray = new String[]{"Young Adult", "Twilight 1", "Vampires"};
-        String[] genreArray = new String[]{"Urban Fantasy", "Paranormal", "Romance"};
-        List<String> tags = new ArrayList<>(Arrays.asList(tagsArray));
-        List<String> genres = new ArrayList<>(Arrays.asList(genreArray));
+        Book book = book1;
 
         String updatedAuthor = "I have been changed!";
-
-        Book book = new Book(1 ,
-                "Twilight",
-                "Stephenie Meyer",
-                "October 5, 2005",
-                tags,
-                genres);
 
         String originalAuthor = book.getAuthor();
         book.setAuthor(updatedAuthor);
@@ -126,19 +97,9 @@ public class BookTest {
     public void testSetBookDate() {
         System.out.println("\nTest set book date");
 
-        String[] tagsArray = new String[]{"Young Adult", "Twilight 1", "Vampires"};
-        String[] genreArray = new String[]{"Urban Fantasy", "Paranormal", "Romance"};
-        List<String> tags = new ArrayList<>(Arrays.asList(tagsArray));
-        List<String> genres = new ArrayList<>(Arrays.asList(genreArray));
+        Book book = book1;
 
         String updatedDate = "I have been changed!";
-
-        Book book = new Book(1 ,
-                "Twilight",
-                "Stephenie Meyer",
-                "October 5, 2005",
-                tags,
-                genres);
 
         String originalDate = book.getDate();
         book.setDate(updatedDate);
@@ -158,14 +119,7 @@ public class BookTest {
         List<String> genres = new ArrayList<>(Arrays.asList(genreArray));
         List<String> updatedTags = new ArrayList<>(Arrays.asList(updatedTagsArray));
 
-
-
-        Book book = new Book(1 ,
-                "Twilight",
-                "Stephenie Meyer",
-                "October 5, 2005",
-                tags,
-                genres);
+        Book book = book1;
 
         List<String> originalTags = book.getTags();
         book.setTags(updatedTags);
@@ -212,8 +166,6 @@ public class BookTest {
         List<String> tags2 = new ArrayList<>(Arrays.asList(tagsArray2));
         List<String> genres2 = new ArrayList<>(Arrays.asList(genreArray2));
 
-
-
         Book book1 = new Book(1 ,
                 "Twilight",
                 "Stephenie Meyer",
@@ -243,22 +195,12 @@ public class BookTest {
     public void testBookToString() {
         System.out.println("\nTest printing book object");
 
-        String[] tagsArray = new String[]{"Young Adult", "Twilight 1", "Vampires"};
-        String[] genreArray = new String[]{"Urban Fantasy", "Paranormal", "Romance"};
-        List<String> tags = new ArrayList<>(Arrays.asList(tagsArray));
-        List<String> genres = new ArrayList<>(Arrays.asList(genreArray));
-
-        Book book = new Book(1 ,
-                "Twilight",
-                "Stephenie Meyer",
-                "October 5, 2005",
-                tags,
-                genres);
-
+        Book book = book1;
 
         String original = "Book{id = 1, name = 'Twilight', author = 'Stephenie Meyer', " +
                 "date = 'October 5, 2005', tag(s) = [Young Adult, Twilight 1, Vampires], " +
                 "genre(s) = [Urban Fantasy, Paranormal, Romance]}";
+
         String test = book.toString();
 
         assertEquals(original, test);

@@ -1,11 +1,9 @@
 package com.alexandria_library.dso;
 
-import androidx.annotation.NonNull;
-
 import java.util.List;
 import java.util.Objects;
 
-public class Book implements IBook{
+public class Book implements IBook {
 
     // instance variables
     private int id;
@@ -25,6 +23,10 @@ public class Book implements IBook{
         genres = bookGenres;
     }
 
+    @Override
+    public Book clone(){
+        return new Book(this.id, this.name, this.author, this.date, this.tags, this.genres);
+    }
     public int getID() {
         return id;
     }
@@ -74,16 +76,48 @@ public class Book implements IBook{
         genres = bookGenres;
     }
 
-    public boolean equals(final Book book) {
-        return Objects.equals(this.id, book.getID()) &&
-                Objects.equals(this.name, book.getName()) &&
-                Objects.equals(this.author, book.getAuthor()) &&
-                Objects.equals(this.date, book.getDate()) &&
-                Objects.equals(this.tags, book.getTags()) &&
-                Objects.equals(this.genres, book.getGenres());
+    @Override
+    public boolean equals(Object book) {
+        if (!(book instanceof Book)) {
+            return false;
+        }
+        else {
+            return Objects.equals(this.id, ((Book) book).getID()) &&
+                    Objects.equals(this.name, ((Book) book).getName()) &&
+                    Objects.equals(this.author, ((Book) book).getAuthor()) &&
+                    Objects.equals(this.date, ((Book) book).getDate()) &&
+                    Objects.equals(this.tags, ((Book) book).getTags()) &&
+                    Objects.equals(this.genres, ((Book) book).getGenres());
+        }
     }
 
-    @NonNull
+    @Override
+    public boolean noOrderEquals(final Book book){
+        boolean equals = false;
+        if(book.getName().equals(this.name) && book.getAuthor().equals(this.author)){
+            if(book.getDate().equals(this.date)){
+                if(book.getTags().size() == this.tags.size()){
+                    if(book.getGenres().size() == this.genres.size()){
+                        equals = true;
+                        for(int i = 0; i<tags.size(); i++){
+                            if(!book.getTags().contains(tags.get(i))){
+                                equals = false;
+                                break;
+                            }
+                        }
+                        for(int j = 0; j<genres.size(); j++){
+                            if(!book.getGenres().contains(genres.get(j))){
+                                equals = false;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return equals;
+    }
+
     @Override
     public String toString() {
         return "Book{" +

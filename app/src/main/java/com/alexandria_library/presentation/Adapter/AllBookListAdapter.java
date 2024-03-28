@@ -62,9 +62,7 @@ public class AllBookListAdapter extends RecyclerView.Adapter<AllBookListAdapter.
         if(allBooksList == null){
             return 0;
         }
-        else {
-            return allBooksList.size();
-        }
+        return allBooksList.size();
     }
 
 
@@ -85,7 +83,7 @@ public class AllBookListAdapter extends RecyclerView.Adapter<AllBookListAdapter.
                 @Override
                 public void onClick(View v) {
                     if(myOnItemClickListener != null){
-                        myOnItemClickListener.onRecyclerItemClick(getAdapterPosition());
+                        myOnItemClickListener.onRecyclerItemClick(getAdapterPosition(), allBooksList.get(getAdapterPosition()));
                     }
                 }
             });
@@ -99,6 +97,6 @@ public class AllBookListAdapter extends RecyclerView.Adapter<AllBookListAdapter.
     }
 
     public interface OnRecyclerItemClickListener {
-        void onRecyclerItemClick(int position);
+        void onRecyclerItemClick(int position, Book book);
     }
 }
