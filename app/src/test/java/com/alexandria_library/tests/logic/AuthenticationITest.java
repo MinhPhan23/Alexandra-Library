@@ -41,6 +41,12 @@ public class AuthenticationITest {
     }
 
     @Test
+    public void testDefaultConstructor(){
+        authentication = null;
+        authentication = new Authentication();
+        assertNotNull(authentication);
+    }
+    @Test
     public void test01_NormalRegister() {
         System.out.println("Test register new user");
         try {
