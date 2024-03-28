@@ -1,13 +1,10 @@
 package com.alexandria_library.data.hsqldb;
 
-import androidx.annotation.RequiresPermission;
-
 import com.alexandria_library.application.Service;
 import com.alexandria_library.data.IBookPersistent;
 import com.alexandria_library.data.IUserPersistent;
 import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
-import com.alexandria_library.dso.IReader;
 import com.alexandria_library.dso.Librarian;
 import com.alexandria_library.dso.Reader;
 import com.alexandria_library.dso.User;
@@ -17,9 +14,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
 
 public class UserPersistentHSQLDB implements IUserPersistent {
     private final String dbPath;

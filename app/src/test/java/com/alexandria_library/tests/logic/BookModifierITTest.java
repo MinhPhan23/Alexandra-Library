@@ -10,14 +10,12 @@ import com.alexandria_library.dso.Book;
 import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.dso.IUser;
 import com.alexandria_library.dso.Librarian;
-import com.alexandria_library.logic.BookListFilter;
 import com.alexandria_library.logic.BookModifier;
 import com.alexandria_library.logic.IBookModifier;
 import com.alexandria_library.tests.util.TestUtils;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.File;

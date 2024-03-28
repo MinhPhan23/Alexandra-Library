@@ -11,15 +11,12 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.core.AllOf.allOf;
 import static org.junit.Assert.assertThrows;
 
-import android.media.MediaPlayer;
-
 import androidx.test.espresso.AmbiguousViewMatcherException;
 import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.rule.ActivityTestRule;
 
-import com.alexandria_library.R;
 import com.alexandria_library.presentation.Authentication.LoginActivity;
 
 import org.junit.After;

@@ -17,5 +17,6 @@ import org.junit.runners.Suite;
         DefaultBooklistITest.class,
         AuthenticationITest.class,
 })
+
 public class IntegrationTests {
 }

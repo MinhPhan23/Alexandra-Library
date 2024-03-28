@@ -12,7 +12,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class BookPersistentHSQLDB implements IBookPersistent {
@@ -64,16 +63,11 @@ public class BookPersistentHSQLDB implements IBookPersistent {
         return book;
     }
 
-
-    private int checkCredentials(IUser user){
-        return 0;
-    }
-
     @Override
     public boolean upload(Book book, IUser user) {
         boolean result = false;
         try{
-            if(checkCredentials(user) == 0 && duplicateBook(book.getName())<0){
+            if(duplicateBook(book.getName())<0){
 
                 ArrayList<Integer> list = new ArrayList<>();
                 Booklist bookList = getBookList();

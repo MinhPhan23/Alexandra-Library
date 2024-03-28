@@ -1,13 +1,11 @@
 package com.alexandria_library.presentation;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -21,7 +19,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alexandria_library.R;
 import com.alexandria_library.application.Service;
@@ -32,6 +29,7 @@ import com.alexandria_library.dso.IReader;
 import com.alexandria_library.dso.IUser;
 import com.alexandria_library.dso.Librarian;
 import com.alexandria_library.dso.Reader;
+
 import com.alexandria_library.logic.BookListFilter;
 import com.alexandria_library.logic.BookModifier;
 import com.alexandria_library.logic.DefaultBooklist;
@@ -43,6 +41,7 @@ import com.alexandria_library.logic.SearchService;
 import com.alexandria_library.logic.IBookModifier;
 import com.alexandria_library.logic.Exception.SearchServiceException;
 import com.alexandria_library.logic.SideBarService;
+
 import com.alexandria_library.presentation.Adapter.AllBookListAdapter;
 import com.alexandria_library.presentation.Adapter.AllGenresListAdapter;
 import com.alexandria_library.presentation.Adapter.AllTagsListAdapter;
@@ -100,7 +99,6 @@ public class MainActivity extends AppCompatActivity{
 
     private boolean library, all, inProgress,finish, filterOpen;
     private Booklist allLibraryBooks;
-    private static int booksCount = 5;
     private ArrayList<String> tagsClicked;
     private ArrayList<String> genresClicked;
 
@@ -740,6 +738,7 @@ public class MainActivity extends AppCompatActivity{
         filterBox.setVisibility(View.VISIBLE);
         filterOpen = true;
     }
+
     public void toggleFilterGone(){
         filterPage.setVisibility(View.GONE);
         filterBox.setVisibility(View.GONE);
@@ -794,6 +793,7 @@ public class MainActivity extends AppCompatActivity{
             }
         });
     }
+
     private void AllBookCategory(){
         AllBookListAdapter allBookAdapter;
         RecyclerView recyclerView;

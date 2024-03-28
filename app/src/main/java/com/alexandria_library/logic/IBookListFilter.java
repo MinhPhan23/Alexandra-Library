@@ -2,8 +2,6 @@ package com.alexandria_library.logic;
 
 import com.alexandria_library.data.IBookPersistent;
 import com.alexandria_library.dso.Booklist;
-
-
 import java.util.ArrayList;
 
 public interface IBookListFilter {

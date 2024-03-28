@@ -14,8 +14,6 @@ import com.alexandria_library.dso.Booklist;
 import com.alexandria_library.logic.SideBarService;
 import com.alexandria_library.presentation.Authentication.LoginActivity;
 
-import java.util.ArrayList;
-
 public class LibraryBookListAdapter extends RecyclerView.Adapter<LibraryBookListAdapter.MyViewHolder> {
     private static SideBarService sideBarService;
     private Booklist libraryBookList;

@@ -13,7 +13,6 @@ import static org.hamcrest.core.AllOf.allOf;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.rule.ActivityTestRule;
 
-import com.alexandria_library.R;
 import com.alexandria_library.presentation.Authentication.LoginActivity;
 
 import org.junit.After;

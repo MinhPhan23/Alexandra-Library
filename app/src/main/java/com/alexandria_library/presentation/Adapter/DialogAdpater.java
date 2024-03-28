@@ -2,13 +2,10 @@ package com.alexandria_library.presentation.Adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
 import com.alexandria_library.dso.Book;
-import com.alexandria_library.dso.Booklist;
-import com.alexandria_library.presentation.MainActivity;
 
 public class DialogAdpater {
     private Context context;
