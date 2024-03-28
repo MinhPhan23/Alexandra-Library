@@ -15,6 +15,7 @@ import com.alexandria_library.logic.BookModifier;
 import com.alexandria_library.logic.IBookModifier;
 import com.alexandria_library.tests.util.TestUtils;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -85,6 +86,7 @@ public class BookModifierITTest {
             }
         }
         assertTrue(checkExits);
+
     }
 
     @Test
@@ -181,6 +183,13 @@ public class BookModifierITTest {
         assertEquals(libraryBooks.size(), 4);
         for(int i = 0; i<libraryBooks.size(); i++){
             assertFalse(libraryBooks.get(i).equals(existingBook));
+        }
+    }
+
+    @After
+    public void tearDown() throws IOException {
+        if (tempDB != null && tempDB.exists()) {
+            tempDB.delete();
         }
     }
 }
